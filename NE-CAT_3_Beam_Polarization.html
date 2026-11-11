@@ -489,7 +489,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <h2>What arrives at the sample, and how to check it</h2>
       <p><span data-d="useSmp">Set for 24-ID-C after the upgrade: P = 0.982 at the sample.</span></p>
       <p>That number rests on an assumed 0.98 from the source and on the assumed mono geometry, so it is worth measuring. The polarization shows up directly in how the sample scatters: a polarized beam sends almost no scatter along its own field direction. Comparing the scatter seen from the side with the scatter seen from above gives the polarization.</p>
-      <p>The guide <a class="guidelink" data-guide="scatter" href="NE-CAT_4_Scatter_and_Fluorescence.html">Scatter and the fluorescence detector</a> uses the same effect to decide where the fluorescence detector should sit.</p>
+      <p>The guide <a class="guidelink" data-guide="scatter" href="NE-CAT_4_X-ray_Fluorescence.html">X-ray fluorescence at NE-CAT</a> uses the same effect to decide where the fluorescence detector should sit.</p>
     </div>
     <div class="panel">
       <h3>Measure P on the beamline</h3>
@@ -506,7 +506,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <summary class="tag"><span class="eqno">Equation 7.1</span><span class="eqtitle">Polarization from two counts</span></summary>
       <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>I</mi><mtext>hor</mtext></msub><mo>∝</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>P</mi></mrow><mn>2</mn></mfrac><mo separator="true">,</mo><mspace width="2em"/><msub><mi>I</mi><mtext>vert</mtext></msub><mo>∝</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>P</mi></mrow><mn>2</mn></mfrac><mspace width="2em"/><mo>⟹</mo><mspace width="2em"/><mi>P</mi><mo>=</mo><mfrac><mrow><msub><mi>I</mi><mtext>vert</mtext></msub><mo>−</mo><msub><mi>I</mi><mtext>hor</mtext></msub></mrow><mrow><msub><mi>I</mi><mtext>vert</mtext></msub><mo>+</mo><msub><mi>I</mi><mtext>hor</mtext></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">I_{\text{hor}}\propto\frac{1-P}{2},\qquad I_{\text{vert}}\propto\frac{1+P}{2}\qquad\Longrightarrow\qquad P=\frac{I_{\text{vert}}-I_{\text{hor}}}{I_{\text{vert}}+I_{\text{hor}}}</annotation></semantics></math></span></div>
       <div class="body">
-        <p class="says"><b>What it says</b>Put ψ = 0 and 2θ = 90° into equation 2.3 in the guide <a class="guidelink" data-guide="scatter" href="NE-CAT_4_Scatter_and_Fluorescence.html">Scatter and the fluorescence detector</a> and only the unpolarized half-term is left: that is the horizontal count. Put ψ = 90° and the polarized term adds in full: that is the vertical count. Their difference over their sum is P. A finite sensor cone leaks a little extra into the horizontal count (equation 4.2 in the guide <a class="guidelink" data-guide="scatter" href="NE-CAT_4_Scatter_and_Fluorescence.html">Scatter and the fluorescence detector</a>), so this slightly underestimates P unless you use a small aperture.</p>
+        <p class="says"><b>What it says</b>Put ψ = 0 and 2θ = 90° into equation 7.3 in the guide <a class="guidelink" data-guide="scatter" href="NE-CAT_4_X-ray_Fluorescence.html">X-ray fluorescence at NE-CAT</a> and only the unpolarized half-term is left: that is the horizontal count. Put ψ = 90° and the polarized term adds in full: that is the vertical count. Their difference over their sum is P. A finite sensor cone leaks a little extra into the horizontal count (equation 8.2 in the guide <a class="guidelink" data-guide="scatter" href="NE-CAT_4_X-ray_Fluorescence.html">X-ray fluorescence at NE-CAT</a>), so this slightly underestimates P unless you use a small aperture.</p>
       </div>
         </details>
     </div>
@@ -522,7 +522,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
         <li>J. A. Clarke, <i>The Science and Technology of Undulators and Wigglers</i>. Polarization control.</li>
       </ul>
     </div>
-    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="scatter" href="NE-CAT_4_Scatter_and_Fluorescence.html">Next: guide 4, Scatter and the fluorescence detector →</a></nav>
+    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="scatter" href="NE-CAT_4_X-ray_Fluorescence.html">Next: guide 4, X-ray fluorescence at NE-CAT →</a></nav>
     <div class="notes" style="text-align:center;margin-top:18px"><p>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
   </section>
 </div>
@@ -1530,6 +1530,7 @@ function gUpd(){gAz=+$('gAz').value;gM=Math.pow(10,+$('gM').value);gB=Math.pow(1
 hooks.push(()=>{gP=CUR.Pout;gUpd();});
 }
 
+
 // ---------- apply beamline settings everywhere ----------
 const cm=x=>Math.round(x).toLocaleString('en-US');
 const SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
@@ -1554,6 +1555,9 @@ function fillText(){const p=PS,d=CUR,s=d.short, crn='Si('+p.cr+')', defl=p.vert?
     useEdge:`Set for ${s}: P = ${d.Pout.toFixed(3)} at the sample, 9° sensor cone.`,
     seSum:(()=>{const q=scatCone(90,0,E0,d.Pout,9),m=SEKA*WMASS/(q[0]+q[1])/1000;return `How much scatter is too much depends on how much fluorescence there is. Seen from the ideal spot, with the settings for ${s}, one selenium atom just above its edge sends as much Kα toward the detector as the scatter from about ${Math.round(m/10)*10} kDa of protein and water. A selenomethionine protein has roughly one selenium atom for every 5 to 10 kDa, and the solvent in the crystal and the liquid around it add as much again or more. So in this simple picture its fluorescence stands well clear of the scatter. Real spectra show more scatter than this, because air and the mount add their own, and one metal atom in a large complex has far less fluorescence to offer.`;})(),
     useSweep:`Set for ${s}: 12.662 keV, P = ${d.Pout.toFixed(3)} at the sample.`,
+    useMap:/–/.test(p.range)?`Set for ${s}: the beam energy can be set anywhere in ${p.range}.`:`Set for ${s}: the beam energy is fixed at 12.662 keV.`,
+    useId:`Set for ${s}: P = ${d.Pout.toFixed(3)} at the sample. Detector at the ideal spot, 15 mm away through air, with a 9° sensor cone.`,
+    rangeSum:/–/.test(p.range)?`With the settings for ${s}, the beam can be set anywhere in ${p.range}. That takes in the K edges of the metals from manganese to zinc, and of arsenic, selenium and bromine. It also takes in the L edges of the lanthanides and of the heavy atoms used for soaks, such as platinum, gold and mercury.`:`With the settings for ${s}, the beam stays at one energy, 12.662 keV, which sits just above the selenium K edge. Every element with an edge below that fluoresces there, selenium included, but the energy cannot be stepped across an edge. 24-ID-C can: its range takes in the K edges from manganese to bromine and beyond, and the L edges of the lanthanides and of heavy atoms such as platinum, gold and mercury.`,
     useHero:`${s}: ${p.Ee} GeV ring, ${lu} cm undulator, ${crn} mono, 12.662 keV. Change this with the Settings menu at the top.`,
     useUnd:`Set for ${s}: λu = ${lu} cm and a gap of about ${d.gap.toFixed(1)} mm, which give K = ${K} (harmonic ${d.n} at 12.662 keV). γ = ${g}. The gap slider stops at ${p.gmin} mm, the smallest gap these undulators close to.`,
     gammaDD:`The Lorentz factor, ${g} at ${p.Ee} GeV.`,

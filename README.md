@@ -7,16 +7,16 @@ Four illustrated, interactive guides to the Advanced Photon Source and the NE-CA
 | File | Guide |
 | --- | --- |
 | `index.html` | Landing page |
-| `NE-CAT_1_How_APS_Works.html` | 1. How APS works: from the electron gun to the storage ring |
+| `NE-CAT_1_How_APS_Works.html` | 1. How APS works: from the electron gun to the stored beam |
 | `NE-CAT_2_How_NE-CAT_Works.html` | 2. How NE-CAT works: from the storage ring to the detector |
 | `NE-CAT_3_Beam_Polarization.html` | 3. Why the X-ray beam is polarized |
-| `NE-CAT_4_Scatter_and_Fluorescence.html` | 4. Where to put the fluorescence detector |
+| `NE-CAT_4_X-ray_Fluorescence.html` | 4. X-ray fluorescence at NE-CAT: what it is, what it is used for, and where the detector goes |
 
 Each page is a single self-contained HTML file. The pages link to each other by file name, so keep the names unchanged and keep them all in the same folder.
 
-Three further files, `NE-CAT_1_How_It_Works.html`, `NE-CAT_2_Beam_Polarization.html` and `NE-CAT_3_Scatter_and_Fluorescence.html`, are the addresses the guides had before they were renumbered. Each one only forwards to the guide's new address, so that older links keep working.
+`NE-CAT_1_How_It_Works.html`, `NE-CAT_2_Beam_Polarization.html`, `NE-CAT_3_Scatter_and_Fluorescence.html` and `NE-CAT_4_Scatter_and_Fluorescence.html` are small redirect pages. They are the names the guides had before they were renumbered or retitled, kept so that existing links still work.
 
-Values that are assumed or calculated, and not taken from a published source, are marked in the tables of guides 1 and 2. Corrections are welcome: please open an issue.
+Values that are assumed or calculated, and not taken from a published source, are marked in the notes of each guide. Corrections are welcome: please open an issue.
 
 ## Acknowledgment
 
