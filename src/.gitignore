@@ -1,0 +1,11 @@
+node_modules/
+__pycache__/
+# written by the build
+body-*.html
+guides.json
+style.css
+shared.js
+xrf.built.js
+# optional, see build.js
+urls.json
+shots/

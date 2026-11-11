@@ -1,0 +1,748 @@
+<title>APS Beam Polarization</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">
+<style>
+/* Layout: a comic album page. One reading column (~66ch); figures are inked panels up to 980px wide with yellow narration boxes; equations sit on ruled cards with a symbol-by-symbol reading. Single light theme by design (ligne claire is a paper style). */
+:root{
+  --paper:#fffdf6; --ink:#1b1b1b; --muted:#55575c; --sky:#dcecf5; --cap:#ffe98a;
+  --red:#d8412f; --blue:#2f6db5; --orange:#ee8a2b; --green:#5aa469; --card:#ffffff; --rule:#1b1b1b;
+  --f-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive;
+  --f-math:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:980px;margin:0 auto}
+.prose{max-width:66ch;margin:0 auto}
+.prose>*+*{margin-top:1em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(2.3rem,6.4vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.6vw,2.2rem);font-weight:750}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--blue)}
+math{font-family:var(--f-math);font-size:1.06em}
+mi[mathvariant="bold"],mi[mathvariant="bold-italic"]{font-weight:700}
+.hero{padding-block:44px 20px;display:grid;gap:20px}
+.kicker{font-family:var(--f-hand);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;display:inline-block;background:var(--cap);border:2.5px solid var(--ink);padding:2px 12px;justify-self:start}
+.lede{font-size:1.22rem;line-height:1.5;max-width:62ch}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.chain a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.chain a:hover,.chain a:focus-visible{background:var(--cap);outline:none}
+section{padding-block:52px 4px;display:grid;gap:22px}
+.sec-head{display:grid;gap:12px}
+.stepno{font-family:var(--f-display);font-weight:800;font-size:1.05rem;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:#fff;border:2.5px solid var(--ink);display:grid;place-items:center}
+.panel{display:grid;gap:12px}
+.panel canvas{width:100%;display:block;border:3px solid var(--ink);background:var(--sky)}
+.figcap{font-size:.93rem;color:var(--muted);line-height:1.45;max-width:78ch}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;align-items:end;background:var(--card);border:2.5px solid var(--ink);padding:12px 14px}
+.ctl{display:grid;gap:2px;min-width:0}
+.ctl label{font-family:var(--f-hand);font-size:1.05rem;display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-weight:700;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--red)}
+input[type=number],select{width:100%;font-family:var(--f-hand);font-size:1.1rem;padding:4px 8px;border:2.5px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-hand);font-size:1.02rem;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:0;padding:2px 10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--cap)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.ro{background:var(--cap);border:2.5px solid var(--ink);padding:6px 12px;min-width:0}
+.ro .k{font-family:var(--f-hand);font-size:.95rem;text-transform:uppercase;letter-spacing:.04em}
+.ro .v{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-hand);font-size:1rem}
+.key i{display:inline-block;width:16px;height:12px;border:2px solid var(--ink);vertical-align:-1px;margin-right:6px}
+/* equation cards */
+.eqcard{background:var(--card);border:2.5px solid var(--ink);max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqcard .tag{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;background:var(--ink);color:var(--paper);padding:1px 12px;display:flex;justify-content:space-between;gap:12px}
+.eqcard .eqn{padding:14px 14px 10px;overflow-x:auto;font-size:1.12rem;border-bottom:2px dashed var(--ink)}
+.eqcard .body{padding:12px 14px 14px;display:grid;gap:10px;font-size:.96rem;line-height:1.5}
+.read{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.read dt{font-weight:600;white-space:nowrap}
+.read dd{margin:0;min-width:0}
+.says b,.num b{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;background:var(--cap);border:2px solid var(--ink);padding:0 6px;margin-right:6px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;padding-top:10px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar label{font-family:var(--f-hand);font-size:1.02rem;background:var(--cap);border:2.5px solid var(--ink);padding:1px 8px;display:flex;align-items:center;gap:8px;max-width:100%}
+.bar select{width:auto;max-width:100%;border:0;background:transparent;padding:2px 4px;font-size:1.02rem}
+.using{font-family:var(--f-hand);font-size:1.02rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:4px 12px}
+.tblwrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--card)}
+table.settings{border-collapse:collapse;width:100%;min-width:720px;font-size:.93rem;line-height:1.35;font-variant-numeric:tabular-nums}
+table.settings th,table.settings td{border:1.5px solid var(--ink);padding:5px 10px;text-align:left;vertical-align:top}
+table.settings thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+table.settings tbody th{font-weight:600;background:var(--paper)}
+table.settings .on{background:var(--cap)}
+table.settings thead th.on{background:var(--red);color:#fff}
+.notes{font-size:.9rem;color:var(--muted);line-height:1.45;max-width:78ch;margin-inline:auto;width:100%}
+.notes p+p{margin-top:.5em}
+ul.refs{padding-left:1.2em;margin:0}
+ul.refs li+li{margin-top:.4em}
+@media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
+</style>
+
+<div class="wrap">
+  <div class="bar"><label for="preset">Settings<select id="preset"><option value="Cpost">24-ID-C · after the upgrade</option><option value="Cpre">24-ID-C · before the upgrade</option><option value="Epost">24-ID-E · after the upgrade</option><option value="Epre">24-ID-E · before the upgrade</option></select></label><button id="motionBtn" aria-pressed="false">Pause motion</button></div>
+
+  <header class="hero">
+    <div class="kicker">Advanced Photon Source · Sector 24 · an illustrated guide</div>
+    <h1>Why the X-ray beam is polarized</h1>
+    <p class="lede">The undulator makes each electron wiggle sideways. A charge that wiggles sideways radiates light whose electric field also points sideways. Relativity turns that light into a narrow beam of hard X-rays, and the beamline optics leave its direction alone. The beam reaches the sample with its electric field horizontal and across the beam, which is why the fluorescence detector belongs horizontal and at 90°.</p>
+    <div class="panel">
+      <canvas id="heroCv" aria-label="Animation: the electric field of the X-ray beam stays horizontal from the undulator to the sample"></canvas>
+      <div class="figcap">The orange arrows are the beam's electric field. It swings back and forth horizontally, across the direction of travel, all the way from the undulator to the sample. The drawing is schematic. The real field oscillates about 3×10<sup>18</sup> times per second with a wavelength near 1 Å.</div>
+      <div class="using" data-d="useHero">24-ID-C after the upgrade: 6 GeV ring, 3.0 cm undulator, Si(111) mono, 12.662 keV.</div>
+    </div>
+    <nav class="chain" aria-label="Sections">
+      <a href="#settings">Beamline settings</a><a href="#wave">1 Polarization</a><a href="#dipole">2 Radiating charge</a><a href="#undulator">3 Undulator</a><a href="#relativity">4 Relativity</a><a href="#purity">5 Why not 100%</a><a href="#optics">6 Mono and mirrors</a><a href="#sample">7 At the sample</a>
+    </nav>
+  </header>
+
+  <section id="settings">
+    <div class="sec-head prose">
+      <h2>Beamline settings used in this guide</h2>
+      <p>The Settings menu at the top of the page stays in view as you scroll. Choose 24-ID-C or 24-ID-E, before or after the APS Upgrade, and every figure, readout and worked number that depends on the ring or the beamline switches to those values. The highlighted column below is the one in use. Steps 1 and 2 are general physics and do not change.</p>
+    </div>
+    <div class="tblwrap"><table class="settings" id="setTbl"></table></div>
+    <div class="notes">
+      <p><b>Sources.</b> Ring values: APS Upgrade Final Design Report, chapter 1, table 1.1. The after-upgrade column is the brightness mode (324 bunches). Undulator periods and energy ranges: NE-CAT Communications, Winter 2022, the NE-CAT facilities page and the APS beamline directory. Monochromator crystals: APS beamline directory.</p>
+      <p><b>† Assumed, not taken from a published source.</b> The undulator length (2.1 m, the APS-U canted design), and from it the number of periods. The plane in which each mono deflects the beam, and that 24-ID-E uses a single reflection. A polarization of 0.98 arriving at the mono. Please correct any of these that differ on the real beamlines.</p>
+      <p><b>‡ Calculated in this guide</b> from the other rows, using the equations in steps 4 and 6. These are not machine or beamline readings.</p>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section id="wave">
+    <div class="sec-head prose">
+      <div class="stepno">1</div>
+      <h2>Polarization is the direction the electric field swings</h2>
+      <p>Light is a transverse wave. Its electric field <b>E</b> oscillates at right angles to the direction of travel. Polarization describes the path that the tip of <b>E</b> traces in that transverse plane.</p>
+      <p>If the field swings along one fixed line, the light is <i>linearly polarized</i>. If two perpendicular components oscillate out of step, the tip traces an ellipse, or a circle when the lag is 90°. The APS beam is linearly polarized along the horizontal.</p>
+    </div>
+    <div class="panel">
+      <canvas id="waveCv" aria-label="Interactive electromagnetic wave with adjustable polarization"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="wAng">Angle from horizontal <output id="wAngO">0°</output></label><input id="wAng" type="range" min="0" max="90" value="0"></div>
+        <div class="ctl"><label for="wPh">Phase lag φ <output id="wPhO">0°</output></label><input id="wPh" type="range" min="0" max="90" value="0"></div>
+        <div class="btns">
+          <button data-w="0,0" aria-pressed="true">APS beam</button>
+          <button data-w="90,0">Vertical</button>
+          <button data-w="45,0">45°</button>
+          <button data-w="45,90">Circular</button>
+        </div>
+      </div>
+      <div class="figcap">Left: the wave travelling to the right, in perspective, over a green sheet that marks the horizontal plane. Right: looking straight down the beam. The dashed line is the path traced by the tip of <b>E</b>.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 1.1</span><span>The wave</span></div>
+      <div class="eqn">\[ \mathbf{E}(z,t)=\hat{\mathbf{x}}\,E_{x}\cos(kz-\omega t)\;+\;\hat{\mathbf{y}}\,E_{y}\cos(kz-\omega t+\varphi) \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( z,\ t \)</dt><dd>Distance along the beam, and time.</dd>
+          <dt>\( \hat{\mathbf{x}},\ \hat{\mathbf{y}} \)</dt><dd>Unit vectors: horizontal across the beam, and vertical.</dd>
+          <dt>\( E_x,\ E_y \)</dt><dd>Amplitudes of the horizontal and vertical parts of the field.</dd>
+          <dt>\( k=2\pi/\lambda \)</dt><dd>Wavenumber. The field repeats every wavelength λ along the beam.</dd>
+          <dt>\( \omega=2\pi\nu=ck \)</dt><dd>Angular frequency. The field repeats ν times per second at a fixed point.</dd>
+          <dt>\( \varphi \)</dt><dd>How far the vertical part lags the horizontal part.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Any polarization is two perpendicular swings added together. With φ = 0 they stay in step and the tip moves along a line tilted by arctan(E<sub>y</sub>/E<sub>x</sub>). With φ = 90° and equal amplitudes the tip moves on a circle. For the APS beam E<sub>y</sub> is nearly zero, so only the first term is left.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 1.2</span><span>Energy and wavelength</span></div>
+      <div class="eqn">\[ E_{\text{photon}}=h\nu=\frac{hc}{\lambda}\qquad\Longrightarrow\qquad E\,[\text{keV}]=\frac{12.398}{\lambda\,[\text{\AA}]} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( h \)</dt><dd>Planck's constant, 6.626×10<sup>−34</sup> J·s, or 4.136×10<sup>−15</sup> eV·s.</dd>
+          <dt>\( c \)</dt><dd>Speed of light, 2.998×10<sup>8</sup> m/s.</dd>
+          <dt>\( hc \)</dt><dd>Their product, 12.398 keV·Å. This is where the 12.398 comes from.</dd>
+          <dt>\( \nu,\ \lambda \)</dt><dd>Frequency and wavelength of the wave in equation 1.1.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Photon energy and wavelength are the same information. Shorter wavelength means higher energy.</p>
+        <p class="num"><b>In numbers</b>hc = 4.136×10<sup>−15</sup> eV·s × 2.998×10<sup>8</sup> m/s = 1.2398×10<sup>−6</sup> eV·m = 12.398 keV·Å. At the Se K edge, 12.66 keV, λ = 12.398 / 12.66 = 0.979 Å and ν = c/λ = 3.06×10<sup>18</sup> Hz.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 1.3</span><span>Degree of linear polarization</span></div>
+      <div class="eqn">\[ P=\frac{I_{h}-I_{v}}{I_{h}+I_{v}} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( I_h \)</dt><dd>Intensity carried by the horizontal field component, proportional to E<sub>x</sub>².</dd>
+          <dt>\( I_v \)</dt><dd>Intensity carried by the vertical component, proportional to E<sub>y</sub>².</dd>
+        </dl>
+        <p class="says"><b>What it says</b>P = 1 means all the intensity is horizontal. P = 0 means the two share it equally, as in unpolarized light. P = −1 means all vertical.</p>
+        <p class="num"><b>In numbers</b>P = 0.98 means I<sub>h</sub> = (1 + P)/2 = 99% of the intensity is horizontal and 1% is vertical.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="dipole">
+    <div class="sec-head prose">
+      <div class="stepno">2</div>
+      <h2>An accelerating charge radiates along its acceleration</h2>
+      <p>A charge that changes velocity sends a ripple out through the electromagnetic field. Two properties of that ripple matter for everything that follows. First, the radiated field points along the acceleration, as seen from where you stand. Second, if you look straight along the acceleration you see no radiation at all.</p>
+    </div>
+    <div class="panel">
+      <canvas id="dipCv" aria-label="Interactive dipole radiation: move the observer around an oscillating charge"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="dPsi">Observer angle ψ from the oscillation axis <output id="dPsiO">60°</output></label><input id="dPsi" type="range" min="0" max="180" value="60"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Field amplitude, sin ψ</div><div class="v" id="dAmp">–</div></div>
+        <div class="ro"><div class="k">Intensity, sin²ψ</div><div class="v" id="dInt">–</div></div>
+      </div>
+      <div class="figcap">The charge oscillates left and right. The yellow lobes give the radiated intensity in each direction. Ripples are drawn only where there is radiation to carry. At the eye, the orange arrow is the field that arrives. Move the eye to ψ = 0° and the arrow disappears.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 2.1</span><span>The radiated field</span></div>
+      <div class="eqn">\[ \mathbf{E}_{\text{rad}}=\frac{q}{4\pi\varepsilon_0c^{2}R}\;\hat{\mathbf{n}}\times(\hat{\mathbf{n}}\times\mathbf{a})\;=\;-\frac{q}{4\pi\varepsilon_0c^{2}R}\;\mathbf{a}_{\perp} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( q \)</dt><dd>The charge. For an electron q = −e.</dd>
+          <dt>\( \mathbf{a} \)</dt><dd>Its acceleration, taken at the earlier moment when the light now arriving was emitted.</dd>
+          <dt>\( \hat{\mathbf{n}} \)</dt><dd>Unit vector from the charge to the observer: the line of sight.</dd>
+          <dt>\( R \)</dt><dd>Distance from charge to observer.</dd>
+          <dt>\( \mathbf{a}_{\perp} \)</dt><dd>The part of <b>a</b> perpendicular to the line of sight: \( \mathbf{a}-(\mathbf{a}\cdot\hat{\mathbf{n}})\hat{\mathbf{n}} \).</dd>
+          <dt>\( \varepsilon_0 \)</dt><dd>Permittivity of free space, the constant that sets the strength of electric forces.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Take the acceleration, throw away the piece that points at you, and what is left gives the direction of the field you receive. Its size is a·sin ψ, where ψ is the angle between your line of sight and <b>a</b>, and it falls off as 1/R. This form holds for a slow charge. Step 4 handles the fast one.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 2.2</span><span>The doughnut, and Larmor's total</span></div>
+      <div class="eqn">\[ \frac{dP}{d\Omega}=\frac{q^{2}a^{2}}{16\pi^{2}\varepsilon_0c^{3}}\,\sin^{2}\psi\qquad\qquad P_{\text{total}}=\frac{q^{2}a^{2}}{6\pi\varepsilon_0c^{3}} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( dP/d\Omega \)</dt><dd>Radiated power per unit solid angle in a given direction.</dd>
+          <dt>\( \psi \)</dt><dd>Angle between that direction and the acceleration.</dd>
+          <dt>\( P_{\text{total}} \)</dt><dd>The same pattern summed over all directions (the Larmor formula).</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Intensity is field squared, so it goes as sin²ψ: greatest at right angles to the acceleration and zero along it. In three dimensions the pattern is a doughnut with its hole along <b>a</b>. Power also grows as a², so harder acceleration radiates much more.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="undulator">
+    <div class="sec-head prose">
+      <div class="stepno">3</div>
+      <h2>The undulator makes the electrons wiggle sideways</h2>
+      <p>An undulator is two rows of permanent magnets, one above and one below the electron beam, with poles that alternate every half period. Between the rows the magnetic field <b>B</b> is vertical, and it flips direction along the device.</p>
+      <p>A vertical field pushes a moving electron sideways. So the electron wiggles in the horizontal plane, and by step 2 a horizontal wiggle radiates horizontally polarized light.</p>
+    </div>
+    <div class="panel">
+      <canvas id="undCv" aria-label="Interactive undulator: side and top views of the electron path"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="uK">Deflection parameter K <output id="uKO">1.00</output></label><input id="uK" type="range" min="0.2" max="2.5" step="0.05" value="1"></div>
+        <div class="ctl"><label for="uL">Magnet period λ<sub>u</sub> <output id="uLO">3.3 cm</output></label><input id="uL" type="range" min="1.5" max="5" step="0.1" value="3.3"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Peak field B₀</div><div class="v" id="uB">–</div></div>
+        <div class="ro"><div class="k">Wiggle amplitude</div><div class="v" id="uAmp">–</div></div>
+        <div class="ro"><div class="k">Max steering angle K/γ</div><div class="v" id="uAng">–</div></div>
+      </div>
+      <div class="key"><span><i style="background:#d8412f"></i>N pole</span><span><i style="background:#2f6db5"></i>S pole</span><span><i style="background:#8a63c2"></i>B at the electron</span><span><i style="background:#ee8a2b"></i>Force on the electron</span></div>
+      <div class="figcap">Side view: the path looks straight, and <b>B</b> at the electron points up or down. Top view: the path is a sine wave in the horizontal plane, and the force points sideways. The wiggle is drawn hugely exaggerated. The real amplitude is under a micron against a period of centimetres.</div>
+      <div class="using" data-d="useUnd">Set for 24-ID-C after the upgrade: λu = 3.0 cm, K = 1.85 (harmonic 3 at 12.662 keV), γ = 11,742.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 3.1</span><span>The magnetic field</span></div>
+      <div class="eqn">\[ B_y(z)=B_0\cos\!\left(\frac{2\pi z}{\lambda_u}\right) \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( B_y \)</dt><dd>The vertical magnetic field on the beam axis.</dd>
+          <dt>\( B_0 \)</dt><dd>Its peak value, set by the gap between the magnet rows. A smaller gap gives a larger B₀.</dd>
+          <dt>\( \lambda_u \)</dt><dd>The undulator period: the length of one N–S pair.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Along the device the field swings smoothly between up and down, once per period.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 3.2</span><span>The sideways force</span></div>
+      <div class="eqn">\[ \mathbf{F}=-e\,\mathbf{v}\times\mathbf{B}\qquad\Longrightarrow\qquad \gamma m\,\ddot{x}=e\,c\,B_0\cos\!\left(\frac{2\pi z}{\lambda_u}\right) \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( -e,\ m \)</dt><dd>The electron's charge and rest mass.</dd>
+          <dt>\( \mathbf{v} \)</dt><dd>Its velocity, essentially c along the beam.</dd>
+          <dt>\( \gamma \)</dt><dd><span data-d="gammaDD">The Lorentz factor, 11,742 at 6 GeV.</span> It makes the electron γ times harder to push sideways.</dd>
+          <dt>\( \ddot{x} \)</dt><dd>Horizontal acceleration.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The cross product of a forward velocity and a vertical field is horizontal. There is no vertical force at all, so the electron never leaves the horizontal plane. This one line is the origin of the beam's polarization.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 3.3</span><span>The path</span></div>
+      <div class="eqn">\[ \frac{dx}{dz}=\frac{K}{\gamma}\sin\!\left(\frac{2\pi z}{\lambda_u}\right)\qquad\qquad x(z)=-\frac{K\lambda_u}{2\pi\gamma}\cos\!\left(\frac{2\pi z}{\lambda_u}\right) \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( dx/dz \)</dt><dd>The slope of the path: the angle between the electron's direction and the axis.</dd>
+          <dt>\( x(z) \)</dt><dd>The sideways position along the device.</dd>
+          <dt>\( K \)</dt><dd>The deflection parameter, defined in equation 3.4.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Integrating the force once gives the slope and twice gives the position. The path is a sine wave with the same period as the magnets. Its largest angle is K/γ and its amplitude is Kλ<sub>u</sub>/2πγ.</p>
+        <p class="num"><b>In numbers</b><span data-d="num33">For 24-ID-C after the upgrade: K = 1.85 and λu = 3.0 cm give a largest angle K/γ = 157 µrad and an amplitude of 0.75 µm.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 3.4</span><span>The deflection parameter</span></div>
+      <div class="eqn">\[ K=\frac{e\,B_0\,\lambda_u}{2\pi\,m\,c}=0.934\;B_0[\text{T}]\;\lambda_u[\text{cm}] \]</div>
+      <div class="body">
+        <p class="says"><b>What it says</b>K is a pure number that measures how hard the magnets steer. It is the largest steering angle in units of 1/γ, the natural width of the radiation cone (step 4). When K is about 1 or less, the electron's light always stays inside its own cone and the light from every period adds up in step. That is an undulator. When K is much larger, the cone sweeps side to side like a lighthouse. That is a wiggler.</p>
+        <p class="num"><b>In numbers</b><span data-d="num34">K = 1.85 with λu = 3.0 cm needs B₀ = 1.85 / (0.934 × 3.0) = 0.66 T.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="relativity">
+    <div class="sec-head prose">
+      <div class="stepno">4</div>
+      <h2>Relativity shrinks the wavelength and narrows the beam</h2>
+      <p>A wiggle a few centimetres long should radiate radio waves a few centimetres long. It makes Ångström X-rays because the electron is travelling almost as fast as the light it emits. The electron nearly keeps up with its own light, so the crests from successive periods pile up close together.</p>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.1</span><span>How fast is the electron?</span></div>
+      <div class="eqn">\[ \gamma=\frac{E_e}{mc^{2}}\qquad\qquad \beta=\frac{v}{c}=\sqrt{1-\frac{1}{\gamma^{2}}}\;\approx\;1-\frac{1}{2\gamma^{2}} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( E_e \)</dt><dd>The electron's total energy: 7 GeV in the APS before the upgrade, 6 GeV after it.</dd>
+          <dt>\( mc^2 \)</dt><dd>The electron's rest energy, 0.511 MeV.</dd>
+          <dt>\( \gamma \)</dt><dd>The Lorentz factor: total energy in units of rest energy.</dd>
+          <dt>\( \beta \)</dt><dd>Speed as a fraction of the speed of light.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The electron falls short of light speed by only 1/2γ².</p>
+        <p class="num"><b>In numbers</b><span data-d="num41">For 24-ID-C after the upgrade the ring energy is 6 GeV, so γ = 6000 / 0.511 = 11,742. Then 1 − β = 1/2γ² = 3.6×10⁻⁹. Over one 3.0 cm period, light gains just 1.09 Å on the electron.</span></p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <canvas id="slipCv" aria-label="Animation: light slips ahead of the electron by one wavelength per magnet period"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="sB">Electron speed β = v/c <output id="sBO">0.80</output></label><input id="sB" type="range" min="0.5" max="0.95" step="0.01" value="0.8"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">λ / λu, exact: 1/β − 1</div><div class="v" id="sEx">–</div></div>
+        <div class="ro"><div class="k">λ / λu, approx: 1/2γ²</div><div class="v" id="sAp">–</div></div>
+        <div class="ro"><div class="k" data-d="slipK">This ring: 1 − β = 3.6×10⁻⁹</div><div class="v" data-d="slipV">3.0 cm → 1.09 Å</div></div>
+      </div>
+      <div class="figcap">A race between the electron and its own light. Each time the electron starts a new magnet period it launches a new wave crest. Light is only slightly faster, so each crest is only slightly ahead of the next one. Push β toward 1 and the crests crowd together. The approximation 1/2γ² becomes accurate as β approaches 1.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.2</span><span>Slippage: the wavelength from a race</span></div>
+      <div class="eqn">\[ \lambda\;=\;\underbrace{\frac{\lambda_u}{\beta}}_{\text{light travels}}-\underbrace{\lambda_u}_{\text{electron travels}}\;=\;\lambda_u\!\left(\frac{1}{\beta}-1\right)\;\approx\;\frac{\lambda_u}{2\gamma^{2}} \]</div>
+      <div class="body">
+        <p class="says"><b>What it says</b>The electron needs a time λ<sub>u</sub>/βc to cross one period. In that time light covers λ<sub>u</sub>/β. The difference is how far one crest sits ahead of the next, and the spacing of crests is the wavelength. Putting in 1/β − 1 ≈ 1 − β ≈ 1/2γ² from equation 4.1 gives the result.</p>
+        <p class="num"><b>In numbers</b><span data-d="num42">3.0 cm / (2 × 11,742²) = 1.09 Å, or 11.4 keV. This is the K = 0 limit. Equation 4.4 adds the corrections.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.3</span><span>The same answer by changing frames</span></div>
+      <div class="eqn">\[ \lambda'=\frac{\lambda_u}{\gamma}\qquad\text{then}\qquad \lambda=\lambda'\sqrt{\frac{1-\beta}{1+\beta}}\;\approx\;\frac{\lambda'}{2\gamma}\qquad\Longrightarrow\qquad \lambda\approx\frac{\lambda_u}{2\gamma^{2}} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \lambda' \)</dt><dd>The magnet period as the electron sees it. Riding with the electron, the undulator rushes past and is Lorentz-contracted by γ.</dd>
+          <dt>\( \sqrt{\tfrac{1-\beta}{1+\beta}} \)</dt><dd>The relativistic Doppler factor for a source coming straight at you. For β near 1 it equals 1/2γ.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>In its own frame the electron sits still while a field with a period of a few microns sweeps over it. It oscillates and radiates infrared light as a plain dipole. Seen from the lab, that dipole is approaching at nearly c, so its light is Doppler-compressed by another factor of 2γ. One γ comes from contraction and 2γ from Doppler.</p>
+        <p class="num"><b>In numbers</b><span data-d="num43">3.0 cm / 11,742 = 2.55 µm in the electron's frame, then 2.55 µm / 23,484 = 1.09 Å in the lab.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.4</span><span>The undulator equation</span></div>
+      <div class="eqn">\[ \lambda_n=\frac{\lambda_u}{2n\gamma^{2}}\left(1+\frac{K^{2}}{2}+\gamma^{2}\theta^{2}\right) \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( n \)</dt><dd>Harmonic number, 1, 3, 5 … on axis. The crests also line up if light slips ahead by n wavelengths per period.</dd>
+          <dt>\( K^2/2 \)</dt><dd>The wiggle correction. A wiggling path is longer than a straight one, so the electron's average forward speed drops to \( \bar\beta_z=1-\frac{1+K^{2}/2}{2\gamma^{2}} \). Light gains more per period and the wavelength grows.</dd>
+          <dt>\( \gamma^2\theta^2 \)</dt><dd>The off-axis correction. Seen at an angle θ from the axis, the light's head start is measured along a slanted line, which lengthens it: \( \lambda=\lambda_u(1/\bar\beta_z-\cos\theta) \).</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The on-axis wavelength is set by three knobs: ring energy, magnet period and K. The beamline tunes by changing the gap. Closing it raises B₀ and K, which lengthens λ and lowers the photon energy. Light that leaves at an angle is redder than light on the axis.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Undulator energy calculator</h3>
+      <div class="controls">
+        <div class="ctl"><label for="cE">Ring energy (GeV)</label><input id="cE" type="number" step="0.1" value="6.0"></div>
+        <div class="ctl"><label for="cL">Period λ<sub>u</sub> (cm)</label><input id="cL" type="number" step="0.1" value="3.0"></div>
+        <div class="ctl"><label for="cK">K <output id="cKO">1.00</output></label><input id="cK" type="range" min="0.2" max="2.5" step="0.01" value="1"></div>
+        <div class="ctl"><label for="cN">Harmonic n</label><select id="cN"><option>1</option><option selected>3</option><option>5</option><option>7</option></select></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Photon energy</div><div class="v" id="cOut">–</div></div>
+        <div class="ro"><div class="k">Wavelength</div><div class="v" id="cLam">–</div></div>
+        <div class="ro"><div class="k">K for Se edge, 12.66 keV</div><div class="v" id="cSe">–</div></div>
+      </div>
+      <div class="using" data-d="useCalc">Set for 24-ID-C after the upgrade: 6 GeV, λu = 3.0 cm, harmonic 3, K = 1.85. Change any value to explore.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.5</span><span>The working formula</span></div>
+      <div class="eqn">\[ E_n[\text{keV}]=\frac{0.950\;n\;E_e^{2}[\text{GeV}]}{\lambda_u[\text{cm}]\,\bigl(1+K^{2}/2\bigr)} \]</div>
+      <div class="body">
+        <p class="says"><b>What it says</b>This is equation 4.4 on axis, combined with equation 1.2 and with the constants multiplied out. The calculator above uses it, starting from the settings chosen at the top of the page. The K it starts with is the one this formula needs for 12.662 keV, not a reading from the beamline.</p>
+        <p class="num"><b>In numbers</b><span data-d="num45">For 24-ID-C after the upgrade: harmonic 3 with K = 1.85 gives 0.950 × 3 × 36 / (3.0 × 2.70) = 12.66 keV. With K = 0 the fundamental would sit at 11.4 keV.</span></p>
+      </div>
+    </div>
+
+    <div class="prose"><p>The second effect of relativity is on direction. Light that the electron emits in all directions in its own frame is swept forward in the lab frame. This is the headlight effect.</p></div>
+
+    <div class="panel">
+      <canvas id="relCv" aria-label="Interactive headlight effect: radiation pattern versus electron energy"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="rG">Lorentz factor γ <output id="rGO">1.0</output></label><input id="rG" type="range" min="0" max="1" step="0.001" value="0.18"></div>
+        <div class="btns"><button id="rOne">γ = 1</button><button id="rAPS">γ = 20</button></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Speed β</div><div class="v" id="rB">–</div></div>
+        <div class="ro"><div class="k">Cone half-angle 1/γ</div><div class="v" id="rC">–</div></div>
+        <div class="ro"><div class="k" data-d="relK">This ring, γ = 11,742</div><div class="v" data-d="relV">1/γ = 85 µrad</div></div>
+      </div>
+      <div class="key"><span><i style="background:#ffd98a"></i>In the wiggle plane (horizontal)</span><span><i style="background:#bfe0c4"></i>In the vertical plane</span></div>
+      <div class="figcap">Left: the radiation pattern of a charge accelerating sideways while moving to the right. At γ = 1 it is the doughnut from step 2. As γ grows, the pattern collapses forward. Right: the same pattern plotted against angle in units of 1/γ. Above γ of about 5 this view stops changing. In the horizontal plane the intensity falls to zero at γθ = 1. That ring is where the doughnut's hole ends up.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.6</span><span>The headlight effect</span></div>
+      <div class="eqn">\[ \tan\theta=\frac{\sin\theta'}{\gamma\,(\cos\theta'+\beta)}\qquad\qquad \theta'=90^{\circ}\;\Longrightarrow\;\theta\approx\frac{1}{\gamma} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \theta' \)</dt><dd>The angle of a light ray from the forward direction, measured in the electron's frame.</dd>
+          <dt>\( \theta \)</dt><dd>The angle of the same ray in the lab frame.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>A ray that leaves sideways in the electron's frame (θ′ = 90°) comes out at only 1/γ in the lab. Half of everything the electron emits is squeezed into that forward cone.</p>
+        <p class="num"><b>In numbers</b><span data-d="num46">1/γ = 85 µrad. That is 2.6 mm of beam radius at 30 m from the source.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.7</span><span>The pattern of a fast charge accelerated sideways</span></div>
+      <div class="eqn">\[ \frac{dP}{d\Omega}\;\propto\;\frac{(1-\beta\cos\theta)^{2}-(1-\beta^{2})\sin^{2}\theta\cos^{2}\phi}{(1-\beta\cos\theta)^{5}}\;\;\xrightarrow{\ \gamma\gg1\ }\;\;\frac{1}{(1+\gamma^{2}\theta^{2})^{3}}\left[1-\frac{4\gamma^{2}\theta^{2}\cos^{2}\phi}{(1+\gamma^{2}\theta^{2})^{2}}\right] \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \theta \)</dt><dd>Angle from the direction of travel.</dd>
+          <dt>\( \phi \)</dt><dd>Angle around the direction of travel. φ = 0 is the wiggle plane (horizontal), φ = 90° is vertical.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Set β = 0 and the left side reduces to the sin²ψ doughnut of equation 2.2. For large γ everything depends on the product γθ, which is why the right-hand plot in the figure stops changing. The first factor is the forward cone. The bracket carries the dipole's hole: it reaches zero at γθ = 1 in the horizontal plane, and it never reaches zero in the vertical plane.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 4.8</span><span>The central cone and its bandwidth</span></div>
+      <div class="eqn">\[ \theta_{\text{cen}}\approx\frac{1}{\gamma}\sqrt{\frac{1+K^{2}/2}{n\,N}}\qquad\qquad \frac{\Delta\lambda}{\lambda}\approx\frac{1}{n\,N} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( N \)</dt><dd>The number of magnet periods in the undulator.</dd>
+          <dt>\( \theta_{\text{cen}} \)</dt><dd>Half-angle of the cone that holds one harmonic's on-axis light.</dd>
+          <dt>\( \Delta\lambda/\lambda \)</dt><dd>The natural fractional bandwidth of that harmonic.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Light from N periods adds in step only for a narrow band of wavelengths and a narrow range of angles. More periods give a sharper line and a tighter cone, much tighter than 1/γ. These are rough single-electron values. The real beam is widened by the electron beam's own size and angular spread.</p>
+        <p class="num"><b>In numbers</b><span data-d="num48">For 24-ID-C after the upgrade, with about 70 periods, n = 3 and K = 1.85: θcen ≈ 85 µrad × √(2.70 / 210) ≈ 10 µrad, and Δλ/λ ≈ 0.5%.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="purity">
+    <div class="sec-head prose">
+      <div class="stepno">5</div>
+      <h2>Why it isn't quite 100%: off-axis light twists</h2>
+      <p>On the axis the radiated field is exactly horizontal. Off the axis, the rule from step 2 still holds, but the acceleration with its line-of-sight part removed now has a small vertical piece. That piece is largest on the diagonals, which makes a four-leaf pattern of cross-polarized light.</p>
+      <p>A beamline accepts only a small solid angle around the axis, and the mono selects the on-axis energy, so most of the twisted light never reaches the sample. What arrives is typically 95–99% linearly polarized.</p>
+    </div>
+    <div class="panel">
+      <canvas id="purCv" aria-label="Interactive map of polarization direction across the undulator cone"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="pA">Accepted half-angle, in units of 1/γ <output id="pAO">0.50</output></label><input id="pA" type="range" min="0.05" max="2" step="0.01" value="0.5"></div>
+        <div class="btns"><button id="pShowI" aria-pressed="true">Shade total intensity</button><button id="pShowX" aria-pressed="false">Shade vertical part</button><button id="pZoom" aria-pressed="false">Zoom ×8 on the centre</button></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Degree of linear polarization</div><div class="v" id="pP">–</div></div>
+        <div class="ro"><div class="k">Vertical fraction</div><div class="v" id="pX">–</div></div>
+        <div class="ro"><div class="k">That half-angle at this ring</div><div class="v" id="pAng">–</div></div>
+      </div>
+      <div class="figcap">The beam as seen looking upstream. Horizontal and vertical positions are angles from the axis in units of 1/γ. Each stroke shows the direction of <b>E</b> there. Strokes turn red where the field is tilted by more than 7°. The blue box is the accepted aperture. This is a simplified single-dipole model. It leaves out electron-beam divergence, the mono's energy selection and higher harmonics, so read its numbers as the trend and not as the beamline's value. The small orange ellipse at the centre is the angular spread of the electron beam itself, and the purple circle is the single-electron central cone from equation 4.8. Both are tiny on this scale. Use the zoom to see them.</div>
+      <div class="using" data-d="usePur">For 24-ID-C after the upgrade: 1/γ = 85 µrad. Electron-beam spread (1σ): 2.8 × 1.3 µrad. Single-electron cone: about 10 µrad.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 5.1</span><span>The field across the cone</span></div>
+      <div class="eqn">\[ \begin{pmatrix}E_x\\[2pt]E_y\end{pmatrix}\;\propto\;\frac{1}{(1+\gamma^{2}\theta^{2})^{5/2}}\begin{pmatrix}1-\gamma^{2}\theta_x^{2}+\gamma^{2}\theta_y^{2}\\[2pt]-2\,\gamma^{2}\theta_x\theta_y\end{pmatrix} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \theta_x,\ \theta_y \)</dt><dd>Horizontal and vertical viewing angles from the axis, with \( \theta^2=\theta_x^2+\theta_y^2 \).</dd>
+          <dt>\( E_x \)</dt><dd>The wanted, horizontal field component.</dd>
+          <dt>\( E_y \)</dt><dd>The unwanted, vertical component.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>This is equation 2.1 after the relativistic squeeze. On the axis E<sub>y</sub> = 0. It is also zero anywhere on the horizontal line (θ<sub>y</sub> = 0) and on the vertical line (θ<sub>x</sub> = 0), because the product θ<sub>x</sub>θ<sub>y</sub> vanishes there. It changes sign from one quadrant to the next, which gives the four leaves. Squaring and adding the two components gives back equation 4.7.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 5.2</span><span>How far the field tilts</span></div>
+      <div class="eqn">\[ \tan\chi=\frac{E_y}{E_x}=\frac{-2\,\gamma^{2}\theta_x\theta_y}{1-\gamma^{2}\theta_x^{2}+\gamma^{2}\theta_y^{2}} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \chi \)</dt><dd>The angle between the local field direction and the horizontal.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Close to the axis the tilt is about 2γ²θ<sub>x</sub>θ<sub>y</sub>, so it grows with the square of the distance from the axis. Light very near the axis is very pure.</p>
+        <p class="num"><b>In numbers</b><span data-d="num52">At γθx = γθy = 0.3 (26 µrad each way at this ring): tan χ = −0.18, a tilt of 10°. The vertical intensity there is 0.18² = 3% of the horizontal.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 5.3</span><span>Polarization of what the aperture accepts</span></div>
+      <div class="eqn">\[ P=\frac{\displaystyle\iint\bigl(|E_x|^{2}-|E_y|^{2}\bigr)\,d\theta_x\,d\theta_y}{\displaystyle\iint\bigl(|E_x|^{2}+|E_y|^{2}\bigr)\,d\theta_x\,d\theta_y} \]</div>
+      <div class="body">
+        <p class="says"><b>What it says</b>This is equation 1.3 with I<sub>h</sub> and I<sub>v</sub> added up over every direction the aperture lets through. The figure does this sum for the blue box. A small box collects only the pure centre and P stays near 1. A large box takes in the leaves and P falls.</p>
+        <p class="num"><b>In numbers</b>In this model, a half-angle of 0.1/γ gives P = 99.99%, 0.5/γ gives 97%, and 1/γ gives 86%.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 5.4</span><span>What the electron beam adds</span></div>
+      <div class="eqn">\[ \Sigma_{x'}\approx\sqrt{\theta_{\text{cen}}^{2}+\sigma_{x'}^{2}}\qquad\qquad \Sigma_{y'}\approx\sqrt{\theta_{\text{cen}}^{2}+\sigma_{y'}^{2}} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \sigma_{x'},\ \sigma_{y'} \)</dt><dd>The rms spread in the directions of the electrons, horizontally and vertically, in the undulator straight section.</dd>
+          <dt>\( \theta_{\text{cen}} \)</dt><dd>The single-electron central cone from equation 4.8.</dd>
+          <dt>\( \Sigma_{x'},\ \Sigma_{y'} \)</dt><dd>The rough angular size of the real photon beam.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Each electron lays down the pattern of equation 5.1 around its own direction of travel. The beam is the sum of those patterns, so its angular size is the single-electron cone widened by the electrons' own spread. This is where the upgrade shows. The old ring's horizontal spread was as large as the cone itself. The new ring's spread is several times smaller than the cone in both directions, so the real beam is close to the single-electron picture.</p>
+        <p class="num"><b>In numbers</b><span data-d="num54">For 24-ID-C after the upgrade: electron spread 2.8 µrad horizontally and 1.3 µrad vertically, against a cone of about 10 µrad. Combined: about 10 µrad × 10 µrad.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="optics">
+    <div class="sec-head prose">
+      <div class="stepno">6</div>
+      <h2>The mono and mirrors keep it, and can even purify it</h2>
+      <p>A crystal reflects the two polarization components differently. The component perpendicular to the plane of the reflection is called σ, and it reflects fully. The component lying in that plane is called π, and it is weakened. Which component is which depends on the plane in which the mono turns the beam.</p>
+      <p>If the mono deflects vertically, the beam's horizontal field is σ and passes untouched, and the small vertical part is π and gets trimmed. If the mono deflects horizontally, the roles swap and the wanted horizontal field is the one that is weakened.</p>
+      <p>24-ID-C uses Si(111) with two reflections. 24-ID-E uses Si(220) at a fixed 12.662 keV. This guide assumes vertical deflection for 24-ID-C and a single horizontal reflection for 24-ID-E. Both are assumptions to check against the real optics, and the figure lets you switch them.</p>
+    </div>
+    <div class="panel">
+      <canvas id="monoCv" aria-label="Interactive channel-cut monochromator: the crystal rotates as one piece and the beam walks along the second face"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="mE">Photon energy <output id="mEO">12.66 keV</output></label><input id="mE" type="range" min="6" max="20" step="0.01" value="12.66"></div>
+        <div class="ctl"><label for="mP">Polarization entering the mono <output id="mPO">0.980</output></label><input id="mP" type="range" min="0.80" max="1" step="0.001" value="0.98"></div>
+        <div class="ctl"><label for="mCr">Crystal</label><select id="mCr"><option value="111">Si(111), d = 3.1356 Å</option><option value="220">Si(220), d = 1.9201 Å</option></select></div>
+        <div class="ctl"><label for="mB">Reflections</label><select id="mB"><option value="2">2 (channel cut)</option><option value="1">1 (single bounce)</option></select></div>
+        <div class="btns"><button id="mV" aria-pressed="true">Vertical deflection</button><button id="mH" aria-pressed="false">Horizontal deflection</button></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Bragg angle θ<sub>B</sub></div><div class="v" id="mTh">–</div></div>
+        <div class="ro"><div class="k">π factor, per bounce and total</div><div class="v" id="mC">–</div></div>
+        <div class="ro"><div class="k">Polarization leaving the mono</div><div class="v" id="mOut">–</div></div>
+        <div class="ro"><div class="k">Beam walk on the second face</div><div class="v" id="mWalk">–</div></div>
+        <div class="ro"><div class="k">Height step of the outgoing beam</div><div class="v" id="mOff">–</div></div>
+      </div>
+      <div class="figcap">The mono drawn in the plane of the reflection. With two reflections it is a channel cut: one piece of silicon with a slot, whose two inner faces do the reflecting. The pale plate behind the two blades is the part that joins them. Move the energy slider and the whole crystal turns about the pivot on the first face, marked with a small crosshair. The two faces stay locked together, the orange dot shows where the beam lands on the second face, and the dashed ticks mark where it lands at 6 and at 20 keV. A double-crystal mono makes the same two reflections with separate crystals. The orange wiggles are wave packets, one for each photon, showing which way the electric field swings. For vertical deflection the field swings in and out of the page, so the wiggle is drawn at a slant. For horizontal deflection it swings in the page, and it shrinks a little at each bounce.</div>
+      <div class="using" data-d="useMono">Set for 24-ID-C after the upgrade: Si(111), 2 reflections, vertical deflection (assumed), 12.662 keV.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 6.1</span><span>Bragg's law</span></div>
+      <div class="eqn">\[ \lambda=2d\sin\theta_B\qquad\Longrightarrow\qquad \sin\theta_B=\frac{12.398}{2\;d[\text{\AA}]\;E[\text{keV}]} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( d \)</dt><dd>Spacing of the reflecting atomic planes: 3.1356 Å for Si(111) and 1.9201 Å for Si(220).</dd>
+          <dt>\( \theta_B \)</dt><dd>The Bragg angle between the beam and those planes. The beam is turned through 2θ<sub>B</sub>.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Reflections from successive planes add in step only at one angle for each wavelength. Rotating the crystal selects the energy.</p>
+        <p class="num"><b>In numbers</b><span data-d="num61">For 24-ID-C after the upgrade: Si(111), d = 3.1356 Å. At 12.662 keV, sin θB = 12.398 / (2 × 3.1356 × 12.662) = 0.156, so θB = 8.98° and the beam turns through 18.0°.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 6.2</span><span>Channel-cut geometry</span></div>
+      <div class="eqn">\[ w=\frac{g}{\tan\theta_B}\qquad\qquad h=2g\cos\theta_B \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( g \)</dt><dd>The gap between the two reflecting faces of the channel.</dd>
+          <dt>\( w \)</dt><dd>How far along the second face the beam lands, measured from the point directly across from the first footprint.</dd>
+          <dt>\( h \)</dt><dd>The height step between the outgoing beam and the incoming beam.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Both faces are cut into one crystal, so they are always exactly parallel. Whatever angle satisfies Bragg's law on the first face satisfies it on the second, and the outgoing beam is always parallel to the incoming one. The price is that the faces cannot move relative to each other. When the crystal turns to a new energy, the beam lands at a different place on the second face, and the outgoing beam shifts in height a little.</p>
+        <p class="num"><b>In numbers</b>On Si(111) at 12.662 keV, θ<sub>B</sub> = 8.98°: w = 6.3 gap widths and h = 1.98 gap widths. Between 6 and 20 keV the footprint walks from 2.9 to 10.1 gap widths along the second face, and the height step changes from 1.89 to 1.99 gap widths.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 6.3</span><span>The polarization factor of a reflection</span></div>
+      <div class="eqn">\[ \frac{R_\pi}{R_\sigma}\approx C,\qquad C=\lvert\cos 2\theta_B\rvert \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( R_\sigma \)</dt><dd>Integrated reflectivity for the field perpendicular to the reflection plane.</dd>
+          <dt>\( R_\pi \)</dt><dd>Integrated reflectivity for the field lying in the reflection plane.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>This is step 2 again. The crystal's electrons are driven along the incoming field and must radiate into the reflected direction. For σ, the reflected direction is always at 90° to their motion, where a dipole radiates best. For π, the reflected direction is only 90° − 2θ<sub>B</sub> away from their motion, so the field is reduced by sin(90° − 2θ<sub>B</sub>) = cos 2θ<sub>B</sub>. At 2θ<sub>B</sub> = 90° a π reflection would vanish completely. The value C per bounce applies to a thick perfect crystal.</p>
+        <p class="num"><b>In numbers</b><span data-d="num62">At that angle C = cos 18.0° = 0.951. Two bounces give C² = 0.905.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 6.4</span><span>Polarization after the mono</span></div>
+      <div class="eqn">\[ P_{\text{out}}^{\,\text{vertical}}=\frac{(1+P)-C^{m}(1-P)}{(1+P)+C^{m}(1-P)}\qquad\qquad P_{\text{out}}^{\,\text{horizontal}}=\frac{C^{m}(1+P)-(1-P)}{C^{m}(1+P)+(1-P)} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( P \)</dt><dd>Polarization entering the mono. The horizontal share is (1 + P)/2 and the vertical share is (1 − P)/2.</dd>
+          <dt>\( m \)</dt><dd>The number of reflections: 2 for a channel cut or double-crystal mono, 1 for a single bounce.</dd>
+          <dt>\( C^m \)</dt><dd>The total π factor after m reflections.</dd>
+          <dt>vertical, horizontal</dt><dd>The plane in which the mono deflects the beam.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Whichever component is π is multiplied by C once per reflection, and then equation 1.3 is applied again. With vertical deflection the unwanted vertical light is π and is trimmed, so P rises slightly. With horizontal deflection the wanted horizontal light would be π and P would fall slightly.</p>
+        <p class="num"><b>In numbers</b><span data-d="num63">P = 0.980 in gives 0.9819 out for 24-ID-C after the upgrade (2 reflections, vertical deflection). The other deflection plane would give 0.9779.</span></p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 6.5</span><span>Why the KB mirrors don't matter</span></div>
+      <div class="eqn">\[ C_{\text{mirror}}=\lvert\cos 2\theta_g\rvert\approx 1-2\theta_g^{2} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \theta_g \)</dt><dd>The grazing angle of the beam on the mirror, a few milliradians.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The same geometric factor applies to a mirror, but the beam is turned through such a small angle that σ and π are treated almost identically.</p>
+        <p class="num"><b>In numbers</b>At θ<sub>g</sub> = 3 mrad, C = 1 − 2 × (0.003)² = 0.99998.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="sample">
+    <div class="sec-head prose">
+      <div class="stepno">7</div>
+      <h2>At the sample, the whole chain runs in reverse</h2>
+      <p>The horizontal field drives every electron in the sample to oscillate horizontally, across the beam. Each one re-radiates as the dipole of step 2, with no emission along its line of oscillation. That line is the horizontal direction at 90° to the beam. A fluorescence detector placed there sees almost no scattered X-rays. Fluorescence has no memory of the beam's polarization, so it arrives equally in all directions.</p>
+      <p>The detector in this step is the fluorescence detector: the small energy-resolving SDD that sits beside the sample and is used for edge scans and element identification. It is not the large area detector downstream that records the diffraction pattern. That one stays on the beam axis and is drawn only for orientation.</p>
+    </div>
+    <div class="panel">
+      <canvas id="smpCv" aria-label="Interactive: scatter reaching a fluorescence detector placed around the sample"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="sAz">SDD angle from the beam, horizontal <output id="sAzO">90°</output></label><input id="sAz" type="range" min="0" max="180" value="90"></div>
+        <div class="ctl"><label for="sEl">SDD elevation <output id="sElO">0°</output></label><input id="sEl" type="range" min="0" max="90" value="0"></div>
+        <div class="ctl"><label for="sP">Beam polarization P <output id="sPO">0.980</output></label><input id="sP" type="range" min="0.80" max="1" step="0.001" value="0.98"></div>
+        <div class="ctl"><label for="sCone">Sensor half-angle α <output id="sConeO">9°</output></label><input id="sCone" type="range" min="1" max="20" value="9"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Scatter into the SDD vs the ideal spot</div><div class="v" id="sRel">–</div></div>
+        <div class="ro"><div class="k">Fluorescence into the SDD</div><div class="v">unchanged</div></div>
+      </div>
+      <div class="figcap">Top view, looking straight down. The sample is the small green crystal in its loop at the centre, where the beam crosses the yellow lobes. The beam enters from the left and carries on to the diffraction detector on the right. The orange box is the fluorescence detector (SDD), which the sliders move around the sample. The yellow lobes are the single-electron scatter pattern in the horizontal plane, at the chosen elevation. At the ideal spot the SDD sits in the gap between them. The readout averages over the sensor's acceptance cone. It covers polarization only. The form-factor and Compton effects are in the snout design study.</div>
+      <div class="using" data-d="useSmp">Set for 24-ID-C after the upgrade: P = 0.982 at the sample, taking an assumed 0.98 from the source through the mono of step 6.</div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 7.1</span><span>Thomson scattering by one electron</span></div>
+      <div class="eqn">\[ \frac{d\sigma}{d\Omega}=r_e^{2}\,\bigl|\hat{\boldsymbol{\varepsilon}}\cdot\hat{\boldsymbol{\varepsilon}}'\bigr|^{2}\;\;\longrightarrow\;\;r_e^{2}\Bigl[1-(\hat{\mathbf{n}}\cdot\hat{\boldsymbol{\varepsilon}})^{2}\Bigr]=r_e^{2}\sin^{2}\psi \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( d\sigma/d\Omega \)</dt><dd>The differential cross-section: how strongly one electron scatters into a given direction.</dd>
+          <dt>\( r_e \)</dt><dd>The classical electron radius, \( e^2/4\pi\varepsilon_0mc^2 \) = 2.818×10<sup>−15</sup> m.</dd>
+          <dt>\( \hat{\boldsymbol{\varepsilon}},\ \hat{\boldsymbol{\varepsilon}}' \)</dt><dd>Polarization directions of the incoming and the scattered X-ray.</dd>
+          <dt>\( \hat{\mathbf{n}} \)</dt><dd>Direction from the sample to the detector.</dd>
+          <dt>\( \psi \)</dt><dd>Angle between that direction and the incoming polarization.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The beam's field shakes the electron along ε, and equation 2.2 gives what it radiates. The arrow marks the step of adding up both possible polarizations of the scattered X-ray, since the detector does not care which it receives. The result is the same sin²ψ doughnut, now with its hole along the beam's polarization.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 7.2</span><span>Where the detector is</span></div>
+      <div class="eqn">\[ \sin^{2}\psi=1-\cos^{2}\!\phi_{\text{el}}\,\sin^{2}\!\beta_h\qquad\begin{cases}\phi_{\text{el}}=0: & \sin^{2}\psi=\cos^{2}\!\beta_h\\[2pt] \beta_h=90^{\circ}: & \sin^{2}\psi=\sin^{2}\!\phi_{\text{el}}\end{cases} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( \beta_h \)</dt><dd>The detector's horizontal angle from the beam direction. In the horizontal plane this is the scattering angle 2θ.</dd>
+          <dt>\( \phi_{\text{el}} \)</dt><dd>The detector's elevation above the horizontal plane.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>This is equation 7.1 with the detector's position written out. Swinging the detector in the horizontal plane gives cos² of the angle from the beam, which is zero at 90°. Lifting it at 90° gives sin² of the elevation. Near the ideal spot both behave as the square of the offset, so the first few degrees cost little and the cost then climbs quickly.</p>
+        <p class="num"><b>In numbers</b>A 10° offset in either direction gives sin²10° = 0.030. A 45° swing gives 0.5. Straight up gives 1.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 7.3</span><span>A beam that is not fully polarized</span></div>
+      <div class="eqn">\[ \frac{d\sigma}{d\Omega}=r_e^{2}\left[\,P\,\sin^{2}\psi\;+\;(1-P)\,\frac{1+\cos^{2}2\theta}{2}\,\right] \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( P \)</dt><dd>Degree of linear polarization from equation 1.3.</dd>
+          <dt>\( 2\theta \)</dt><dd>The scattering angle between the beam and the detector direction.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The beam behaves as a fraction P of perfectly polarized light plus a fraction 1 − P of unpolarized light. The unpolarized part scatters with the familiar (1 + cos²2θ)/2 factor, which is ½ at 90° and never zero.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 7.4</span><span>The floor at the ideal spot</span></div>
+      <div class="eqn">\[ \left.\frac{S}{S_{\max}}\right|_{\text{ideal}}\approx\;P\,\frac{\alpha^{2}}{2}\;+\;\frac{1-P}{2} \]</div>
+      <div class="body">
+        <dl class="read">
+          <dt>\( S/S_{\max} \)</dt><dd>Scatter into the detector, relative to the worst direction.</dd>
+          <dt>\( \alpha \)</dt><dd>Half-angle of the cone the sensor accepts, in radians.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Even at the ideal spot two things let scatter in. The sensor has a finite size, so most of it looks slightly off the axis, and sin²ψ averaged over a small disc is α²/2. And the unpolarized fraction scatters at half strength. A smaller sensor cone or a purer beam lowers one term each.</p>
+        <p class="num"><b>In numbers</b>For α = 9.1° = 0.159 rad and P = 0.98: 0.98 × 0.0126 + 0.010 = 0.022. The two terms are about equal. The pointing offset that doubles this floor is about 8.5°.</p>
+      </div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 7.5</span><span>Fluorescence does not care</span></div>
+      <div class="eqn">\[ \frac{dN_{\text{fluor}}}{d\Omega}=\frac{N_{\text{fluor}}}{4\pi} \]</div>
+      <div class="body">
+        <p class="says"><b>What it says</b>K-shell fluorescence is emitted uniformly over the full sphere of 4π steradians. The atom absorbs a photon, then emits one later with no memory of the direction or polarization of the first. Moving the detector at a fixed distance changes the scatter and leaves the fluorescence alone. The ratio of fluorescence to scatter is best where equation 7.2 is smallest.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Measure P on the beamline</h3>
+      <p class="figcap" style="color:var(--ink)">Put a weak scatterer at the sample, such as water or a Kapton film. Count scattered X-rays in the fluorescence detector (SDD) at 90° horizontal, then at 90° vertical, at the same distance and in the same energy window. Subtract fluorescence and background first.</p>
+      <div class="controls">
+        <div class="ctl"><label for="qH">Counts at 90° horizontal</label><input id="qH" type="number" value="1000" min="0"></div>
+        <div class="ctl"><label for="qV">Counts at 90° vertical</label><input id="qV" type="number" value="99000" min="0"></div>
+      </div>
+      <div class="readout"><div class="ro"><div class="k">Polarization P</div><div class="v" id="qP">–</div></div></div>
+    </div>
+
+    <div class="eqcard">
+      <div class="tag"><span>Equation 7.6</span><span>Polarization from two counts</span></div>
+      <div class="eqn">\[ I_{\text{hor}}\propto\frac{1-P}{2},\qquad I_{\text{vert}}\propto\frac{1+P}{2}\qquad\Longrightarrow\qquad P=\frac{I_{\text{vert}}-I_{\text{hor}}}{I_{\text{vert}}+I_{\text{hor}}} \]</div>
+      <div class="body">
+        <p class="says"><b>What it says</b>Put ψ = 0 and 2θ = 90° into equation 7.3 and only the unpolarized half-term is left: that is the horizontal count. Put ψ = 90° and the polarized term adds in full: that is the vertical count. Their difference over their sum is P. A finite sensor cone leaks a little extra into the horizontal count (equation 7.4), so this slightly underestimates P unless you use a small aperture.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="further">
+    <div class="sec-head prose">
+      <h2>Where to go deeper</h2>
+      <ul class="refs">
+        <li><a href="https://xdb.lbl.gov/Section2/Sec_2-1.html" target="_blank" rel="noopener">X-ray Data Booklet, section 2.1: Characteristics of synchrotron radiation (K.-J. Kim)</a>. Undulator equations, cones and polarization in four pages.</li>
+        <li>D. Attwood and A. Sakdinawat, <i>X-Rays and Extreme Ultraviolet Radiation</i>, chapter 5. The frame-change derivation of equations 4.3 and 4.4, and the central cone.</li>
+        <li>J. Als-Nielsen and D. McMorrow, <i>Elements of Modern X-ray Physics</i>, chapters 1–2 (Thomson scattering, polarization factor) and 6 (perfect-crystal reflection).</li>
+        <li>J. D. Jackson, <i>Classical Electrodynamics</i>, chapter 14. Equations 2.1, 2.2 and 4.7.</li>
+        <li><a href="https://www.aps.anl.gov/sites/www.aps.anl.gov/files/APS-Uploads/Aps-Upgrade/FDR/Chapter%201%20-%20Executive%20Summary%20and%20Project%20Overview.pdf" target="_blank" rel="noopener">APS Upgrade Final Design Report, chapter 1</a>. Ring parameters before and after the upgrade.</li>
+        <li><a href="https://necat.chem.cornell.edu/wp-content/uploads/2026/05/2022-winter.pdf" target="_blank" rel="noopener">NE-CAT Communications, Winter 2022</a> and the <a href="https://necat.chem.cornell.edu/facilities/" target="_blank" rel="noopener">NE-CAT facilities page</a>. Undulator periods and energy ranges for 24-ID-C and 24-ID-E.</li>
+        <li>APS beamline directory entries for <a href="https://www.aps.anl.gov/Beamlines/Beamline-Directory/86" target="_blank" rel="noopener">24-ID-C</a> and <a href="https://www.aps.anl.gov/Beamlines/Beamline-Directory/93" target="_blank" rel="noopener">24-ID-E</a>. Monochromator crystals.</li>
+      </ul>
+    </div>
+  </section>
+</div>

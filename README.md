@@ -18,6 +18,10 @@ Each page is a single self-contained HTML file. The pages link to each other by 
 
 Values that are assumed or calculated, and not taken from a published source, are marked in the notes of each guide. Corrections are welcome: please open an issue.
 
+## Building
+
+The pages are built from the sources in [`src/`](src/). [src/README.md](src/README.md) says how. Nothing in that folder is needed to read the guides.
+
 ## Releases
 
 Releases are tagged in this repository (`v1.0`, `v1.1`, ...) and described in [CHANGELOG.md](CHANGELOG.md). Each page shows its release number and the date it was last updated at its foot.
