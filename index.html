@@ -1,7 +1,7 @@
 <!doctype html>
 <!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Three illustrated, interactive guides to the NE-CAT beamlines at the Advanced Photon Source.">
+<meta name="description" content="Four illustrated, interactive guides to the Advanced Photon Source and the NE-CAT beamlines.">
 <title>NE-CAT Beamline Guides</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,7 +108,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
 .balloon{font-family:var(--f-hand);font-size:1.2rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;padding:10px 18px;max-width:60ch;position:relative;justify-self:start}
 .balloon::before{content:"";position:absolute;left:34px;top:-14px;border:7px solid transparent;border-bottom-color:var(--ink)}
 .balloon::after{content:"";position:absolute;left:36px;top:-8.5px;border:5px solid transparent;border-bottom-color:var(--card)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;padding-block:28px 12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:22px;padding-block:28px 12px}
 .card{background:var(--card);border:2.5px solid var(--ink);display:grid;grid-template-rows:auto 1fr;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
 .card:hover,.card:focus-within{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .card canvas{width:100%;display:block;background:var(--sky);border:0;border-bottom:2.5px solid var(--ink)}
@@ -138,7 +138,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   <header class="hero">
     <div class="kicker">NE-CAT · Sector 24 · Advanced Photon Source</div>
     <h1>Welcome to the <span style="white-space:nowrap">NE-CAT</span> beamline guides</h1>
-    <p class="lede">Three short, illustrated guides to what happens between the storage ring and your data. They follow the X-rays from the electrons that make them, through the optics, to your crystal and the detectors around it.</p>
+    <p class="lede">Four short, illustrated guides to what happens between the electron gun and your data. They follow the electrons into the storage ring, and then the X-rays through the optics to your crystal and the detectors around it.</p>
     <div class="panel">
       <canvas id="homeCv" aria-label="Animation: electrons circle the storage ring, an undulator turns their motion into X-rays, the X-rays strike a crystal, and diffraction spots appear on the detector"></canvas>
     </div>
@@ -146,35 +146,45 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   </header>
 
   <main>
-  <section class="cards" aria-label="The three guides">
+  <section class="cards" aria-label="The four guides">
+    <article class="card">
+      <canvas id="c0Cv" aria-hidden="true"></canvas>
+      <div class="cardbody">
+        <div class="cardhead"><div class="stepno">1</div><span class="tagline">Start here</span></div>
+        <h2><a href="NE-CAT_1_How_APS_Works.html">How APS works</a></h2>
+        <p>Where the electrons come from and how the ring holds on to them. The gun and the linac, the accumulator ring and the booster, the magnets that keep the beam small, the RF that pays back its energy, and swap-out injection.</p>
+        <ul class="chips"><li>Gun and linac</li><li>Booster</li><li>Seven-bend lattice</li><li>RF and bunches</li><li>Swap-out</li></ul>
+        <span class="go">Open guide 1 →</span>
+      </div>
+    </article>
     <article class="card">
       <canvas id="c1Cv" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">1</div><span class="tagline">Start here</span></div>
-        <h2><a href="NE-CAT_1_How_It_Works.html">How NE-CAT works</a></h2>
+        <div class="cardhead"><div class="stepno">2</div><span class="tagline">Then the beamline</span></div>
+        <h2><a href="NE-CAT_2_How_NE-CAT_Works.html">How NE-CAT works</a></h2>
         <p>From the storage ring to the detector. How the electrons make X-rays, how the undulator gap and its harmonics set the energy, and what the monochromator, the mirrors and the sample station each do.</p>
         <ul class="chips"><li>The storage ring</li><li>Undulator and harmonics</li><li>Monochromator</li><li>KB mirrors</li><li>Diffraction</li></ul>
-        <span class="go">Open guide 1 →</span>
+        <span class="go">Open guide 2 →</span>
       </div>
     </article>
     <article class="card">
       <canvas id="c2Cv" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">2</div><span class="tagline">Go deeper</span></div>
-        <h2><a href="NE-CAT_2_Beam_Polarization.html">Why the X-ray beam is polarized</a></h2>
+        <div class="cardhead"><div class="stepno">3</div><span class="tagline">Go deeper</span></div>
+        <h2><a href="NE-CAT_3_Beam_Polarization.html">Why the X-ray beam is polarized</a></h2>
         <p>The beam's electric field swings from side to side, and almost never up and down. This guide follows that one property from the wiggling electron to the sample, and shows why it is not quite 100%.</p>
         <ul class="chips"><li>A shaken charge</li><li>Relativity</li><li>Off-axis light</li><li>Mono and mirrors</li><li>Measuring it</li></ul>
-        <span class="go">Open guide 2 →</span>
+        <span class="go">Open guide 3 →</span>
       </div>
     </article>
     <article class="card">
       <canvas id="c3Cv" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">3</div><span class="tagline">Put it to work</span></div>
-        <h2><a href="NE-CAT_3_Scatter_and_Fluorescence.html">Where to put the fluorescence detector</a></h2>
+        <div class="cardhead"><div class="stepno">4</div><span class="tagline">Put it to work</span></div>
+        <h2><a href="NE-CAT_4_Scatter_and_Fluorescence.html">Where to put the fluorescence detector</a></h2>
         <p>The best place for the fluorescence detector, how close it should sit, and what it costs to put it anywhere else. It covers fluorescence, elastic scatter and Compton scatter, and what each does to an edge scan.</p>
         <ul class="chips"><li>Three kinds of X-ray</li><li>The ideal spot</li><li>How close</li><li>Edge scans</li><li>Rules of thumb</li></ul>
-        <span class="go">Open guide 3 →</span>
+        <span class="go">Open guide 4 →</span>
       </div>
     </article>
   </section>
@@ -185,12 +195,12 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <div class="tip"><h3>Pick your beamline</h3><p>The Settings menu at the top of every guide switches the figures and the worked numbers between 24-ID-C and 24-ID-E, before and after the APS Upgrade. Your choice follows you from one guide to the next.</p></div>
       <div class="tip"><h3>Play with the figures</h3><p>Most figures have sliders, and many of them move. Drag things around and see what changes. Nothing here can break.</p></div>
       <div class="tip"><h3>Open the math if you want it</h3><p>Every equation is folded away under its figure, with a plain reading of what it says and a worked number. One button opens them all.</p></div>
-      <div class="tip"><h3>Check the fine print</h3><p>Values that are assumed or calculated, and not taken from a published source, are marked in the settings table of guide 1. Corrections are welcome.</p></div>
+      <div class="tip"><h3>Check the fine print</h3><p>Values that are assumed or calculated, and not taken from a published source, are marked in the tables of guides 1 and 2. Corrections are welcome.</p></div>
     </div>
   </section>
   </main>
 
-  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
+  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
 </div>
 
 <script>
@@ -276,6 +286,16 @@ fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=
 });
 
 // ---------- three small pictures, one for each guide ----------
+fig('c0Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+  const cx=w*0.64,cy=h*0.52,R=h*0.36,bx=w*0.3,by=h*0.6,br=h*0.17;
+  pen(c,9,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+4.5,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-4.5,0,7);c.stroke();
+  pen(c,6,WHITE);c.beginPath();c.arc(bx,by,br,0,7);c.stroke();pen(c,1.8);c.beginPath();c.arc(bx,by,br+3,0,7);c.stroke();c.beginPath();c.arc(bx,by,br-3,0,7);c.stroke();
+  const lx0=w*0.05,lx1=bx-br-8,ly=by;for(let i=0;i<5;i++)rectF(c,lx0+i*(lx1-lx0)/5,ly-7,(lx1-lx0)/5,14,LTORG,1.6);
+  line(c,lx1,ly,bx-br,by,1.8);line(c,bx+br,by,cx-R*0.98,cy+R*0.2,1.8);
+  for(let i=0;i<14;i++){const a=i/14*2*Math.PI+t*0.8;disc(c,cx+R*Math.cos(a),cy+R*Math.sin(a),3,YEL,1.2);}
+  const a=t*2.4;disc(c,bx+br*Math.cos(a),by+br*Math.sin(a),3.6,YEL,1.2);
+  const u=(t*0.5)%1;disc(c,lx0+u*(lx1-lx0),ly,2.6,YEL,1.1);
+});
 fig('c1Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const x0=w*0.06,x1=w*0.94,n=8,pw=(x1-x0)/n,yc=h*0.5,gp=h*0.2,mh=h*0.16,k=2*Math.PI/(2*pw),A=h*0.12;
   for(let i=0;i<n;i++){rectF(c,x0+i*pw,yc-gp-mh,pw,mh,i%2?BLUE:RED,1.8);rectF(c,x0+i*pw,yc+gp,pw,mh,i%2?RED:BLUE,1.8);}
