@@ -14,3 +14,7 @@ Three illustrated, interactive guides to the NE-CAT beamlines (24-ID-C and 24-ID
 Each page is a single self-contained HTML file. The pages link to each other by file name, so keep the names unchanged and keep all four in the same folder.
 
 Values that are assumed or calculated, and not taken from a published source, are marked in the settings table of guide 1. Corrections are welcome: please open an issue.
+
+## License
+
+Copyright (c) 2026 NE-CAT, Cornell University. Released under the [MIT License](LICENSE).
