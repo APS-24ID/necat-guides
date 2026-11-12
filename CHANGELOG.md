@@ -2,6 +2,12 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.2.1 — 2026-11-11
+
+- Links to the guides now show a card, with a title, a description and a picture, when they are shared in Messages, LinkedIn, Slack and similar apps.
+- The site has an icon for browser tabs and home screens.
+- No change to the content of the guides.
+
 ## 1.2 — 2026-11-11
 
 - Guide 4 is reworked and retitled "X-ray fluorescence at NE-CAT". It now begins with what fluorescence is, which atoms in a protein crystal give it, the edges and lines within reach at 24-ID, the edge scan, and how to identify a metal from a spectrum. The earlier material on scatter and where to put the detector follows, shortened.

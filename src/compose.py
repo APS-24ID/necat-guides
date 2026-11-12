@@ -444,7 +444,7 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.2','November 11, 2026')
+RELEASE=('1.2.1','November 11, 2026')
 UPDATED={'aps':'November 11, 2026','overview':'November 11, 2026','polarization':'November 11, 2026','scatter':'November 11, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
 def stamp(when): return 'Last updated %s. Release %s. <a href="%s" target="_blank" rel="noopener">What changed</a>.'%(when,RELEASE[0],CHLOG)
@@ -613,4 +613,6 @@ def home():
     return ''.join(o)
 GK={g['key']:g for g in G}
 open('body-home.html','w').write(home())
+# what build.js needs to know about each page for its link-preview tags
+json.dump({key:dict(title=GK[key]['title'],name=GK[key]['name'],h1=GK[key]['h1'],desc=desc) for key,cv,tag,desc,chips in CARDS},open('guides.json','w'))
 print('home ok')

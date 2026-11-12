@@ -1,12 +1,13 @@
 {
   "name": "necat-guides-build",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "description": "Build scripts for the NE-CAT beamline guides",
   "license": "MIT",
   "scripts": {
     "build": "sh build.sh",
-    "test": "node test.js"
+    "test": "node test.js",
+    "og": "node ogimages.js"
   },
   "dependencies": {
     "katex": "^0.16.11"

@@ -29,6 +29,17 @@ node test.js
 
 This loads every page at desktop and phone width, steps through the Settings and Fill pattern menus, and reports script errors, sideways scrolling, and any read-out or sentence left empty. Set `SHOTS=1` to save full-page screenshots in `shots/`.
 
+## Link previews and icons
+
+Each page carries tags that Messages, LinkedIn, Slack and other apps use to show a card when its link is shared: a title, a description and a picture. `build.js` writes the tags. The pictures are files in `og/`, one for each page, made from the opening figures:
+
+```sh
+npm install --no-save playwright && npx playwright install chromium   # once
+node ogimages.js
+```
+
+Run it after `build.sh` whenever an opening figure or a title changes, and commit the pictures with the pages. It also makes `apple-touch-icon.png` and `favicon-32.png` from `favicon.svg`. The apps keep their own copies of a card: after a change, LinkedIn's Post Inspector fetches a fresh one, and in Messages adding `?v=2` to the link does the same.
+
 ## What each file is
 
 The build has three steps, run in order by `build.sh`.
@@ -46,6 +57,8 @@ The build has three steps, run in order by `build.sh`.
 | 3 | `build.js` | Turns the equations into MathML, fills in the links between pages, and writes the finished pages and the redirect pages for old addresses. It also adds the visitor counter. |
 | | `aps.js` | The figures of guide 1. |
 | | `home.js` | The figures of the landing page. |
+| | `ogimages.js` | Not part of the build. Makes the link-preview pictures and the icons from the built pages. |
+| | `favicon.svg` | The site icon. Copied to the site by `build.js`. |
 
 Data tables, and the scripts that made them. They only need to be run again to add elements or change the tables, and they need the [xraylib](https://github.com/tschoonj/xraylib) Python package.
 
@@ -67,7 +80,7 @@ Data tables, and the scripts that made them. They only need to be run again to a
 
 1. In `compose.py`, set `RELEASE` to the new number and date, and set the date in `UPDATED` for each guide whose content changed.
 2. Add an entry at the top of `CHANGELOG.md` in the folder above.
-3. Run `sh build.sh` and `node test.js`.
+3. Run `sh build.sh` and `node test.js`. If a title or an opening figure changed, run `node ogimages.js` too.
 4. Commit, push, and check the live site.
 5. Tag the commit and publish the release:
 
