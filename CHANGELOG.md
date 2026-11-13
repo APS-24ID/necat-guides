@@ -2,6 +2,13 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.3 — 2026-11-13
+
+- New guide, "What is a synchrotron?": the first five-minute guide. How electrons are brought to almost the speed of light, held in a ring, and made to give off X-rays, and what the APS Upgrade changed. Five stops, no equations. It is the short companion to "How APS works", and each links to the other.
+- Guides now come at two levels, marked by color: yellow for the five-minute guides, black for the in-depth ones. The four earlier guides are in-depth.
+- The landing page is now an index. It groups the guides in four series: the machine, the beamline, the experiment, and the science. Buttons at the top show everything, only the five-minute guides, or only the in-depth guides. Adding `?level=intro` or `?level=depth` to the address opens the page on one kind.
+- Guides have new addresses with no numbers in them, such as `how-necat-works.html` and `fluorescence.html`, so that adding a guide no longer changes the address of another. Every earlier address redirects to the new one.
+
 ## 1.2.1 — 2026-11-11
 
 - Links to the guides now show a card, with a title, a description and a picture, when they are shared in Messages, LinkedIn, Slack and similar apps.

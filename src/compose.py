@@ -11,6 +11,15 @@ css=css.replace("/* Layout: a comic album page.","/* Three linked guides share t
 css=css.replace('.ro .k{font-family:var(--f-hand);font-size:.95rem;text-transform:uppercase;letter-spacing:.04em}','.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}')
 assert '.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}' in css
 css+='''
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
 details.eqcard>summary{cursor:pointer;list-style:none}
 details.eqcard>summary::-webkit-details-marker{display:none}
 details.eqcard>summary .eqno{white-space:nowrap}
@@ -444,11 +453,26 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.2.1','November 11, 2026')
-UPDATED={'aps':'November 11, 2026','overview':'November 11, 2026','polarization':'November 11, 2026','scatter':'November 11, 2026'}
+RELEASE=('1.3','November 13, 2026')
+UPDATED={'aps':'November 13, 2026','overview':'November 13, 2026','polarization':'November 13, 2026','scatter':'November 13, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
 def stamp(when): return 'Last updated %s. Release %s. <a href="%s" target="_blank" rel="noopener">What changed</a>.'%(when,RELEASE[0],CHLOG)
+# helpers for the Introductory guides
+def _here(t,label='Here at NE-CAT.'): return '<span class="here"><b>'+label+'</b> '+t+'</span>'
+# a choice between a few named states, as a row of buttons. choice() in introkit.js wires them up
+def _choice(i,label,pairs,sel): return '<div class="ctl" style="grid-column:1/-1"><label id="%sL">%s</label><div class="btns" id="%s" role="group" aria-labelledby="%sL">'%(i,label,i,i)+''.join('<button type="button" data-v="%s" aria-pressed="%s">%s</button>'%(v,'true' if v==sel else 'false',t) for v,t in pairs)+'</div></div>'
+# The later guides each have a file of their own. A guide whose file is not in this folder is simply left out, so the
+# same scripts build the published set and a larger working set that includes guides still in draft.
+import os
+for _f in ['walk','syn','mx','hutch','detintro','det','cold','damage']:
+    if os.path.exists(_f+'_guide.py'): exec(open(_f+'_guide.py').read())
+_keys={g['key'] for g in G}
+for g in G:
+    for _k in ('short','deeper'):
+        if g.get(_k) not in _keys: g.pop(_k,None)
 GK={g['key']:g for g in G}
+# every guide so far is written at the In-depth level; SERIES, further down, says which series each belongs to
+for g in G: g.setdefault('level','In-depth')
 
 TABLE='''  <section id="settings">
     <div class="sec-head prose">
@@ -499,16 +523,24 @@ def resolve(html,g):
     html=re.sub(r'\{guide:(\w+)\}',lambda m:glink(m.group(1)),html)
     return html
 
+# The series a guide belongs to, in reading order, and the level it is written at. A series with no guides yet is listed with a note.
+SERIES=[(1,'The machine','Where do the X-rays come from?',['syn','aps'],None),
+        (2,'The beamline','What does NE-CAT do with them?',['walk','overview','polarization','detintro','det','hutch'],None),
+        (3,'The experiment','How does a crystal become a structure?',['mx','cold','damage','scatter'],None),
+        (4,'The science','Why do structures matter?',[],'Guides for this series are being written. They will start with what a protein is and why its shape matters.')]
+DEPTH_NOTE='Each section has a plain explanation and a figure you can adjust. The equations are folded away under the figures. Open any of them, or all of them with the button at the top, if you want the detail.'
+INTRO_NOTE='Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.'
+SOF={k:(num,sname) for num,sname,ask,keys,note in SERIES for k in keys}
 def page(g):
     o=[]
     o.append('<title>%s</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">\n<style>%s</style>\n'%(g['title'],css))
-    o.append('<div class="wrap">\n  <div class="bar">'+g.get('bar','<label for="preset">Settings<select id="preset"><option value="Cpost">24-ID-C · after the upgrade</option><option value="Cpre">24-ID-C · before the upgrade</option><option value="Epost">24-ID-E · after the upgrade</option><option value="Epre">24-ID-E · before the upgrade</option></select></label>')+'<button id="eqAll" aria-pressed="false">Open all equations</button><button id="motionBtn" aria-pressed="false">Pause motion</button></div>\n')
-    o.append('  <header class="hero">\n    <div class="kicker">%s</div>\n    <h1>%s</h1>\n    <p class="lede">%s</p>\n    <p class="lede" style="font-size:1.05rem">Each section has a plain explanation and a figure you can adjust. The equations are folded away under the figures. Open any of them, or all of them with the button at the top, if you want the detail.</p>\n'%(g['kicker'],g['h1'],g['lede']))
+    o.append('<div class="wrap">\n  <div class="bar">'+g.get('bar','<label for="preset">Settings<select id="preset"><option value="Cpost">24-ID-C · after the upgrade</option><option value="Cpre">24-ID-C · before the upgrade</option><option value="Epost">24-ID-E · after the upgrade</option><option value="Epre">24-ID-E · before the upgrade</option></select></label>')+('' if g['level']=='Introductory' else '<button id="eqAll" aria-pressed="false">Open all equations</button>')+'<button id="motionBtn" aria-pressed="false">Pause motion</button></div>\n')
+    o.append('  <header class="hero">\n    <div class="kicker">%s</div>\n    <h1>%s</h1>\n    <p class="lede">%s</p>\n    <p class="lede" style="font-size:1.05rem">%s</p>\n'%(g['kicker'],g['h1'],g['lede'],INTRO_NOTE if g['level']=='Introductory' else DEPTH_NOTE+(' Short on time? '+glink(g['short'])+' is the five-minute version, with no equations.' if g.get('short') else '')))
     if g['hero']: o.append(FIG[g['hero']]+'\n')
     gi=G.index(g)+1
-    o.append('    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="{{home}}">← Home</a><span class="lbl">Guide %d of %d</span></nav>\n'%(gi,len(G)))
+    o.append('    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="{{home}}">← Home</a><span class="lbl">Series %d · %s</span><span class="level %s">%s</span></nav>\n'%(SOF[g['key']][0],SOF[g['key']][1],'lv-intro' if g['level']=='Introductory' else 'lv-depth','5 minutes' if g['level']=='Introductory' else 'In depth'))
     o.append('    <nav class="chain" aria-label="Sections">'+('<a href="#settings">Settings</a>' if g['table'] is True else '')+''.join('<a href="#%s">%d %s</a>'%(s['id'],i,s['nav']) for i,s in enumerate(g['sections'],1))+'</nav>\n  </header>\n')
-    o.append(APSNOTE if g['table']=='aps' else TABLE if g['table'] else SHORTNOTE)
+    o.append('' if g['table']=='none' else APSNOTE if g['table']=='aps' else TABLE if g['table'] else SHORTNOTE)
     for si,s in enumerate(g['sections'],1):
         o.append('\n  <section id="%s">\n    <div class="sec-head prose">\n      <div class="stepno">%d</div>\n      <h2>%s</h2>\n'%(s['id'],si,s['h2'])+''.join('      <p>%s</p>\n'%p for p in s['prose'])+'    </div>\n')
         for kind,val in s['items']:
@@ -519,7 +551,7 @@ def page(g):
                     o.append('    <details class="eqcard" id="eq-%s">\n      <summary class="tag"><span class="eqno">Equation %s</span><span class="eqtitle">%s</span></summary>%s    </details>\n'%(e,g['eqnum'][e],EQ[e]['title'],EQ[e]['inner']))
                 o.append('    </div>\n')
         o.append('  </section>\n')
-    o.append('\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>Where to go deeper</h2>\n      <ul class="refs">\n'+g['further']+'\n      </ul>\n    </div>\n    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="{{home}}">← Home</a>'+('<a class="guidelink" data-guide="%s" href="{{link:%s}}">Next: guide %d, %s →</a>'%(G[gi]['key'],G[gi]['key'],gi+1,G[gi]['name']) if gi<len(G) else '')+'</nav>\n    <div class="notes" style="text-align:center;margin-top:18px"><p>'+stamp(UPDATED[g['key']])+'<br>'+ACK+'<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>\n  </section>\n</div>\n')
+    o.append(('\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>One thing to remember</h2>\n      <p class="remember">'+g['remember']+'</p>\n      <p>'+(g['more']%glink(g['deeper'],GK[g['deeper']]['h1']) if g.get('more') else 'Want the details, with the equations and the real numbers? Go deeper with the guide '+glink(g['deeper'],GK[g['deeper']]['h1'])+'.')+'</p>\n      <details class="classroom"><summary>For a class</summary><ul>'+''.join('<li>%s</li>'%q for q in g['classroom'])+'</ul></details>\n    </div>\n' if g['level']=='Introductory' else '\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>Where to go deeper</h2>\n      <ul class="refs">\n'+g['further']+'\n      </ul>\n    </div>\n')+'    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="{{home}}">← Home</a>'+('<a class="guidelink" data-guide="%s" href="{{link:%s}}">Next: %s →</a>'%(G[gi]['key'],G[gi]['key'],G[gi]['name']) if gi<len(G) else '')+'</nav>\n    <div class="notes" style="text-align:center;margin-top:18px"><p>'+stamp(UPDATED[g['key']])+'<br>'+ACK+'<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>\n  </section>\n</div>\n')
     html=resolve(''.join(o),g)
     # a label holding a subscript is wrapped so that it stays one piece in the flex row
     html=re.sub(r'(<label for="\w+">)((?:(?!<output|</label>).)*<sub>(?:(?!<output|</label>).)*?)(\s*<output|</label>)',lambda m:m.group(1)+'<span>'+m.group(2)+'</span>'+m.group(3),html)
@@ -533,22 +565,57 @@ json.dump({g['key']:dict(title=g['title'],name=g['name']) for g in G},open('guid
 
 # ---------- the landing page ----------
 open('style.css','w').write(css)
-CARDS=[('aps','c0Cv','Start here','Where the electrons come from and how the ring holds on to them. The gun and the linac, the accumulator ring and the booster, the magnets that keep the beam small, the RF that pays back its energy, and swap-out injection.',['Gun and linac','Booster','Seven-bend lattice','RF and bunches','Swap-out']),
+CARDS=[('syn','csCv','Five minutes','How a synchrotron makes X-rays, in five stops and five minutes, with no equations. Electrons at almost the speed of light, the magnets that hold them in a ring, the light they give off when they turn, and what the APS Upgrade changed.',['Speed','The ring','X-rays','Flashes','A new ring']),
+       ('aps','c0Cv','Go deeper','Where the electrons come from and how the ring holds on to them. The gun and the linac, the accumulator ring and the booster, the magnets that keep the beam small, the RF that pays back its energy, and swap-out injection.',['Gun and linac','Booster','Seven-bend lattice','RF and bunches','Swap-out']),
+       ('walk','cwCv','Five minutes','The whole beamline in five stops and five minutes, with no equations. Where the X-rays come from, how one energy is picked out, how the beam is squeezed, what the sample is, and what the detector sees.',['Magnets','One energy','Mirrors','The crystal','The detector']),
        ('overview','c1Cv','Then the beamline','From the storage ring to the detector. How the electrons make X-rays, how the undulator gap and its harmonics set the energy, and what the monochromator, the mirrors and the sample station each do.',['The storage ring','Undulator and harmonics','Monochromator','KB mirrors','Diffraction']),
        ('polarization','c2Cv','Go deeper',"The beam's electric field swings from side to side, and almost never up and down. This guide follows that one property from the wiggling electron to the sample, and shows why it is not quite 100%.",['A shaken charge','Relativity','Off-axis light','Mono and mirrors','Measuring it']),
+       ('detintro','cpCv','Five minutes','How the detector records the spots, in four stops and five minutes, with no equations. Eighteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.',['Pixels','Counting','Speed','Distance']),
+       ('det','cqCv','Go deeper','What happens between an X-ray entering the detector and a counter going up by one, and what it means for the data: how much of the beam is caught, charge sharing and the threshold, count rates, counting statistics, and the choice of detector distance.',['Silicon sensor','Charge sharing','Dead time','Counting statistics','Geometry']),
+       ('hutch','chCv','Five minutes','Why the experiment sits in a closed steel room, how little steel it takes to stop these X-rays, and how the door and the beam shutter are locked together. Four stops, no equations.',['Stray X-rays','Steel walls','The interlock','Working from outside']),
+       ('mx','cmCv','Then the experiment','What macromolecular crystallography is, and how it gets from a crystal to a structure. Why a crystal is needed, what the spots are, the phase problem, the electron density map, and how a model is refined and judged.',['Why structures','Why a crystal','Spots as waves','The phase problem','Map and model']),
+       ('cold','ccCv','Five minutes','What X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, and how a crystal that is half water is cooled without turning to ice. Four stops, no equations.',['Damage','Cold','No ice','How cold']),
+       ('damage','cdCv','Go deeper','From the absorption of one photon to the fading of the pattern. Dose and how to estimate it, the 30 MGy limit, the groups that are damaged first, why 100 K, and how to spend the dose a crystal can take.',['Absorption','Dose','The 30 MGy limit','Specific damage','Why 100 K']),
        ('scatter','c3Cv','Put it to work','What X-ray fluorescence is, which atoms in a protein crystal give it, and what it is used for: edge scans for phasing, and finding out which metal is there. Then where the fluorescence detector has to sit to see it clearly.',['How an atom fluoresces','Which atoms','Edges and lines','The edge scan','Where the detector goes'])]
-def home():
+CARDS=[c for c in CARDS if c[0] in GK]
+SERIES=[(n,sn,ask,[k for k in keys if k in GK],note) for n,sn,ask,keys,note in SERIES]
+CK={c[0]:c for c in CARDS}
+def home(variant='A'):
     o=['<title>NE-CAT Beamline Guides</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&display=swap">\n<style>%s'%css]
     o.append('''
 .balloon{font-family:var(--f-hand);font-size:1.2rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;padding:10px 18px;max-width:60ch;position:relative;justify-self:start}
 .balloon::before{content:"";position:absolute;left:34px;top:-14px;border:7px solid transparent;border-bottom-color:var(--ink)}
 .balloon::after{content:"";position:absolute;left:36px;top:-8.5px;border:5px solid transparent;border-bottom-color:var(--card)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:22px;padding-block:28px 12px}
+.series{padding-block:26px 6px}
+.serieshead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;border-top:2.5px solid var(--ink);padding-top:14px}
+.serieshead h2{font-size:1.7rem;margin:0}
+.serieshead .ask{font-family:var(--f-hand);font-size:1.25rem;color:var(--muted);flex-basis:100%;margin:0 0 0 calc(2.4rem + 14px)}
+.card[hidden]{display:none}
+/* the color of a guide's level: yellow for the five-minute guides, black for the in-depth ones. Used on the cards, the chooser and the guide pages */
+.band{font-family:var(--f-hand);font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 16px;border-bottom:2.5px solid var(--ink)}
+.lv-intro .band{background:var(--cap)}
+.lv-depth .band{background:var(--ink);color:var(--paper)}
+.card.lv-intro,.card.lv-depth{grid-template-rows:auto auto 1fr}
+.sw{display:inline-block;width:.85em;height:.85em;border:2px solid var(--ink);margin-right:8px;vertical-align:-1px}
+.sw-intro{background:var(--cap)}
+.sw-depth{background:var(--ink);border-color:var(--paper)}
+.tracks{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:22px;font-family:var(--f-hand);font-size:1.2rem}
+.tracks .lbl{text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.tracks button{font-size:1.2rem;padding:4px 16px}
+.tracks button[aria-pressed="true"]{background:var(--red);color:#fff}
+.tracks ~ section .cards{grid-template-columns:repeat(auto-fill,minmax(min(400px,100%),1fr))}
+.shelf{font-family:var(--f-hand);font-weight:400;font-size:1.2rem;letter-spacing:.06em;text-transform:uppercase;margin:18px 0 0}
+.shelf+.cards{padding-top:10px}
+.cards.topic{padding-block:14px 4px}
+.soon{font-family:var(--f-hand);font-size:1.15rem;line-height:1.4;border:2.5px dashed var(--ink);padding:10px 16px;max-width:62ch;margin:16px 0 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:22px;padding-block:18px 12px}
+.cards.one{grid-template-columns:minmax(0,min(100%,calc(50% - 11px)))}
+@media (max-width:860px){.cards.one{grid-template-columns:1fr}}
 .card{background:var(--card);border:2.5px solid var(--ink);display:grid;grid-template-rows:auto 1fr;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
 .card:hover,.card:focus-within{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .card canvas{width:100%;display:block;background:var(--sky);border:0;border-bottom:2.5px solid var(--ink)}
 .cardbody{padding:14px 16px 16px;display:grid;gap:10px;align-content:start}
-.cardhead{display:flex;align-items:center;gap:10px}
+.cardhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .cardhead .tagline{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;background:var(--cap);border:2px solid var(--ink);padding:0 8px}
 .card h2{font-size:1.5rem}
 .card h2 a{color:inherit;text-decoration:none}
@@ -559,7 +626,7 @@ def home():
 .chips li{border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
 .go{font-family:var(--f-hand);font-size:1.1rem;justify-self:start;background:var(--red);color:#fff;border:2.5px solid var(--ink);padding:2px 14px;margin-top:4px}
 .card:hover .go{background:var(--ink)}
-.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;padding-block:10px 8px}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:16px;padding-block:10px 8px}
 .tip{border-top:2.5px solid var(--ink);padding-top:10px}
 .tip h3{font-size:1.1rem;margin-bottom:6px}
 .tip p{font-size:.98rem;line-height:1.5;margin:0}
@@ -571,46 +638,77 @@ def home():
   <header class="hero">
     <div class="kicker">NE-CAT · Sector 24 · Advanced Photon Source</div>
     <h1>Welcome to the <span style="white-space:nowrap">NE-CAT</span> beamline guides</h1>
-    <p class="lede">Four short, illustrated guides to what happens between the electron gun and your data. They follow the electrons into the storage ring, and then the X-rays through the optics to your crystal and the detectors around it.</p>
+    <p class="lede">Illustrated guides, with figures you can operate, to what happens between the electron gun and your structure. They are grouped in series that follow the experiment: the machine that makes the X-rays, the beamline that delivers them, the experiment itself, and the science it serves.</p>
     <div class="panel">
       <canvas id="homeCv" aria-label="Animation: electrons circle the storage ring, an undulator turns their motion into X-rays, the X-rays strike a crystal, and diffraction spots appear on the detector"></canvas>
     </div>
-    <p class="balloon">New here? Start with guide 1 and read straight through. Back for one thing? Each guide stands on its own, so jump in anywhere.</p>
+    <p class="balloon">New here? Start at the top and read straight through. Back for one thing? Each guide stands on its own, so jump in anywhere.</p>
   </header>
 
   <main>
-  <section class="cards" aria-label="The four guides">
 ''')
-    for i,(key,cv,tagline,desc,chips) in enumerate(CARDS,1):
-        g=GK[key]
-        o.append('''    <article class="card">
+    def cardhtml(key):
+        key,cv,tagline,desc,chips=CK[key]; g=GK[key]; intro=g['level']=='Introductory'
+        if not variant:
+            head='<div class="cardhead"><span class="tagline">%s</span><span class="level">%s</span></div>'%(tagline,g['level']); rib=''; cls=''
+        else:
+            head=''; rib='<div class="band">%s</div>'%('5 minutes' if intro else 'In depth'); cls=' lv-intro" data-level="intro' if intro else ' lv-depth" data-level="depth'
+        return '''    <article class="card%s">%s
       <canvas id="%s" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">%d</div><span class="tagline">%s</span></div>
+        %s
         <h2><a href="{{link:%s}}">%s</a></h2>
         <p>%s</p>
         <ul class="chips">%s</ul>
-        <span class="go">Open guide %d →</span>
+        <span class="go">Open the guide →</span>
       </div>
     </article>
-'''%(cv,i,tagline,key,g['h1'],desc,''.join('<li>%s</li>'%x for x in chips),i))
-    o.append('''  </section>
-
-  <section aria-label="How to use the guides">
+'''%(cls,rib,cv,head,key,g['h1'],desc,''.join('<li>%s</li>'%x for x in chips))
+    def grid(keys,extra=''): return '    <div class="cards%s%s">\n'%(' one' if len(keys)==1 else '',extra)+''.join(cardhtml(k) for k in keys)+'    </div>\n'
+    if variant=='A': o.append('  <div class="tracks" id="trackSel" role="group" aria-label="Which guides to show"><span class="lbl">Show</span><button type="button" data-v="all" aria-pressed="true">Everything</button><button type="button" data-v="intro" aria-pressed="false"><span class="sw sw-intro"></span>Five-minute guides</button><button type="button" data-v="depth" aria-pressed="false"><span class="sw sw-depth"></span>In-depth guides</button></div>\n')
+    for num,sname,ask,keys,note in SERIES:
+        o.append('''  <section class="series" aria-label="Series %d: %s">
+    <div class="serieshead"><div class="stepno">%d</div><h2>%s</h2><p class="ask">%s</p></div>
+'''%(num,sname,num,sname,ask))
+        if variant=='B':
+            # option B: two shelves in each series, the short guides first
+            for lvl,name in (('Introductory','Five-minute guides'),('In-depth','In-depth guides')):
+                ks=[k for k in keys if GK[k]['level']==lvl]
+                if ks: o.append('    <h3 class="shelf">%s</h3>\n'%name+grid(ks))
+        elif variant=='C':
+            # option C: one row for each topic, the short guide beside its in-depth partner
+            done=set()
+            for k in keys:
+                if k in done: continue
+                p=GK[k].get('deeper') if GK[k]['level']=='Introductory' else GK[k].get('short')
+                pair=[k,p] if p in keys and (GK[p].get('short')==k or GK[p].get('deeper')==k) and GK[p]['level']!=GK[k]['level'] else [k]
+                pair.sort(key=lambda q:GK[q]['level']!='Introductory'); done.update(pair)
+                o.append(grid(pair,' topic'))
+        elif keys:
+            o.append(grid(keys))
+            if variant=='A': o.append('    <p class="soon nonehere" hidden>No guide of this kind in this series yet.</p>\n')
+        if note: o.append('    <p class="soon">%s</p>\n'%note)
+        o.append('  </section>\n')
+    o.append('''
+  <section aria-label="How to use the guides" style="padding-top:26px">
     <div class="sec-head prose"><h2>How the guides work</h2></div>
     <div class="tips">
-      <div class="tip"><h3>Pick your beamline</h3><p>The Settings menu at the top of every guide switches the figures and the worked numbers between 24-ID-C and 24-ID-E, before and after the APS Upgrade. Your choice follows you from one guide to the next.</p></div>
+      <div class="tip"><h3>Two levels</h3><p>Yellow marks the five-minute guides, which have no equations. Black marks the in-depth guides, which include the equations and worked numbers. The buttons at the top of this page show one kind or the other.</p></div>
+      <div class="tip"><h3>Pick your beamline</h3><p>The Settings menu at the top of %s switches the figures and the worked numbers between 24-ID-C and 24-ID-E, before and after the APS Upgrade. Your choice follows you from one guide to the next.</p></div>
       <div class="tip"><h3>Play with the figures</h3><p>Most figures have sliders, and many of them move. Drag things around and see what changes. Nothing here can break.</p></div>
       <div class="tip"><h3>Open the math if you want it</h3><p>Every equation is folded away under its figure, with a plain reading of what it says and a worked number. One button opens them all.</p></div>
-      <div class="tip"><h3>Check the fine print</h3><p>Values that are assumed or calculated, and not taken from a published source, are marked in the tables of guides 1 and 2. Corrections are welcome.</p></div>
+      <div class="tip"><h3>Check the fine print</h3><p>Values that are assumed or calculated, and not taken from a published source, are marked in the tables of %s. Corrections are welcome.</p></div>
     </div>
   </section>
   </main>
 
-  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>'''+stamp(RELEASE[1])+'''<br>'''+ACK+'''<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
+  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>'''%(names([g['key'] for g in G if g['table'] in (True,False)]),names(['aps','overview']))+stamp(RELEASE[1])+'''<br>'''+ACK+'''<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
 </div>
 ''')
     return ''.join(o)
+def names(keys):
+    n=['<i>%s</i>'%GK[k]['h1'] for k in keys]
+    return n[0] if len(n)==1 else ', '.join(n[:-1])+' and '+n[-1]
 GK={g['key']:g for g in G}
 open('body-home.html','w').write(home())
 # what build.js needs to know about each page for its link-preview tags

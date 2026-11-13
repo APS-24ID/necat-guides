@@ -8,13 +8,27 @@ const ART=process.env.ARTDIR?path.resolve(process.env.ARTDIR)+path.sep:null;if(A
 // visitor counting for the GitHub Pages copies only (GoatCounter: no cookies, nothing stored in the browser)
 const GC='<script data-goatcounter="https://frankvm04.goatcounter.com/count"\n        async src="//gc.zgo.at/count.js"></script>';
 const HEAD='<!doctype html>\n<!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n';
-const OUT={aps:{art:'aps-how-it-works.html',file:'NE-CAT_1_How_APS_Works.html',js:'aps'},
-  overview:{art:'necat-how-it-works.html',file:'NE-CAT_2_How_NE-CAT_Works.html',old:'NE-CAT_1_How_It_Works.html'},
-  polarization:{art:'aps-polarization.html',file:'NE-CAT_3_Beam_Polarization.html',old:'NE-CAT_2_Beam_Polarization.html'},
-  scatter:{art:'necat-scatter.html',file:'NE-CAT_4_X-ray_Fluorescence.html',old:['NE-CAT_4_Scatter_and_Fluorescence.html','NE-CAT_3_Scatter_and_Fluorescence.html']}};
+// A guide's address is its name, with no number in it, so that adding a guide never changes the address of another.
+// "old" lists every address a guide has had on the live site. Each becomes a small page that forwards to the new one.
+const OUT={aps:{art:'aps-how-it-works.html',file:'how-aps-works.html',js:'aps',old:'NE-CAT_1_How_APS_Works.html'},
+  overview:{art:'necat-how-it-works.html',file:'how-necat-works.html',old:['NE-CAT_2_How_NE-CAT_Works.html','NE-CAT_1_How_It_Works.html']},
+  polarization:{art:'aps-polarization.html',file:'polarization.html',old:['NE-CAT_3_Beam_Polarization.html','NE-CAT_2_Beam_Polarization.html']},
+  syn:{art:'necat-syn.html',file:'how-aps-works-intro.html',js:'syn'},
+  walk:{art:'necat-walk.html',file:'how-necat-works-intro.html',js:'walk'},
+  detintro:{art:'necat-detintro.html',file:'detector-intro.html',js:'detintro'},
+  det:{art:'necat-det.html',file:'detector.html',js:'det'},
+  hutch:{art:'necat-hutch.html',file:'shielded-room.html',js:'hutch'},
+  cold:{art:'necat-cold.html',file:'radiation-damage-intro.html',js:'cold'},
+  damage:{art:'necat-damage.html',file:'radiation-damage.html',js:'damage'},
+  mx:{art:'necat-mx.html',file:'how-mx-works.html',js:'mx'},
+  scatter:{art:'necat-scatter.html',file:'fluorescence.html',old:['NE-CAT_4_X-ray_Fluorescence.html','NE-CAT_4_Scatter_and_Fluorescence.html','NE-CAT_3_Scatter_and_Fluorescence.html']}};
+// a guide whose text is not in this folder (no <key>_guide.py and so no body-<key>.html) is left out
+for(const k of Object.keys(OUT))if(!fs.existsSync('body-'+k+'.html'))delete OUT[k];
 let urls={};try{urls=JSON.parse(fs.readFileSync('urls.json','utf8'));}catch(e){}
 const src=fs.readFileSync('src-script.v6.js','utf8'), kit=src.slice(0,src.indexOf('// ---- beamline settings'))+src.slice(src.indexOf('// ---- ligne claire palette'),src.indexOf('// ---------- HERO'));
-const SCRIPT={shared:fs.readFileSync('shared.js','utf8'),aps:kit+fs.readFileSync('aps.js','utf8')};
+const IK=fs.readFileSync('introkit.js','utf8');   // helpers shared by the Introductory guides
+const SCRIPT={shared:fs.readFileSync('shared.js','utf8'),aps:kit+fs.readFileSync('aps.js','utf8'),mx:OUT.mx?kit+fs.readFileSync('mx.js','utf8'):'',};
+for(const k of ['walk','syn','cold','damage','hutch','detintro','det'])if(OUT[k])SCRIPT[k]=kit+IK+fs.readFileSync(k+'.js','utf8');
 const US=[['centimetre','centimeter'],['millimetre','millimeter'],['centre','center'],['Centre','Center'],['neighbouring','neighboring'],['travelling','traveling'],['Travelling','Traveling'],['The maths,','The math,'],['colours','colors'],['goes round','goes around'],['other way round','other way around']];
 const SP='<mspace width="0.17em"></mspace>';let n=0;
 const r=(tex,d)=>{n++;let m=katex.renderToString(tex.trim(),{output:'mathml',displayMode:d,throwOnError:true,strict:false});
@@ -45,7 +59,7 @@ for(const k of Object.keys(OUT)){
   const link=linker(page);
   if(ART)fs.writeFileSync(ART+OUT[k].art,link('art'));
   standalone(OUT[k].file,link('file'),social(OUT[k].file,INFO[k].h1,INFO[k].desc,k,'article'));
-  // the address a guide had before it was renumbered now forwards to the new one
+  // the addresses a guide had before now forward to the new one
   for(const old of [].concat(OUT[k].old||[]))fs.writeFileSync(DIR+old,'<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><title>This guide has moved</title>\n<meta http-equiv="refresh" content="0; url='+OUT[k].file+'">\n<link rel="canonical" href="'+OUT[k].file+'">\n<script>location.replace("'+OUT[k].file+'"+location.hash);</script>\n</head><body><p>This guide has moved to <a href="'+OUT[k].file+'">'+OUT[k].file+'</a>.</p></body></html>\n');
   console.log(k,page.length);
 }
@@ -56,5 +70,5 @@ fs.copyFileSync('favicon.svg',DIR+'favicon.svg');
  for(const [x,y] of US) page=page.split(x).join(y);
  const link=linker(page);
  if(ART)fs.writeFileSync(ART+'necat-guides-home.html',link('art'));
- standalone('index.html',link('file'),social('index.html',SITENAME,'Four illustrated, interactive guides to the Advanced Photon Source and the NE-CAT beamlines.','home','website'));
+ standalone('index.html',link('file'),social('index.html',SITENAME,'Illustrated, interactive guides to the Advanced Photon Source, the NE-CAT beamlines, and macromolecular crystallography.','home','website'));
  console.log('home',page.length);}

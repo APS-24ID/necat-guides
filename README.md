@@ -1,20 +1,23 @@
 # NE-CAT beamline guides
 
-Four illustrated, interactive guides to the Advanced Photon Source and the NE-CAT beamlines (24-ID-C and 24-ID-E).
+Illustrated, interactive guides to the Advanced Photon Source, the NE-CAT beamlines (24-ID-C and 24-ID-E), and macromolecular crystallography.
 
 **Read them here: https://aps-24id.github.io/necat-guides/**
 
-| File | Guide |
-| --- | --- |
-| `index.html` | Landing page |
-| `NE-CAT_1_How_APS_Works.html` | 1. How APS works: from the electron gun to the stored beam |
-| `NE-CAT_2_How_NE-CAT_Works.html` | 2. How NE-CAT works: from the storage ring to the detector |
-| `NE-CAT_3_Beam_Polarization.html` | 3. Why the X-ray beam is polarized |
-| `NE-CAT_4_X-ray_Fluorescence.html` | 4. X-ray fluorescence at NE-CAT: what it is, what it is used for, and where the detector goes |
+The guides are grouped in series. Each is marked with its level. Introductory guides take about five minutes and have no equations. In-depth guides include the equations and worked numbers.
+
+| File | Series | Guide | Level |
+| --- | --- | --- | --- |
+| `index.html` | | Landing page: the list of guides by series | |
+| `how-aps-works-intro.html` | 1. The machine | What is a synchrotron? How the APS makes X-rays, in five stops and five minutes | Introductory |
+| `how-aps-works.html` | 1. The machine | How APS works: from the electron gun to the stored beam | In-depth |
+| `how-necat-works.html` | 2. The beamline | How NE-CAT works: from the storage ring to the detector | In-depth |
+| `polarization.html` | 2. The beamline | Why the X-ray beam is polarized | In-depth |
+| `fluorescence.html` | 3. The experiment | X-ray fluorescence at NE-CAT: what it is, what it is used for, and where the detector goes | In-depth |
 
 Each page is a single self-contained HTML file. The pages link to each other by file name, so keep the names unchanged and keep them all in the same folder.
 
-`NE-CAT_1_How_It_Works.html`, `NE-CAT_2_Beam_Polarization.html`, `NE-CAT_3_Scatter_and_Fluorescence.html` and `NE-CAT_4_Scatter_and_Fluorescence.html` are small redirect pages. They are the names the guides had before they were renumbered or retitled, kept so that existing links still work.
+The files whose names begin `NE-CAT_` are small redirect pages. They are the addresses the guides had before release 1.3, kept so that existing links still work.
 
 Values that are assumed or calculated, and not taken from a published source, are marked in the notes of each guide. Corrections are welcome: please open an issue.
 

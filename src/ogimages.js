@@ -5,12 +5,13 @@
 //   FONTDIR  optional: a folder holding @fontsource packages, for a machine that cannot reach Google Fonts
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
 const D=path.resolve(process.env.OUTDIR||path.join(__dirname,'..'))+path.sep, FD=process.env.FONTDIR;
-const PAGES=[['home','index.html','homeCv','NE-CAT beamline guides'],['aps','NE-CAT_1_How_APS_Works.html','chainCv'],['overview','NE-CAT_2_How_NE-CAT_Works.html','stationsCv'],
-  ['polarization','NE-CAT_3_Beam_Polarization.html','heroCv'],['scatter','NE-CAT_4_X-ray_Fluorescence.html','fxCv']];
+const PAGES=[['home','index.html','homeCv','NE-CAT beamline guides'],['syn','how-aps-works-intro.html','synHeroCv'],['aps','how-aps-works.html','chainCv'],['walk','how-necat-works-intro.html','walkHeroCv'],['overview','how-necat-works.html','stationsCv'],
+  ['polarization','polarization.html','heroCv'],['detintro','detector-intro.html','pixHeroCv'],['det','detector.html','detHeroCv'],['hutch','shielded-room.html','hutchHeroCv'],
+  ['mx','how-mx-works.html','mxHeroCv'],['cold','radiation-damage-intro.html','coldHeroCv'],['damage','radiation-damage.html','damHeroCv'],['scatter','fluorescence.html','fxCv']];
 const face=(fam,file,wt)=>{const f=path.join(FD,file);return fs.existsSync(f)?`@font-face{font-family:"${fam}";font-weight:${wt};src:url(data:font/woff2;base64,${fs.readFileSync(f).toString('base64')}) format("woff2")}`:'';};
 const FONTS=FD?face('Bricolage Grotesque','bricolage-grotesque/files/bricolage-grotesque-latin-800-normal.woff2','600 800')+face('Patrick Hand','patrick-hand/files/patrick-hand-latin-400-normal.woff2',400)+face('Literata','literata/files/literata-latin-400-normal.woff2',400):'';
 (async()=>{const b=await chromium.launch();fs.mkdirSync(D+'og',{recursive:true});
- for(const [key,file,cvId,title] of PAGES){
+ for(const [key,file,cvId,title] of PAGES.filter(p=>fs.existsSync(D+p[1]))){
   const p=await b.newPage({viewport:{width:1200,height:630},deviceScaleFactor:1});
   await p.setContent(fs.readFileSync(D+file,'utf8'),{waitUntil:'domcontentloaded'});
   if(FONTS)await p.addStyleTag({content:FONTS});
@@ -23,7 +24,7 @@ const FONTS=FD?face('Bricolage Grotesque','bricolage-grotesque/files/bricolage-g
     card.append(kk,hh,box);document.body.appendChild(card);},[cvId,title||null]);
   await p.evaluate(()=>document.fonts.ready);await p.waitForTimeout(500);
   await p.evaluate(cvId=>{const cv=document.getElementById(cvId),box=document.getElementById('ogbox'),top=box.getBoundingClientRect().top,asp=cv.clientWidth/cv.clientHeight;box.style.width=Math.min(1104,Math.floor((630-top-34)*asp))+'px';},cvId);
-  await p.waitForTimeout(3200);
+  await p.waitForTimeout(key==='mx'?2600:3200);
   await p.screenshot({path:D+'og/'+key+'.png',clip:{x:0,y:0,width:1200,height:630}});await p.close();console.log('og/'+key+'.png');}
  // the icons, from favicon.svg
  const svg=fs.readFileSync(path.join(__dirname,'favicon.svg'),'utf8');

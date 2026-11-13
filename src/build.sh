@@ -4,5 +4,5 @@
 set -e
 cd "$(dirname "$0")"
 python3 compose.py > /dev/null     # page bodies: text, equation cards, figure panels
-python3 refactor.py > /dev/null    # the script shared by guides 2 to 4
+python3 refactor.py > /dev/null    # the script shared by the guides with a Settings menu
 node build.js                      # equations to MathML, links, finished pages

@@ -1,13 +1,13 @@
 <!doctype html>
 <!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Four illustrated, interactive guides to the Advanced Photon Source and the NE-CAT beamlines.">
+<meta name="description" content="Illustrated, interactive guides to the Advanced Photon Source, the NE-CAT beamlines, and macromolecular crystallography.">
 <meta name="author" content="NE-CAT, Cornell University">
 <link rel="canonical" href="https://aps-24id.github.io/necat-guides/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NE-CAT beamline guides">
 <meta property="og:title" content="NE-CAT beamline guides">
-<meta property="og:description" content="Four illustrated, interactive guides to the Advanced Photon Source and the NE-CAT beamlines.">
+<meta property="og:description" content="Illustrated, interactive guides to the Advanced Photon Source, the NE-CAT beamlines, and macromolecular crystallography.">
 <meta property="og:url" content="https://aps-24id.github.io/necat-guides/">
 <meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/home.png">
 <meta property="og:image:type" content="image/png">
@@ -102,6 +102,15 @@ ul.refs{padding-left:1.2em;margin:0}
 ul.refs li+li{margin-top:.4em}
 @media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
 
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
 details.eqcard>summary{cursor:pointer;list-style:none}
 details.eqcard>summary::-webkit-details-marker{display:none}
 details.eqcard>summary .eqno{white-space:nowrap}
@@ -124,12 +133,36 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
 .balloon{font-family:var(--f-hand);font-size:1.2rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;padding:10px 18px;max-width:60ch;position:relative;justify-self:start}
 .balloon::before{content:"";position:absolute;left:34px;top:-14px;border:7px solid transparent;border-bottom-color:var(--ink)}
 .balloon::after{content:"";position:absolute;left:36px;top:-8.5px;border:5px solid transparent;border-bottom-color:var(--card)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:22px;padding-block:28px 12px}
+.series{padding-block:26px 6px}
+.serieshead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;border-top:2.5px solid var(--ink);padding-top:14px}
+.serieshead h2{font-size:1.7rem;margin:0}
+.serieshead .ask{font-family:var(--f-hand);font-size:1.25rem;color:var(--muted);flex-basis:100%;margin:0 0 0 calc(2.4rem + 14px)}
+.card[hidden]{display:none}
+/* the color of a guide's level: yellow for the five-minute guides, black for the in-depth ones. Used on the cards, the chooser and the guide pages */
+.band{font-family:var(--f-hand);font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 16px;border-bottom:2.5px solid var(--ink)}
+.lv-intro .band{background:var(--cap)}
+.lv-depth .band{background:var(--ink);color:var(--paper)}
+.card.lv-intro,.card.lv-depth{grid-template-rows:auto auto 1fr}
+.sw{display:inline-block;width:.85em;height:.85em;border:2px solid var(--ink);margin-right:8px;vertical-align:-1px}
+.sw-intro{background:var(--cap)}
+.sw-depth{background:var(--ink);border-color:var(--paper)}
+.tracks{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:22px;font-family:var(--f-hand);font-size:1.2rem}
+.tracks .lbl{text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.tracks button{font-size:1.2rem;padding:4px 16px}
+.tracks button[aria-pressed="true"]{background:var(--red);color:#fff}
+.tracks ~ section .cards{grid-template-columns:repeat(auto-fill,minmax(min(400px,100%),1fr))}
+.shelf{font-family:var(--f-hand);font-weight:400;font-size:1.2rem;letter-spacing:.06em;text-transform:uppercase;margin:18px 0 0}
+.shelf+.cards{padding-top:10px}
+.cards.topic{padding-block:14px 4px}
+.soon{font-family:var(--f-hand);font-size:1.15rem;line-height:1.4;border:2.5px dashed var(--ink);padding:10px 16px;max-width:62ch;margin:16px 0 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:22px;padding-block:18px 12px}
+.cards.one{grid-template-columns:minmax(0,min(100%,calc(50% - 11px)))}
+@media (max-width:860px){.cards.one{grid-template-columns:1fr}}
 .card{background:var(--card);border:2.5px solid var(--ink);display:grid;grid-template-rows:auto 1fr;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
 .card:hover,.card:focus-within{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .card canvas{width:100%;display:block;background:var(--sky);border:0;border-bottom:2.5px solid var(--ink)}
 .cardbody{padding:14px 16px 16px;display:grid;gap:10px;align-content:start}
-.cardhead{display:flex;align-items:center;gap:10px}
+.cardhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .cardhead .tagline{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;background:var(--cap);border:2px solid var(--ink);padding:0 8px}
 .card h2{font-size:1.5rem}
 .card h2 a{color:inherit;text-decoration:none}
@@ -140,7 +173,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
 .chips li{border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
 .go{font-family:var(--f-hand);font-size:1.1rem;justify-self:start;background:var(--red);color:#fff;border:2.5px solid var(--ink);padding:2px 14px;margin-top:4px}
 .card:hover .go{background:var(--ink)}
-.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;padding-block:10px 8px}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:16px;padding-block:10px 8px}
 .tip{border-top:2.5px solid var(--ink);padding-top:10px}
 .tip h3{font-size:1.1rem;margin-bottom:6px}
 .tip p{font-size:.98rem;line-height:1.5;margin:0}
@@ -154,69 +187,101 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   <header class="hero">
     <div class="kicker">NE-CAT · Sector 24 · Advanced Photon Source</div>
     <h1>Welcome to the <span style="white-space:nowrap">NE-CAT</span> beamline guides</h1>
-    <p class="lede">Four short, illustrated guides to what happens between the electron gun and your data. They follow the electrons into the storage ring, and then the X-rays through the optics to your crystal and the detectors around it.</p>
+    <p class="lede">Illustrated guides, with figures you can operate, to what happens between the electron gun and your structure. They are grouped in series that follow the experiment: the machine that makes the X-rays, the beamline that delivers them, the experiment itself, and the science it serves.</p>
     <div class="panel">
       <canvas id="homeCv" aria-label="Animation: electrons circle the storage ring, an undulator turns their motion into X-rays, the X-rays strike a crystal, and diffraction spots appear on the detector"></canvas>
     </div>
-    <p class="balloon">New here? Start with guide 1 and read straight through. Back for one thing? Each guide stands on its own, so jump in anywhere.</p>
+    <p class="balloon">New here? Start at the top and read straight through. Back for one thing? Each guide stands on its own, so jump in anywhere.</p>
   </header>
 
   <main>
-  <section class="cards" aria-label="The four guides">
-    <article class="card">
+  <div class="tracks" id="trackSel" role="group" aria-label="Which guides to show"><span class="lbl">Show</span><button type="button" data-v="all" aria-pressed="true">Everything</button><button type="button" data-v="intro" aria-pressed="false"><span class="sw sw-intro"></span>Five-minute guides</button><button type="button" data-v="depth" aria-pressed="false"><span class="sw sw-depth"></span>In-depth guides</button></div>
+  <section class="series" aria-label="Series 1: The machine">
+    <div class="serieshead"><div class="stepno">1</div><h2>The machine</h2><p class="ask">Where do the X-rays come from?</p></div>
+    <div class="cards">
+    <article class="card lv-intro" data-level="intro"><div class="band">5 minutes</div>
+      <canvas id="csCv" aria-hidden="true"></canvas>
+      <div class="cardbody">
+        
+        <h2><a href="how-aps-works-intro.html">What is a synchrotron?</a></h2>
+        <p>How a synchrotron makes X-rays, in five stops and five minutes, with no equations. Electrons at almost the speed of light, the magnets that hold them in a ring, the light they give off when they turn, and what the APS Upgrade changed.</p>
+        <ul class="chips"><li>Speed</li><li>The ring</li><li>X-rays</li><li>Flashes</li><li>A new ring</li></ul>
+        <span class="go">Open the guide →</span>
+      </div>
+    </article>
+    <article class="card lv-depth" data-level="depth"><div class="band">In depth</div>
       <canvas id="c0Cv" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">1</div><span class="tagline">Start here</span></div>
-        <h2><a href="NE-CAT_1_How_APS_Works.html">How APS works</a></h2>
+        
+        <h2><a href="how-aps-works.html">How APS works</a></h2>
         <p>Where the electrons come from and how the ring holds on to them. The gun and the linac, the accumulator ring and the booster, the magnets that keep the beam small, the RF that pays back its energy, and swap-out injection.</p>
         <ul class="chips"><li>Gun and linac</li><li>Booster</li><li>Seven-bend lattice</li><li>RF and bunches</li><li>Swap-out</li></ul>
-        <span class="go">Open guide 1 →</span>
+        <span class="go">Open the guide →</span>
       </div>
     </article>
-    <article class="card">
+    </div>
+    <p class="soon nonehere" hidden>No guide of this kind in this series yet.</p>
+  </section>
+  <section class="series" aria-label="Series 2: The beamline">
+    <div class="serieshead"><div class="stepno">2</div><h2>The beamline</h2><p class="ask">What does NE-CAT do with them?</p></div>
+    <div class="cards">
+    <article class="card lv-depth" data-level="depth"><div class="band">In depth</div>
       <canvas id="c1Cv" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">2</div><span class="tagline">Then the beamline</span></div>
-        <h2><a href="NE-CAT_2_How_NE-CAT_Works.html">How NE-CAT works</a></h2>
+        
+        <h2><a href="how-necat-works.html">How NE-CAT works</a></h2>
         <p>From the storage ring to the detector. How the electrons make X-rays, how the undulator gap and its harmonics set the energy, and what the monochromator, the mirrors and the sample station each do.</p>
         <ul class="chips"><li>The storage ring</li><li>Undulator and harmonics</li><li>Monochromator</li><li>KB mirrors</li><li>Diffraction</li></ul>
-        <span class="go">Open guide 2 →</span>
+        <span class="go">Open the guide →</span>
       </div>
     </article>
-    <article class="card">
+    <article class="card lv-depth" data-level="depth"><div class="band">In depth</div>
       <canvas id="c2Cv" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">3</div><span class="tagline">Go deeper</span></div>
-        <h2><a href="NE-CAT_3_Beam_Polarization.html">Why the X-ray beam is polarized</a></h2>
+        
+        <h2><a href="polarization.html">Why the X-ray beam is polarized</a></h2>
         <p>The beam's electric field swings from side to side, and almost never up and down. This guide follows that one property from the wiggling electron to the sample, and shows why it is not quite 100%.</p>
         <ul class="chips"><li>A shaken charge</li><li>Relativity</li><li>Off-axis light</li><li>Mono and mirrors</li><li>Measuring it</li></ul>
-        <span class="go">Open guide 3 →</span>
+        <span class="go">Open the guide →</span>
       </div>
     </article>
-    <article class="card">
+    </div>
+    <p class="soon nonehere" hidden>No guide of this kind in this series yet.</p>
+  </section>
+  <section class="series" aria-label="Series 3: The experiment">
+    <div class="serieshead"><div class="stepno">3</div><h2>The experiment</h2><p class="ask">How does a crystal become a structure?</p></div>
+    <div class="cards one">
+    <article class="card lv-depth" data-level="depth"><div class="band">In depth</div>
       <canvas id="c3Cv" aria-hidden="true"></canvas>
       <div class="cardbody">
-        <div class="cardhead"><div class="stepno">4</div><span class="tagline">Put it to work</span></div>
-        <h2><a href="NE-CAT_4_X-ray_Fluorescence.html">X-ray fluorescence at NE-CAT</a></h2>
+        
+        <h2><a href="fluorescence.html">X-ray fluorescence at NE-CAT</a></h2>
         <p>What X-ray fluorescence is, which atoms in a protein crystal give it, and what it is used for: edge scans for phasing, and finding out which metal is there. Then where the fluorescence detector has to sit to see it clearly.</p>
         <ul class="chips"><li>How an atom fluoresces</li><li>Which atoms</li><li>Edges and lines</li><li>The edge scan</li><li>Where the detector goes</li></ul>
-        <span class="go">Open guide 4 →</span>
+        <span class="go">Open the guide →</span>
       </div>
     </article>
+    </div>
+    <p class="soon nonehere" hidden>No guide of this kind in this series yet.</p>
+  </section>
+  <section class="series" aria-label="Series 4: The science">
+    <div class="serieshead"><div class="stepno">4</div><h2>The science</h2><p class="ask">Why do structures matter?</p></div>
+    <p class="soon">Guides for this series are being written. They will start with what a protein is and why its shape matters.</p>
   </section>
 
-  <section aria-label="How to use the guides">
+  <section aria-label="How to use the guides" style="padding-top:26px">
     <div class="sec-head prose"><h2>How the guides work</h2></div>
     <div class="tips">
-      <div class="tip"><h3>Pick your beamline</h3><p>The Settings menu at the top of every guide switches the figures and the worked numbers between 24-ID-C and 24-ID-E, before and after the APS Upgrade. Your choice follows you from one guide to the next.</p></div>
+      <div class="tip"><h3>Two levels</h3><p>Yellow marks the five-minute guides, which have no equations. Black marks the in-depth guides, which include the equations and worked numbers. The buttons at the top of this page show one kind or the other.</p></div>
+      <div class="tip"><h3>Pick your beamline</h3><p>The Settings menu at the top of <i>How NE-CAT works</i>, <i>Why the X-ray beam is polarized</i> and <i>X-ray fluorescence at NE-CAT</i> switches the figures and the worked numbers between 24-ID-C and 24-ID-E, before and after the APS Upgrade. Your choice follows you from one guide to the next.</p></div>
       <div class="tip"><h3>Play with the figures</h3><p>Most figures have sliders, and many of them move. Drag things around and see what changes. Nothing here can break.</p></div>
       <div class="tip"><h3>Open the math if you want it</h3><p>Every equation is folded away under its figure, with a plain reading of what it says and a worked number. One button opens them all.</p></div>
-      <div class="tip"><h3>Check the fine print</h3><p>Values that are assumed or calculated, and not taken from a published source, are marked in the tables of guides 1 and 2. Corrections are welcome.</p></div>
+      <div class="tip"><h3>Check the fine print</h3><p>Values that are assumed or calculated, and not taken from a published source, are marked in the tables of <i>How APS works</i> and <i>How NE-CAT works</i>. Corrections are welcome.</p></div>
     </div>
   </section>
   </main>
 
-  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 11, 2026. Release 1.2.1. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
+  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 13, 2026. Release 1.3. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
 </div>
 
 <script>
@@ -336,6 +401,68 @@ fig('c3Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   c.save();c.translate(cx,cy-R*1.08);poly(c,[[-5,10],[5,10],[10,-4],[-10,-4]],GREY);rectF(c,-13,-22,26,18,ORG);c.restore();
   poly(c,[[cx,cy-8],[cx+8,cy],[cx,cy+8],[cx-8,cy]],GRN,2);
 });
+// what is a synchrotron: a ring of electrons with X-rays leaving along the tangents
+if($('csCv'))fig('csCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w*0.5,cy=h*0.52,R=h*0.33;
+  [-112,-90,-68,68,90,112].forEach(deg=>{const a=deg*Math.PI/180,x=cx+R*Math.cos(a),y=cy+R*Math.sin(a);pen(c,2.4,ORG);c.setLineDash([6,6]);c.lineDashOffset=-t*40;c.beginPath();c.moveTo(x,y);c.lineTo(x-Math.sin(a)*w*0.36,y+Math.cos(a)*w*0.36);c.stroke();c.setLineDash([]);c.lineDashOffset=0;});
+  pen(c,9,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+4.5,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-4.5,0,7);c.stroke();
+  for(let i=0;i<12;i++){const a=i/12*2*Math.PI+t*0.8;disc(c,cx+R*Math.cos(a),cy+R*Math.sin(a),3,YEL,1.2);}
+});
+// the walk down the beamline: five numbered stops on a beam
+if($('cwCv'))fig('cwCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const y=h*0.56;
+  pen(c,2.6,ORG);c.beginPath();for(let x=w*0.06;x<=w*0.94;x+=2){const yy=y+5*Math.sin(x/11-t*7);x===w*0.06?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();
+  [0.14,0.32,0.5,0.68,0.86].forEach((u,i)=>{const x=u*w;line(c,x,y-h*0.2,x,y-9,2);disc(c,x,y-h*0.27,h*0.085,RED,2);txt(c,String(i+1),x,y-h*0.27+1,h*0.11,'center','#fff');
+    if(i===0){for(let k=0;k<4;k++){rectF(c,x-18+k*9,y+9,9,9,k%2?RED:BLUE,1.4);}}
+    else if(i===1){c.save();c.translate(x,y+14);c.rotate(-0.3);rectF(c,-14,-4,28,8,STEEL,1.6);c.restore();}
+    else if(i===2)rectF(c,x-16,y+10,32,6,LTBLUE,1.6);
+    else if(i===3)poly(c,[[x-7,y+14],[x,y+7],[x+7,y+14],[x,y+21]],GRN,1.6);
+    else{rectF(c,x-10,y+8,20,20,WHITE,1.6);[[-4,-3],[3,2],[-2,5],[5,-5]].forEach(([a,b])=>{c.fillStyle=INK;c.beginPath();c.arc(x+a,y+18+b,1.4,0,7);c.fill();});}});
+});
+// the detector guides: a patch of pixels with their counts, and a sensor in cross-section
+if($('cpCv'))fig('cpCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const p=h*0.2,x0=w/2-3.5*p,y0=h/2-2*p;
+  for(let i=0;i<7;i++)for(let j=0;j<4;j++){const n=Math.round(160*Math.exp(-((i-3)*(i-3)+(j-1.5)*(j-1.5))/2.2)*(0.8+0.2*Math.sin(t*2+i+j)))+((i*7+j*13)%3);
+    c.fillStyle=`rgba(238,138,43,${Math.min(1,n/140).toFixed(2)})`;c.fillRect(x0+i*p,y0+j*p,p,p);pen(c,1.4);c.strokeRect(x0+i*p,y0+j*p,p,p);txt(c,String(n),x0+(i+0.5)*p,y0+(j+0.5)*p,p*0.36,'center');}
+});
+if($('cqCv'))fig('cqCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x0=w*0.14,x1=w*0.86,yt=h*0.34,yb=h*0.66,pw=(x1-x0)/6,u=(t/1.2)%1,k=Math.floor(t/1.2)%6,hx=x0+((k*2+3)%6+0.5)*pw;
+  rectF(c,x0,yt,x1-x0,yb-yt,'#dfe7ee',2.2);for(let i=0;i<6;i++){rectF(c,x0+i*pw+pw*0.1,yb,pw*0.8,h*0.07,YEL,1.8);if(i)line(c,x0+i*pw,yt,x0+i*pw,yb,1.2,'#52606b',[4,5]);}
+  if(u<0.4)arrow(c,hx,h*0.06,hx,h*0.06+(yt+12-h*0.06)*(u/0.4),ORG,3,8);else{const v=(u-0.4)/0.6;c.fillStyle='rgba(47,109,181,.55)';c.beginPath();c.ellipse(hx,yt+14+(yb-yt-14)*Math.min(1,v*1.3),4+8*v,4+4*v,0,0,7);c.fill();if(v>0.75)txt(c,'+1',hx,yb+h*0.17,h*0.11,'center',RED);}
+});
+// the shielded room: beam in, stray X-rays stopped by the walls
+if($('chCv'))fig('chCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.3,y=h*0.16,W=w*0.44,H=h*0.66,by=y+H*0.45,px=x+W*0.4;
+  rectF(c,x,y,W,H,'#f7f3e6',6);line(c,w*0.08,by,px,by,3,ORG);
+  [-1.9,-1.2,-0.6,0.5,1.1,1.8,2.6,-2.7].forEach((a,i)=>{const L=W*(0.2+0.06*Math.sin(t*3+i*1.7));line(c,px,by,px+L*Math.cos(a),by+L*Math.sin(a),1.3,'rgba(238,138,43,.6)');});
+  disc(c,px,by,4,GRN,1.6);disc(c,x+W*0.8,y+H+12,6,Math.sin(t*6)>-0.3?RED:'#f4c9c2',1.8);
+});
+// the cold crystal, and the pattern that fades with dose
+if($('ccCv'))fig('ccCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.42,y=h*0.58,L=h*0.5;
+  line(c,w*0.06,y,x-12,y,3,ORG);for(let k=0;k<12;k++){const u=(t*0.9+k/12)%1;c.fillStyle=`rgba(255,255,255,${(0.9-0.6*u).toFixed(2)})`;c.beginPath();c.arc(x+L*0.72*(1-u*1.25)+Math.sin(k*7.3)*6,y-L*0.72*(1-u*1.25)+Math.cos(k*5.1)*6,2+3*u,0,7);c.fill();}
+  c.save();c.translate(x+L*0.72,y-L*0.72);c.rotate(Math.PI*0.75);rectF(c,-L*0.34,-L*0.1,L*0.34,L*0.2,STEEL,2);c.restore();
+  line(c,x,y+8,x,y+h*0.3,3);poly(c,[[x-11,y-5],[x-4,y-11],[x+9,y-9],[x+11,y+3],[x+3,y+11],[x-9,y+8]],GRN,2);txt(c,'−173 °C',x+20,y+18,h*0.11);
+});
+if($('cdCv'))fig('cdCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.78,cx=w/2,cy=h/2,D=Math.max(0,((t*7)%80)-8);
+  rectF(c,cx-S/2,cy-S/2,S,S,WHITE,2.2);for(let i=-6;i<=6;i++)for(let j=-6;j<=6;j++){const x=(i+0.3*j)/6.6,y=j*0.95/6.6,r=Math.hypot(x,y);if(r>0.96||r<0.12||Math.abs(x)>0.96||(i*7+j*3+40)%3===0)continue;const k=Math.pow(2,-D/(10*1.5/r));if(k<0.05)continue;
+    c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(2)})`;c.beginPath();c.arc(cx+x*S/2,cy+y*S/2,(1.2+1.4*((i*5+j*11+60)%4)/3)*Math.sqrt(k),0,7);c.fill();}
+  txt(c,D.toFixed(0)+' MGy',cx+S/2+12,cy,h*0.11,'left',D>30?RED:INK);
+});
+// guide 3: a crystal, its spots, and the density they give
+if($('cmCv'))fig('cmCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+  const cy=h*0.52,x1=w*0.15,x2=w*0.45,x3=w*0.79,s=h*0.26;
+  line(c,w*0.03,cy,x1-s*0.5,cy,2.6,BLUE);
+  poly(c,[[x1,cy-s],[x1+s*0.8,cy-s*0.25],[x1+s*0.5,cy+s],[x1-s*0.5,cy+s],[x1-s*0.8,cy-s*0.25]],GRN,2.2);line(c,x1-s*0.8,cy-s*0.25,x1+s*0.8,cy-s*0.25,1.4);
+  rectF(c,x2-s*1.25,cy-s*1.25,s*2.5,s*2.5,WHITE,2.2);
+  for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){const x=i+0.5*(j&1),y=j*0.87,d=Math.hypot(x,y);if(d<0.6||d>3.4)continue;const on=Math.sin(t*1.4+i*1.7+j*2.3)>0.86;
+    c.fillStyle=on?ORG:INK;c.beginPath();c.arc(x2+x*s*0.34,cy+y*s*0.34,(on?3.4:1.2+1.6*Math.abs(Math.sin(i*12.9+j*78.2)))*(1-d*0.12),0,7);c.fill();}
+  const P=[[-0.96,0.33],[-0.48,-0.3],[0,0.33],[0.48,-0.3],[0.96,0.33]];
+  c.lineJoin='round';c.lineCap='round';c.strokeStyle=INK;c.lineWidth=s*0.95;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();
+  c.strokeStyle=LTBLUE;c.lineWidth=s*0.95-5;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();
+  pen(c,2.6);c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();P.forEach(([x,y],i)=>disc(c,x3+x*s,cy+y*s,4.2,i===2?RED:i===4?BLUE:'#5d6a73',1.6));
+  fatArrow(c,x1+s*1.05,cy,x2-s*1.45,cy,YEL,6);fatArrow(c,x2+s*1.45,cy,x3-s*1.6,cy,YEL,6);
+});
+// the chooser at the top of the index: show every guide, the five-minute ones or the in-depth ones. ?level=intro or ?level=depth in the address sets it
+const ts=$('trackSel');if(ts){const bs=[...ts.querySelectorAll('button')];
+  const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));document.querySelectorAll('.card[data-level]').forEach(el=>{el.hidden=v!=='all'&&el.dataset.level!==v;});
+    document.querySelectorAll('section.series').forEach(s=>{const e=s.querySelector('.nonehere');if(e)e.hidden=s.querySelectorAll('.card:not([hidden])').length>0;});
+    try{history.replaceState(null,'',v==='all'?location.pathname:'?level='+v);}catch(e){}};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));let q=null;try{q=new URLSearchParams(location.search).get('level');}catch(e){}set(q==='intro'||q==='depth'?q:'all');}
 })();
 
 </script>
