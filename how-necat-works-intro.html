@@ -1,0 +1,554 @@
+<!doctype html>
+<!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="The whole beamline in five stops and five minutes, with no equations. Where the X-rays come from, how one energy is picked out, how the beam is squeezed, what the sample is, and what the detector sees.">
+<meta name="author" content="NE-CAT, Cornell University">
+<link rel="canonical" href="https://aps-24id.github.io/necat-guides/how-necat-works-intro.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="NE-CAT beamline guides">
+<meta property="og:title" content="A walk down the beamline">
+<meta property="og:description" content="The whole beamline in five stops and five minutes, with no equations. Where the X-rays come from, how one energy is picked out, how the beam is squeezed, what the sample is, and what the detector sees.">
+<meta property="og:url" content="https://aps-24id.github.io/necat-guides/how-necat-works-intro.html">
+<meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/walk.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Opening figure of the guide “A walk down the beamline”">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>A Walk Down the Beamline</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">
+<style>
+/* Three linked guides share this sheet. Layout: a comic album page. One reading column (~66ch); figures are inked panels up to 980px wide with yellow narration boxes; equations sit on ruled cards with a symbol-by-symbol reading. Single light theme by design (ligne claire is a paper style). */
+:root{
+  --paper:#fffdf6; --ink:#1b1b1b; --muted:#55575c; --sky:#dcecf5; --cap:#ffe98a;
+  --red:#d8412f; --blue:#2f6db5; --orange:#ee8a2b; --green:#5aa469; --card:#ffffff; --rule:#1b1b1b;
+  --f-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive;
+  --f-math:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:980px;margin:0 auto}
+.prose{max-width:66ch;margin:0 auto}
+.prose>*+*{margin-top:1em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(2.3rem,6.4vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.6vw,2.2rem);font-weight:750}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--blue)}
+math{font-family:var(--f-math);font-size:1.06em}
+mi[mathvariant="bold"],mi[mathvariant="bold-italic"]{font-weight:700}
+.hero{padding-block:44px 20px;display:grid;gap:20px}
+.kicker{font-family:var(--f-hand);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;display:inline-block;background:var(--cap);border:2.5px solid var(--ink);padding:2px 12px;justify-self:start}
+.lede{font-size:1.22rem;line-height:1.5;max-width:62ch}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.chain a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.chain a:hover,.chain a:focus-visible{background:var(--cap);outline:none}
+section{padding-block:52px 4px;display:grid;gap:22px}
+.sec-head{display:grid;gap:12px}
+.stepno{font-family:var(--f-display);font-weight:800;font-size:1.05rem;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:#fff;border:2.5px solid var(--ink);display:grid;place-items:center}
+.panel{display:grid;gap:12px}
+.panel canvas{width:100%;display:block;border:3px solid var(--ink);background:var(--sky)}
+.figcap{font-size:.93rem;color:var(--muted);line-height:1.45;max-width:78ch}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;align-items:end;background:var(--card);border:2.5px solid var(--ink);padding:12px 14px}
+.ctl{display:grid;gap:2px;min-width:0}
+.ctl label{font-family:var(--f-hand);font-size:1.05rem;display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-weight:700;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--red)}
+input[type=number],select{width:100%;font-family:var(--f-hand);font-size:1.1rem;padding:4px 8px;border:2.5px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-hand);font-size:1.02rem;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:0;padding:2px 10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--cap)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.ro{background:var(--cap);border:2.5px solid var(--ink);padding:6px 12px;min-width:0}
+.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}
+.ro .v{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-hand);font-size:1rem}
+.key i{display:inline-block;width:16px;height:12px;border:2px solid var(--ink);vertical-align:-1px;margin-right:6px}
+/* equation cards */
+.eqcard{background:var(--card);border:2.5px solid var(--ink);max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqcard .tag{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;background:var(--ink);color:var(--paper);padding:2px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.eqcard .eqn{padding:14px 14px 10px;overflow-x:auto;font-size:1.12rem;border-bottom:2px dashed var(--ink)}
+.eqcard .body{padding:12px 14px 14px;display:grid;gap:10px;font-size:.96rem;line-height:1.5}
+.read{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.read dt{font-weight:600;white-space:nowrap}
+.read dd{margin:0;min-width:0}
+.says b,.num b{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;background:var(--cap);border:2px solid var(--ink);padding:0 6px;margin-right:6px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;padding-top:10px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar label{font-family:var(--f-hand);font-size:1.02rem;background:var(--cap);border:2.5px solid var(--ink);padding:1px 8px;display:flex;align-items:center;gap:8px;max-width:100%}
+.bar select{width:auto;max-width:100%;border:0;background:transparent;padding:2px 4px;font-size:1.02rem}
+.using{font-family:var(--f-hand);font-size:1.02rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:4px 12px}
+.tblwrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--card)}
+table.settings{border-collapse:collapse;width:100%;min-width:720px;font-size:.93rem;line-height:1.35;font-variant-numeric:tabular-nums}
+table.settings th,table.settings td{border:1.5px solid var(--ink);padding:5px 10px;text-align:left;vertical-align:top}
+table.settings thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+table.settings tbody th{font-weight:600;background:var(--paper)}
+table.settings .on{background:var(--cap)}
+table.settings thead th.on{background:var(--red);color:#fff}
+.notes{font-size:.9rem;color:var(--muted);line-height:1.45;max-width:78ch;margin-inline:auto;width:100%}
+.notes p+p{margin-top:.5em}
+ul.refs{padding-left:1.2em;margin:0}
+ul.refs li+li{margin-top:.4em}
+@media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
+
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
+details.eqcard>summary{cursor:pointer;list-style:none}
+details.eqcard>summary::-webkit-details-marker{display:none}
+details.eqcard>summary .eqno{white-space:nowrap}
+details.eqcard>summary::after{content:"+ show";background:var(--cap);color:var(--ink);padding:0 8px;margin-left:auto;white-space:nowrap}
+details.eqcard[open]>summary::after{content:"\2212  hide"}
+details.eqcard>summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+details.eqcard:not([open]) .eqn{display:none}
+.eqgroup{display:grid;gap:8px;max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqlabel{font-family:var(--f-hand);font-size:1.05rem}
+.guides{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.guides span.lbl{text-transform:uppercase;letter-spacing:.06em}
+.guides a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.guides a[aria-current="page"]{background:var(--red);color:#fff}
+.guides a:hover,.guides a:focus-visible{background:var(--cap);color:var(--ink)}
+table.rules{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.rules th,table.rules td{border:1.5px solid var(--ink);padding:5px 10px;text-align:right}
+table.rules th:first-child,table.rules td:first-child{text-align:left}
+table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+</style>
+</head><body>
+
+<div class="wrap">
+  <div class="bar"><button id="motionBtn" aria-pressed="false">Pause motion</button></div>
+  <header class="hero">
+    <div class="kicker">NE-CAT guides · the beamline in five minutes</div>
+    <h1>A walk down the beamline</h1>
+    <p class="lede">NE-CAT uses X-rays to find the shapes of the molecules of life. On the way to the experiment the X-rays are made, sorted and squeezed, until they land on a crystal smaller than a grain of salt. A detector then catches what the crystal sends out. This guide walks down the beamline in five stops.</p>
+    <p class="lede" style="font-size:1.05rem">Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.</p>
+    <div class="panel">
+      <canvas id="walkHeroCv" aria-label="Animation of the beamline from left to right in five numbered stops: magnets that make the X-rays, a silicon crystal that keeps one energy, mirrors that focus the beam, the protein crystal, and the detector with spots on it"></canvas>
+      <div class="figcap">The beamline from end to end. X-rays build up as the electrons pass between the magnets on the left, and travel to the right. The drawing is not to scale: the real beamline is tens of meters long, and the crystal is too small to see.</div>
+    </div>
+    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="index.html">← Home</a><span class="lbl">Series 2 · The beamline</span><span class="level lv-intro">5 minutes</span></nav>
+    <nav class="chain" aria-label="Sections"><a href="#magnets">1 Magnets</a><a href="#energy">2 One energy</a><a href="#focus">3 Mirrors</a><a href="#sample">4 The crystal</a><a href="#detector">5 Detector</a></nav>
+  </header>
+
+  <section id="magnets">
+    <div class="sec-head prose">
+      <div class="stepno">1</div>
+      <h2>Wiggling electrons make the X-rays</h2>
+      <p>The Advanced Photon Source is a ring of magnets about 1.1 kilometers around. Electrons fly around it at almost the speed of light, about 270,000 laps every second.</p>
+      <p>On each lap they pass between two rows of magnets called an undulator. The magnets push the electrons to one side, then the other, then back again. Every time an electron is pushed sideways it gives off X-rays. Because the electron is moving so fast, the X-rays all go forward in a narrow beam.</p>
+      <p>Moving the two rows closer together or farther apart changes the wiggle, and with it the energies of the X-rays that come out. This is the first of the controls the beamline uses to tune its X-rays.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The ring has one undulator for each of NE-CAT's two beamlines, 24-ID-C and 24-ID-E. Their magnets repeat every 2 to 3 centimeters. The wiggle is less than a thousandth of a millimeter to each side.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="wUndCv" aria-label="Interactive: electrons fly between two rows of magnets and wiggle from side to side. A burst of X-rays builds up ahead of each electron, one wave longer for each wiggle, and leaves to the right. A slider moves the rows closer together or farther apart"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="wG">Gap between the two rows of magnets <output id="wGO">11.9 mm</output></label><input id="wG" type="range" min="8.5" max="30" step="0.1" value="11.9"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Wiggle to each side</div><div class="v" id="wAmp">–</div></div>
+        <div class="ro"><div class="k">Against the length of one wiggle</div><div class="v" id="wRat">–</div></div>
+      </div>
+      <div class="figcap">The yellow dots are electrons, flying from left to right between the two rows of magnets. Red and blue are the two kinds of magnet pole, and they alternate, so the electrons are pushed first one way and then the other. Each electron gives off a little more light at every wiggle. The light travels very slightly faster than the electron, so the burst of X-rays ahead of it grows by one wave for each wiggle, and leaves at full length. Move the rows closer and the push is stronger, so the wiggle is bigger. The orange wave is the longest X-ray wave the undulator makes, and it gets longer as the wiggle grows. That is not the whole story. The undulator also makes X-rays with waves 3 and 5 times shorter, and closing the gap makes those stronger. The beamline usually works with one of them, and picks the gap to put it at the energy that is wanted. The wiggle is drawn far larger than it is, and so is the distance the light gets ahead: the numbers give the real size of the wiggle.</div>
+    </div>
+  </section>
+
+  <section id="energy">
+    <div class="sec-head prose">
+      <div class="stepno">2</div>
+      <h2>A block of silicon keeps one energy</h2>
+      <p>The beam that leaves the undulator is a mix of X-rays of many energies, much as white light is a mix of colors. The experiment needs just one.</p>
+      <p>A block of pure silicon does the sorting. X-rays bounce off the layers of atoms inside it, but at any one tilt only one energy bounces cleanly. The rest are lost in the block. Tilt the block a little and a different energy gets through. The device is called a monochromator, which means one color.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> 24-ID-C can be set anywhere from 6 to 20 keV. The keV, or kiloelectronvolt, is the unit X-ray energies are measured in. 24-ID-E always runs at 12.662 keV, an energy that suits crystals that contain selenium.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="wMonoCv" aria-label="Interactive: X-rays of many energies, drawn as lines of different colors, meet two faces of silicon that are set one above the other and a little apart along the beam. Only one energy bounces off the first face and then the second, and leaves. A slider tilts the block and changes which energy gets through"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="wA">Tilt of the silicon block <output id="wAO">9.0°</output></label><input id="wA" type="range" min="5.7" max="19.2" step="0.1" value="9"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Energy that gets through</div><div class="v" id="wE">–</div></div>
+      </div>
+      <div class="figcap">X-rays have no color. The colors here stand for their energies, from red for the lowest to violet for the highest. Many energies arrive from the left. The one energy that fits the tilt bounces off the lower face and then the upper one, and leaves in the direction it came, a little higher up. The two faces are cut from a single block of silicon, joined behind the plane of the drawing, so they always stay exactly parallel. Tilt the block and watch the marker move along the scale. The drawing shows five energies going in, where the real beam holds every energy in between, and the tilt is drawn larger than it is.</div>
+    </div>
+  </section>
+
+  <section id="focus">
+    <div class="sec-head prose">
+      <div class="stepno">3</div>
+      <h2>Mirrors squeeze the beam</h2>
+      <p>X-rays go straight through an ordinary mirror. They will bounce off a very smooth surface if they only just graze it, at a fraction of a degree, like a flat stone skipping off water.</p>
+      <p>A grazing mirror that is bent very slightly brings the X-rays together. One mirror squeezes the beam in height, and a second one squeezes it in width. In the figure, bend the mirror until the beam is at its smallest on the crystal.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The beam at NE-CAT is nominally 10 microns wide and 10 microns high. A micron is a thousandth of a millimeter. A human hair is about 70 microns across.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="wKbCv" aria-label="Interactive: parallel X-rays graze a long mirror and are sent toward the crystal. A slider bends the mirror, which brings the rays together. A magnified circle shows the size of the beam at the crystal against a human hair seen end on"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="wB">Bend of the mirror <output id="wBO">30%</output></label><input id="wB" type="range" min="0" max="1.5" step="0.01" value="0.3"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Beam at the crystal</div><div class="v" id="wS">–</div></div>
+        <div class="ro"><div class="k">Compared with a hair</div><div class="v" id="wH">–</div></div>
+      </div>
+      <div class="figcap">The X-rays come in from the left, graze the mirror and head for the crystal. With the mirror flat they stay as far apart as they started. Bend it and they come together. Bend it too far and they cross before they reach the crystal and spread out again. The circle is a magnified view of the beam where it meets the crystal, drawn over a human hair seen end on. Only one of the two mirrors is shown, and its angle is drawn much steeper than the real one. The smallest size is the nominal beam at NE-CAT, 10 microns across. The other sizes are for illustration, and 70 microns is a typical hair.</div>
+    </div>
+  </section>
+
+  <section id="sample">
+    <div class="sec-head prose">
+      <div class="stepno">4</div>
+      <h2>A frozen crystal on the end of a pin</h2>
+      <p>The sample is a crystal of protein, usually about a tenth of a millimeter across. It is scooped up in a tiny loop on the end of a metal pin.</p>
+      <p>The crystal is kept at about 173 degrees below zero Celsius in a stream of cold nitrogen gas. The cold slows the damage that the X-rays do to it. A robot takes each pin from storage in liquid nitrogen and sets it in place, so nobody needs to be in the room while the X-rays are on.</p>
+      <p>The beam is smaller than the crystal, so it can be aimed at the best part.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> A machine called a goniometer holds the pin and turns the crystal in the beam. The one on 24-ID-C turns the crystal about an upright axis.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="wZoomCv" aria-label="Interactive: a metal pin with a small loop on its end, a green crystal in the loop, and an orange spot on the crystal where the X-ray beam lands. A slider zooms in from the whole pin to the beam"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="wZ">Zoom in <output id="wZO">1.0×</output></label><input id="wZ" type="range" min="0" max="1" step="0.005" value="0"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">The picture is this wide</div><div class="v" id="wW">–</div></div>
+        <div class="ro"><div class="k">What fills it</div><div class="v" id="wSee">–</div></div>
+      </div>
+      <div class="figcap">The sample as the X-rays see it on their way in. Zoom in from the pin to the loop, to the crystal, and at last to the orange spot where the beam lands. The bar at the bottom left shows the scale. The pin, loop and crystal are drawn at typical sizes: a pin 18 millimeters long, a loop about a third of a millimeter across and a crystal a tenth of a millimeter across. The beam is the nominal size at NE-CAT, 10 microns across.</div>
+    </div>
+  </section>
+
+  <section id="detector">
+    <div class="sec-head prose">
+      <div class="stepno">5</div>
+      <h2>The detector catches the spots</h2>
+      <p>Most of the X-rays go straight through the crystal and are stopped by a small piece of metal called a beamstop. A small share are sent off in new directions by the rows of molecules in the crystal.</p>
+      <p>They do not spread out evenly. They leave as thousands of separate thin rays, and each ray makes a spot on the detector. As the crystal turns, spots go out and new ones flash up.</p>
+      <p>Where the spots fall, and how bright each one is, depends on how the atoms are arranged in the molecule. Computers work backward from the spots to the position of every atom.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The detector on 24-ID-C has more than 16 million pixels, and it counts the X-rays that land on each one.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="wDetCv" aria-label="Interactive: X-rays reach a crystal, and thin rays leave it for a square detector where each makes a spot. A slider turns the crystal, new spots flash up, and the ones already seen stay marked"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="wR">Turn the crystal <output id="wRO">0°</output></label><input id="wR" type="range" min="0" max="90" step="0.5" value="0"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Spots caught so far</div><div class="v" id="wN">–</div></div>
+      </div>
+      <div class="figcap">The X-rays arrive at the crystal, and the thin rays it sends out land on the detector. The orange spots are the ones lit at this moment. Turn the crystal and they go out while others flash up. The black dots are spots already caught. The gray disc in the middle is the beamstop, which blocks the X-rays that went straight through. The drawing has far fewer spots than a real crystal gives, and they are placed to look right, not calculated from a real molecule.</div>
+    </div>
+  </section>
+
+  <section id="further">
+    <div class="sec-head prose">
+      <h2>One thing to remember</h2>
+      <p class="remember">A beamline makes X-rays by wiggling electrons, keeps one energy, squeezes the beam until it is narrower than a hair, and records the spots that a frozen crystal sends out.</p>
+      <p>Want the details, with the equations and the real numbers? Go deeper with the guide <a class="guidelink" data-guide="overview" href="how-necat-works.html">How NE-CAT works</a>.</p>
+      <details class="classroom"><summary>For a class</summary><ul><li>Why might the experiment need X-rays of just one energy? Think about what a mix of energies would do to the spots.</li><li>The beam is narrower than a hair. Why is a small beam useful when the crystal is small too?</li><li>Why is the crystal turned while the detector records?</li><li>Try it: at the second stop, find the tilt that lets 12.7 keV through. Which way do you tilt the block for a higher energy?</li></ul></details>
+    </div>
+    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="overview" href="how-necat-works.html">Next: How NE-CAT works →</a></nav>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.4. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let playing = !reduce;
+const mBtn = document.getElementById('motionBtn');
+const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
+setMotionLabel();
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();});
+const $=id=>document.getElementById(id);
+
+// ---- ligne claire palette: flat colors, one ink line ----
+const INK='#1b1b1b', SKY='#dcecf5', WHITE='#ffffff', RED='#d8412f', BLUE='#2f6db5', YEL='#f6c52e', CAP='#ffe98a',
+      GRN='#5aa469', ORG='#ee8a2b', GREY='#b9c2c9', PUR='#8a63c2', LTGRN='#cfe6c9', LTYEL='#ffe9a3', LTRED='#f4c9c2',
+      LTBLUE='#c6d9f0', STEEL='#9fb6cc', FLOOR='#efe3c4', LTORG='#ffd98a', MINT='#bfe0c4';
+const HAND='"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive';
+
+const figs=[];
+function fig(id,aspect,draw,animated=true){
+  const cv=$(id), ctx=cv.getContext('2d');
+  const f={cv,ctx,draw,animated,visible:true,w:0,h:0,t:0};
+  function size(){const dpr=Math.min(window.devicePixelRatio||1,2);const w=cv.clientWidth;if(!w)return;const asp=typeof aspect==='function'?aspect(w):aspect;const h=Math.round(w/asp);
+    cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);f.w=w;f.h=h;f.draw(f);}
+  new ResizeObserver(size).observe(cv);
+  new IntersectionObserver(es=>{es.forEach(e=>f.visible=e.isIntersecting)}).observe(cv);
+  figs.push(f); return f;
+}
+const redrawAll=()=>figs.forEach(f=>f.w&&f.draw(f));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(redrawAll);
+let last=performance.now();
+function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
+  figs.forEach(f=>{if(f.animated&&f.visible&&playing&&f.w){f.t+=dt;f.draw(f);}});requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+// ---- drawing kit ----
+function pen(c,w=2,col=INK){c.strokeStyle=col;c.lineWidth=w;c.lineJoin='round';c.lineCap='round';c.setLineDash([]);}
+function bg(c,w,h,col=SKY){c.fillStyle=col;c.fillRect(0,0,w,h);}
+function rectF(c,x,y,w,h,fill,lw=2){c.fillStyle=fill;c.fillRect(x,y,w,h);pen(c,lw);c.strokeRect(x,y,w,h);}
+function disc(c,x,y,r,fill,lw=2){c.beginPath();c.arc(x,y,r,0,7);if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function poly(c,pts,fill,lw=2){c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function line(c,x0,y0,x1,y1,lw=2,col=INK,dash){pen(c,lw,col);if(dash)c.setLineDash(dash);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.setLineDash([]);}
+function arrow(c,x0,y0,x1,y1,col=INK,lw=2.2,head=8){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);pen(c,lw,col);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();if(L<3)return;
+  const ux=dx/L,uy=dy/L,h=Math.min(head,L*0.7);c.fillStyle=col;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1-ux*h-uy*h*0.5,y1-uy*h+ux*h*0.5);c.lineTo(x1-ux*h+uy*h*0.5,y1-uy*h-ux*h*0.5);c.closePath();c.fill();c.stroke();}
+function fatArrow(c,x0,y0,x1,y1,fill,wd=7){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);if(L<4)return;const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;const hd=Math.min(wd*2.2,L*0.65),hw=wd*1.35;const bx=x1-ux*hd,by=y1-uy*hd;
+  poly(c,[[x0+nx*wd/2,y0+ny*wd/2],[bx+nx*wd/2,by+ny*wd/2],[bx+nx*hw,by+ny*hw],[x1,y1],[bx-nx*hw,by-ny*hw],[bx-nx*wd/2,by-ny*wd/2],[x0-nx*wd/2,y0-ny*wd/2]],fill);}
+function txt(c,s,x,y,size=16,align='left',col=INK){c.fillStyle=col;c.font=`${size}px ${HAND}`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);}
+function cap(c,s,x,y,align='left',size=15){s=s.replace(/[a-z]/g,ch=>ch.toUpperCase());c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+16,ph=size+10;
+  const x0=align==='center'?x-pw/2:align==='right'?x-pw:x;rectF(c,x0,y-ph/2,pw,ph,CAP,2);c.fillStyle=INK;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+8,y+1);}
+function electron(c,x,y,r=8){disc(c,x,y,r,YEL);line(c,x-r*0.45,y,x+r*0.45,y,2);}
+function eye(c,x,y,ang){c.save();c.translate(x,y);c.rotate(ang);c.beginPath();c.ellipse(0,0,15,9,0,0,7);c.fillStyle=WHITE;c.fill();pen(c,2);c.stroke();disc(c,-5,0,4.5,INK);c.restore();}
+function sampleLoop(c,x,y,s=1){line(c,x,y+7*s,x,y+34*s,3);disc(c,x,y,9*s,WHITE);poly(c,[[x-5*s,y],[x,y-5*s],[x+5*s,y],[x,y+5*s]],GRN,1.6);}
+function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fmt(+el.value);cb&&cb();};el.addEventListener('input',up);up();return el;}
+
+// ---------- helpers shared by the Introductory guides. The script of each is the drawing kit, this file, and the guide's own file ----------
+const GDK='#2f7a45';
+function tag(c,s,x,y,align='left',size=15,col=INK){c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+10,ph=size+6,x0=align==='center'?x-pw/2:align==='right'?x-pw:x;
+  c.fillStyle=WHITE;c.fillRect(x0,y-ph/2,pw,ph);pen(c,1.6);c.strokeRect(x0,y-ph/2,pw,ph);c.fillStyle=col;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+5,y+1);}
+// seeded random numbers, so that figures do not flicker
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+const setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+// a color to stand for an X-ray energy between 6 and 20 keV: red for low, violet for high
+const hueE=E=>`hsl(${Math.round(Math.max(0,Math.min(1,(E-6)/14))*270)},78%,50%)`;
+function stopNo(c,n,x,y,r=13){disc(c,x,y,r,RED,2);txt(c,String(n),x,y+1,Math.round(r*1.25),'center','#fff');}
+function wave(c,x0,x1,y,amp,lam,ph,col,lw=2){if(x1<=x0)return;pen(c,lw,col);c.beginPath();for(let x=x0;x<=x1;x+=2){const yy=y+amp*Math.sin((x-x0)/lam*6.2832-ph);x===x0?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();}
+function magnets(c,x0,x1,y,hh,n,flip){const bw=(x1-x0)/n;for(let i=0;i<n;i++)rectF(c,x0+i*bw,y,bw,hh,((i%2)^flip)?RED:BLUE,2);}
+
+const fmtE=le=>{const e=Math.pow(10,le);return e<1e6?(e/1e3).toFixed(e<1e4?1:0)+' keV':e<1e9?(e/1e6).toFixed(e<1e7?1:0)+' MeV':(e/1e9).toFixed(1)+' GeV';};
+// the ring's pipe, seen from above
+function pipe(c,cx,cy,R,pw){pen(c,pw*2,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+pw,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-pw,0,7);c.stroke();}
+// a made-up diffraction pattern: spots on a lattice. Each spot stands for detail of d ångströms, with dEdge at the edge of the picture
+function mkSpots(seed,dEdge){const r=rng(seed),S=[];for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.09||Math.abs(x)>0.97||r()<0.4)continue;S.push({x,y,rad,d:dEdge/rad,s:(0.45+r())*(1-0.5*rad)});}return S;}
+const ICE=[3.90,3.67,3.44,2.67,2.25,2.07,1.95,1.92,1.88];   // spacings of the rings from ordinary (hexagonal) ice, in ångströms
+// draws the pattern in a square of side S. Spots fade with dose by the rule of 10 MGy for each ångström. ice from 0 to 1 adds ice rings
+function drawPattern(c,cx,cy,S,spots,dose,dEdge,ice){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,3);
+  if(ice>0.01)ICE.forEach((d,i)=>{const R=dEdge/d*S/2*0.95;if(R<S/2-2){pen(c,(i<3?3.2:2)*(0.4+0.6*ice),`rgba(70,80,92,${(0.6*ice).toFixed(3)})`);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();}});
+  spots.forEach(s=>{const k=Math.pow(2,-dose/(10*s.d))*(1-0.55*(ice||0));if(k<0.04)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(3)})`;c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.sqrt(k),0,7);c.fill();});
+  disc(c,cx,cy,Math.max(4,S*0.025),GREY,1.6);}
+// a crystal seen side on, as a six-sided shape of half-size s
+function xtal(c,x,y,s,fill=GRN,lw=2){poly(c,[[x-s,y-s*0.45],[x-s*0.35,y-s],[x+s*0.8,y-s*0.8],[x+s,y+s*0.3],[x+s*0.3,y+s],[x-s*0.85,y+s*0.7]],fill,lw);}
+const mix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// numbers in plain words
+const big=n=>n<1e3?String(Math.round(n)):n<1e6?(Math.round(n/Math.pow(10,Math.floor(Math.log10(n))-1))*Math.pow(10,Math.floor(Math.log10(n))-1)).toLocaleString('en-US'):n<1e9?(n/1e6).toFixed(n<1e7?1:0)+' million':n<1e12?(n/1e9).toFixed(n<1e10?1:0)+' billion':(n/1e12).toFixed(n<1e13?1:0)+' trillion';
+// the crystal, the cone of rays that the detector catches, and the detector, seen from the side. D is the distance in mm (150 to 1200)
+const DET_HALF=155.55, LAMBDA=0.9792;   // half the width of the detector face in mm (EIGER2 X 16M), and the wavelength at 12.662 keV in ångströms
+const resAt=D=>LAMBDA/(2*Math.sin(0.5*Math.atan(DET_HALF/D)));
+function geoDraw(c,w,h,D,fs,narrow){const sc=(w*0.74)/1200,x0=w*0.1,y=h*0.5,xd=x0+D*sc,hb=DET_HALF*sc;
+  arrow(c,0,y,x0-12,y,ORG,3,9);
+  c.fillStyle='rgba(238,138,43,.22)';c.beginPath();c.moveTo(x0,y);c.lineTo(xd,y-hb);c.lineTo(xd,y+hb);c.closePath();c.fill();
+  line(c,x0,y,xd,y-hb,1.6,ORG);line(c,x0,y,xd,y+hb,1.6,ORG);line(c,x0,y,xd-10,y,1.6,'rgba(238,138,43,.7)');rectF(c,xd-12,y-4,5,8,INK,1);
+  rectF(c,xd,y-hb,Math.max(8,w*0.014),2*hb,WHITE,2.4);disc(c,x0,y,narrow?5:7,GRN,2);
+  [150,400,800,1200].forEach(d=>{const x=x0+d*sc;line(c,x,h-(narrow?26:30),x,h-(narrow?20:24),2);txt(c,d===1200?'1.2 m':d+' mm',x,h-(narrow?11:13),fs,'center','#52606b');});
+  line(c,x0,h-(narrow?23:27),x0+1200*sc,h-(narrow?23:27),1.6,'#52606b');
+  cap(c,'crystal',x0,y-(narrow?20:26),'center',fs);cap(c,'detector',Math.min(w-6,xd+Math.max(8,w*0.014)+6),Math.max(13,y-hb-(narrow?14:18)),xd>w*0.6?'right':'left',fs);}
+// a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
+function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
+  const setEq=o=>{eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}};
+  eqBtn.addEventListener('click',()=>setEq(!eqOpen));try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}}
+// ---------- the guide "A walk down the beamline" (Introductory level) ----------
+// Five stops, one figure and one control at each. The script is the drawing kit, introkit.js and this file.
+// ---------- opening figure: the whole beamline, five stops ----------
+if($('walkHeroCv')){
+fig('walkHeroCv',w=>w<560?1.15:3.1,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const y=h*(narrow?0.4:0.5), fy=h*(narrow?0.72:0.84); rectF(c,-4,fy,w+8,h,FLOOR);
+  const X=[0.11,0.33,0.52,0.72,0.92].map(v=>v*w), mh=h*0.075, gp=h*0.055, uw=w*0.075;
+  [0,1,2].forEach(i=>line(c,X[i],y+h*0.1,X[i],fy,3));
+  // 3: two mirrors, one seen on edge and one face on
+  rectF(c,X[2]+w*0.008,y-h*0.06,w*0.035,h*0.12,LTBLUE,2);
+  // the beam: a thick mix of energies, then one energy, then narrowing to the crystal
+  // the light builds up between the magnets: nothing at the way in, full strength at the way out
+  {const a0=narrow?4:6,lm=narrow?9:13,xa=X[0]-uw;for(let x=xa;x<X[1]-6;x+=2){const g=u=>Math.min(1,Math.max(0,(u-xa)/(2*uw))),f=u=>y+a0*g(u)*Math.sin((u-xa)/lm*6.2832-t*9);
+    if(g(x+2)<=0)continue;pen(c,1+((narrow?4:6)-1)*g(x+1),ORG);c.beginPath();c.moveTo(x,f(x));c.lineTo(x+2,f(x+2));c.stroke();}}
+  wave(c,X[1]+6,X[2]-w*0.04,y,narrow?3:5,narrow?9:13,t*9,ORG,2.4);
+  line(c,X[2]-w*0.04,y-(narrow?3:5),X[3],y,2,ORG);line(c,X[2]-w*0.04,y+(narrow?3:5),X[3],y,2,ORG);
+  rectF(c,X[2]-w*0.045,y+(narrow?5:7),w*0.04,narrow?6:8,GREY,2);
+  // 1: the undulator, with an electron going through
+  magnets(c,X[0]-uw,X[0]+uw,y-gp-mh,mh,6,0);magnets(c,X[0]-uw,X[0]+uw,y+gp,mh,6,1);
+  {const u=(t*0.45)%1,xe=X[0]-uw-10+u*(2*uw+20);electron(c,xe,y+(gp-9)*0.7*Math.sin((xe-X[0]+uw)/(2*uw/3)*6.2832),narrow?4:6);}
+  // 2: the silicon crystal
+  c.save();c.translate(X[1],y);c.rotate(-0.32);rectF(c,-w*0.03,narrow?3:4,w*0.06,narrow?8:11,STEEL,2);c.restore();
+  // 5: the detector, with rays from the crystal
+  const dx=X[4]-w*0.012, dw=Math.max(10,w*0.026), d0=h*0.1, d1=fy-h*0.04;
+  [-0.34,-0.2,-0.09,0.1,0.22,0.36].forEach((a,i)=>{const yy=y+a*(d1-d0)*1.15;if(yy<d0+4||yy>d1-4)return;line(c,X[3],y,dx,yy,1.3,'rgba(238,138,43,.75)');});
+  line(c,X[3],y,X[3]+w*0.05,y,2,ORG);rectF(c,X[3]+w*0.05,y-5,5,10,INK,1);
+  rectF(c,dx,d0,dw,d1-d0,WHITE,2.4);
+  [-0.34,-0.2,-0.09,0.1,0.22,0.36].forEach((a,i)=>{const yy=y+a*(d1-d0)*1.15;if(yy<d0+4||yy>d1-4)return;const on=Math.sin(t*1.6+i*2.1)>0.2;c.fillStyle=on?ORG:INK;c.beginPath();c.arc(dx+dw/2,yy,on?3.2:1.8,0,7);c.fill();});
+  // 4: the crystal
+  sampleLoop(c,X[3],y,narrow?0.9:1.25);
+  // numbers and names
+  const N=['magnets','one energy','mirrors','crystal','detector'];
+  X.forEach((x,i)=>{stopNo(c,i+1,x,narrow?h*0.1:h*0.13,narrow?11:14);
+    const ly=narrow?fy+(i%2?h*0.19:h*0.08):fy+(h-fy)/2;
+    cap(c,N[i],i===4?w-6:i===0&&narrow?6:x,ly,i===4?'right':i===0&&narrow?'left':'center',fs);});
+});
+}
+
+// ---------- stop 1: the undulator ----------
+if($('wUndCv')){
+let G=11.9;const LU=3.0,GAM=6000/0.51099895;   // period in cm, and the electron's energy over its rest energy
+// peak field against gap: the same fit as in the guide "How NE-CAT works"
+const Kof=g=>0.934*LU*3.88*Math.exp(-5.07*g/(LU*10)+1.52*Math.pow(g/(LU*10),2));
+fig('wUndCv',w=>w<560?1.15:2.6,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const K=Kof(G), y=h*0.52, x0=w*0.07, x1=w*(narrow?0.68:0.62), n=narrow?6:8, bw=(x1-x0)/n;
+  const gp=h*(0.11+0.17*(G-8.5)/21.5), mh=h*0.11, A=Math.min(gp-7,h*0.03*K), per=2*bw;
+  magnets(c,x0,x1,y-gp-mh,mh,n,0);magnets(c,x0,x1,y+gp,mh,n,1);
+  // the path of the electrons
+  pen(c,1.8,INK);c.setLineDash([5,5]);c.beginPath();c.moveTo(0,y);c.lineTo(x0,y);for(let x=x0;x<=x1;x+=3)c.lineTo(x,y+A*Math.sin((x-x0)/per*6.2832));c.lineTo(x1+14,y);c.stroke();c.setLineDash([]);
+  // Each electron gives off a little more light at every wiggle. The light is very slightly faster than the electron, so it gets one wave
+  // further ahead for each wiggle, and the burst of X-rays in front of the electron builds as it goes through. A bigger wiggle gives longer waves.
+  const lamS=(narrow?5:7)*(1+K*K/2), NP=(x1-x0)/per, span=w+NP*lamS+40;
+  for(let k=0;k<3;k++){const xe=((t*110+k*span/3)%span)-6, len=Math.max(0,Math.min(NP,(xe-x0)/per))*lamS;
+    if(len>1){pen(c,2.6,ORG);c.beginPath();for(let x=0;x<=len;x+=1.5){const yy=y+(narrow?5:7)*Math.sin(x/lamS*6.2832);x?c.lineTo(xe+x,yy):c.moveTo(xe+x,yy);}c.stroke();}
+    if(xe<x1+14)electron(c,xe,y+(xe>x0&&xe<x1?A*Math.sin((xe-x0)/per*6.2832):0),narrow?5:7);}
+  // the gap
+  const gx=x1+(narrow?10:14);arrow(c,gx,y,gx,y-gp+1,INK,1.8,6);arrow(c,gx,y,gx,y+gp-1,INK,1.8,6);
+  cap(c,'magnets',x0,Math.max(13,y-gp-mh-(narrow?14:18)),'left',fs);
+  txt(c,'gap',gx+7,y-gp*0.55,fs);
+  cap(c,'x-rays',w-8,y-(narrow?24:32),'right',fs);
+  cap(c,'electrons',x0,Math.min(h-13,y+gp+mh+(narrow?14:18)),'left',fs);
+});
+bind('wG',v=>v.toFixed(1)+' mm',()=>{G=+$('wG').value;const amp=Kof(G)*LU/100/(2*Math.PI*GAM)*1e6;
+  setT('wAmp',amp.toFixed(2)+' µm');setT('wRat',(Math.round(LU*1e4/amp/1000)*1000).toLocaleString('en-US')+' times smaller');});
+}
+
+// ---------- stop 2: the monochromator ----------
+if($('wMonoCv')){
+let TH=9;const DS=3.1356,Eof=th=>12.398/(2*DS*Math.sin(th*Math.PI/180));
+const F=fig('wMonoCv',w=>w<560?1.05:2.5,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const E=Eof(TH), td=TH*2.2*Math.PI/180, cx=w*0.5, cy=h*(narrow?0.36:0.4), D=h*(narrow?0.065:0.1), T=D*0.75, LA=-3.4*D, LB=0.5*D;   // the first face reaches upstream and the second downstream, so neither beam is blocked
+  const R=(x,y)=>[cx+x*Math.cos(td)+y*Math.sin(td),cy-x*Math.sin(td)+y*Math.cos(td)];   // from the crystal's own frame to the page
+  const px=-D/(2*Math.tan(td)), P=R(px,D/2), Q=R(-px,-D/2);
+  // going in: a mix of energies. The drawing shows five
+  [7,9.5,12.7,16,19].forEach((e,i)=>line(c,w*0.02,P[1]+(i-2)*(narrow?2.6:3.4),P[0],P[1]+(i-2)*(narrow?2.6:3.4),narrow?2:2.6,hueE(e)));
+  // the one that gets through bounces off both walls of the slot and leaves the way it came
+  line(c,P[0],P[1],Q[0],Q[1],3.2,hueE(E));
+  poly(c,[R(LA,D/2),R(LB,D/2),R(LB,D/2+T),R(LA,D/2+T)],STEEL,2);poly(c,[R(-LB,-D/2-T),R(-LA,-D/2-T),R(-LA,-D/2),R(-LB,-D/2)],STEEL,2);
+  arrow(c,Q[0],Q[1],w*0.97,Q[1],hueE(E),3.2,10);
+  cap(c,'many energies in',w*0.02,narrow?h*0.64:Math.min(P[1]+30,h*0.72),'left',fs);
+  cap(c,'one energy out',w*0.98,narrow?13:Math.max(13,Q[1]-26),'right',fs);
+  tag(c,'silicon',...R(LA*0.5,D/2+T*0.5),'center',fs);tag(c,'silicon',...R(-LA*0.5,-D/2-T*0.5),'center',fs);
+  // the range of energies, with a marker on the one in use
+  const bx0=w*0.08,bx1=w*0.92,by=h*0.8,bh=h*0.06,xe=bx0+(E-6)/14*(bx1-bx0);
+  for(let i=0;i<70;i++){c.fillStyle=hueE(6+14*(i+0.5)/70);c.fillRect(bx0+i*(bx1-bx0)/70,by,(bx1-bx0)/70+1,bh);}
+  pen(c,2);c.strokeRect(bx0,by,bx1-bx0,bh);
+  [6,10,15,20].forEach(v=>{const x=bx0+(v-6)/14*(bx1-bx0);line(c,x,by+bh,x,by+bh+5,2);txt(c,v+' keV',x,by+bh+(narrow?14:17),fs,v===6?'left':v===20?'right':'center');});
+  poly(c,[[xe,by-2],[xe-7,by-13],[xe+7,by-13]],INK,1.5);
+  tag(c,E.toFixed(1)+' keV',Math.max(bx0+30,Math.min(bx1-30,xe)),by-(narrow?25:28),'center',fs);
+},false);
+bind('wA',v=>v.toFixed(1)+'°',()=>{TH=+$('wA').value;setT('wE',Eof(TH).toFixed(1)+' keV');F.w&&F.draw(F);});
+}
+
+// ---------- stop 3: a focusing mirror ----------
+if($('wKbCv')){
+let B=0.3;const kOf=b=>1+30*Math.abs(1-b);   // how many times larger than the best focus: for illustration only
+const F=fig('wKbCv',w=>w<560?1.05:2.4,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const al=8*Math.PI/180, ca=Math.cos(al), sa=Math.sin(al), d=[Math.cos(2*al),-Math.sin(2*al)], M=[w*0.3,h*0.74], L=w*0.52, U=narrow?8:13;
+  const ms=U/sa+(narrow?12:26), S=[M[0]+L*d[0],M[1]+L*d[1]];
+  // the mirror, drawn at a much steeper angle than the real one
+  poly(c,[[M[0]-ms*ca,M[1]+ms*sa],[M[0]+ms*ca,M[1]-ms*sa],[M[0]+ms*ca+sa*11,M[1]-ms*sa+ca*11],[M[0]-ms*ca+sa*11,M[1]+ms*sa+ca*11]],LTBLUE,2);
+  for(let i=-2;i<=2;i++){const u=i*U/2,s=u/sa,P=[M[0]+s*ca,M[1]-s*sa],k=L-((P[0]-M[0])*d[0]+(P[1]-M[1])*d[1]);let X;
+    if(B<0.02)X=[P[0]+k*d[0],P[1]+k*d[1]];
+    else{const fl=L/B,vx=M[0]+fl*d[0]-P[0],vy=M[1]+fl*d[1]-P[1],tau=k/(vx*d[0]+vy*d[1]);X=[P[0]+tau*vx,P[1]+tau*vy];}
+    line(c,w*0.02,P[1],P[0],P[1],2,ORG);line(c,P[0],P[1],X[0],X[1],2,ORG);}
+  sampleLoop(c,S[0],S[1],narrow?1:1.3);
+  cap(c,'crystal',Math.min(w-8,S[0]+(narrow?40:70)),S[1]-(narrow?22:28),'right',fs);
+  tag(c,'mirror',M[0]+sa*30,M[1]+(narrow?24:30),'center',fs);
+  // magnified view: a hair seen end on, and the beam at the crystal
+  const Rr=Math.min(h*0.27,narrow?50:82), ix=Rr+12, iy=Rr+12, rh=Rr*0.62, sc=rh/35, k=kOf(B);
+  disc(c,ix,iy,Rr,WHITE,2.5);c.save();c.beginPath();c.arc(ix,iy,Rr-1.5,0,7);c.clip();
+  disc(c,ix,iy,rh,'#c9a27a',2);
+  c.globalAlpha=0.8;c.fillStyle=ORG;c.beginPath();c.arc(ix,iy,Math.max(1.5,5*k*sc),0,7);c.fill();c.globalAlpha=1;
+  if(k<4){pen(c,1.4);c.beginPath();c.arc(ix,iy,Math.max(1.5,5*k*sc),0,7);c.stroke();}
+  c.restore();disc(c,ix,iy,Rr,null,2.5);
+  txt(c,'magnified: a hair',ix+Rr+8,iy-(narrow?8:10),fs);txt(c,'and the beam',ix+Rr+8,iy+(narrow?8:10),fs);
+},false);
+bind('wB',v=>v<0.02?'flat':Math.round(v*100)+'%',()=>{B=+$('wB').value;const k=kOf(B);
+  setT('wS',Math.round(10*k)+' × '+Math.round(10*k)+' µm');setT('wH',10*k<70?'narrower than a hair':'wider than a hair');F.w&&F.draw(F);});
+}
+
+// ---------- stop 4: zooming in on the sample ----------
+if($('wZoomCv')){
+let Z=0;const VW0=64,vwOf=z=>VW0*Math.pow(0.05/VW0,z);   // width of the picture in millimeters
+const F=fig('wZoomCv',w=>w<560?1.0:2.3,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const vw=vwOf(Z), z=w/vw, cx=w/2, cy=h*(0.1+0.32*Math.min(1,Z*3)), X=x=>cx+x*z, Y=y=>cy+y*z;
+  // the pin and its base (sizes in millimeters, measured from the crystal)
+  if(Y(18)<h+4)rectF(c,X(-1.9),Y(18),3.8*z,6*z,'#c98a4b',2);
+  if(Y(0.9)<h+4)rectF(c,X(-0.32),Y(0.9),0.64*z,17.1*z,GREY,2);
+  if(Y(0.2)<h+4)line(c,cx,Y(0.2),cx,Math.min(h+4,Y(0.9)),Math.max(1.6,0.03*z),INK);
+  // the loop
+  if(0.2*z<h*3){c.beginPath();c.ellipse(cx,cy,0.14*z,0.2*z,0,0,7);c.fillStyle='rgba(255,255,255,.55)';c.fill();pen(c,Math.max(1.6,Math.min(18,0.02*z)),'#6b5236');c.stroke();}
+  // the crystal
+  const s=0.05*z;if(s>1.2)poly(c,[[cx-s,cy-s*0.45],[cx-s*0.35,cy-s],[cx+s*0.8,cy-s*0.8],[cx+s,cy+s*0.3],[cx+s*0.3,cy+s],[cx-s*0.85,cy+s*0.7]],GRN,Math.max(1.2,Math.min(3,s*0.06)));
+  else{c.fillStyle=GDK;c.beginPath();c.arc(cx,cy,1.5,0,7);c.fill();}
+  // the beam, as the crystal sees it: nominally 10 microns across
+  if(0.005*z>0.9){c.fillStyle=ORG;c.beginPath();c.arc(cx,cy,0.005*z,0,7);c.fill();if(0.005*z>3){pen(c,1.6);c.stroke();}}
+  // names, where the thing is a sensible size on the page
+  const pw=0.64*z;if(pw>5&&pw<w*0.3)tag(c,'pin',cx+pw/2+10,Math.min(h*0.8,Y(8)),'left',fs);
+  const lr=0.2*z;if(lr>9&&lr<h*0.55)tag(c,'loop',cx+0.14*z*0.75+8,cy+lr*0.72,'left',fs);
+  if(s>6&&s<h*0.34)tag(c,'crystal',cx-s-8,cy-s*0.8-10,'right',fs);
+  if(0.005*z>4)tag(c,'X-ray beam',cx+0.005*z+10,cy,'left',fs);
+  // scale bar
+  const bars=[10,5,2,1,0.5,0.2,0.1,0.05,0.02,0.01,0.005],b=bars.find(v=>v<=vw*0.3)||0.005,bx=w*0.04,byy=h-(narrow?16:20);
+  line(c,bx,byy,bx+b*z,byy,4);line(c,bx,byy-6,bx,byy+6,2);line(c,bx+b*z,byy-6,bx+b*z,byy+6,2);
+  tag(c,b>=1?b+' mm':Math.round(b*1000)+' µm',bx,byy-(narrow?18:22),'left',fs);
+},false);
+bind('wZ',v=>{const m=VW0/vwOf(v);return (m<10?m.toFixed(1):Math.round(m))+'×';},()=>{Z=+$('wZ').value;const vw=vwOf(Z);
+  setT('wW',vw>=1?vw.toFixed(vw<10?1:0)+' mm':Math.round(vw*1000)+' µm');
+  setT('wSee',vw>6?'the pin that holds the sample':vw>0.9?'the loop on the end of the pin':vw>0.18?'the crystal in its loop':'the X-ray beam on the crystal');F.w&&F.draw(F);});
+}
+
+// ---------- stop 5: the detector ----------
+if($('wDetCv')){
+const r=rng(24),SP=[];
+for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.1||Math.abs(x)>0.97||r()<0.45)continue;
+  SP.push({x,y,a:r()*90,s:(0.45+r())*(1-0.55*rad),seen:false});}
+let PH=0,prev=0;
+const F=fig('wDetCv',w=>w<560?0.8:2.3,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const S=narrow?Math.min(w*0.86,h*0.64):Math.min(h*0.86,w*0.42), dc=narrow?[w/2,h-S/2-h*0.035]:[w*0.72,h/2], xc=narrow?[w*0.5,h*0.12]:[w*0.15,h*0.5];
+  arrow(c,w*0.01,xc[1],xc[0]-(narrow?16:22),xc[1],ORG,3,9);
+  rectF(c,dc[0]-S/2,dc[1]-S/2,S,S,WHITE,3);
+  line(c,xc[0],xc[1],dc[0],dc[1],2,'rgba(238,138,43,.85)');
+  SP.forEach(s=>{const x=dc[0]+s.x*S/2*0.95,y=dc[1]+s.y*S/2*0.95,on=Math.abs(PH-s.a)<1.6;
+    if(on){line(c,xc[0],xc[1],x,y,1.1,'rgba(238,138,43,.5)');c.fillStyle=ORG;c.beginPath();c.arc(x,y,2.2+3*s.s,0,7);c.fill();}
+    else if(s.seen){c.fillStyle=INK;c.beginPath();c.arc(x,y,0.9+1.7*s.s,0,7);c.fill();}});
+  disc(c,dc[0],dc[1],Math.max(5,S*0.03),GREY,2);
+  // the crystal, turning
+  const a=PH*Math.PI/180,bw=narrow?20:30,wa=bw*Math.abs(Math.cos(a)),wb=bw*0.75*Math.abs(Math.sin(a)),x0=xc[0]-(wa+wb)/2;
+  line(c,xc[0],xc[1]+bw*0.55,xc[0],xc[1]+bw*0.55+(narrow?12:h*0.2),3);
+  if(wa>0.5)rectF(c,x0,xc[1]-bw*0.55,wa,bw*1.1,GRN,2);if(wb>0.5)rectF(c,x0+wa,xc[1]-bw*0.55,wb,bw*1.1,GDK,2);
+  cap(c,'crystal',narrow?xc[0]+bw+8:xc[0],narrow?xc[1]:xc[1]-bw*0.55-(narrow?16:22),narrow?'left':'center',fs);
+  cap(c,'detector',dc[0]+S/2-6,dc[1]-S/2+(narrow?14:18),'right',fs);
+  tag(c,'beamstop',dc[0]+Math.max(5,S*0.03)+6,dc[1]+(narrow?14:16),'left',fs);
+},false);
+bind('wR',v=>v.toFixed(0)+'°',()=>{const v=+$('wR').value,lo=Math.min(prev,v)-1.6,hi=Math.max(prev,v)+1.6;SP.forEach(s=>{if(s.a>=lo&&s.a<=hi)s.seen=true;});prev=v;PH=v;
+  setT('wN',SP.filter(s=>s.seen).length+' of '+SP.length);F.w&&F.draw(F);});
+}
+
+capK();
+})();
+
+</script>
+
+<script data-goatcounter="https://frankvm04.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body></html>

@@ -49,6 +49,7 @@ The build has three steps, run in order by `build.sh`.
 | 1 | `compose.py` | Writes the body of each page: text, equation cards and figure panels. It also holds the style sheet tweaks, the list of series, the landing page, and the release number and dates. |
 | | `aps_guide.py` | How APS works. Read by `compose.py`. |
 | | `syn_guide.py` | What is a synchrotron?, Introductory. Read by `compose.py`. |
+| | `walk_guide.py` | A walk down the beamline, Introductory. Read by `compose.py`. |
 | | `xrf_guide.py` | X-ray fluorescence at NE-CAT. Read by `compose.py`. |
 | | `src-body.v6.html` | The original polarization guide. `compose.py` takes the style sheet and the first equation cards and figure panels from it. Do not edit it: change `compose.py` instead. |
 | 2 | `refactor.py` | Builds the script shared by the three guides with a Settings menu (How NE-CAT works, polarization, fluorescence), and the text that follows the menu. |
@@ -58,6 +59,7 @@ The build has three steps, run in order by `build.sh`.
 | 3 | `build.js` | Turns the equations into MathML, fills in the links between pages, and writes the finished pages and the redirect pages for old addresses. It also adds the visitor counter. |
 | | `aps.js` | The figures of How APS works. |
 | | `syn.js` | The figures of What is a synchrotron? |
+| | `walk.js` | The figures of A walk down the beamline. |
 | | `introkit.js` | Drawing helpers for the guides added from release 1.3 on. |
 | | `home.js` | The figures of the landing page. |
 | | `ogimages.js` | Not part of the build. Makes the link-preview pictures and the icons from the built pages. |

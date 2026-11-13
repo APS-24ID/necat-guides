@@ -11,6 +11,7 @@ The guides are grouped in series. Each is marked with its level. Introductory gu
 | `index.html` | | Landing page: the list of guides by series | |
 | `how-aps-works-intro.html` | 1. The machine | What is a synchrotron? How the APS makes X-rays, in five stops and five minutes | Introductory |
 | `how-aps-works.html` | 1. The machine | How APS works: from the electron gun to the stored beam | In-depth |
+| `how-necat-works-intro.html` | 2. The beamline | A walk down the beamline: the beamline in five stops and five minutes | Introductory |
 | `how-necat-works.html` | 2. The beamline | How NE-CAT works: from the storage ring to the detector | In-depth |
 | `polarization.html` | 2. The beamline | Why the X-ray beam is polarized | In-depth |
 | `fluorescence.html` | 3. The experiment | X-ray fluorescence at NE-CAT: what it is, what it is used for, and where the detector goes | In-depth |

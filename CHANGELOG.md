@@ -2,6 +2,11 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.4 — 2026-11-13
+
+- New five-minute guide, "A walk down the beamline": five stops from the magnets that make the X-rays to the detector, with no equations. It is the short companion to "How NE-CAT works", and each links to the other.
+- The index lists it in the beamline series.
+
 ## 1.3 — 2026-11-13
 
 - New guide, "What is a synchrotron?": the first five-minute guide. How electrons are brought to almost the speed of light, held in a ring, and made to give off X-rays, and what the APS Upgrade changed. Five stops, no equations. It is the short companion to "How APS works", and each links to the other.
