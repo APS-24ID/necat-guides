@@ -453,7 +453,7 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.4','November 13, 2026')
+RELEASE=('1.5','November 13, 2026')
 UPDATED={'aps':'November 13, 2026','overview':'November 13, 2026','polarization':'November 13, 2026','scatter':'November 13, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
 def stamp(when): return 'Last updated %s. Release %s. <a href="%s" target="_blank" rel="noopener">What changed</a>.'%(when,RELEASE[0],CHLOG)
@@ -464,7 +464,7 @@ def _choice(i,label,pairs,sel): return '<div class="ctl" style="grid-column:1/-1
 # The later guides each have a file of their own. A guide whose file is not in this folder is simply left out, so the
 # same scripts build the published set and a larger working set that includes guides still in draft.
 import os
-for _f in ['walk','syn','mx','hutch','detintro','det','cold','damage']:
+for _f in ['walk','syn','mx','hutch','see','detintro','det','cold','damage']:
     if os.path.exists(_f+'_guide.py'): exec(open(_f+'_guide.py').read())
 _keys={g['key'] for g in G}
 for g in G:
@@ -526,7 +526,7 @@ def resolve(html,g):
 # The series a guide belongs to, in reading order, and the level it is written at. A series with no guides yet is listed with a note.
 SERIES=[(1,'The machine','Where do the X-rays come from?',['syn','aps'],None),
         (2,'The beamline','What does NE-CAT do with them?',['walk','overview','polarization','detintro','det','hutch'],None),
-        (3,'The experiment','How does a crystal become a structure?',['mx','cold','damage','scatter'],None),
+        (3,'The experiment','How does a crystal become a structure?',['see','mx','cold','damage','scatter'],None),
         (4,'The science','Why do structures matter?',[],'Guides for this series are being written. They will start with what a protein is and why its shape matters.')]
 DEPTH_NOTE='Each section has a plain explanation and a figure you can adjust. The equations are folded away under the figures. Open any of them, or all of them with the button at the top, if you want the detail.'
 INTRO_NOTE='Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.'
@@ -551,7 +551,7 @@ def page(g):
                     o.append('    <details class="eqcard" id="eq-%s">\n      <summary class="tag"><span class="eqno">Equation %s</span><span class="eqtitle">%s</span></summary>%s    </details>\n'%(e,g['eqnum'][e],EQ[e]['title'],EQ[e]['inner']))
                 o.append('    </div>\n')
         o.append('  </section>\n')
-    o.append(('\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>One thing to remember</h2>\n      <p class="remember">'+g['remember']+'</p>\n      <p>'+(g['more']%glink(g['deeper'],GK[g['deeper']]['h1']) if g.get('more') else 'Want the details, with the equations and the real numbers? Go deeper with the guide '+glink(g['deeper'],GK[g['deeper']]['h1'])+'.')+'</p>\n      <details class="classroom"><summary>For a class</summary><ul>'+''.join('<li>%s</li>'%q for q in g['classroom'])+'</ul></details>\n    </div>\n' if g['level']=='Introductory' else '\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>Where to go deeper</h2>\n      <ul class="refs">\n'+g['further']+'\n      </ul>\n    </div>\n')+'    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="{{home}}">← Home</a>'+('<a class="guidelink" data-guide="%s" href="{{link:%s}}">Next: %s →</a>'%(G[gi]['key'],G[gi]['key'],G[gi]['name']) if gi<len(G) else '')+'</nav>\n    <div class="notes" style="text-align:center;margin-top:18px"><p>'+stamp(UPDATED[g['key']])+'<br>'+ACK+'<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>\n  </section>\n</div>\n')
+    o.append(('\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>One thing to remember</h2>\n      <p class="remember">'+g['remember']+'</p>\n      <p>'+('A longer guide to this subject, with the equations and the real numbers, is being written.' if not g.get('deeper') else g['more']%glink(g['deeper'],GK[g['deeper']]['h1']) if g.get('more') else 'Want the details, with the equations and the real numbers? Go deeper with the guide '+glink(g['deeper'],GK[g['deeper']]['h1'])+'.')+'</p>\n      <details class="classroom"><summary>For a class</summary><ul>'+''.join('<li>%s</li>'%q for q in g['classroom'])+'</ul></details>\n    </div>\n' if g['level']=='Introductory' else '\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>Where to go deeper</h2>\n      <ul class="refs">\n'+g['further']+'\n      </ul>\n    </div>\n')+'    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="{{home}}">← Home</a>'+('<a class="guidelink" data-guide="%s" href="{{link:%s}}">Next: %s →</a>'%(G[gi]['key'],G[gi]['key'],G[gi]['name']) if gi<len(G) else '')+'</nav>\n    <div class="notes" style="text-align:center;margin-top:18px"><p>'+stamp(UPDATED[g['key']])+'<br>'+ACK+'<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>\n  </section>\n</div>\n')
     html=resolve(''.join(o),g)
     # a label holding a subscript is wrapped so that it stays one piece in the flex row
     html=re.sub(r'(<label for="\w+">)((?:(?!<output|</label>).)*<sub>(?:(?!<output|</label>).)*?)(\s*<output|</label>)',lambda m:m.group(1)+'<span>'+m.group(2)+'</span>'+m.group(3),html)
@@ -573,6 +573,7 @@ CARDS=[('syn','csCv','Five minutes','How a synchrotron makes X-rays, in five sto
        ('detintro','cpCv','Five minutes','How the detector records the spots, in four stops and five minutes, with no equations. Eighteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.',['Pixels','Counting','Speed','Distance']),
        ('det','cqCv','Go deeper','What happens between an X-ray entering the detector and a counter going up by one, and what it means for the data: how much of the beam is caught, charge sharing and the threshold, count rates, counting statistics, and the choice of detector distance.',['Silicon sensor','Charge sharing','Dead time','Counting statistics','Geometry']),
        ('hutch','chCv','Five minutes','Why the experiment sits in a closed steel room, how little steel it takes to stop these X-rays, and how the door and the beam shutter are locked together. Four stops, no equations.',['Stray X-rays','Steel walls','The interlock','Working from outside']),
+       ('see','ceCv','Five minutes','How X-rays and a crystal show where every atom in a protein is, in four stops and five minutes, with no equations. Why light cannot do it, what the crystal is for, how the spots become a map, and how atoms are fitted into it. The protein in the figures is myoglobin.',['Too small','A crystal','Spots to map','Atoms']),
        ('mx','cmCv','Then the experiment','What macromolecular crystallography is, and how it gets from a crystal to a structure. Why a crystal is needed, what the spots are, the phase problem, the electron density map, and how a model is refined and judged.',['Why structures','Why a crystal','Spots as waves','The phase problem','Map and model']),
        ('cold','ccCv','Five minutes','What X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, and how a crystal that is half water is cooled without turning to ice. Four stops, no equations.',['Damage','Cold','No ice','How cold']),
        ('damage','cdCv','Go deeper','From the absorption of one photon to the fading of the pattern. Dose and how to estimate it, the 30 MGy limit, the groups that are damaged first, why 100 K, and how to spend the dose a crystal can take.',['Absorption','Dose','The 30 MGy limit','Specific damage','Why 100 K']),

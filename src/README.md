@@ -50,6 +50,7 @@ The build has three steps, run in order by `build.sh`.
 | | `aps_guide.py` | How APS works. Read by `compose.py`. |
 | | `syn_guide.py` | What is a synchrotron?, Introductory. Read by `compose.py`. |
 | | `walk_guide.py` | A walk down the beamline, Introductory. Read by `compose.py`. |
+| | `see_guide.py` | How do we see a protein?, Introductory. Read by `compose.py`. |
 | | `xrf_guide.py` | X-ray fluorescence at NE-CAT. Read by `compose.py`. |
 | | `src-body.v6.html` | The original polarization guide. `compose.py` takes the style sheet and the first equation cards and figure panels from it. Do not edit it: change `compose.py` instead. |
 | 2 | `refactor.py` | Builds the script shared by the three guides with a Settings menu (How NE-CAT works, polarization, fluorescence), and the text that follows the menu. |
@@ -60,6 +61,8 @@ The build has three steps, run in order by `build.sh`.
 | | `aps.js` | The figures of How APS works. |
 | | `syn.js` | The figures of What is a synchrotron? |
 | | `walk.js` | The figures of A walk down the beamline. |
+| | `see.js` | The figures of How do we see a protein? |
+| | `mbdata.js` | Myoglobin, the protein drawn in How do we see a protein?: the positions of its chain, its heme and the atoms of one helix, and the code that draws the chain as a tube. |
 | | `introkit.js` | Drawing helpers for the guides added from release 1.3 on. |
 | | `home.js` | The figures of the landing page. |
 | | `ogimages.js` | Not part of the build. Makes the link-preview pictures and the icons from the built pages. |
@@ -70,11 +73,12 @@ Data tables, and the scripts that made them. They only need to be run again to a
 | File | Made by | What it holds |
 | --- | --- | --- |
 | `water.json` | `mkwater.py` | Elastic and Compton scattering of water against angle, for the scatter figures. |
+| `mbdata.js` (the numbers at its top) | by hand, from PDB entry 1MBN | One point for each of the 153 amino acids of sperm whale myoglobin, its heme, and every atom of amino acids 4 to 16, turned to a convenient view. |
 | `xrf.json` | `mkxrf.py` | Absorption edges, emission lines, fluorescence yields and cross-sections of the elements in the fluorescence guide. |
 
 ## Where things are
 
-- **Text of a section:** How NE-CAT works and the polarization guide are in the list `G` in `compose.py`. The others are in `aps_guide.py`, `syn_guide.py` and `xrf_guide.py`.
+- **Text of a section:** How NE-CAT works and the polarization guide are in the list `G` in `compose.py`. The others each have a file of their own: `aps_guide.py`, `syn_guide.py`, `walk_guide.py`, `see_guide.py` and `xrf_guide.py`.
 - **Series, levels and order:** the order of `G` is the reading order. `SERIES` in `compose.py` says which series each guide is in, and each guide's `level` (In-depth unless set) is shown on its page and its card. To add a guide, give it a `<key>_guide.py` file that inserts it into `G`, name that file in the list in `compose.py`, and add the guide to `SERIES`, to `CARDS`, to `OUT` in `build.js` and to the page lists in `test.js` and `ogimages.js`. A guide named in those lists whose file is not in this folder is left out of the build.
 - **An Introductory guide:** set `level='Introductory'` in its entry, give it `remember` (one sentence), `classroom` (a list of questions) and `deeper` (the key of its In-depth guide), and leave out equation cards. Give each section a `_here(...)` note and one figure with one control. Set `short` on the In-depth guide to the key of its short version. `syn_guide.py` is the pattern to copy. `_here` and `_choice` in `compose.py` make the note in each section and a row of buttons for a choice between named states. Its address is the In-depth guide's with `-intro` added.
 - **Addresses:** `OUT` in `build.js` gives each guide's file name. Names carry no numbers, so adding a guide never changes another guide's address.
@@ -93,9 +97,9 @@ Data tables, and the scripts that made them. They only need to be run again to a
 5. Tag the commit and publish the release:
 
 ```sh
-git tag -a v1.4 -m 'Release 1.4: ...'
-git push origin v1.4
-gh release create v1.4 --verify-tag --title 'Release 1.4' --notes '...'
+git tag -a v1.5 -m 'Release 1.5: ...'
+git push origin v1.5
+gh release create v1.5 --verify-tag --title 'Release 1.5' --notes '...'
 ```
 
 File names should not need to change. If one ever does, add the old name to its `old` list in `build.js` so that the old address redirects.

@@ -7,7 +7,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
 const D=path.resolve(process.env.OUTDIR||path.join(__dirname,'..'))+path.sep, FD=process.env.FONTDIR;
 const PAGES=[['home','index.html','homeCv','NE-CAT beamline guides'],['syn','how-aps-works-intro.html','synHeroCv'],['aps','how-aps-works.html','chainCv'],['walk','how-necat-works-intro.html','walkHeroCv'],['overview','how-necat-works.html','stationsCv'],
   ['polarization','polarization.html','heroCv'],['detintro','detector-intro.html','pixHeroCv'],['det','detector.html','detHeroCv'],['hutch','shielded-room.html','hutchHeroCv'],
-  ['mx','how-mx-works.html','mxHeroCv'],['cold','radiation-damage-intro.html','coldHeroCv'],['damage','radiation-damage.html','damHeroCv'],['scatter','fluorescence.html','fxCv']];
+  ['see','how-mx-works-intro.html','seeHeroCv'],['mx','how-mx-works.html','mxHeroCv'],['cold','radiation-damage-intro.html','coldHeroCv'],['damage','radiation-damage.html','damHeroCv'],['scatter','fluorescence.html','fxCv']];
 const face=(fam,file,wt)=>{const f=path.join(FD,file);return fs.existsSync(f)?`@font-face{font-family:"${fam}";font-weight:${wt};src:url(data:font/woff2;base64,${fs.readFileSync(f).toString('base64')}) format("woff2")}`:'';};
 const FONTS=FD?face('Bricolage Grotesque','bricolage-grotesque/files/bricolage-grotesque-latin-800-normal.woff2','600 800')+face('Patrick Hand','patrick-hand/files/patrick-hand-latin-400-normal.woff2',400)+face('Literata','literata/files/literata-latin-400-normal.woff2',400):'';
 (async()=>{const b=await chromium.launch();fs.mkdirSync(D+'og',{recursive:true});

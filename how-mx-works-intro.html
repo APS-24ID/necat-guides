@@ -1,0 +1,571 @@
+<!doctype html>
+<!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="How X-rays and a crystal show where every atom in a protein is, in four stops and five minutes, with no equations. Why light cannot do it, what the crystal is for, how the spots become a map, and how atoms are fitted into it. The protein in the figures is myoglobin.">
+<meta name="author" content="NE-CAT, Cornell University">
+<link rel="canonical" href="https://aps-24id.github.io/necat-guides/how-mx-works-intro.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="NE-CAT beamline guides">
+<meta property="og:title" content="How do we see a protein?">
+<meta property="og:description" content="How X-rays and a crystal show where every atom in a protein is, in four stops and five minutes, with no equations. Why light cannot do it, what the crystal is for, how the spots become a map, and how atoms are fitted into it. The protein in the figures is myoglobin.">
+<meta property="og:url" content="https://aps-24id.github.io/necat-guides/how-mx-works-intro.html">
+<meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/see.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Opening figure of the guide “How do we see a protein?”">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>How Do We See a Protein?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">
+<style>
+/* Three linked guides share this sheet. Layout: a comic album page. One reading column (~66ch); figures are inked panels up to 980px wide with yellow narration boxes; equations sit on ruled cards with a symbol-by-symbol reading. Single light theme by design (ligne claire is a paper style). */
+:root{
+  --paper:#fffdf6; --ink:#1b1b1b; --muted:#55575c; --sky:#dcecf5; --cap:#ffe98a;
+  --red:#d8412f; --blue:#2f6db5; --orange:#ee8a2b; --green:#5aa469; --card:#ffffff; --rule:#1b1b1b;
+  --f-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive;
+  --f-math:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:980px;margin:0 auto}
+.prose{max-width:66ch;margin:0 auto}
+.prose>*+*{margin-top:1em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(2.3rem,6.4vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.6vw,2.2rem);font-weight:750}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--blue)}
+math{font-family:var(--f-math);font-size:1.06em}
+mi[mathvariant="bold"],mi[mathvariant="bold-italic"]{font-weight:700}
+.hero{padding-block:44px 20px;display:grid;gap:20px}
+.kicker{font-family:var(--f-hand);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;display:inline-block;background:var(--cap);border:2.5px solid var(--ink);padding:2px 12px;justify-self:start}
+.lede{font-size:1.22rem;line-height:1.5;max-width:62ch}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.chain a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.chain a:hover,.chain a:focus-visible{background:var(--cap);outline:none}
+section{padding-block:52px 4px;display:grid;gap:22px}
+.sec-head{display:grid;gap:12px}
+.stepno{font-family:var(--f-display);font-weight:800;font-size:1.05rem;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:#fff;border:2.5px solid var(--ink);display:grid;place-items:center}
+.panel{display:grid;gap:12px}
+.panel canvas{width:100%;display:block;border:3px solid var(--ink);background:var(--sky)}
+.figcap{font-size:.93rem;color:var(--muted);line-height:1.45;max-width:78ch}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;align-items:end;background:var(--card);border:2.5px solid var(--ink);padding:12px 14px}
+.ctl{display:grid;gap:2px;min-width:0}
+.ctl label{font-family:var(--f-hand);font-size:1.05rem;display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-weight:700;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--red)}
+input[type=number],select{width:100%;font-family:var(--f-hand);font-size:1.1rem;padding:4px 8px;border:2.5px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-hand);font-size:1.02rem;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:0;padding:2px 10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--cap)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.ro{background:var(--cap);border:2.5px solid var(--ink);padding:6px 12px;min-width:0}
+.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}
+.ro .v{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-hand);font-size:1rem}
+.key i{display:inline-block;width:16px;height:12px;border:2px solid var(--ink);vertical-align:-1px;margin-right:6px}
+/* equation cards */
+.eqcard{background:var(--card);border:2.5px solid var(--ink);max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqcard .tag{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;background:var(--ink);color:var(--paper);padding:2px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.eqcard .eqn{padding:14px 14px 10px;overflow-x:auto;font-size:1.12rem;border-bottom:2px dashed var(--ink)}
+.eqcard .body{padding:12px 14px 14px;display:grid;gap:10px;font-size:.96rem;line-height:1.5}
+.read{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.read dt{font-weight:600;white-space:nowrap}
+.read dd{margin:0;min-width:0}
+.says b,.num b{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;background:var(--cap);border:2px solid var(--ink);padding:0 6px;margin-right:6px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;padding-top:10px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar label{font-family:var(--f-hand);font-size:1.02rem;background:var(--cap);border:2.5px solid var(--ink);padding:1px 8px;display:flex;align-items:center;gap:8px;max-width:100%}
+.bar select{width:auto;max-width:100%;border:0;background:transparent;padding:2px 4px;font-size:1.02rem}
+.using{font-family:var(--f-hand);font-size:1.02rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:4px 12px}
+.tblwrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--card)}
+table.settings{border-collapse:collapse;width:100%;min-width:720px;font-size:.93rem;line-height:1.35;font-variant-numeric:tabular-nums}
+table.settings th,table.settings td{border:1.5px solid var(--ink);padding:5px 10px;text-align:left;vertical-align:top}
+table.settings thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+table.settings tbody th{font-weight:600;background:var(--paper)}
+table.settings .on{background:var(--cap)}
+table.settings thead th.on{background:var(--red);color:#fff}
+.notes{font-size:.9rem;color:var(--muted);line-height:1.45;max-width:78ch;margin-inline:auto;width:100%}
+.notes p+p{margin-top:.5em}
+ul.refs{padding-left:1.2em;margin:0}
+ul.refs li+li{margin-top:.4em}
+@media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
+
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
+details.eqcard>summary{cursor:pointer;list-style:none}
+details.eqcard>summary::-webkit-details-marker{display:none}
+details.eqcard>summary .eqno{white-space:nowrap}
+details.eqcard>summary::after{content:"+ show";background:var(--cap);color:var(--ink);padding:0 8px;margin-left:auto;white-space:nowrap}
+details.eqcard[open]>summary::after{content:"\2212  hide"}
+details.eqcard>summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+details.eqcard:not([open]) .eqn{display:none}
+.eqgroup{display:grid;gap:8px;max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqlabel{font-family:var(--f-hand);font-size:1.05rem}
+.guides{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.guides span.lbl{text-transform:uppercase;letter-spacing:.06em}
+.guides a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.guides a[aria-current="page"]{background:var(--red);color:#fff}
+.guides a:hover,.guides a:focus-visible{background:var(--cap);color:var(--ink)}
+table.rules{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.rules th,table.rules td{border:1.5px solid var(--ink);padding:5px 10px;text-align:right}
+table.rules th:first-child,table.rules td:first-child{text-align:left}
+table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+</style>
+</head><body>
+
+<div class="wrap">
+  <div class="bar"><button id="motionBtn" aria-pressed="false">Pause motion</button></div>
+  <header class="hero">
+    <div class="kicker">NE-CAT guides · crystallography in five minutes</div>
+    <h1>How do we see a protein?</h1>
+    <p class="lede">Proteins do most of the work in a living cell, and each one works because of its shape. They are far too small to see with any microscope that uses light. This guide explains, in four stops, how X-rays and a crystal are used to find where every atom in a protein is.</p>
+    <p class="lede" style="font-size:1.05rem">Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.</p>
+    <div class="panel">
+      <canvas id="seeHeroCv" aria-label="Animation: a pattern of spots on the left and, on the right, the picture calculated from it. As more of the spots are used the picture sharpens from a blur into the shape of one helix of a protein with its side chains, and a model of the atoms is fitted into it. The view then turns and pulls back, with the atoms staying in place, until the whole protein, myoglobin, is in view as a folded chain with that helix picked out in orange"></canvas>
+      <div class="figcap">On the left, the spots a crystal throws onto the detector. On the right, the picture a computer makes from them. The more spots are used, the sharper the picture, until atoms can be fitted into it. Piece by piece, that gives the whole protein. This one is myoglobin, and the piece in the map is shown in orange.</div>
+    </div>
+    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="index.html">← Home</a><span class="lbl">Series 3 · The experiment</span><span class="level lv-intro">5 minutes</span></nav>
+    <nav class="chain" aria-label="Sections"><a href="#small">1 Too small</a><a href="#crystal">2 A crystal</a><a href="#map">3 Spots to map</a><a href="#model">4 Atoms</a></nav>
+  </header>
+
+  <section id="small">
+    <div class="sec-head prose">
+      <div class="stepno">1</div>
+      <h2>Too small for light</h2>
+      <p>A protein is a molecule made of thousands of atoms. Neighboring atoms in it are about one and a half ångströms apart. An ångström is a ten-millionth of a millimeter. To understand how a protein works, we need to know where each of its atoms is.</p>
+      <p>A microscope cannot show anything much smaller than the waves of the light it uses. The waves of visible light are thousands of times longer than the gap between two atoms, so no microscope that uses light will ever show them.</p>
+      <p>The protein in the figures of this guide is myoglobin, which stores oxygen in muscle. In the late 1950s it became the first protein to have its structure found, by the method described here.</p>
+      <p>X-rays are light too, with waves about as long as that gap. But there is a catch. Nobody can make a lens that focuses X-rays well enough to form a picture of atoms. The picture has to be made in another way.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The X-rays used most at NE-CAT have waves 0.98 ångströms long.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="sScaleCv" aria-label="Interactive: a slider zooms in from the width of a hair, past a red blood cell, a bacterium and a virus, to a protein, drawn as the folded chain of myoglobin. It then goes on into the protein, to one of its helices and at last to two of its atoms, while a small picture of the whole protein shows where the view is. A wave of green light is drawn to the same scale and becomes far wider than the picture. At the end X-ray waves appear, about as long as the gap between the atoms"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="sZ">Zoom in <output id="sZO">0%</output></label><input id="sZ" type="range" min="0" max="1" step="0.005" value="0"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">The picture is this wide</div><div class="v" id="sW">–</div></div>
+        <div class="ro"><div class="k">Waves of green light</div><div class="v" id="sG">–</div></div>
+        <div class="ro"><div class="k">In the middle of the picture</div><div class="v" id="sO">–</div></div>
+      </div>
+      <div class="figcap">Zoom in from a hair to a protein, and then into the protein until two of its atoms fill the view. The small picture that appears on the right shows where in the protein you are, and the piece whose atoms are drawn is orange in it. Along the bottom is a wave of green light, drawn to the same scale as the picture. By the time a virus fills the picture, one wave of light is wider than the whole view, and nothing smaller can be made out with it. Keep going toward the atoms, and X-ray waves appear at the top. They are the right size. The protein is myoglobin, drawn from its real structure as a tube that follows its chain. A micron is a thousandth of a millimeter. A nanometer, written nm, is a thousandth of a micron, and an ångström, written Å, is a tenth of a nanometer.</div>
+    </div>
+  </section>
+
+  <section id="crystal">
+    <div class="sec-head prose">
+      <div class="stepno">2</div>
+      <h2>A crystal turns a whisper into a signal</h2>
+      <p>X-rays that meet a molecule are scattered by it in all directions. One protein molecule scatters far too few to measure, and a beam strong enough to help would destroy it first.</p>
+      <p>So the protein is grown into a crystal. In a crystal the same molecule is repeated in neat rows, every copy facing the same way, billions of times over.</p>
+      <p>Growing the crystal is a craft of its own. A drop of very pure protein in water is mixed with salts or other chemicals that make the protein a little less willing to stay dissolved. The drop is then left to lose water slowly. As it shrinks, the molecules are crowded together, and with the right recipe they settle into a crystal instead of a shapeless clump. Finding the recipe can take hundreds of trials, and the crystal can take hours or months to grow.</p>
+      <p>A protein crystal is not hard and dry like a grain of salt. About half of it is water, which fills the gaps between the molecules, so the protein in a crystal keeps the shape it has in the cell.</p>
+      <p>Each copy scatters the same faint wave. In most directions the waves from the different copies cancel one another. In a few directions they line up and add, and in those directions the crystal sends out a thin, bright ray. Each ray makes one spot on the detector.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> A crystal a twentieth of a millimeter across holds about a hundred billion copies of a protein of ordinary size.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="sRowCv" aria-label="Interactive: X-rays arrive from above at a row of identical molecules. A slider sets how many molecules are in the row, from one to twenty. Below, a strip of the detector shows a faint smear for one molecule, which gathers into sharp bright spots as molecules are added"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="sN">Molecules in the row <output id="sNO">1</output></label><input id="sN" type="range" min="1" max="20" step="1" value="1"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Brightest spot, compared with one molecule</div><div class="v" id="sBr">–</div></div>
+        <div class="ro"><div class="k">The X-rays arrive as</div><div class="v" id="sSh">–</div></div>
+      </div>
+      <div class="figcap">X-rays arrive from above and are scattered by the molecules. The strip at the bottom shows what would land on the detector, with a curve above it for how bright each place is. One molecule gives a faint smear. Add copies, evenly spaced, and the same X-rays are gathered into spots that grow sharper and brighter. The spots are not all alike: how bright each one is depends on the molecule. The curve for one molecule is drawn taller than it should be, so that it can be seen.</div>
+    </div>
+  </section>
+
+  <section id="map">
+    <div class="sec-head prose">
+      <div class="stepno">3</div>
+      <h2>A computer does the work of the lens</h2>
+      <p>Each spot carries one ingredient of the picture. The ingredient is a simple pattern of stripes running across the molecule. Spots near the middle of the detector stand for broad stripes, which give the overall shape. Spots near the edge stand for fine stripes, which give the detail.</p>
+      <p>A computer adds all the stripes together, each one as strong as its spot is bright. This is what a lens does in a microscope, done here by calculation. The result is a map that shows where the electrons are, and the electrons are where the atoms are.</p>
+      <p>One thing cannot be read from the spots: how far each set of stripes has to be shifted sideways before it is added. Scientists have several ways to find that out, and it is often the hardest part of the work.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The images recorded from one crystal at NE-CAT can hold hundreds of thousands of spots. Software at the beamline starts to measure them while the crystal is still in the beam.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="sMapCv" aria-label="Interactive: a pattern of spots with a dashed circle, and beside it the picture calculated from the spots inside the circle. A slider widens the circle. The picture, of one helix of the protein myoglobin, sharpens from a blob to a helix with side chains, then to rings with holes in them, and finally to separate atoms"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="sR">How far out from the middle the spots are used <output id="sRO">30% of the way to the edge</output></label><input id="sR" type="range" min="0.2" max="1" step="0.005" value="0.3"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Finest detail in the map</div><div class="v" id="sD">–</div></div>
+        <div class="ro"><div class="k">What the map shows</div><div class="v" id="sWh">–</div></div>
+      </div>
+      <div class="figcap">On the left is a pattern of spots. Only the spots inside the dashed circle are used. On the right is the map they give, with a blue line around the places where there are most electrons. The map is of one piece of myoglobin: thirteen amino acids in a row, wound into a spiral called an alpha helix, with their side chains sticking out. It is seen from the side, flattened onto the page. Widen the circle and the blob grows side chains, the rings in them open, and at last the atoms separate. The blue shape is the outline of the map, calculated from the real positions of the 113 atoms in this piece and blurred to the detail that the spots inside the circle can give. The pattern of spots is made up.</div>
+    </div>
+  </section>
+
+  <section id="model">
+    <div class="sec-head prose">
+      <div class="stepno">4</div>
+      <h2>Atoms are fitted into the map</h2>
+      <p>The map is a shape, and a shape is not yet a list of atoms. A protein is a chain of building blocks called amino acids, and their order along the chain is known from the gene for the protein. The job is to thread that chain through the map, so that every atom lies inside the shape.</p>
+      <p>Software does most of the threading, and a scientist checks it. The model is then adjusted until the spots it would give match the spots that were measured.</p>
+      <p>The finished structure is a list of every atom and where it is. It can be turned around on a screen, compared with other proteins, and used to design a medicine that fits into it.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> Structures measured at NE-CAT are placed in the Protein Data Bank, a public archive that anyone can use. It holds more than 250,000 structures.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="sFitCv" aria-label="Interactive: the map of one helix of myoglobin. One row of buttons shows the map alone, the map with atoms fitted into it, the atoms alone, or the whole protein with this helix picked out. A second row sets how much detail the map has: coarse, medium or fine"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label id="sML">Show</label><div class="btns" id="sM" role="group" aria-labelledby="sML"><button type="button" data-v="0" aria-pressed="true">The map</button><button type="button" data-v="1" aria-pressed="false">The map with atoms</button><button type="button" data-v="2" aria-pressed="false">The atoms alone</button><button type="button" data-v="3" aria-pressed="false">The whole protein</button></div></div>
+        <div class="ctl" style="grid-column:1/-1"><label id="sQL">Detail in the map</label><div class="btns" id="sQ" role="group" aria-labelledby="sQL"><button type="button" data-v="3.5" aria-pressed="false">Coarse, 3.5 Å</button><button type="button" data-v="2" aria-pressed="true">Medium, 2 Å</button><button type="button" data-v="1.2" aria-pressed="false">Fine, 1.2 Å</button></div></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Atoms placed</div><div class="v" id="sAt">–</div></div>
+        <div class="ro"><div class="k">How well the map pins the atoms down</div><div class="v" id="sEase">–</div></div>
+      </div>
+      <div class="figcap">The same helix as at the last stop: 113 atoms of carbon, nitrogen and oxygen. Hydrogen atoms are left out, as they usually are, because they scatter X-rays too weakly to show. Put the atoms in, then try the coarse map and the fine one. With fine detail each atom has its own peak. With coarse detail the atoms fit inside the shape, but so would other arrangements, and what is already known about proteins has to settle the matter. The last button turns the view and pulls back to the whole protein, with this piece in orange. Its chain of 153 amino acids is drawn as a tube: blue where it is wound into helices, grey in between. The positions are from entry 1MBN in the Protein Data Bank.</div>
+    </div>
+  </section>
+
+  <section id="further">
+    <div class="sec-head prose">
+      <h2>One thing to remember</h2>
+      <p class="remember">X-rays have waves small enough to show atoms, but there is no lens for them. A crystal gathers the faint scatter of one molecule into bright spots, and a computer turns the spots into a map of where the atoms are.</p>
+      <p>A longer guide to this subject, with the equations and the real numbers, is being written.</p>
+      <details class="classroom"><summary>For a class</summary><ul><li>Why can a microscope that uses visible light never show the atoms in a protein, however well it is made?</li><li>In a crystal every copy of the molecule faces the same way. What would happen to the spots if the copies pointed in random directions?</li><li>The spots at the edge of the detector carry the finest detail. What would the map look like if only the spots near the middle were measured?</li><li>Try it: at the third stop, how fine must the detail be before the rings in the side chains show their holes?</li></ul></details>
+    </div>
+    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="scatter" href="fluorescence.html">Next: X-ray fluorescence at NE-CAT →</a></nav>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.5. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let playing = !reduce;
+const mBtn = document.getElementById('motionBtn');
+const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
+setMotionLabel();
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();});
+const $=id=>document.getElementById(id);
+
+// ---- ligne claire palette: flat colors, one ink line ----
+const INK='#1b1b1b', SKY='#dcecf5', WHITE='#ffffff', RED='#d8412f', BLUE='#2f6db5', YEL='#f6c52e', CAP='#ffe98a',
+      GRN='#5aa469', ORG='#ee8a2b', GREY='#b9c2c9', PUR='#8a63c2', LTGRN='#cfe6c9', LTYEL='#ffe9a3', LTRED='#f4c9c2',
+      LTBLUE='#c6d9f0', STEEL='#9fb6cc', FLOOR='#efe3c4', LTORG='#ffd98a', MINT='#bfe0c4';
+const HAND='"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive';
+
+const figs=[];
+function fig(id,aspect,draw,animated=true){
+  const cv=$(id), ctx=cv.getContext('2d');
+  const f={cv,ctx,draw,animated,visible:true,w:0,h:0,t:0};
+  function size(){const dpr=Math.min(window.devicePixelRatio||1,2);const w=cv.clientWidth;if(!w)return;const asp=typeof aspect==='function'?aspect(w):aspect;const h=Math.round(w/asp);
+    cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);f.w=w;f.h=h;f.draw(f);}
+  new ResizeObserver(size).observe(cv);
+  new IntersectionObserver(es=>{es.forEach(e=>f.visible=e.isIntersecting)}).observe(cv);
+  figs.push(f); return f;
+}
+const redrawAll=()=>figs.forEach(f=>f.w&&f.draw(f));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(redrawAll);
+let last=performance.now();
+function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
+  figs.forEach(f=>{if(f.animated&&f.visible&&playing&&f.w){f.t+=dt;f.draw(f);}});requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+// ---- drawing kit ----
+function pen(c,w=2,col=INK){c.strokeStyle=col;c.lineWidth=w;c.lineJoin='round';c.lineCap='round';c.setLineDash([]);}
+function bg(c,w,h,col=SKY){c.fillStyle=col;c.fillRect(0,0,w,h);}
+function rectF(c,x,y,w,h,fill,lw=2){c.fillStyle=fill;c.fillRect(x,y,w,h);pen(c,lw);c.strokeRect(x,y,w,h);}
+function disc(c,x,y,r,fill,lw=2){c.beginPath();c.arc(x,y,r,0,7);if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function poly(c,pts,fill,lw=2){c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function line(c,x0,y0,x1,y1,lw=2,col=INK,dash){pen(c,lw,col);if(dash)c.setLineDash(dash);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.setLineDash([]);}
+function arrow(c,x0,y0,x1,y1,col=INK,lw=2.2,head=8){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);pen(c,lw,col);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();if(L<3)return;
+  const ux=dx/L,uy=dy/L,h=Math.min(head,L*0.7);c.fillStyle=col;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1-ux*h-uy*h*0.5,y1-uy*h+ux*h*0.5);c.lineTo(x1-ux*h+uy*h*0.5,y1-uy*h-ux*h*0.5);c.closePath();c.fill();c.stroke();}
+function fatArrow(c,x0,y0,x1,y1,fill,wd=7){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);if(L<4)return;const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;const hd=Math.min(wd*2.2,L*0.65),hw=wd*1.35;const bx=x1-ux*hd,by=y1-uy*hd;
+  poly(c,[[x0+nx*wd/2,y0+ny*wd/2],[bx+nx*wd/2,by+ny*wd/2],[bx+nx*hw,by+ny*hw],[x1,y1],[bx-nx*hw,by-ny*hw],[bx-nx*wd/2,by-ny*wd/2],[x0-nx*wd/2,y0-ny*wd/2]],fill);}
+function txt(c,s,x,y,size=16,align='left',col=INK){c.fillStyle=col;c.font=`${size}px ${HAND}`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);}
+function cap(c,s,x,y,align='left',size=15){s=s.replace(/[a-z]/g,ch=>ch.toUpperCase());c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+16,ph=size+10;
+  const x0=align==='center'?x-pw/2:align==='right'?x-pw:x;rectF(c,x0,y-ph/2,pw,ph,CAP,2);c.fillStyle=INK;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+8,y+1);}
+function electron(c,x,y,r=8){disc(c,x,y,r,YEL);line(c,x-r*0.45,y,x+r*0.45,y,2);}
+function eye(c,x,y,ang){c.save();c.translate(x,y);c.rotate(ang);c.beginPath();c.ellipse(0,0,15,9,0,0,7);c.fillStyle=WHITE;c.fill();pen(c,2);c.stroke();disc(c,-5,0,4.5,INK);c.restore();}
+function sampleLoop(c,x,y,s=1){line(c,x,y+7*s,x,y+34*s,3);disc(c,x,y,9*s,WHITE);poly(c,[[x-5*s,y],[x,y-5*s],[x+5*s,y],[x,y+5*s]],GRN,1.6);}
+function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fmt(+el.value);cb&&cb();};el.addEventListener('input',up);up();return el;}
+
+// ---------- helpers shared by the Introductory guides. The script of each is the drawing kit, this file, and the guide's own file ----------
+const GDK='#2f7a45';
+function tag(c,s,x,y,align='left',size=15,col=INK){c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+10,ph=size+6,x0=align==='center'?x-pw/2:align==='right'?x-pw:x;
+  c.fillStyle=WHITE;c.fillRect(x0,y-ph/2,pw,ph);pen(c,1.6);c.strokeRect(x0,y-ph/2,pw,ph);c.fillStyle=col;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+5,y+1);}
+// seeded random numbers, so that figures do not flicker
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+const setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+// a color to stand for an X-ray energy between 6 and 20 keV: red for low, violet for high
+const hueE=E=>`hsl(${Math.round(Math.max(0,Math.min(1,(E-6)/14))*270)},78%,50%)`;
+function stopNo(c,n,x,y,r=13){disc(c,x,y,r,RED,2);txt(c,String(n),x,y+1,Math.round(r*1.25),'center','#fff');}
+function wave(c,x0,x1,y,amp,lam,ph,col,lw=2){if(x1<=x0)return;pen(c,lw,col);c.beginPath();for(let x=x0;x<=x1;x+=2){const yy=y+amp*Math.sin((x-x0)/lam*6.2832-ph);x===x0?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();}
+function magnets(c,x0,x1,y,hh,n,flip){const bw=(x1-x0)/n;for(let i=0;i<n;i++)rectF(c,x0+i*bw,y,bw,hh,((i%2)^flip)?RED:BLUE,2);}
+
+const fmtE=le=>{const e=Math.pow(10,le);return e<1e6?(e/1e3).toFixed(e<1e4?1:0)+' keV':e<1e9?(e/1e6).toFixed(e<1e7?1:0)+' MeV':(e/1e9).toFixed(1)+' GeV';};
+// the ring's pipe, seen from above
+function pipe(c,cx,cy,R,pw){pen(c,pw*2,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+pw,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-pw,0,7);c.stroke();}
+// a made-up diffraction pattern: spots on a lattice. Each spot stands for detail of d ångströms, with dEdge at the edge of the picture
+function mkSpots(seed,dEdge){const r=rng(seed),S=[];for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.09||Math.abs(x)>0.97||r()<0.4)continue;S.push({x,y,rad,d:dEdge/rad,s:(0.45+r())*(1-0.5*rad)});}return S;}
+const ICE=[3.90,3.67,3.44,2.67,2.25,2.07,1.95,1.92,1.88];   // spacings of the rings from ordinary (hexagonal) ice, in ångströms
+// draws the pattern in a square of side S. Spots fade with dose by the rule of 10 MGy for each ångström. ice from 0 to 1 adds ice rings
+function drawPattern(c,cx,cy,S,spots,dose,dEdge,ice){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,3);
+  if(ice>0.01)ICE.forEach((d,i)=>{const R=dEdge/d*S/2*0.95;if(R<S/2-2){pen(c,(i<3?3.2:2)*(0.4+0.6*ice),`rgba(70,80,92,${(0.6*ice).toFixed(3)})`);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();}});
+  spots.forEach(s=>{const k=Math.pow(2,-dose/(10*s.d))*(1-0.55*(ice||0));if(k<0.04)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(3)})`;c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.sqrt(k),0,7);c.fill();});
+  disc(c,cx,cy,Math.max(4,S*0.025),GREY,1.6);}
+// a crystal seen side on, as a six-sided shape of half-size s
+function xtal(c,x,y,s,fill=GRN,lw=2){poly(c,[[x-s,y-s*0.45],[x-s*0.35,y-s],[x+s*0.8,y-s*0.8],[x+s,y+s*0.3],[x+s*0.3,y+s],[x-s*0.85,y+s*0.7]],fill,lw);}
+const mix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// numbers in plain words
+const big=n=>n<1e3?String(Math.round(n)):n<1e6?(Math.round(n/Math.pow(10,Math.floor(Math.log10(n))-1))*Math.pow(10,Math.floor(Math.log10(n))-1)).toLocaleString('en-US'):n<1e9?(n/1e6).toFixed(n<1e7?1:0)+' million':n<1e12?(n/1e9).toFixed(n<1e10?1:0)+' billion':(n/1e12).toFixed(n<1e13?1:0)+' trillion';
+// the crystal, the cone of rays that the detector catches, and the detector, seen from the side. D is the distance in mm (150 to 1200)
+const DET_HALF=155.55, LAMBDA=0.9792;   // half the width of the detector face in mm (EIGER2 X 16M), and the wavelength at 12.662 keV in ångströms
+const resAt=D=>LAMBDA/(2*Math.sin(0.5*Math.atan(DET_HALF/D)));
+function geoDraw(c,w,h,D,fs,narrow){const sc=(w*0.74)/1200,x0=w*0.1,y=h*0.5,xd=x0+D*sc,hb=DET_HALF*sc;
+  arrow(c,0,y,x0-12,y,ORG,3,9);
+  c.fillStyle='rgba(238,138,43,.22)';c.beginPath();c.moveTo(x0,y);c.lineTo(xd,y-hb);c.lineTo(xd,y+hb);c.closePath();c.fill();
+  line(c,x0,y,xd,y-hb,1.6,ORG);line(c,x0,y,xd,y+hb,1.6,ORG);line(c,x0,y,xd-10,y,1.6,'rgba(238,138,43,.7)');rectF(c,xd-12,y-4,5,8,INK,1);
+  rectF(c,xd,y-hb,Math.max(8,w*0.014),2*hb,WHITE,2.4);disc(c,x0,y,narrow?5:7,GRN,2);
+  [150,400,800,1200].forEach(d=>{const x=x0+d*sc;line(c,x,h-(narrow?26:30),x,h-(narrow?20:24),2);txt(c,d===1200?'1.2 m':d+' mm',x,h-(narrow?11:13),fs,'center','#52606b');});
+  line(c,x0,h-(narrow?23:27),x0+1200*sc,h-(narrow?23:27),1.6,'#52606b');
+  cap(c,'crystal',x0,y-(narrow?20:26),'center',fs);cap(c,'detector',Math.min(w-6,xd+Math.max(8,w*0.014)+6),Math.max(13,y-hb-(narrow?14:18)),xd>w*0.6?'right':'left',fs);}
+// a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
+function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
+  const setEq=o=>{eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}};
+  eqBtn.addEventListener('click',()=>setEq(!eqOpen));try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}}
+// ---------- myoglobin, the protein used in the figures of the five-minute guides ----------
+// Positions are from entry 1MBN in the Protein Data Bank (sperm whale myoglobin; Watson, 1969), turned to a convenient view.
+// MB.ca: one point for each of the 153 amino acids (x, y on the page and z toward the reader, in ångströms). MB.heme: the ring of the heme group and its iron.
+// MB.helP: every atom of amino acids 4 to 16 in the same view as MB.ca (same order as MB.hel).
+// MB.rot and MB.off turn MB.hel into MB.helP: helP = rot x hel + off.
+// MB.hel: every atom of amino acids 4 to 16, part of the first helix, with the helix lying along x: [x, y, z, atomic number].
+const MB={ca:[[-17.5,-7.3,2.5],[-17.5,-3.5,2.6],[-20.5,-1.2,1.9],[-21.9,0.5,-1.2],[-21.4,3.8,0.8],[-17.9,2.9,2.1],[-16.6,1.9,-1.4],[-18.0,5.4,-2.2],[-15.7,7.0,0.3],[-12.7,4.7,-0.4],[-13.0,5.6,-4.1],[-13.2,9.4,-4.1],[-10.0,9.6,-1.9],[-8.4,7.4,-4.6],[-9.3,9.7,-7.4],[-7.5,12.4,-5.4],[-4.4,10.3,-4.7],[-4.5,9.8,-8.5],[-3.8,13.5,-8.9],[-0.2,13.0,-7.9],[0.7,9.3,-7.8],[4.5,9.5,-7.7],[4.3,12.1,-4.9],[2.2,9.8,-2.8],[4.2,6.7,-3.5],[7.4,8.6,-2.6],[5.4,9.6,0.5],[4.2,6.2,1.6],[7.6,4.7,0.8],[9.5,7.1,2.9],[7.0,6.8,5.7],[7.4,3.0,5.6],[11.2,3.1,5.3],[11.6,5.5,8.2],[9.1,3.8,10.4],[10.1,0.1,9.7],[13.7,-0.1,8.8],[13.3,-3.8,8.3],[11.0,-3.4,5.2],[13.6,-1.5,3.1],[16.4,-3.9,4.1],[14.4,-6.2,1.9],[14.6,-4.1,-1.3],[18.1,-4.6,-2.7],[17.6,-1.7,-5.1],[17.1,0.6,-2.1],[19.1,-0.5,0.9],[21.9,1.8,-0.2],[19.5,4.6,0.6],[20.7,6.4,3.8],[18.6,9.6,4.4],[15.2,11.1,3.8],[17.0,13.4,1.6],[18.5,10.6,-0.4],[15.1,8.8,-0.7],[13.1,11.7,-2.0],[16.1,12.4,-4.2],[16.2,9.0,-5.9],[14.1,8.5,-9.0],[14.0,4.7,-9.0],[12.2,5.1,-5.7],[9.8,7.5,-7.5],[9.1,4.9,-10.2],[8.7,2.4,-7.4],[5.9,4.2,-5.5],[4.3,4.3,-9.0],[4.5,0.6,-9.6],[2.9,-0.0,-6.3],[0.2,2.7,-6.2],[-0.9,1.4,-9.6],[-1.5,-2.2,-8.6],[-3.1,-0.8,-5.4],[-5.8,1.3,-7.2],[-6.4,-1.5,-9.6],[-7.6,-3.5,-6.5],[-9.6,-0.8,-4.9],[-11.5,0.1,-7.9],[-12.6,-3.6,-8.0],[-14.5,-3.1,-4.8],[-13.5,-6.4,-3.4],[-13.8,-8.6,-6.5],[-10.1,-8.1,-6.8],[-8.8,-11.6,-7.2],[-7.4,-11.0,-10.7],[-4.8,-8.7,-9.4],[-4.1,-10.1,-5.9],[-3.3,-13.6,-6.7],[-0.1,-12.9,-8.7],[0.9,-10.4,-6.0],[0.4,-12.8,-3.1],[2.6,-15.3,-4.9],[5.1,-12.7,-5.9],[5.3,-11.4,-2.3],[5.3,-14.9,-0.6],[7.6,-16.6,-3.1],[10.4,-14.2,-4.1],[9.9,-10.8,-2.2],[9.6,-12.4,1.3],[7.2,-9.8,2.6],[5.4,-10.4,6.0],[1.7,-9.7,6.4],[3.2,-7.5,9.1],[4.5,-5.4,6.2],[1.2,-5.2,4.4],[-0.0,-3.9,7.7],[3.0,-1.6,8.1],[2.7,-0.3,4.6],[-1.1,0.0,5.2],[-0.2,2.4,8.0],[2.1,4.9,6.2],[-0.8,4.7,3.5],[-3.4,6.3,5.8],[-1.0,8.6,7.6],[0.1,9.7,4.1],[-3.5,10.1,3.1],[-4.3,12.0,6.2],[-1.1,14.1,5.9],[-2.0,15.0,2.4],[-5.8,15.5,2.5],[-6.7,17.4,5.6],[-10.3,18.4,4.6],[-11.0,15.5,2.1],[-10.3,12.8,4.8],[-12.1,12.9,8.0],[-13.3,9.7,9.8],[-15.9,8.5,7.3],[-13.2,8.2,4.8],[-10.5,6.9,7.2],[-12.3,3.8,8.3],[-13.7,2.9,4.7],[-10.0,3.1,3.8],[-8.8,0.9,6.7],[-11.6,-1.6,6.0],[-10.5,-1.8,2.4],[-6.9,-2.4,3.5],[-7.5,-5.3,6.0],[-9.4,-6.7,3.1],[-6.4,-6.7,0.8],[-4.7,-8.0,3.9],[-7.2,-10.8,4.4],[-6.9,-12.4,0.9],[-3.2,-12.0,0.5],[-3.1,-13.8,3.9],[-5.2,-16.7,2.8],[-3.2,-17.3,-0.3],[-0.0,-17.3,1.8],[-1.5,-20.1,3.9],[-2.5,-22.1,0.9],[1.1,-21.6,0.0],[2.8,-22.2,3.3],[3.6,-18.7,4.3],[2.0,-16.8,7.2],[3.4,-17.2,10.7]],heme:[[7.8,-5.7,-6.4],[3.1,-4.3,-5.6],[4.0,-3.8,-0.9],[8.7,-5.2,-1.7],[6.4,-5.3,-6.6],[5.7,-5.4,-7.9],[4.4,-4.9,-7.7],[4.2,-4.7,-6.3],[2.9,-4.1,-4.2],[1.7,-3.6,-3.6],[1.9,-3.5,-2.2],[3.3,-3.9,-2.0],[5.4,-4.2,-0.6],[6.0,-4.1,0.7],[7.4,-4.6,0.5],[7.4,-4.8,-0.9],[8.8,-5.5,-3.0],[10.1,-5.8,-3.6],[9.8,-6.0,-5.0],[8.4,-5.7,-5.1],[5.5,-4.9,-5.5],[4.0,-4.2,-3.3],[6.2,-4.6,-1.6],[7.8,-5.3,-3.9],[5.8,-5.0,-3.6]],hemeBonds:[[0,4],[0,19],[1,7],[1,8],[2,11],[2,12],[3,15],[3,16],[4,5],[4,20],[5,6],[6,7],[7,20],[8,9],[8,21],[9,10],[10,11],[11,21],[12,13],[12,22],[13,14],[14,15],[15,22],[16,17],[16,23],[17,18],[18,19],[19,23],[20,24],[21,24],[22,24],[23,24]],helices:[[3,18],[20,35],[36,42],[51,57],[58,77],[86,95],[100,118],[125,148]],piece:[4,16],
+  helP:[[-21.7,-0.2,0.0],[-21.9,0.5,-1.2],[-21.3,1.9,-0.8],[-20.4,2.4,-1.5],[-23.1,1.0,-2.0],[-23.1,0.8,-3.5],[-21.8,-0.1,-4.1],[-21.8,-1.1,-3.3],[-21.1,0.3,-4.9],[-21.8,2.5,0.2],[-21.4,3.8,0.8],[-19.9,3.9,0.9],[-19.2,4.8,0.4],[-19.3,2.9,1.7],[-17.9,2.9,2.1],[-16.9,2.8,0.9],[-15.9,3.4,1.0],[-17.7,1.7,3.1],[-18.3,1.9,4.5],[-18.2,0.6,5.4],[-17.8,-0.3,4.8],[-18.7,0.7,6.5],[-17.4,2.0,-0.2],[-16.6,1.9,-1.4],[-16.6,3.4,-1.9],[-15.5,4.0,-2.2],[-17.0,0.9,-2.4],[-16.6,-0.6,-1.9],[-17.4,-1.7,-1.6],[-15.3,-1.1,-1.9],[-16.6,-2.8,-1.3],[-15.3,-2.5,-1.4],[-14.0,-0.5,-2.1],[-14.3,-3.3,-1.3],[-13.0,-1.4,-2.0],[-13.0,-2.7,-1.6],[-17.8,4.1,-1.9],[-18.0,5.4,-2.2],[-16.8,6.3,-1.8],[-16.1,7.0,-2.5],[-19.0,6.0,-3.1],[-18.5,7.2,-3.8],[-19.5,7.9,-4.8],[-19.2,9.1,-5.2],[-20.5,7.1,-5.1],[-16.6,6.3,-0.4],[-15.7,7.0,0.3],[-14.3,6.6,-0.1],[-13.3,7.5,-0.4],[-15.5,6.7,1.8],[-16.1,7.5,2.8],[-17.0,8.6,2.1],[-16.8,6.8,3.8],[-14.1,5.3,-0.0],[-12.7,4.7,-0.4],[-12.3,5.2,-1.8],[-11.1,5.6,-1.9],[-12.2,3.3,-0.2],[-11.0,3.0,-1.0],[-12.1,2.9,1.3],[-13.2,5.2,-2.7],[-13.0,5.6,-4.1],[-12.6,7.1,-4.5],[-11.8,7.3,-5.4],[-13.7,4.9,-5.2],[-13.4,3.5,-5.4],[-14.5,2.8,-6.2],[-12.1,3.3,-6.1],[-13.3,8.0,-3.8],[-13.2,9.4,-4.1],[-11.8,9.9,-3.6],[-11.2,10.8,-4.3],[-14.2,10.0,-3.1],[-14.1,11.5,-3.1],[-14.6,12.4,-4.1],[-13.8,12.3,-2.0],[-14.4,13.7,-3.7],[-13.9,13.7,-2.5],[-11.3,9.4,-2.6],[-10.0,9.6,-1.9],[-8.9,9.2,-3.0],[-8.0,9.8,-3.3],[-9.3,9.3,-0.6],[-8.0,10.1,-0.4],[-10.3,9.3,0.5],[-9.2,8.0,-3.5],[-8.4,7.4,-4.6],[-8.1,8.4,-5.6],[-7.0,8.8,-5.9],[-8.5,5.8,-4.8],[-7.4,5.2,-5.6],[-7.4,4.9,-6.8],[-6.2,4.6,-5.1],[-6.1,4.2,-7.2],[-5.5,4.1,-6.1],[-5.7,4.6,-3.7],[-4.1,3.5,-6.0],[-4.4,4.0,-3.7],[-3.6,3.6,-4.7],[-9.2,8.7,-6.3],[-9.3,9.7,-7.4],[-8.4,10.9,-7.1],[-7.7,11.5,-8.1],[-10.6,10.5,-7.6],[-8.3,11.3,-5.9],[-7.5,12.4,-5.4],[-6.1,12.1,-5.3],[-5.2,12.9,-5.8],[-8.3,12.7,-4.1],[-9.4,13.8,-4.2],[-10.2,14.1,-2.9],[-11.4,14.8,-3.1],[-12.1,15.1,-1.9]],
+  rot:[[0.7686,-0.5092,0.3873],[0.5281,0.8467,0.0654],[-0.3612,0.1542,0.9196]],off:[-13.75, 5.71, -2.39],
+  hel:[[-10.1,-0.6,-1.3,7],[-9.4,-0.0,-2.3,6],[-8.4,0.8,-1.7,6],[-7.2,0.8,-2.0,8],[-9.8,0.8,-3.6,6],[-9.3,0.4,-4.9,6],[-8.7,-1.0,-5.0,6],[-9.4,-1.8,-4.4,8],[-7.6,-1.2,-5.5,8],[-8.9,1.8,-0.9,7],[-8.0,2.8,-0.2,6],[-6.9,2.1,0.6,6],[-5.7,2.4,0.4,8],[-7.2,1.1,1.4,7],[-6.3,0.4,2.3,6],[-5.2,-0.3,1.6,6],[-4.1,-0.3,2.1,8],[-7.1,-0.5,3.2,6],[-8.0,0.1,4.3,6],[-8.9,-0.9,5.1,6],[-8.8,-1.9,4.7,8],[-9.6,-0.4,5.9,8],[-5.5,-0.9,0.4,7],[-4.6,-1.6,-0.4,6],[-3.6,-0.4,-0.8,6],[-2.3,-0.5,-0.6,8],[-5.1,-2.4,-1.6,6],[-5.7,-3.8,-1.1,6],[-7.0,-4.3,-1.2,6],[-5.0,-4.9,-0.6,6],[-7.1,-5.6,-0.6,7],[-5.9,-6.0,-0.3,6],[-3.6,-5.1,-0.2,6],[-5.5,-7.2,0.2,6],[-3.3,-6.3,0.2,6],[-4.2,-7.4,0.5,6],[-4.1,0.7,-1.2,7],[-3.5,1.9,-1.5,6],[-2.3,2.1,-0.6,6],[-1.1,2.3,-1.0,8],[-3.6,2.8,-2.7,6],[-2.4,3.5,-3.1,6],[-2.4,4.4,-4.3,6],[-1.4,5.2,-4.5,8],[-3.4,4.2,-5.0,7],[-2.6,2.2,0.7,7],[-1.7,2.5,1.8,6],[-0.8,1.4,2.0,6],[0.5,1.6,2.1,8],[-2.3,2.3,3.2,6],[-2.7,3.5,4.0,6],[-2.6,4.8,3.1,6],[-4.0,3.4,4.5,6],[-1.3,0.2,2.0,7],[-0.5,-1.1,2.2,6],[0.6,-1.1,1.1,6],[1.8,-1.3,1.4,8],[-0.9,-2.5,2.4,6],[0.2,-3.5,2.2,6],[-1.5,-2.7,3.8,6],[0.2,-0.7,-0.1,7],[1.2,-0.7,-1.3,6],[2.4,0.2,-1.4,6],[3.5,-0.1,-1.9,8],[0.7,-1.1,-2.6,6],[0.2,-2.5,-2.8,6],[-0.7,-2.7,-4.0,6],[1.4,-3.5,-2.9,6],[2.1,1.5,-1.0,7],[3.0,2.6,-1.1,6],[4.1,2.4,-0.1,6],[5.3,2.7,-0.4,8],[2.2,3.7,-0.6,6],[3.0,5.0,-0.4,6],[3.5,5.8,-1.5,7],[3.4,5.7,0.8,6],[4.2,6.9,-0.9,6],[4.2,6.8,0.4,7],[3.9,1.8,1.0,7],[4.8,1.5,2.1,6],[5.7,0.4,1.6,6],[6.9,0.4,1.7,8],[4.7,1.0,3.6,6],[6.0,1.1,4.4,6],[3.5,1.7,4.3,6],[5.1,-0.6,0.9,7],[5.8,-1.6,0.2,6],[6.9,-1.1,-0.6,6],[8.1,-1.3,-0.4,8],[4.9,-2.9,-0.2,6],[5.8,-4.2,-0.5,6],[6.1,-4.7,-1.7,6],[6.2,-5.2,0.4,6],[6.8,-5.9,-1.5,7],[6.8,-6.1,-0.3,6],[6.1,-5.2,1.8,6],[7.5,-7.4,0.2,6],[6.8,-6.4,2.3,6],[7.5,-7.3,1.6,6],[6.5,-0.4,-1.7,7],[7.3,0.3,-2.6,6],[8.6,0.9,-1.9,6],[9.7,1.0,-2.5,8],[6.9,1.6,-3.3,6],[8.3,1.4,-0.7,7],[9.4,2.0,0.1,6],[10.3,1.0,0.7,6],[11.6,1.2,0.7,8],[8.5,2.9,1.0,6],[8.3,4.3,0.5,6],[7.4,5.2,1.4,6],[6.9,6.4,0.9,6],[6.0,7.2,1.7,7]],helBonds:[[0,1],[1,2],[1,4],[2,3],[2,9],[4,5],[5,6],[6,7],[6,8],[9,10],[10,11],[11,12],[11,13],[13,14],[14,15],[14,17],[15,16],[15,22],[17,18],[18,19],[19,20],[19,21],[22,23],[23,24],[23,26],[24,25],[24,36],[26,27],[27,28],[27,29],[28,30],[29,31],[29,32],[30,31],[31,33],[32,34],[33,35],[34,35],[36,37],[37,38],[37,40],[38,39],[38,45],[40,41],[41,42],[42,43],[42,44],[45,46],[46,47],[46,49],[47,48],[47,53],[49,50],[50,51],[50,52],[53,54],[54,55],[54,57],[55,56],[55,60],[57,58],[57,59],[60,61],[61,62],[61,64],[62,63],[62,68],[64,65],[65,66],[65,67],[68,69],[69,70],[69,72],[70,71],[70,78],[72,73],[73,74],[73,75],[74,76],[75,77],[76,77],[78,79],[79,80],[79,82],[80,81],[80,85],[82,83],[82,84],[85,86],[86,87],[86,89],[87,88],[87,99],[89,90],[90,91],[90,92],[91,93],[92,94],[92,95],[93,94],[94,96],[95,97],[96,98],[97,98],[99,100],[100,101],[100,103],[101,102],[101,104],[104,105],[105,106],[105,108],[106,107],[108,109],[109,110],[110,111],[111,112]]};
+// the chain as a smooth tube through the 153 points: helices blue, the loops between them grey, far parts drawn first.
+// s is pixels to the ångström. hi, if given, is a range of amino acids to pick out in orange
+const MBPC=(()=>{const P=MB.ca,n=P.length,Q=[P[0]],K=6,inH=i=>MB.helices.some(([a,b])=>i+1>=a&&i+1<=b),S=[];
+  for(let i=0;i<n-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(n-1,i+2)];
+    for(let k=1;k<=K;k++){const t=k/K,t2=t*t,t3=t2*t;Q.push([0,1,2].map(d=>0.5*(2*p1[d]+(-p0[d]+p2[d])*t+(2*p0[d]-5*p1[d]+4*p2[d]-p3[d])*t2+(-p0[d]+3*p1[d]-3*p2[d]+p3[d])*t3)));}}
+  // one piece of tube for each amino acid, from halfway to the one before to halfway to the one after
+  for(let i=0;i<n;i++){const a=Math.max(0,i*K-K/2),b=Math.min(Q.length-1,i*K+K/2);const h=inH(i),lo=i>0&&inH(i-1)===h?4:0,up=i<n-1&&inH(i+1)===h?4:0;S.push({core:Q.slice(a,b+1),ext:Q.slice(Math.max(0,a-lo),Math.min(Q.length,b+1+up)),z:P[i][2],mid:P[i],h,res:i+1});}
+  MB.hemeBonds.forEach(([i,j])=>{const a=MB.heme[i],b=MB.heme[j];S.push({core:[a,b],ext:[a,b],z:(a[2]+b[2])/2,mid:a,heme:true});});
+  return S.sort((u,v)=>u.z-v.z);})();
+// tf, if given, replaces the plain view: it takes a point [x, y, z] in ångströms and returns where it is drawn, [x, y] in pixels and its depth z in ångströms
+function drawMb(c,cx,cy,s,hi,tf){c.save();c.lineCap='round';c.lineJoin='round';const P=tf||(p=>[cx+p[0]*s,cy-p[1]*s,p[2]]);
+  const path=pts=>{c.beginPath();pts.forEach((p,i)=>{const q=P(p);i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});c.stroke();};
+  const L=tf?MBPC.map(g=>({g,z:P(g.mid)[2]})).sort((u,v)=>u.z-v.z):MBPC.map(g=>({g,z:g.z}));
+  L.forEach(({g,z})=>{const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(1,Math.min(2.2,s*0.4));
+    // the ink edge of this piece, then its color, run a little way into neighbors of the same width so that the pieces join without a seam
+    c.strokeStyle=INK;c.lineWidth=lw+2*ow;path(g.core);
+    c.strokeStyle=g.heme?RED:on?ORG:g.h?mix('#7ea3d6','#c6d9f0',k):mix('#8d979e','#d5dbdf',k);c.lineWidth=lw;path(g.ext);});
+  c.restore();}
+// where a given amino acid, or the iron of the heme, falls on the page
+const mbAt=(i,cx,cy,s)=>[cx+MB.ca[i-1][0]*s,cy-MB.ca[i-1][1]*s], mbFe=(cx,cy,s)=>{const f=MB.heme[MB.heme.length-1];return [cx+f[0]*s,cy-f[1]*s];};
+// ---------- the guide "How do we see a protein?" (Introductory level) ----------
+// The script is the drawing kit, introkit.js and this file.
+// the piece of myoglobin used for the maps: amino acids 4 to 16 of its first helix, seen from the side and flattened onto the page
+const MOL={at:MB.hel.map(([x,y,z,e])=>({x,y:-y,w:z,z:e})),bonds:MB.helBonds};
+const mapScale=(W,H)=>Math.min(W/25.5,H/18),MAPC=[0.75,0.1];   // the piece is about 22 by 15 ångströms; MAPC is its middle
+const MCACHE=new Map();
+// The map at detail d, seen from the side. Each atom is spread into a round cloud whose width grows with d, the clouds are added up in
+// three dimensions, and each point of the picture takes the highest value along the line of sight. The outline drawn is where that
+// value passes 40% of the map's highest peak, so it is the silhouette of the surface a crystallographer would draw around the map.
+function mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d){const sg=Math.hypot(0.28*d,0.25),cut=3*sg,dz=Math.max(0.35,0.6*sg),nz=Math.ceil(16/dz)+1,z0=-8,G=new Float32Array(nx*ny*nz),h=step/sc,gx0=(X0-cx)/sc,gy0=(Y0-cy)/sc,k=1/(2*sg*sg);
+  for(const a of MOL.at){const i0=Math.max(0,Math.ceil((a.x-cut-gx0)/h)),i1=Math.min(nx-1,Math.floor((a.x+cut-gx0)/h)),j0=Math.max(0,Math.ceil((a.y-cut-gy0)/h)),j1=Math.min(ny-1,Math.floor((a.y+cut-gy0)/h)),k0=Math.max(0,Math.ceil((a.w-cut-z0)/dz)),k1=Math.min(nz-1,Math.floor((a.w+cut-z0)/dz));
+    const ex=[],ez=[];for(let i=i0;i<=i1;i++){const u=gx0+i*h-a.x;ex.push(Math.exp(-u*u*k));}for(let q=k0;q<=k1;q++){const u=z0+q*dz-a.w;ez.push(Math.exp(-u*u*k));}
+    for(let j=j0;j<=j1;j++){const u=gy0+j*h-a.y,ey=a.z*Math.exp(-u*u*k);for(let i=i0;i<=i1;i++){const e=ey*ex[i-i0],o=(j*nx+i)*nz;for(let q=k0;q<=k1;q++)G[o+q]+=e*ez[q-k0];}}}
+  const v=new Float32Array(nx*ny);let top=0;for(let p=0;p<nx*ny;p++){let m=0;for(let q=0;q<nz;q++){const g=G[p*nz+q];if(g>m)m=g;}v[p]=m;if(m>top)top=m;}
+  return {v,L:0.4*top};}
+function drawMap(c,X0,Y0,W,H,d,step=4){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc,nx=Math.ceil(W/step)+1,ny=Math.ceil(H/step)+1,key=[Math.round(W),Math.round(H),step,d.toFixed(2)].join();
+  let m=MCACHE.get(key);
+  if(!m){m=mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d);if(MCACHE.size>80)MCACHE.clear();MCACHE.set(key,m);}
+  const v=m.v,L=m.L;
+  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  c.fillStyle=LTBLUE;for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i];if((a+b+e+f)/4>L)c.fillRect(X0+i*step,Y0+j*step,step+0.5,step+0.5);}
+  pen(c,1.7,BLUE);c.beginPath();
+  for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i],x=X0+i*step,y=Y0+j*step,p=[];
+    if((a>L)!==(b>L))p.push([x+step*(L-a)/(b-a),y]);if((b>L)!==(e>L))p.push([x+step,y+step*(L-b)/(e-b)]);
+    if((f>L)!==(e>L))p.push([x+step*(L-f)/(e-f),y+step]);if((a>L)!==(f>L))p.push([x,y+step*(L-a)/(f-a)]);
+    if(p.length===2){c.moveTo(p[0][0],p[0][1]);c.lineTo(p[1][0],p[1][1]);}
+    else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>{c.moveTo(p[u][0],p[u][1]);c.lineTo(p[w2][0],p[w2][1]);});}}
+  c.stroke();c.restore();}
+const atomCol=z=>z===8?RED:z===7?BLUE:'#5d6a73';
+function drawMol(c,X0,Y0,W,H,alpha=1){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc;c.save();c.globalAlpha=alpha;
+  MOL.bonds.forEach(([i,j])=>{const a=MOL.at[i],b=MOL.at[j];line(c,cx+a.x*sc,cy+a.y*sc,cx+b.x*sc,cy+b.y*sc,Math.max(1.6,sc*0.09));});
+  MOL.at.forEach(a=>disc(c,cx+a.x*sc,cy+a.y*sc,Math.max(2.2,sc*0.17),atomCol(a.z),1.2));c.restore();}
+// the pattern of spots, with the ones inside the circle of radius r (0 to 1) dark and the rest pale
+const DEDGE=1.2, SP=mkSpots(21,DEDGE);
+function drawSpots(c,cx,cy,S,r,t){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,2.4);
+  SP.forEach((s,i)=>{const on=s.rad<=r,tw=t===undefined?1:0.75+0.25*Math.sin(t*2.2+i*1.9);c.fillStyle=on?`rgba(27,27,27,${(Math.min(1,0.35+s.s)*tw).toFixed(3)})`:'rgba(27,27,27,.13)';c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.max(0.7,S/260),0,7);c.fill();});
+  if(r<0.995){pen(c,2,ORG);c.setLineDash([6,5]);c.beginPath();c.arc(cx,cy,r*S/2*0.95,0,7);c.stroke();c.setLineDash([]);}
+  disc(c,cx,cy,Math.max(3,S*0.02),GREY,1.4);}
+// the pattern, an arrow, and the map made from the spots inside the circle. Returns the box of the map
+function pair(c,w,h,r,t,narrow,top=0){let S,px,py,bx,by,bw,bh;
+  if(narrow){S=Math.min(w*0.56,(h-top)*0.42);px=w/2;py=top+8+S/2;bx=w*0.03;by=py+S/2+30;bw=w*0.94;bh=h-by-8;arrow(c,px,py+S/2+5,px,by-5,INK,2.4,8);}
+  else{S=(h-top)*0.84;px=w*0.05+S/2;py=top+(h-top)/2;bx=px+S/2+w*0.09;by=top+(h-top)*0.08;bw=w*0.97-bx;bh=(h-top)*0.84;arrow(c,px+S/2+8,py,bx-8,py,INK,2.6,9);}
+  drawSpots(c,px,py,S,r,t);rectF(c,bx,by,bw,bh,WHITE,2.4);drawMap(c,bx+2,by+2,bw-4,bh-4,DEDGE/r,4);
+  return {bx,by,bw,bh,px,py,S};}
+
+// draws something at less than full strength: whole on a spare canvas first, so that overlapping pieces do not show through one another
+let OFF=null;
+function faded(f,c,a,go){if(a<=0)return;if(a>=1)return go(c);const o=OFF||(OFF=document.createElement('canvas'));if(o.width!==f.cv.width||o.height!==f.cv.height){o.width=f.cv.width;o.height=f.cv.height;}const k=o.getContext('2d'),r=f.cv.width/f.w;k.setTransform(1,0,0,1,0,0);k.clearRect(0,0,o.width,o.height);k.setTransform(r,0,0,r,0,0);go(k);c.save();c.globalAlpha=a;c.drawImage(o,0,0,f.w,f.h);c.restore();}
+// turning from the side view of the helix (the view of the maps) to the view of the whole protein: a rotation about one axis, taken a part at a time
+const TURN=(()=>{const R=MB.rot,th=Math.acos(Math.max(-1,Math.min(1,(R[0][0]+R[1][1]+R[2][2]-1)/2))),k=2*Math.sin(th)||1;
+  // axis and angle of the turn that takes the protein's view back to the helix's (the inverse of MB.rot)
+  return {th,ax:[(R[1][2]-R[2][1])/k,(R[2][0]-R[0][2])/k,(R[0][1]-R[1][0])/k]};})();
+function turned(p,ang){const [x,y,z]=[p[0]-MB.off[0],p[1]-MB.off[1],p[2]-MB.off[2]],[a,b,d]=TURN.ax,cs=Math.cos(ang),sn=Math.sin(ang),dot=(a*x+b*y+d*z)*(1-cs);
+  return [x*cs+(b*z-d*y)*sn+a*dot,y*cs+(d*x-a*z)*sn+b*dot,z*cs+(a*y-b*x)*sn+d*dot];}
+
+// The move from the atoms of the piece, as they sit in the map, to the whole protein: the view turns and pulls back. q0 runs from 0 to 1.
+// Returns where the protein ends up: its center and its scale in pixels to the ångström
+const HPH=MB.helP.map((p,i)=>({p,e:MB.hel[i][3]}));
+function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,H),s1=Math.min(W/56,H/52),s=s0*Math.pow(s1/s0,q),k=(s0-s)/(s0-s1),ang=TURN.th*(1-q),pcx=X0+W/2,pcy=Y0+H/2-1.9*s1+(narrow?0:6);
+  // where the middle of the piece is drawn: from its place in the map to its place in the protein
+  const ax0=X0+W/2-MAPC[0]*s0,ay0=Y0+H/2+MAPC[1]*s0,ax1=pcx+MB.off[0]*s1,ay1=pcy-MB.off[1]*s1,ax=ax0+(ax1-ax0)*k,ay=ay0+(ay1-ay0)*k;
+  const tf=p=>{const v=turned(p,ang);return [ax+v[0]*s,ay-v[1]*s,v[2]];};
+  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  faded(f,c,Math.max(0,Math.min(1,(q-0.12)/0.4)),k2=>{k2.save();k2.beginPath();k2.rect(X0,Y0,W,H);k2.clip();drawMb(k2,0,0,s,MB.piece,tf);k2.restore();});
+  const al=Math.max(0,Math.min(1,(0.9-q)/0.35));
+  if(al>0){c.globalAlpha=al;const A=HPH.map(a=>({q:tf(a.p),e:a.e}));MB.helBonds.forEach(([i,j])=>line(c,A[i].q[0],A[i].q[1],A[j].q[0],A[j].q[1],Math.max(1,s*0.09)));
+    A.slice().sort((m,n)=>m.q[2]-n.q[2]).forEach(a=>disc(c,a.q[0],a.q[1],Math.max(1.2,s*0.17),atomCol(a.e),Math.min(1.2,Math.max(0.5,s*0.06))));}
+  c.restore();return {cx:pcx,cy:pcy,s:s1};}
+
+// ---------- opening figure ----------
+if($('seeHeroCv')){
+fig('seeHeroCv',w=>w<560?0.95:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,u=t%19;
+  // 0 to 6 s: more and more spots, and a sharper map. 7 s: atoms. 10 s: the map fades. 10.8 to 14.8 s: the view turns and pulls back to the whole protein
+  const r=u<6?0.2+Math.round(30*Math.min(1,u/5))*0.02:0.8, B=pair(c,w,h,r,t,narrow,narrow?22:0),X0=B.bx+2,Y0=B.by+2,W=B.bw-4,H=B.bh-4;
+  if(u>=7&&u<10.8){if(u>=10){c.save();c.globalAlpha=Math.min(1,(u-10)/0.7);c.fillStyle=WHITE;c.fillRect(X0,Y0,W,H);c.restore();}drawMol(c,X0,Y0,W,H,u<10?Math.min(1,(u-7)/1.2):1);}
+  if(u>=10.8){c.fillStyle=WHITE;c.fillRect(X0,Y0,W,H);pullBack(f,c,X0,Y0,W,H,Math.min(1,(u-10.8)/4),narrow);}
+  cap(c,u<2?'a few spots: a blur':u<6?'more spots: a sharper picture':u<7?'the map of one piece':u<10.8?'atoms fitted into the map':u<14.8?'the same atoms, in the whole protein':'piece by piece, the whole protein',narrow?w*0.03:B.bx+10,narrow?14:B.by+18,'left',fs);
+});
+}
+
+// ---------- stop 1: far too small for light ----------
+if($('sScaleCv')){
+let WD=1e-4;const GREEN=5e-7,XRAY=1e-10;
+const fmtL=m=>m>=0.995e-6?(m*1e6).toFixed(m<1e-5?1:0)+' microns':m>=0.995e-9?(m*1e9).toFixed(m<1e-8?1:0)+' nm':(m*1e10).toFixed(m<1e-9?1:0)+' Å';
+const OBJ=[['a hair, seen end on',7e-5,(c,x,y,s)=>disc(c,x,y,s/2,'#c9a27a',2.4)],
+  ['a red blood cell',7.5e-6,(c,x,y,s)=>{disc(c,x,y,s/2,RED,2.2);disc(c,x,y,s*0.2,'#e8776a',0);}],
+  ['a bacterium',2e-6,(c,x,y,s)=>{c.lineCap='round';line(c,x-s*0.3,y,x+s*0.3,y,s*0.4+4,INK);line(c,x-s*0.3,y,x+s*0.3,y,s*0.4,GRN);c.lineCap='butt';}],
+  ['a virus',1e-7,(c,x,y,s)=>poly(c,[0,1,2,3,4,5].map(i=>[x+s/2*Math.cos(i*1.0472+0.52),y+s/2*Math.sin(i*1.0472+0.52)]),PUR,2.2)],
+  ['a protein: myoglobin',4.5e-9,(c,x,y,s,a,f)=>faded(f,c,a,k=>drawMb(k,x-CAM[0]*s/45,y+CAM[1]*s/45,s/45,s>27?MB.piece:null)),
+   s=>s<2.5?1:Math.max(0,1-(s-2.5)/4)]];
+// Past the protein, the view moves to two bonded atoms of its first helix: the carbon-carbon bond of the piece that lies most nearly across the page
+const HP=MB.helP.map(([x,y,z],i)=>({x,y,z,e:MB.hel[i][3],i})),HPZ=HP.slice().sort((p,q)=>p.z-q.z);
+const TB=MB.helBonds.reduce((m,[i,j])=>{const d=Math.abs(HP[i].x-HP[j].x);return HP[i].e===6&&HP[j].e===6&&d>m.d?{d,i,j}:m;},{d:0}),TGT=[(HP[TB.i].x+HP[TB.j].x)/2,(HP[TB.i].y+HP[TB.j].y)/2];
+let CAM=[0,0];
+const what=()=>{const A=WD*1e10;return A<=7?'two atoms, joined by a bond':A<=14?'atoms in one helix of the protein':A<=34?'one helix of the protein':null;};
+const F=fig('sScaleCv',w=>w<560?1.0:2.5,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,cx=w/2,cy=h*0.47,A=WD*1e10,sc=w/A,sp=45/A;
+  const u=Math.max(0,Math.min(1,(sp-0.5)/2)),e=u*u*(3-2*u);CAM=[TGT[0]*e,TGT[1]*e];
+  let best=null,bs=0;OBJ.forEach(o=>{const s=o[1]/WD;if(s<1.3&&s>bs&&s>0.03){bs=s;best=o;}});
+  // the largest thing that fits in the picture, and behind it anything larger, fading as it outgrows the view
+  OBJ.forEach(o=>{const s=o[1]/WD,a=o[3]?o[3](s):Math.max(0,Math.min(1,(2.4-s)/1.2));if(a<=0||s<bs)return;if(o[3]){o[2](c,cx,cy,s*w,a,f);return;}c.save();c.globalAlpha=a;o[2](c,cx,cy,s*w);c.restore();});
+  // the atoms of the piece, where they sit in the protein
+  if(sp>1.4){const al=Math.min(1,(sp-1.4)/1.2),X=p=>cx+(p.x-CAM[0])*sc,Y=p=>cy-(p.y-CAM[1])*sc;c.save();c.globalAlpha=al;
+    MB.helBonds.forEach(([i,j])=>line(c,X(HP[i]),Y(HP[i]),X(HP[j]),Y(HP[j]),Math.max(1.5,sc*0.12)));
+    HPZ.forEach(p=>disc(c,X(p),Y(p),Math.max(2,sc*0.3),p.e===8?RED:p.e===7?BLUE:'#5d6a73',Math.min(2,Math.max(1,sc*0.03))));c.restore();
+    // a small picture of the whole protein, with a red mark where the view is
+    const B=Math.min(w*0.24,h*0.42),bx=w-B-(narrow?6:12),by=h*0.8-B,s2=B/50,mx=bx+B/2,my=by+B/2;c.save();c.globalAlpha=al;rectF(c,bx,by,B,B,WHITE,2);drawMb(c,mx,my,s2,MB.piece);
+    const vw=Math.max(6,A*s2),vh=Math.max(6,A*h/w*s2);pen(c,2.2,RED);c.strokeRect(mx+CAM[0]*s2-vw/2,my-CAM[1]*s2-vh/2,vw,vh);c.restore();
+    if(al>0.6)tag(c,narrow?'you are here':'where this is in the protein',bx+B,by-(narrow?11:13),'right',fs);}
+  const wh=what();
+  if(wh)tag(c,wh,narrow?w*0.03:cx,h*0.74,narrow?'left':'center',fs);
+  else if(best)tag(c,best[0],cx,Math.min(h*0.74,cy+bs*w/2*(best[1]===2e-6?0.45:1)+(narrow?16:20)),'center',fs);
+  // one wave of green light, to the same scale
+  const lg=GREEN/WD*w,yg=h*0.88;
+  if(lg<5){line(c,0,yg,w,yg,5,GDK);}else wave(c,0,w,yg,narrow?7:10,lg,0,GDK,3);
+  tag(c,lg<5?'green light: waves too close together to draw':lg>w*3?'green light: one wave is far wider than the picture':'waves of green light',w*0.02,yg-(narrow?20:26),'left',fs);
+  const lx=XRAY/WD*w;if(lx>=5){wave(c,0,w,h*0.13,narrow?5:7,lx,0,ORG,2.4);tag(c,'x-ray waves',w*0.98,h*0.13+(narrow?18:22),'right',fs);}
+},false);
+bind('sZ',v=>Math.round(v*100)+'%',()=>{WD=Math.pow(10,-4-5.3*(+$('sZ').value));setT('sW',fmtL(WD));const k=GREEN/WD,r2=n=>n<100?n:+n.toPrecision(2);
+  setT('sG',k<0.8?big(r2(1/k))+' fit across the picture':k<1.25?'about as wide as the picture':big(r2(k))+' times wider than the picture');
+  let best='';let bs=0;OBJ.forEach(o=>{const s=o[1]/WD;if(s<1.3&&s>bs&&s>0.03){bs=s;best=o[0];}});setT('sO',what()||best||'nothing this size');F.w&&F.draw(F);});
+}
+
+// ---------- stop 2: many copies in step ----------
+if($('sRowCv')){
+let N=1;
+const env=q=>Math.exp(-0.1*q*q)*(0.3+0.7*Math.pow(Math.cos(0.9*q+0.5),2));
+const laue=(q,n)=>{const s=Math.sin(Math.PI*q);return Math.abs(s)<1e-5?1:Math.pow(Math.sin(n*Math.PI*q)/(n*s),2);};
+const F=fig('sRowCv',w=>w<560?0.95:2.3,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const cx=w/2,ym=h*0.3,x0=w*0.05,x1=w*0.95,ys=h*0.9,sh=narrow?16:22,H=h*0.3;
+  // the beam, from above
+  const span=Math.min(w*0.8,Math.max(w*0.12,N*w*0.04)),gap=N>1?span/(N-1):0;
+  for(let i=0;i<5;i++){const x=cx+(i-2)/2*Math.max(w*0.05,span/2);arrow(c,x,h*0.03,x,ym-(narrow?14:18),ORG,2.2,7);}
+  for(let i=0;i<N;i++){const x=cx-span/2+i*gap+(N===1?span/2:0),r=Math.max(2.4,Math.min(narrow?5:7,gap*0.2||7));disc(c,x-r*0.6,ym+r*0.3,r,LTBLUE,1.6);disc(c,x+r*0.6,ym+r*0.3,r*0.85,LTBLUE,1.6);disc(c,x,ym-r*0.6,r*0.9,LTBLUE,1.6);}
+  cap(c,'x-rays in',w*0.03,narrow?13:17,'left',fs);tag(c,N===1?'one molecule':N+' molecules in a row',w*0.97,ym,'right',fs);
+  // what lands along a strip of the detector
+  rectF(c,x0,ys-sh,x1-x0,sh,WHITE,2);pen(c,2.2,INK);c.beginPath();
+  for(let x=x0;x<=x1;x+=0.5){const q=(x-cx)/(x1-x0)*7,I=env(q)*laue(q,N);c.fillStyle=`rgba(27,27,27,${Math.min(1,Math.pow(I,0.6)*(N===1?0.35:1)).toFixed(3)})`;c.fillRect(x,ys-sh+1.5,0.6,sh-3);const y=ys-sh-6-H*I*(N===1?0.35:1);x===x0?c.moveTo(x,y):c.lineTo(x,y);}
+  c.stroke();pen(c,2);c.strokeRect(x0,ys-sh,x1-x0,sh);
+  cap(c,'what lands on a strip of the detector',x0,ys-sh-H-(narrow?14:18),'left',fs);
+},false);
+bind('sN',v=>String(v),()=>{N=+$('sN').value;setT('sBr',N===1?'the same':(N*N)+' times brighter');setT('sSh',N===1?'a faint smear':N<4?'broad patches':N<9?'separate spots':'sharp spots');F.w&&F.draw(F);});
+}
+
+// ---------- stop 3: from the spots to a map ----------
+if($('sMapCv')){
+let R=0.3;
+const F=fig('sMapCv',w=>w<560?0.9:2.5,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const B=pair(c,w,h,R,undefined,narrow);
+  tag(c,'spots used',B.px-B.S/2+6,B.py-B.S/2+(narrow?13:15),'left',fs);tag(c,'the map they give',B.bx+6,B.by+(narrow?13:15),'left',fs);
+},false);
+bind('sR',v=>Math.round(v*100)+'% of the way to the edge',()=>{R=+$('sR').value;const d=DEDGE/R;setT('sD',d.toFixed(1)+' Å');
+  setT('sWh',d<=1.3?'separate atoms':d<=2.0?'the rings, with holes in them':d<=3.0?'the shape of each side chain':d<=4.2?'the helix, with lumps for its side chains':'a blob the size of the helix');F.w&&F.draw(F);});
+}
+
+// ---------- stop 4: atoms fitted into the map ----------
+if($('sFitCv')){
+// M: what is asked for (0 map, 1 map with atoms, 2 atoms alone, 3 the whole protein). The figure moves toward it a little each frame:
+// mA and aA are how strongly the map and the atoms are drawn, q is how far the view has pulled back, and dx blends from the last map to the new one
+let M=0,D=2,D0=2,mA=1,aA=0,q=0,dx=1,last=null;
+const goal=()=>M===3?[0,1,1]:[M<2?1:0,M>0?1:0,0];
+const step=dt=>{const [tm,ta,tq]=goal(),to=(v,t,r)=>v<t?Math.min(t,v+dt*r):Math.max(t,v-dt*r);dx=to(dx,1,2.2);
+  if(tq===1){mA=to(mA,0,2);aA=to(aA,1,2);if(mA<0.02&&aA>0.98)q=to(q,1,0.3);}
+  else if(q>0){q=to(q,0,0.4);mA=0;aA=1;}
+  else{mA=to(mA,tm,2);aA=to(aA,ta,2);}};
+const snap=()=>{[mA,aA,q]=goal();dx=1;};
+const F=fig('sFitCv',w=>w<560?1.05:2.2,f=>{const {ctx:c,w,h,t}=f;if(last!==null&&playing)step(Math.min(0.05,Math.max(0,t-last)));last=t;
+  bg(c,w,h,WHITE);const narrow=w<560,fs=narrow?12:15,y0=narrow?26:8,H=h-y0-(narrow?30:8);
+  if(q>0){const P=pullBack(f,c,0,y0,w,H,q,narrow);
+    if(q>0.97){c.save();c.globalAlpha=Math.min(1,(q-0.97)/0.03);const p=mbAt(10,P.cx,P.cy,P.s),e=mbFe(P.cx,P.cy,P.s);tag(c,'the piece in the map',Math.min(w-8,p[0]+P.s*18),p[1]-P.s*7,'right',fs);tag(c,'heme: oxygen binds here',Math.max(8,e[0]-P.s*3),e[1]+P.s*9,'left',fs);c.restore();}}
+  else{if(mA>0){if(dx<1&&D0!==D)faded(f,c,mA*(1-dx),k=>drawMap(k,0,y0,w,H,D0,narrow?3:4));faded(f,c,mA*(D0!==D?dx:1),k=>drawMap(k,0,y0,w,H,D,narrow?3:4));}
+    if(aA>0)drawMol(c,0,y0,w,H,aA);}
+  cap(c,q>0.5?'the whole of myoglobin':q>0?'the same atoms, in the whole protein':mA>0.5?'the map at '+D.toFixed(1)+' Å':aA>0.5?'the atoms alone':'',10,narrow?13:18,'left',fs);
+  if(aA>0.5&&q===0){const yl=h-(narrow?13:18);[['carbon','#5d6a73'],['nitrogen',BLUE],['oxygen',RED]].forEach(([n,col],i)=>{const x=narrow?12+i*(w-20)/3:w-330+i*108;disc(c,x,yl,6,col,1.5);txt(c,n,x+11,yl+1,fs,'left');});}
+});
+const show=()=>{if(!playing){snap();F.w&&F.draw(F);}};
+choice('sM',v=>{M=+v;setT('sAt',M===0?'none yet':M===3?'about 1,200 in the whole protein':'all 113 in this piece');show();});
+choice('sQ',v=>{if(+v!==D){D0=D;D=+v;dx=0;}setT('sEase',D>3?'poorly: the atoms could sit in many ways':D>1.5?'well: each side chain has its own shape':'closely: every atom has its own peak');show();});
+snap();
+}
+capK();
+})();
+
+</script>
+
+<script data-goatcounter="https://frankvm04.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body></html>

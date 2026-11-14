@@ -14,11 +14,14 @@ The guides are grouped in series. Each is marked with its level. Introductory gu
 | `how-necat-works-intro.html` | 2. The beamline | A walk down the beamline: the beamline in five stops and five minutes | Introductory |
 | `how-necat-works.html` | 2. The beamline | How NE-CAT works: from the storage ring to the detector | In-depth |
 | `polarization.html` | 2. The beamline | Why the X-ray beam is polarized | In-depth |
+| `how-mx-works-intro.html` | 3. The experiment | How do we see a protein? How X-rays and a crystal show where the atoms are, in four stops and five minutes | Introductory |
 | `fluorescence.html` | 3. The experiment | X-ray fluorescence at NE-CAT: what it is, what it is used for, and where the detector goes | In-depth |
 
 Each page is a single self-contained HTML file. The pages link to each other by file name, so keep the names unchanged and keep them all in the same folder.
 
 The files whose names begin `NE-CAT_` are small redirect pages. They are the addresses the guides had before release 1.3, kept so that existing links still work.
+
+The protein drawn in "How do we see a protein?" is sperm whale myoglobin. Its atomic positions are from entry [1MBN](https://www.rcsb.org/structure/1MBN) in the Protein Data Bank.
 
 Values that are assumed or calculated, and not taken from a published source, are marked in the notes of each guide. Corrections are welcome: please open an issue.
 

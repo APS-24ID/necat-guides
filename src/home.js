@@ -105,6 +105,15 @@ if($('cdCv'))fig('cdCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.78,c
     c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(2)})`;c.beginPath();c.arc(cx+x*S/2,cy+y*S/2,(1.2+1.4*((i*5+j*11+60)%4)/3)*Math.sqrt(k),0,7);c.fill();}
   txt(c,D.toFixed(0)+' MGy',cx+S/2+12,cy,h*0.11,'left',D>30?RED:INK);
 });
+// the five-minute guide to crystallography: spots on the left, and the map and atoms they give
+if($('ceCv'))fig('ceCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.7,px=w*0.24,cy=h*0.5,mx=w*0.7,s=h*0.17,u=(t%8)/8;
+  rectF(c,px-S/2,cy-S/2,S,S,WHITE,2.2);for(let i=-4;i<=4;i++)for(let j=-4;j<=4;j++){const x=(i+0.3*j)/4.6,y=j*0.95/4.6,r=Math.hypot(x,y);if(r>0.95||r<0.15||Math.abs(x)>0.95||(i*7+j*3+40)%3===0)continue;c.fillStyle=r<0.25+u*1.2?INK:'rgba(27,27,27,.15)';c.beginPath();c.arc(px+x*S/2,cy+y*S/2,1.2+1.4*Math.abs(Math.sin(i*12.9+j*78.2)),0,7);c.fill();}
+  arrow(c,px+S/2+8,cy,mx-s*2.4,cy,INK,2.2,7);
+  const P=[0,1,2,3,4,5].map(i=>[mx-s*0.7+s*Math.cos(i*1.0472),cy+s*Math.sin(i*1.0472)]),T=[[mx+s*0.3,cy],[mx+s*1.2,cy],[mx+s*1.7,cy-s*0.85]];
+  c.lineJoin='round';c.lineCap='round';const lw=s*(0.95-0.5*Math.min(1,u*1.6));
+  [[BLUE,lw+4],[LTBLUE,lw]].forEach(([col,wd])=>{c.strokeStyle=col;c.lineWidth=wd;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();T.forEach(([x,y])=>c.lineTo(x,y));c.stroke();});c.lineCap='butt';
+  if(u>0.6){c.save();c.globalAlpha=Math.min(1,(u-0.6)*6);P.forEach((p,i)=>{const q=P[(i+1)%6];line(c,p[0],p[1],q[0],q[1],2);});line(c,P[0][0],P[0][1],T[1][0],T[1][1],2);line(c,T[1][0],T[1][1],T[2][0],T[2][1],2);P.concat(T.slice(1)).forEach(([x,y],i)=>disc(c,x,y,3.4,i===7?RED:'#5d6a73',1.3));c.restore();}
+});
 // guide 3: a crystal, its spots, and the density they give
 if($('cmCv'))fig('cmCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const cy=h*0.52,x1=w*0.15,x2=w*0.45,x3=w*0.79,s=h*0.26;

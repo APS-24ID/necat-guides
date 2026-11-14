@@ -2,6 +2,12 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.5 — 2026-11-13
+
+- New five-minute guide, "How do we see a protein?": why light cannot show atoms, what the crystal is for, how the spots become a map, and how atoms are fitted into it. Four stops, no equations. It opens the series on the experiment.
+- Its figures use a real protein, sperm whale myoglobin, drawn from entry 1MBN in the Protein Data Bank. One figure zooms from a hair down to two atoms of the protein, and two others pull back from the atoms of one helix to the whole molecule.
+- The index lists it in the experiment series.
+
 ## 1.4 — 2026-11-13
 
 - New five-minute guide, "A walk down the beamline": five stops from the magnets that make the X-rays to the detector, with no equations. It is the short companion to "How NE-CAT works", and each links to the other.
