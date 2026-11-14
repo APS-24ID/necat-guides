@@ -665,16 +665,16 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
         <tr><th>Bunch-lengthening cavity</th><td>1,408 MHz, superconducting. Stretches the bunches two to four times</td></tr>
         <tr><th>Fill patterns in use, late 2026</th><td>Normal mode: 216 bunches, evenly spaced, 200 mA. Timing mode: 48 bunches, 77 ns apart, 150 mA ¶</td></tr>
         <tr><th>Charge per bunch</th><td>3.4 nC in normal mode, 11.5 nC in timing mode ‡</td></tr>
-        <tr><th>Lifetime</th><td>Design figures at 200 mA: about 7.5 h for 324 bunches and 3.5 h for 48 §. The values this guide starts with for the two patterns in use are guesses †</td></tr>
+        <tr><th>Lifetime</th><td>Design figures at 200 mA: about 7.5 h for 324 bunches and 3.5 h for 48 §. For the two patterns in use, 2 to 4 h was reported in October 2025, and this guide starts from 3 h</td></tr>
         <tr><th>Linac</th><td>425 MeV, 30 bursts a second of about 1 nC</td></tr>
-        <tr><th>Accumulator ring</th><td>425 MeV. Collects up to 20 bursts into one bunch of up to 20 nC, once a second. About 31 m around †</td></tr>
+        <tr><th>Accumulator ring</th><td>425 MeV. Collects up to 20 bursts into one bunch of up to 20 nC, once a second. 30.7 m around</td></tr>
         <tr><th>Booster</th><td>425 MeV to 6 GeV, once a second. About 368 m around †, with a ramp of about a quarter of a second †</td></tr>
         <tr><th>Swap-out kicker pulse</th><td>under 4.5 ns to rise, 5.9 ns flat, under 4.5 ns to fall §</td></tr>
       </tbody></table></div>
       <div class="notes">
-        <p><b>Sources.</b> The APS storage ring parameters page (model values, August 2024). Conference papers on the upgraded ring and its injector: NAPAC 2025 MOXP02 (commissioning and measured emittance), IPAC 2021 MOXA02 (design overview), IPAC 2019 THYYPLM3 and a 2024 I.FAST workshop talk (linac, accumulator ring and booster), IPAC 2015 TUPJE067 (swap-out kicker), MEDSI 2018 TUPH04 and NAPAC 2019 TUYBB3 (vacuum system). APS News, February 2025 (200 mA). </p>
+        <p><b>Sources.</b> The APS storage ring parameters page (model values, August 2024). Conference papers on the upgraded ring and its injector: NAPAC 2025 MOXP02 (commissioning and measured emittance), IPAC 2021 MOXA02 (design overview), IPAC 2019 THYYPLM3 and a 2024 I.FAST workshop talk (linac, accumulator ring and booster), IPAC 2015 TUPJE067 (swap-out kicker), MEDSI 2018 TUPH04 and NAPAC 2019 TUYBB3 (vacuum system). APS News, February 2025 (200 mA). The APS accumulator ring parameters page (November 2024: circumference 30.666 m, one cycle a second). A talk on the first year of operation at the Low Emittance Rings workshop, October 2025 (beam lifetime of 2 to 4 hours in both patterns in use). </p>
         <p><b>¶ From NE-CAT,</b> as the ring was running in late 2026.</p>
-        <p><b>† Not taken from those sources.</b> The length of the accumulator ring is worked out from its 9.8 MHz RF system. The length of the booster and the duration of its ramp are approximate values that were not checked against a published source. The lifetime of the beam in gas is a rough estimate made for this guide. The beam lifetimes for the two patterns in use, the numbers for the cathode, and the pressures of the familiar places on the vacuum scale are round or typical values. Please correct any of these that are wrong.</p>
+        <p><b>† Not taken from those sources.</b> The length of the booster and the duration of its ramp are approximate values that were not checked against a published source. The lifetime of the beam in gas is a rough estimate made for this guide. The numbers for the cathode, and the pressures of the familiar places on the vacuum scale are round or typical values. Please correct any of these that are wrong.</p>
         <p><b>‡ Calculated in this guide</b> from the other rows.</p>
         <p><b>§ Design or model values,</b> not measurements of the ring as it runs. The fill patterns in use change from run to run, so check the APS operating schedule for the current one.</p>
       </div>
@@ -693,7 +693,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       </ul>
     </div>
     <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="walk" href="how-necat-works-intro.html">Next: A walk down the beamline →</a></nav>
-    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.5. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.5.1. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
   </section>
 </div>
 
@@ -752,8 +752,8 @@ function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textCon
 // ---------- the APS guide: shared numbers ----------
 const CIRC=1103.609, TREV=CIRC/299.792458, HN=1296, TBK=TREV*1000/HN, ITOT=200, U0=2.935, VRF=4.5;
 // fill patterns: bunches, projected lifetime in hours (the 162-bunch value is a guess between the other two)
-// fill patterns: bunches, stored current in mA, lifetime in hours. 216 and 48 are the patterns in use (late 2026); their lifetimes here are guesses. 324 is the design pattern.
-const MODES={216:{nb:216,I:200,life:6.5,guess:true,name:'216 bunches at 200 mA (normal mode)'},48:{nb:48,I:150,life:4,guess:true,name:'48 bunches at 150 mA (timing mode)'},324:{nb:324,I:200,life:7.5,name:'324 bunches at 200 mA (design)'}};
+// fill patterns: bunches, stored current in mA, lifetime in hours. 216 and 48 are the patterns in use (late 2026); their lifetimes here are the middle of the 2 to 4 hours reported for both in October 2025. 324 is the design pattern.
+const MODES={216:{nb:216,I:200,life:3,meas:true,name:'216 bunches at 200 mA (normal mode)'},48:{nb:48,I:150,life:3,meas:true,name:'48 bunches at 150 mA (timing mode)'},324:{nb:324,I:200,life:7.5,name:'324 bunches at 200 mA (design)'}};
 let MD=MODES[216];
 const fresh=m=>qb(m.I,m.nb)*1.054;                // charge of a fresh bunch, swapped once the old one has lost a tenth
 const hooks=[], setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
@@ -1208,13 +1208,13 @@ $('mbD').addEventListener('input',mbaUpd);mbaUpd();
 }
 
 // ---------- words and numbers that follow the fill pattern ----------
-function fillText(){const nb=MD.nb,I=MD.I,q=qb(I,nb),s=sp(nb),x=-Math.log(0.9),ts=x*MD.life*3600/nb,q0=q*x/0.1,nB=Math.ceil(fresh(MD)),gs=MD.guess?' (a guess: there is no published figure for this pattern)':'';
+function fillText(){const nb=MD.nb,I=MD.I,q=qb(I,nb),s=sp(nb),x=-Math.log(0.9),ts=x*MD.life*3600/nb,q0=q*x/0.1,nB=Math.ceil(fresh(MD)),gs=MD.meas?' (the middle of the 2 to 4 hours reported in October 2025)':'';
   const T={
     fillSum:`With ${nb} bunches sharing ${I} mA, each bunch holds ${q.toFixed(q<10?2:1)} nC, which is about ${(q*6.2415).toFixed(0)} billion electrons, and a flash of X-rays reaches each beamline every ${s.toFixed(1)} billionths of a second. A 10 ms exposure on a detector adds up about ${cm(Math.round(nb*0.01/(TREV*1e-6)/1000)*1000)} of them.`,
     swapSum:`With ${nb} bunches and a lifetime of about ${MD.life} hours${gs}, swapping a bunch once it has lost a tenth of its charge means one swap about every ${ts.toFixed(ts<10?1:0)} seconds. Each fresh bunch carries about ${q0.toFixed(q0<10?1:0)} nC, and every bunch in the ring is replaced about every ${(nb*ts/60).toFixed(0)} minutes.`,
     injSum:`For ${nb} bunches at ${I} mA the ring needs about ${fresh(MD).toFixed(fresh(MD)<10?1:0)} nC in each fresh bunch, so the accumulator collects about ${nB} bursts before passing the bunch on.`,
     useFill:`Set for ${MD.name}.`,
-    useSwap:`Set for ${MD.name}: lifetime ${MD.life} h${MD.guess?', which is a guess: no published figure for this pattern':', the design figure'}.`,
+    useSwap:`Set for ${MD.name}: lifetime ${MD.life} h${MD.meas?', the middle of the 2 to 4 h reported in October 2025':', the design figure'}.`,
     useKick:`Set for ${MD.name}: bunches ${s.toFixed(1)} ns apart. The pulse starts at 14.9 ns, the published design: 4.5 ns up, 5.9 ns flat, 4.5 ns down.`,
     numQb:`For ${nb} bunches at ${I} mA: ${I} mA × 3.681 µs / ${nb} = ${q.toFixed(q<10?2:1)} nC. Bunch spacing: 1,296 / ${nb} = ${HN/nb} buckets, or ${s.toFixed(1)} ns.`,
     numSwap:`For ${nb} bunches, τ = ${MD.life} h and a loss of 10% before the swap: ${ts.toFixed(ts<10?1:0)} s between swaps. The total current then steps by about 10% / ${nb} = ${(10/nb).toFixed(nb>100?3:2)}% at each swap.`

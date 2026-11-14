@@ -42,7 +42,7 @@ SEE=dict(key='see',title='How Do We See a Protein?',name='How do we see a protei
      "Each spot carries one ingredient of the picture. The ingredient is a simple pattern of stripes running across the molecule. Spots near the middle of the detector stand for broad stripes, which give the overall shape. Spots near the edge stand for fine stripes, which give the detail.",
      "A computer adds all the stripes together, each one as strong as its spot is bright. This is what a lens does in a microscope, done here by calculation. The result is a map that shows where the electrons are, and the electrons are where the atoms are.",
      "One thing cannot be read from the spots: how far each set of stripes has to be shifted sideways before it is added. Scientists have several ways to find that out, and it is often the hardest part of the work.",
-     _here("The images recorded from one crystal at NE-CAT can hold hundreds of thousands of spots. Software at the beamline starts to measure them while the crystal is still in the beam.")],
+     _here("The images recorded from one crystal at NE-CAT can hold hundreds of thousands of spots. Software at the beamline starts to analyze them while the crystal is still in the beam.")],
     items=[('fig','s_map')]),
    dict(id='model',nav='Atoms',h2='Atoms are fitted into the map',prose=[
      "The map is a shape, and a shape is not yet a list of atoms. A protein is a chain of building blocks called amino acids, and their order along the chain is known from the gene for the protein. The job is to thread that chain through the map, so that every atom lies inside the shape.",

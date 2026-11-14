@@ -27,7 +27,7 @@ Values that are assumed or calculated, and not taken from a published source, ar
 
 ## Building
 
-The pages are built from the sources in [`src/`](src/). [src/README.md](src/README.md) says how. Nothing in that folder is needed to read the guides.
+The pages are built from the sources in [`src/`](src/). [src/README.md](src/README.md) says how. Nothing in that folder is needed to read the guides. The web site publishes the pages only: `_config.yml` keeps `src/` and the files in this folder that are not pages off it.
 
 ## Releases
 

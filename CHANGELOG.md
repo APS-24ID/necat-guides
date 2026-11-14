@@ -2,6 +2,14 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.5.1 — 2026-11-13
+
+- Corrections from a review of the open questions in the live guides.
+- "How APS works": the beam lifetime for the two fill patterns in use now starts from 3 hours, the middle of the 2 to 4 hours reported in October 2025, in place of earlier guesses. The length of the accumulator ring, 30.7 m, is now taken from the APS parameters page.
+- The detector on 24-ID-C is named as an EIGER2 XE 16M, with about 18 million pixels, in "How NE-CAT works" and "A walk down the beamline".
+- "How do we see a protein?": one word changed in the note on beamline software.
+- The build sources in `src/` are no longer served on the web site. They remain in the repository.
+
 ## 1.5 — 2026-11-13
 
 - New five-minute guide, "How do we see a protein?": why light cannot show atoms, what the crystal is for, how the spots become a map, and how atoms are fitted into it. Four stops, no equations. It opens the series on the experiment.

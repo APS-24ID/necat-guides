@@ -58,7 +58,7 @@ WALK=dict(key='walk',title='A Walk Down the Beamline',name='A walk down the beam
      "Most of the X-rays go straight through the crystal and are stopped by a small piece of metal called a beamstop. A small share are sent off in new directions by the rows of molecules in the crystal.",
      "They do not spread out evenly. They leave as thousands of separate thin rays, and each ray makes a spot on the detector. As the crystal turns, spots go out and new ones flash up.",
      "Where the spots fall, and how bright each one is, depends on how the atoms are arranged in the molecule. Computers work backward from the spots to the position of every atom.",
-     _here("The detector on 24-ID-C has more than 16 million pixels, and it counts the X-rays that land on each one.")],
+     _here("The detector on 24-ID-C, an EIGER2 XE 16M, has about 18 million pixels, and it counts the X-rays that land on each one.")],
     items=[('fig','w_det')]),
   ],
   remember="A beamline makes X-rays by wiggling electrons, keeps one energy, squeezes the beam until it is narrower than a hair, and records the spots that a frozen crystal sends out.",

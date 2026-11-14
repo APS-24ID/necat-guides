@@ -1,8 +1,8 @@
 // ---------- the APS guide: shared numbers ----------
 const CIRC=1103.609, TREV=CIRC/299.792458, HN=1296, TBK=TREV*1000/HN, ITOT=200, U0=2.935, VRF=4.5;
 // fill patterns: bunches, projected lifetime in hours (the 162-bunch value is a guess between the other two)
-// fill patterns: bunches, stored current in mA, lifetime in hours. 216 and 48 are the patterns in use (late 2026); their lifetimes here are guesses. 324 is the design pattern.
-const MODES={216:{nb:216,I:200,life:6.5,guess:true,name:'216 bunches at 200 mA (normal mode)'},48:{nb:48,I:150,life:4,guess:true,name:'48 bunches at 150 mA (timing mode)'},324:{nb:324,I:200,life:7.5,name:'324 bunches at 200 mA (design)'}};
+// fill patterns: bunches, stored current in mA, lifetime in hours. 216 and 48 are the patterns in use (late 2026); their lifetimes here are the middle of the 2 to 4 hours reported for both in October 2025. 324 is the design pattern.
+const MODES={216:{nb:216,I:200,life:3,meas:true,name:'216 bunches at 200 mA (normal mode)'},48:{nb:48,I:150,life:3,meas:true,name:'48 bunches at 150 mA (timing mode)'},324:{nb:324,I:200,life:7.5,name:'324 bunches at 200 mA (design)'}};
 let MD=MODES[216];
 const fresh=m=>qb(m.I,m.nb)*1.054;                // charge of a fresh bunch, swapped once the old one has lost a tenth
 const hooks=[], setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
@@ -457,13 +457,13 @@ $('mbD').addEventListener('input',mbaUpd);mbaUpd();
 }
 
 // ---------- words and numbers that follow the fill pattern ----------
-function fillText(){const nb=MD.nb,I=MD.I,q=qb(I,nb),s=sp(nb),x=-Math.log(0.9),ts=x*MD.life*3600/nb,q0=q*x/0.1,nB=Math.ceil(fresh(MD)),gs=MD.guess?' (a guess: there is no published figure for this pattern)':'';
+function fillText(){const nb=MD.nb,I=MD.I,q=qb(I,nb),s=sp(nb),x=-Math.log(0.9),ts=x*MD.life*3600/nb,q0=q*x/0.1,nB=Math.ceil(fresh(MD)),gs=MD.meas?' (the middle of the 2 to 4 hours reported in October 2025)':'';
   const T={
     fillSum:`With ${nb} bunches sharing ${I} mA, each bunch holds ${q.toFixed(q<10?2:1)} nC, which is about ${(q*6.2415).toFixed(0)} billion electrons, and a flash of X-rays reaches each beamline every ${s.toFixed(1)} billionths of a second. A 10 ms exposure on a detector adds up about ${cm(Math.round(nb*0.01/(TREV*1e-6)/1000)*1000)} of them.`,
     swapSum:`With ${nb} bunches and a lifetime of about ${MD.life} hours${gs}, swapping a bunch once it has lost a tenth of its charge means one swap about every ${ts.toFixed(ts<10?1:0)} seconds. Each fresh bunch carries about ${q0.toFixed(q0<10?1:0)} nC, and every bunch in the ring is replaced about every ${(nb*ts/60).toFixed(0)} minutes.`,
     injSum:`For ${nb} bunches at ${I} mA the ring needs about ${fresh(MD).toFixed(fresh(MD)<10?1:0)} nC in each fresh bunch, so the accumulator collects about ${nB} bursts before passing the bunch on.`,
     useFill:`Set for ${MD.name}.`,
-    useSwap:`Set for ${MD.name}: lifetime ${MD.life} h${MD.guess?', which is a guess: no published figure for this pattern':', the design figure'}.`,
+    useSwap:`Set for ${MD.name}: lifetime ${MD.life} h${MD.meas?', the middle of the 2 to 4 h reported in October 2025':', the design figure'}.`,
     useKick:`Set for ${MD.name}: bunches ${s.toFixed(1)} ns apart. The pulse starts at 14.9 ns, the published design: 4.5 ns up, 5.9 ns flat, 4.5 ns down.`,
     numQb:`For ${nb} bunches at ${I} mA: ${I} mA × 3.681 µs / ${nb} = ${q.toFixed(q<10?2:1)} nC. Bunch spacing: 1,296 / ${nb} = ${HN/nb} buckets, or ${s.toFixed(1)} ns.`,
     numSwap:`For ${nb} bunches, τ = ${MD.life} h and a loss of 10% before the swap: ${ts.toFixed(ts<10?1:0)} s between swaps. The total current then steps by about 10% / ${nb} = ${(10/nb).toFixed(nb>100?3:2)}% at each swap.`

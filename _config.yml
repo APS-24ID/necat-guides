@@ -1,0 +1,6 @@
+# GitHub Pages publishes the guides and their pictures. The build sources and the repository's own documents stay off the web site.
+exclude:
+  - src
+  - README.md
+  - CHANGELOG.md
+  - LICENSE
