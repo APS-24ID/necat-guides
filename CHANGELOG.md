@@ -2,6 +2,10 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.8.1 — 2026-11-14
+
+- "What is a synchrotron?": the opening figure is back. Since release 1.5 its place had been taken by an empty frame, because a later guide reused the name of that figure. The build now refuses a reused name, and the test reports any figure that is never drawn.
+
 ## 1.8 — 2026-11-14
 
 - New five-minute guide, "Why is the experiment in a shielded room?": the stray X-rays around the sample, how little steel it takes to stop them, how the door and the beam shutter are locked together, and how the experiment is run from outside. Four stops, no equations.

@@ -453,7 +453,7 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.8','November 14, 2026')
+RELEASE=('1.8.1','November 14, 2026')
 UPDATED={'aps':'November 13, 2026','overview':'November 13, 2026','polarization':'November 13, 2026','scatter':'November 13, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
 def stamp(when): return 'Last updated %s. Release %s. <a href="%s" target="_blank" rel="noopener">What changed</a>.'%(when,RELEASE[0],CHLOG)
@@ -465,7 +465,10 @@ def _choice(i,label,pairs,sel): return '<div class="ctl" style="grid-column:1/-1
 # same scripts build the published set and a larger working set that includes guides still in draft.
 import os
 for _f in ['walk','syn','mx','hutch','see','detintro','det','cold','damage']:
-    if os.path.exists(_f+'_guide.py'): exec(open(_f+'_guide.py').read())
+    if os.path.exists(_f+'_guide.py'):
+        _had=dict(FIG); exec(open(_f+'_guide.py').read())
+        # a guide must not reuse the name of another guide's figure: the later one would silently replace the earlier
+        _dup=[k for k in _had if FIG[k] is not _had[k]]; assert not _dup, '%s_guide.py redefines figures of another guide: %s'%(_f,_dup)
 _keys={g['key'] for g in G}
 for g in G:
     for _k in ('short','deeper'):
