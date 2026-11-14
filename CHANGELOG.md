@@ -2,6 +2,10 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.8.2 — 2026-11-14
+
+- Every page now states at its foot that the guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT. The README says the same.
+
 ## 1.8.1 — 2026-11-14
 
 - "What is a synchrotron?": the opening figure is back. Since release 1.5 its place had been taken by an empty frame, because a later guide reused the name of that figure. The build now refuses a reused name, and the test reports any figure that is never drawn.

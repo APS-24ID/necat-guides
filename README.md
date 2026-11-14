@@ -40,6 +40,8 @@ Releases are tagged in this repository (`v1.0`, `v1.1`, ...) and described in [C
 
 The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).
 
+The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them. Every page says so at its foot, and the commits in this repository record Claude as co-author.
+
 ## License
 
 Copyright (c) 2026 NE-CAT, Cornell University. Released under the [MIT License](LICENSE).

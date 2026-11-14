@@ -1,5 +1,7 @@
 # ---------- guide: How APS works (the machine as it runs today) ----------
 ACK='The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).'
+# who made the guides: shown at the foot of every page
+MADE='The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.'
 
 EQ['a_gain']=card('Energy from riding the wave',r"\Delta E=e\,E_0\,L\,\cos\phi",
  [("E_0","The peak electric field of the wave."),("L","The length of the linac."),(r"\phi","How far the bunch sits from the crest of the wave, as an angle. A full wave is 360°.")],
