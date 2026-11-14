@@ -236,7 +236,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
     <div class="sec-head prose">
       <div class="stepno">5</div>
       <h2>The detector catches the spots</h2>
-      <p>Most of the X-rays go straight through the crystal and are stopped by a small piece of metal called a beamstop. A small share are sent off in new directions by the rows of molecules in the crystal.</p>
+      <p>Most of the X-rays go straight through the crystal and are stopped just behind it by a small piece of metal called a beamstop. A small share are sent off in new directions by the rows of molecules in the crystal.</p>
       <p>They do not spread out evenly. They leave as thousands of separate thin rays, and each ray makes a spot on the detector. As the crystal turns, spots go out and new ones flash up.</p>
       <p>Where the spots fall, and how bright each one is, depends on how the atoms are arranged in the molecule. Computers work backward from the spots to the position of every atom.</p>
       <p><span class="here"><b>Here at NE-CAT.</b> The detector on 24-ID-C, an EIGER2 XE 16M, has about 18 million pixels, and it counts the X-rays that land on each one.</span></p>
@@ -249,7 +249,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <div class="readout">
         <div class="ro"><div class="k">Spots caught so far</div><div class="v" id="wN">–</div></div>
       </div>
-      <div class="figcap">The X-rays arrive at the crystal, and the thin rays it sends out land on the detector. The orange spots are the ones lit at this moment. Turn the crystal and they go out while others flash up. The black dots are spots already caught. The gray disc in the middle is the beamstop, which blocks the X-rays that went straight through. The drawing has far fewer spots than a real crystal gives, and they are placed to look right, not calculated from a real molecule.</div>
+      <div class="figcap">The X-rays arrive at the crystal, and the thin rays it sends out land on the detector. The orange spots are the ones lit at this moment. Turn the crystal and they go out while others flash up. The black dots are spots already caught. The small black block just behind the crystal is the beamstop, which catches the X-rays that went straight through before they can reach the detector. The drawing has far fewer spots than a real crystal gives, and they are placed to look right, not calculated from a real molecule.</div>
     </div>
   </section>
 
@@ -261,7 +261,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <details class="classroom"><summary>For a class</summary><ul><li>Why might the experiment need X-rays of just one energy? Think about what a mix of energies would do to the spots.</li><li>The beam is narrower than a hair. Why is a small beam useful when the crystal is small too?</li><li>Why is the crystal turned while the detector records?</li><li>Try it: at the second stop, find the tilt that lets 12.7 keV through. Which way do you tilt the block for a higher energy?</li></ul></details>
     </div>
     <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="overview" href="how-necat-works.html">Next: How NE-CAT works →</a></nav>
-    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.6. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.6.1. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
   </section>
 </div>
 
@@ -580,18 +580,20 @@ const F=fig('wDetCv',w=>w<560?0.8:2.3,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const na
   const S=narrow?Math.min(w*0.86,h*0.64):Math.min(h*0.86,w*0.42), dc=narrow?[w/2,h-S/2-h*0.035]:[w*0.72,h/2], xc=narrow?[w*0.5,h*0.12]:[w*0.15,h*0.5];
   arrow(c,w*0.01,xc[1],xc[0]-(narrow?16:22),xc[1],ORG,3,9);
   const B=detFace(c,dc[0],dc[1],S/DETG.hh);
-  line(c,xc[0],xc[1],dc[0],dc[1],2,'rgba(238,138,43,.85)');
+  // the beam that goes straight through is caught by the beamstop, just behind the crystal
+  const bd=narrow?[0,1]:[1,0],bl=narrow?Math.max(26,h*0.07):Math.max(46,w*0.06),bp=[xc[0]+bd[0]*bl,xc[1]+bd[1]*bl];
+  line(c,xc[0],xc[1],bp[0],bp[1],3,ORG);
   SP.forEach(s=>{const x=dc[0]+s.x*B.w/2*0.95,y=dc[1]+s.y*B.h/2*0.95,on=Math.abs(PH-s.a)<1.6;
     if(on){line(c,xc[0],xc[1],x,y,1.1,'rgba(238,138,43,.5)');c.fillStyle=ORG;c.beginPath();c.arc(x,y,2.2+3*s.s,0,7);c.fill();}
     else if(s.seen){c.fillStyle=INK;c.beginPath();c.arc(x,y,0.9+1.7*s.s,0,7);c.fill();}});
-  disc(c,dc[0],dc[1],Math.max(5,S*0.03),GREY,2);
   // the crystal, turning
   const a=PH*Math.PI/180,bw=narrow?20:30,wa=bw*Math.abs(Math.cos(a)),wb=bw*0.75*Math.abs(Math.sin(a)),x0=xc[0]-(wa+wb)/2;
   line(c,xc[0],xc[1]+bw*0.55,xc[0],xc[1]+bw*0.55+(narrow?12:h*0.2),3);
   if(wa>0.5)rectF(c,x0,xc[1]-bw*0.55,wa,bw*1.1,GRN,2);if(wb>0.5)rectF(c,x0+wa,xc[1]-bw*0.55,wb,bw*1.1,GDK,2);
   cap(c,'crystal',narrow?xc[0]+bw+8:xc[0],narrow?xc[1]:xc[1]-bw*0.55-(narrow?16:22),narrow?'left':'center',fs);
   cap(c,'detector',dc[0]+S/2-6,dc[1]-S/2+(narrow?14:18),'right',fs);
-  tag(c,'beamstop',dc[0]+Math.max(5,S*0.03)+6,dc[1]+(narrow?14:16),'left',fs);
+  rectF(c,bp[0]-(narrow?5:3),bp[1]-(narrow?3:5),narrow?10:6,narrow?6:10,INK,1);
+  tag(c,'beamstop',narrow?bp[0]+12:bp[0],narrow?bp[1]:bp[1]+(narrow?14:20),narrow?'left':'center',fs);
 },false);
 bind('wR',v=>v.toFixed(0)+'°',()=>{const v=+$('wR').value,lo=Math.min(prev,v)-1.6,hi=Math.max(prev,v)+1.6;SP.forEach(s=>{if(s.a>=lo&&s.a<=hi)s.seen=true;});prev=v;PH=v;
   setT('wN',SP.filter(s=>s.seen).length+' of '+SP.length);F.w&&F.draw(F);});

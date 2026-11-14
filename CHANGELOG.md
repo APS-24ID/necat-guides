@@ -2,6 +2,11 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.6.1 — 2026-11-13
+
+- "A walk down the beamline": the beamstop is now drawn where it is on the beamline, just behind the crystal, not on the detector. The text and the caption say so.
+- "How does an X-ray detector work?": the grey disc in the middle of the detector in the opening figure is removed.
+
 ## 1.6 — 2026-11-13
 
 - New five-minute guide, "How does an X-ray detector work?": 18 million pixels that each count X-rays one at a time, with no pause between images, at a distance chosen for each crystal. Four stops, no equations. Its opening figure is a simulated data collection, and its last figure shows which of the rays from the crystal the detector catches as it is moved.

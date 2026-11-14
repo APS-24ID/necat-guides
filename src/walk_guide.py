@@ -26,7 +26,7 @@ FIG['w_zoom']=_panel('wZoomCv','Interactive: a metal pin with a small loop on it
 FIG['w_det']=_panel('wDetCv','Interactive: X-rays reach a crystal, and thin rays leave it for a square detector where each makes a spot. A slider turns the crystal, new spots flash up, and the ones already seen stay marked',
  [_slw('wR','Turn the crystal','0°',0,90,0.5,0)],
  [('Spots caught so far','wN')],
- "The X-rays arrive at the crystal, and the thin rays it sends out land on the detector. The orange spots are the ones lit at this moment. Turn the crystal and they go out while others flash up. The black dots are spots already caught. The gray disc in the middle is the beamstop, which blocks the X-rays that went straight through. The drawing has far fewer spots than a real crystal gives, and they are placed to look right, not calculated from a real molecule.")
+ "The X-rays arrive at the crystal, and the thin rays it sends out land on the detector. The orange spots are the ones lit at this moment. Turn the crystal and they go out while others flash up. The black dots are spots already caught. The small black block just behind the crystal is the beamstop, which catches the X-rays that went straight through before they can reach the detector. The drawing has far fewer spots than a real crystal gives, and they are placed to look right, not calculated from a real molecule.")
 
 WALK=dict(key='walk',title='A Walk Down the Beamline',name='A walk down the beamline',kicker='NE-CAT guides · the beamline in five minutes',h1='A walk down the beamline',level='Introductory',deeper='overview',
   lede="NE-CAT uses X-rays to find the shapes of the molecules of life. On the way to the experiment the X-rays are made, sorted and squeezed, until they land on a crystal smaller than a grain of salt. A detector then catches what the crystal sends out. This guide walks down the beamline in five stops.",
@@ -55,7 +55,7 @@ WALK=dict(key='walk',title='A Walk Down the Beamline',name='A walk down the beam
      _here("A machine called a goniometer holds the pin and turns the crystal in the beam. The one on 24-ID-C turns the crystal about an upright axis.")],
     items=[('fig','w_zoom')]),
    dict(id='detector',nav='Detector',h2='The detector catches the spots',prose=[
-     "Most of the X-rays go straight through the crystal and are stopped by a small piece of metal called a beamstop. A small share are sent off in new directions by the rows of molecules in the crystal.",
+     "Most of the X-rays go straight through the crystal and are stopped just behind it by a small piece of metal called a beamstop. A small share are sent off in new directions by the rows of molecules in the crystal.",
      "They do not spread out evenly. They leave as thousands of separate thin rays, and each ray makes a spot on the detector. As the crystal turns, spots go out and new ones flash up.",
      "Where the spots fall, and how bright each one is, depends on how the atoms are arranged in the molecule. Computers work backward from the spots to the position of every atom.",
      _here("The detector on 24-ID-C, an EIGER2 XE 16M, has about 18 million pixels, and it counts the X-rays that land on each one.")],

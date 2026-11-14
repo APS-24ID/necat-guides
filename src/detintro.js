@@ -27,7 +27,6 @@ fig('pixHeroCv',w=>w<560?1.1:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narro
   const n=Math.floor(t*10);if(n!==shown){SPOTS=image(n);shown=n;}
   const B=detFace(c,dc[0],dc[1],S/DETG.hh),k=B.w/230;
   SPOTS.forEach(s=>{c.fillStyle=`rgba(27,27,27,${Math.min(1,0.45+2.5*s.a).toFixed(2)})`;c.beginPath();c.arc(dc[0]+s.u*B.w/2,dc[1]+s.v*B.h/2,(0.6+2.3*Math.sqrt(s.a))*k,0,7);c.fill();});
-  disc(c,dc[0],dc[1],Math.max(3,B.w*0.022),GREY,1.4);
   // a magnified patch: pixels, each with its count
   const U0=-0.42,V0=0.38,HW=0.085,qx=dc[0]+U0*B.w/2,qy=dc[1]+V0*B.h/2,qs=HW*B.w/2;pen(c,1.8);c.strokeRect(qx-qs,qy-qs*FW/FH*1.05,2*qs,2*qs*FW/FH*1.05);
   line(c,qx+qs,qy-qs,mc[0]-R*0.72,mc[1]-R*0.6,1.6,INK,[4,4]);
