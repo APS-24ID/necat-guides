@@ -1,0 +1,527 @@
+<!doctype html>
+<!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="How the detector records the spots, in four stops and five minutes, with no equations. Eighteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.">
+<meta name="author" content="NE-CAT, Cornell University">
+<link rel="canonical" href="https://aps-24id.github.io/necat-guides/detector-intro.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="NE-CAT beamline guides">
+<meta property="og:title" content="How does an X-ray detector work?">
+<meta property="og:description" content="How the detector records the spots, in four stops and five minutes, with no equations. Eighteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.">
+<meta property="og:url" content="https://aps-24id.github.io/necat-guides/detector-intro.html">
+<meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/detintro.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Opening figure of the guide “How does an X-ray detector work?”">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>How Does an X-ray Detector Work?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">
+<style>
+/* Three linked guides share this sheet. Layout: a comic album page. One reading column (~66ch); figures are inked panels up to 980px wide with yellow narration boxes; equations sit on ruled cards with a symbol-by-symbol reading. Single light theme by design (ligne claire is a paper style). */
+:root{
+  --paper:#fffdf6; --ink:#1b1b1b; --muted:#55575c; --sky:#dcecf5; --cap:#ffe98a;
+  --red:#d8412f; --blue:#2f6db5; --orange:#ee8a2b; --green:#5aa469; --card:#ffffff; --rule:#1b1b1b;
+  --f-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive;
+  --f-math:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:980px;margin:0 auto}
+.prose{max-width:66ch;margin:0 auto}
+.prose>*+*{margin-top:1em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(2.3rem,6.4vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.6vw,2.2rem);font-weight:750}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--blue)}
+math{font-family:var(--f-math);font-size:1.06em}
+mi[mathvariant="bold"],mi[mathvariant="bold-italic"]{font-weight:700}
+.hero{padding-block:44px 20px;display:grid;gap:20px}
+.kicker{font-family:var(--f-hand);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;display:inline-block;background:var(--cap);border:2.5px solid var(--ink);padding:2px 12px;justify-self:start}
+.lede{font-size:1.22rem;line-height:1.5;max-width:62ch}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.chain a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.chain a:hover,.chain a:focus-visible{background:var(--cap);outline:none}
+section{padding-block:52px 4px;display:grid;gap:22px}
+.sec-head{display:grid;gap:12px}
+.stepno{font-family:var(--f-display);font-weight:800;font-size:1.05rem;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:#fff;border:2.5px solid var(--ink);display:grid;place-items:center}
+.panel{display:grid;gap:12px}
+.panel canvas{width:100%;display:block;border:3px solid var(--ink);background:var(--sky)}
+.figcap{font-size:.93rem;color:var(--muted);line-height:1.45;max-width:78ch}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;align-items:end;background:var(--card);border:2.5px solid var(--ink);padding:12px 14px}
+.ctl{display:grid;gap:2px;min-width:0}
+.ctl label{font-family:var(--f-hand);font-size:1.05rem;display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-weight:700;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--red)}
+input[type=number],select{width:100%;font-family:var(--f-hand);font-size:1.1rem;padding:4px 8px;border:2.5px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-hand);font-size:1.02rem;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:0;padding:2px 10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--cap)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.ro{background:var(--cap);border:2.5px solid var(--ink);padding:6px 12px;min-width:0}
+.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}
+.ro .v{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-hand);font-size:1rem}
+.key i{display:inline-block;width:16px;height:12px;border:2px solid var(--ink);vertical-align:-1px;margin-right:6px}
+/* equation cards */
+.eqcard{background:var(--card);border:2.5px solid var(--ink);max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqcard .tag{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;background:var(--ink);color:var(--paper);padding:2px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.eqcard .eqn{padding:14px 14px 10px;overflow-x:auto;font-size:1.12rem;border-bottom:2px dashed var(--ink)}
+.eqcard .body{padding:12px 14px 14px;display:grid;gap:10px;font-size:.96rem;line-height:1.5}
+.read{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.read dt{font-weight:600;white-space:nowrap}
+.read dd{margin:0;min-width:0}
+.says b,.num b{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;background:var(--cap);border:2px solid var(--ink);padding:0 6px;margin-right:6px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;padding-top:10px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar label{font-family:var(--f-hand);font-size:1.02rem;background:var(--cap);border:2.5px solid var(--ink);padding:1px 8px;display:flex;align-items:center;gap:8px;max-width:100%}
+.bar select{width:auto;max-width:100%;border:0;background:transparent;padding:2px 4px;font-size:1.02rem}
+.using{font-family:var(--f-hand);font-size:1.02rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:4px 12px}
+.tblwrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--card)}
+table.settings{border-collapse:collapse;width:100%;min-width:720px;font-size:.93rem;line-height:1.35;font-variant-numeric:tabular-nums}
+table.settings th,table.settings td{border:1.5px solid var(--ink);padding:5px 10px;text-align:left;vertical-align:top}
+table.settings thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+table.settings tbody th{font-weight:600;background:var(--paper)}
+table.settings .on{background:var(--cap)}
+table.settings thead th.on{background:var(--red);color:#fff}
+.notes{font-size:.9rem;color:var(--muted);line-height:1.45;max-width:78ch;margin-inline:auto;width:100%}
+.notes p+p{margin-top:.5em}
+ul.refs{padding-left:1.2em;margin:0}
+ul.refs li+li{margin-top:.4em}
+@media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
+
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
+details.eqcard>summary{cursor:pointer;list-style:none}
+details.eqcard>summary::-webkit-details-marker{display:none}
+details.eqcard>summary .eqno{white-space:nowrap}
+details.eqcard>summary::after{content:"+ show";background:var(--cap);color:var(--ink);padding:0 8px;margin-left:auto;white-space:nowrap}
+details.eqcard[open]>summary::after{content:"\2212  hide"}
+details.eqcard>summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+details.eqcard:not([open]) .eqn{display:none}
+.eqgroup{display:grid;gap:8px;max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqlabel{font-family:var(--f-hand);font-size:1.05rem}
+.guides{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.guides span.lbl{text-transform:uppercase;letter-spacing:.06em}
+.guides a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.guides a[aria-current="page"]{background:var(--red);color:#fff}
+.guides a:hover,.guides a:focus-visible{background:var(--cap);color:var(--ink)}
+table.rules{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.rules th,table.rules td{border:1.5px solid var(--ink);padding:5px 10px;text-align:right}
+table.rules th:first-child,table.rules td:first-child{text-align:left}
+table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+</style>
+</head><body>
+
+<div class="wrap">
+  <div class="bar"><button id="motionBtn" aria-pressed="false">Pause motion</button></div>
+  <header class="hero">
+    <div class="kicker">NE-CAT guides · the detector in five minutes</div>
+    <h1>How does an X-ray detector work?</h1>
+    <p class="lede">The detector is the camera of the experiment. It records where each X-ray from the crystal lands, and how many arrive at each place. This guide explains how it does that, in four stops.</p>
+    <p class="lede" style="font-size:1.05rem">Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.</p>
+    <div class="panel">
+      <canvas id="pixHeroCv" aria-label="Animation of a data collection: the detector seen from the front, a blue frame around a white window, recording one image after another as the crystal turns. On each image the spots lie in curved bands, which move across the window from image to image. A magnified square shows a patch of pixels, each with the number of X-rays it has counted"></canvas>
+      <div class="figcap">A data collection, seen from the front of the detector. The crystal turns a fraction of a degree, the detector records an image, and so on. On each image the spots lie in curved bands called lunes, and the bands move as the crystal turns. The magnified patch shows what the detector really records: a number for every pixel. The thin lines on the window are the gaps between its 32 sensors, where nothing is counted. The crystal is made up, and the patch is not to scale.</div>
+    </div>
+    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="index.html">← Home</a><span class="lbl">Series 2 · The beamline</span><span class="level lv-intro">5 minutes</span></nav>
+    <nav class="chain" aria-label="Sections"><a href="#pixels">1 Pixels</a><a href="#count">2 Counting</a><a href="#fast">3 Speed</a><a href="#distance">4 Distance</a></nav>
+  </header>
+
+  <section id="pixels">
+    <div class="sec-head prose">
+      <div class="stepno">1</div>
+      <h2>A camera with 18 million pixels</h2>
+      <p>The X-rays that leave the crystal land on a flat panel of silicon about 31 centimeters wide and 33 high.</p>
+      <p>The panel is divided into pixels, like the sensor in a phone camera. Each pixel is 75 microns across, about the width of a hair, which is far larger than a phone's. A phone records how bright the light is at each pixel. This detector does something more exact, as the next stop shows.</p>
+      <p>A spot from the crystal covers only a few pixels. The picture the scientists get is a table of numbers, one for every pixel.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The detector on 24-ID-C is an EIGER2 XE 16M, made by the Swiss company DECTRIS. It has 4,148 by 4,362 pixels, about 18 million in all.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="pZoomCv" aria-label="Interactive: the whole face of the detector with its pattern of spots. A slider zooms in on one spot until the separate pixels show, each with the number of X-rays it counted"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="pZ">Zoom in <output id="pZO">1.0×</output></label><input id="pZ" type="range" min="0" max="1" step="0.005" value="0"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">The picture is this wide</div><div class="v" id="pW">–</div></div>
+        <div class="ro"><div class="k">Pixels across the picture</div><div class="v" id="pP">–</div></div>
+      </div>
+      <div class="figcap">Start with the whole detector and zoom in on the orange spot. The detector is drawn as it is built: a black housing 40 centimeters wide, with a blue frame around a white window, and behind the window 32 sensors, with narrow gaps between them that count nothing. First the spot grows. Then the grid of pixels appears, and at the end each pixel shows its count. The spot is drawn a few pixels wide, as real ones are. The pattern of spots is made up.</div>
+    </div>
+  </section>
+
+  <section id="count">
+    <div class="sec-head prose">
+      <div class="stepno">2</div>
+      <h2>Every X-ray is counted</h2>
+      <p>When an X-ray stops in the silicon it shakes loose a few thousand electrons. A voltage across the silicon sweeps the charge down to the pixel underneath, where it arrives as a short electrical pulse.</p>
+      <p>Each pixel has its own tiny circuit that watches for pulses. If a pulse is taller than a set level, called the threshold, the pixel adds one to its count. The small bumps of electrical noise never reach the threshold, so they are never counted.</p>
+      <p>The result is a picture with no noise from the detector itself. A pixel that no X-ray reached reads exactly zero.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> Each pixel of the 24-ID-C detector can count up to about 10 million X-rays a second.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="pThrCv" aria-label="Interactive: the electrical signal from one pixel over a short time, with twelve tall pulses from X-rays and many small bumps of noise. A slider moves a threshold line up and down. Every pulse or bump that crosses the line is counted and marked"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="pT">Height of the threshold <output id="pTO">50% of a full pulse</output></label><input id="pT" type="range" min="0.05" max="1.3" step="0.01" value="0.5"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Counted</div><div class="v" id="pCnt">–</div></div>
+        <div class="ro"><div class="k">Result</div><div class="v" id="pVer">–</div></div>
+      </div>
+      <div class="figcap">The signal from one pixel. Each tall pulse is one X-ray, and the small bumps are electrical noise. Everything that rises above the dashed line is counted, and gets a mark at the top: green for an X-ray, red for noise. Put the line too low and noise is counted. Put it too high and X-rays are missed. Halfway up a full pulse, the count is exactly right.</div>
+    </div>
+  </section>
+
+  <section id="fast">
+    <div class="sec-head prose">
+      <div class="stepno">3</div>
+      <h2>No pause between pictures</h2>
+      <p>The crystal turns steadily in the beam, and the detector records one image after another as it turns. Earlier kinds of detector had to stop after each picture to be read out, with the beam blocked while they did.</p>
+      <p>This one never stops. The gap between one image and the next is about a ten-millionth of a second, so the crystal can keep turning and nothing is missed.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The 24-ID-C detector can record 560 full images every second. At that rate the 1,800 images of a complete turn of the crystal would take just over three seconds.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="pFastCv" aria-label="Interactive: a crystal turns steadily while a strip of images is recorded, the newest on the right and the earlier ones moving off to the left. A slider sets how many images are recorded each second, and the crystal and the strip speed up with it"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="pR">Images recorded each second <output id="pRO">25</output></label><input id="pR" type="range" min="1" max="560" step="1" value="25"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Time to record a full turn of the crystal, in 1,800 images</div><div class="v" id="pTurn">–</div></div>
+        <div class="ro"><div class="k">Each image takes</div><div class="v" id="pEach">–</div></div>
+      </div>
+      <div class="figcap">The crystal on the left turns without stopping, and the detector records one image after another. The image being recorded is on the right, with orange spots, and the finished ones move off to the left. Up to four images a second the animation runs at true speed. Faster settings are slowed down so that they can be followed, though a faster setting always runs faster, and the label under the images says by how much. The numbers below give the real times.</div>
+    </div>
+  </section>
+
+  <section id="distance">
+    <div class="sec-head prose">
+      <div class="stepno">4</div>
+      <h2>Near for fine detail, far for big molecules</h2>
+      <p>The finest detail in a structure comes from the rays that leave the crystal at the widest angles. To catch them, the detector is moved close to the crystal.</p>
+      <p>Big molecules bring the opposite problem. Their spots lie close together, and from close up they would run into each other. Moving the detector back spreads them out, at the price of losing the widest rays off the edge.</p>
+      <p>So the distance is chosen afresh for each crystal.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The detector on 24-ID-C can be set anywhere from 15 centimeters to 1.2 meters from the crystal.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="pDistCv" aria-label="Interactive: the crystal, the rays that fan out from it, and the detector, seen from the side. Each ray is labeled with the size of the detail it carries, from 12 ångströms near the middle to 1.1 at the widest angle. The detector, drawn to scale as a black box with a blue front, can be dragged or moved with a slider from 150 millimeters to 1.2 meters away. The rays that land on its window are drawn solid"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="pD">Distance from the crystal to the detector <output id="pDO">300 mm</output></label><input id="pD" type="range" min="150" max="1200" step="5" value="300"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Finest detail the detector can catch</div><div class="v" id="pRes">–</div></div>
+        <div class="ro"><div class="k">Spots of a large molecule are this far apart</div><div class="v" id="pSep">–</div></div>
+      </div>
+      <div class="figcap">The crystal and the detector from the side. The rays that leave the crystal fan out, and each one carries detail of one size: the wider its angle, the finer the detail. The number at the end of each ray gives that size. The fan is set by the crystal and does not change. The detector only catches the part that lands on its window, shown darker, with those rays drawn solid. Drag the detector, or use the slider. Close in, it catches the wide rays and so the fine detail. Farther back it loses them, but neighboring spots land farther apart. The detector is drawn to scale. The numbers are for X-rays of 12.66 keV. The large molecule is one whose crystal repeats every 300 ångströms. An ångström, written Å, is a ten-millionth of a millimeter, about the size of an atom.</div>
+    </div>
+  </section>
+
+  <section id="further">
+    <div class="sec-head prose">
+      <h2>One thing to remember</h2>
+      <p class="remember">The detector is a panel of 18 million pixels. Each pixel counts the X-rays that land on it one by one, with no noise of its own and no pause between images.</p>
+      <p>A longer guide to this subject, with the equations and the real numbers, is being written.</p>
+      <details class="classroom"><summary>For a class</summary><ul><li>A phone camera measures brightness. This detector counts X-rays one at a time. What does counting gain when a spot is very faint?</li><li>Why is the threshold set at half the height of a full pulse, and not just above the noise?</li><li>A structure needs both fine detail and well-separated spots. Why can one detector distance not always give both?</li><li>Try it: at the last stop, how close must the detector be to catch detail of 1.5 Å?</li></ul></details>
+    </div>
+    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="see" href="how-mx-works-intro.html">Next: How do we see a protein? →</a></nav>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.6. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let playing = !reduce;
+const mBtn = document.getElementById('motionBtn');
+const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
+setMotionLabel();
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();});
+const $=id=>document.getElementById(id);
+
+// ---- ligne claire palette: flat colors, one ink line ----
+const INK='#1b1b1b', SKY='#dcecf5', WHITE='#ffffff', RED='#d8412f', BLUE='#2f6db5', YEL='#f6c52e', CAP='#ffe98a',
+      GRN='#5aa469', ORG='#ee8a2b', GREY='#b9c2c9', PUR='#8a63c2', LTGRN='#cfe6c9', LTYEL='#ffe9a3', LTRED='#f4c9c2',
+      LTBLUE='#c6d9f0', STEEL='#9fb6cc', FLOOR='#efe3c4', LTORG='#ffd98a', MINT='#bfe0c4';
+const HAND='"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive';
+
+const figs=[];
+function fig(id,aspect,draw,animated=true){
+  const cv=$(id), ctx=cv.getContext('2d');
+  const f={cv,ctx,draw,animated,visible:true,w:0,h:0,t:0};
+  function size(){const dpr=Math.min(window.devicePixelRatio||1,2);const w=cv.clientWidth;if(!w)return;const asp=typeof aspect==='function'?aspect(w):aspect;const h=Math.round(w/asp);
+    cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);f.w=w;f.h=h;f.draw(f);}
+  new ResizeObserver(size).observe(cv);
+  new IntersectionObserver(es=>{es.forEach(e=>f.visible=e.isIntersecting)}).observe(cv);
+  figs.push(f); return f;
+}
+const redrawAll=()=>figs.forEach(f=>f.w&&f.draw(f));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(redrawAll);
+let last=performance.now();
+function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
+  figs.forEach(f=>{if(f.animated&&f.visible&&playing&&f.w){f.t+=dt;f.draw(f);}});requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+// ---- drawing kit ----
+function pen(c,w=2,col=INK){c.strokeStyle=col;c.lineWidth=w;c.lineJoin='round';c.lineCap='round';c.setLineDash([]);}
+function bg(c,w,h,col=SKY){c.fillStyle=col;c.fillRect(0,0,w,h);}
+function rectF(c,x,y,w,h,fill,lw=2){c.fillStyle=fill;c.fillRect(x,y,w,h);pen(c,lw);c.strokeRect(x,y,w,h);}
+function disc(c,x,y,r,fill,lw=2){c.beginPath();c.arc(x,y,r,0,7);if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function poly(c,pts,fill,lw=2){c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function line(c,x0,y0,x1,y1,lw=2,col=INK,dash){pen(c,lw,col);if(dash)c.setLineDash(dash);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.setLineDash([]);}
+function arrow(c,x0,y0,x1,y1,col=INK,lw=2.2,head=8){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);pen(c,lw,col);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();if(L<3)return;
+  const ux=dx/L,uy=dy/L,h=Math.min(head,L*0.7);c.fillStyle=col;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1-ux*h-uy*h*0.5,y1-uy*h+ux*h*0.5);c.lineTo(x1-ux*h+uy*h*0.5,y1-uy*h-ux*h*0.5);c.closePath();c.fill();c.stroke();}
+function fatArrow(c,x0,y0,x1,y1,fill,wd=7){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);if(L<4)return;const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;const hd=Math.min(wd*2.2,L*0.65),hw=wd*1.35;const bx=x1-ux*hd,by=y1-uy*hd;
+  poly(c,[[x0+nx*wd/2,y0+ny*wd/2],[bx+nx*wd/2,by+ny*wd/2],[bx+nx*hw,by+ny*hw],[x1,y1],[bx-nx*hw,by-ny*hw],[bx-nx*wd/2,by-ny*wd/2],[x0-nx*wd/2,y0-ny*wd/2]],fill);}
+function txt(c,s,x,y,size=16,align='left',col=INK){c.fillStyle=col;c.font=`${size}px ${HAND}`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);}
+function cap(c,s,x,y,align='left',size=15){s=s.replace(/[a-z]/g,ch=>ch.toUpperCase());c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+16,ph=size+10;
+  const x0=align==='center'?x-pw/2:align==='right'?x-pw:x;rectF(c,x0,y-ph/2,pw,ph,CAP,2);c.fillStyle=INK;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+8,y+1);}
+function electron(c,x,y,r=8){disc(c,x,y,r,YEL);line(c,x-r*0.45,y,x+r*0.45,y,2);}
+function eye(c,x,y,ang){c.save();c.translate(x,y);c.rotate(ang);c.beginPath();c.ellipse(0,0,15,9,0,0,7);c.fillStyle=WHITE;c.fill();pen(c,2);c.stroke();disc(c,-5,0,4.5,INK);c.restore();}
+function sampleLoop(c,x,y,s=1){line(c,x,y+7*s,x,y+34*s,3);disc(c,x,y,9*s,WHITE);poly(c,[[x-5*s,y],[x,y-5*s],[x+5*s,y],[x,y+5*s]],GRN,1.6);}
+function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fmt(+el.value);cb&&cb();};el.addEventListener('input',up);up();return el;}
+
+// ---------- helpers shared by the Introductory guides. The script of each is the drawing kit, this file, and the guide's own file ----------
+const GDK='#2f7a45';
+function tag(c,s,x,y,align='left',size=15,col=INK){c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+10,ph=size+6,x0=align==='center'?x-pw/2:align==='right'?x-pw:x;
+  c.fillStyle=WHITE;c.fillRect(x0,y-ph/2,pw,ph);pen(c,1.6);c.strokeRect(x0,y-ph/2,pw,ph);c.fillStyle=col;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+5,y+1);}
+// seeded random numbers, so that figures do not flicker
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+const setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+// a color to stand for an X-ray energy between 6 and 20 keV: red for low, violet for high
+const hueE=E=>`hsl(${Math.round(Math.max(0,Math.min(1,(E-6)/14))*270)},78%,50%)`;
+function stopNo(c,n,x,y,r=13){disc(c,x,y,r,RED,2);txt(c,String(n),x,y+1,Math.round(r*1.25),'center','#fff');}
+function wave(c,x0,x1,y,amp,lam,ph,col,lw=2){if(x1<=x0)return;pen(c,lw,col);c.beginPath();for(let x=x0;x<=x1;x+=2){const yy=y+amp*Math.sin((x-x0)/lam*6.2832-ph);x===x0?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();}
+function magnets(c,x0,x1,y,hh,n,flip){const bw=(x1-x0)/n;for(let i=0;i<n;i++)rectF(c,x0+i*bw,y,bw,hh,((i%2)^flip)?RED:BLUE,2);}
+
+const fmtE=le=>{const e=Math.pow(10,le);return e<1e6?(e/1e3).toFixed(e<1e4?1:0)+' keV':e<1e9?(e/1e6).toFixed(e<1e7?1:0)+' MeV':(e/1e9).toFixed(1)+' GeV';};
+// the ring's pipe, seen from above
+function pipe(c,cx,cy,R,pw){pen(c,pw*2,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+pw,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-pw,0,7);c.stroke();}
+// a made-up diffraction pattern: spots on a lattice. Each spot stands for detail of d ångströms, with dEdge at the edge of the picture
+function mkSpots(seed,dEdge){const r=rng(seed),S=[];for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.09||Math.abs(x)>0.97||r()<0.4)continue;S.push({x,y,rad,d:dEdge/rad,s:(0.45+r())*(1-0.5*rad)});}return S;}
+const ICE=[3.90,3.67,3.44,2.67,2.25,2.07,1.95,1.92,1.88];   // spacings of the rings from ordinary (hexagonal) ice, in ångströms
+// draws the pattern in a square of side S. Spots fade with dose by the rule of 10 MGy for each ångström. ice from 0 to 1 adds ice rings
+function drawPattern(c,cx,cy,S,spots,dose,dEdge,ice){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,3);
+  if(ice>0.01)ICE.forEach((d,i)=>{const R=dEdge/d*S/2*0.95;if(R<S/2-2){pen(c,(i<3?3.2:2)*(0.4+0.6*ice),`rgba(70,80,92,${(0.6*ice).toFixed(3)})`);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();}});
+  spots.forEach(s=>{const k=Math.pow(2,-dose/(10*s.d))*(1-0.55*(ice||0));if(k<0.04)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(3)})`;c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.sqrt(k),0,7);c.fill();});
+  disc(c,cx,cy,Math.max(4,S*0.025),GREY,1.6);}
+// a crystal seen side on, as a six-sided shape of half-size s
+function xtal(c,x,y,s,fill=GRN,lw=2){poly(c,[[x-s,y-s*0.45],[x-s*0.35,y-s],[x+s*0.8,y-s*0.8],[x+s,y+s*0.3],[x+s*0.3,y+s],[x-s*0.85,y+s*0.7]],fill,lw);}
+const mix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// numbers in plain words
+const big=n=>n<1e3?String(Math.round(n)):n<1e6?(Math.round(n/Math.pow(10,Math.floor(Math.log10(n))-1))*Math.pow(10,Math.floor(Math.log10(n))-1)).toLocaleString('en-US'):n<1e9?(n/1e6).toFixed(n<1e7?1:0)+' million':n<1e12?(n/1e9).toFixed(n<1e10?1:0)+' billion':(n/1e12).toFixed(n<1e13?1:0)+' trillion';
+// the crystal, the cone of rays that the detector catches, and the detector, seen from the side. D is the distance in mm (150 to 1200)
+const DET_HALF=155.55, LAMBDA=0.9792;   // half the width of the detector face in mm (EIGER2 X 16M), and the wavelength at 12.662 keV in ångströms
+const resAt=D=>LAMBDA/(2*Math.sin(0.5*Math.atan(DET_HALF/D)));
+// Adapted from the diffraction figure of How NE-CAT works: the rays that leave the crystal fan out, each carrying detail of one size
+// (the wider the angle, the finer the detail). The fan is fixed. The detector catches the part of it that lands on its window:
+// the darker wedge and the solid rays. Returns where things are, so that the detector can be dragged (see geoDrag)
+function geoDraw(c,w,h,D,fs,narrow,drag){const sc=(w*(narrow?0.62:0.6))/1200,x0=w*(narrow?0.1:0.08),y=h*(narrow?0.44:0.47),xd=x0+D*sc,hb=DET_HALF*sc,top=narrow?30:34,bot=2*y-top,xr=w-4;
+  const list=narrow?[8,5,3,2,1.5,1.2]:[12,8,6,4,3,2.5,2,1.6,1.3,1.1],ang=d=>2*Math.asin(LAMBDA/(2*d)),amax=ang(list[list.length-1]);
+  const end=(a,sg)=>{const x=Math.min(xr,x0+(y-top)/Math.tan(a));return [x,y-sg*(x-x0)*Math.tan(a)];};
+  // the whole fan, pale, and the part the detector catches, darker
+  const eu=end(amax,1),ed=end(amax,-1),fan=[[x0,y],eu];if(eu[0]<xr){fan.push([xr,top]);fan.push([xr,bot]);}fan.push(ed);
+  c.beginPath();fan.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='#fff6d9';c.fill();
+  const tc=Math.min(Math.atan(DET_HALF/D),amax),yc=(xd-x0)*Math.tan(tc);
+  c.beginPath();c.moveTo(x0,y);c.lineTo(xd,y-yc);c.lineTo(xd,y+yc);c.closePath();c.fillStyle=LTORG;c.fill();
+  list.forEach(d=>{const a=ang(d),hit=(xd-x0)*Math.tan(a),rec=hit<=hb;[1,-1].forEach(sg=>{const e=end(a,sg);
+    line(c,x0,y,e[0],e[1],1.2,'rgba(238,138,43,.75)',[4,5]);if(rec)line(c,x0,y,xd,y-sg*hit,2,ORG);
+    if(sg>0){if(e[0]<xr)txt(c,d+' Å',e[0],top-11,fs,'center',rec?'#b85f10':'#52606b');else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?'#b85f10':'#52606b');}});});
+  arrow(c,0,y,x0-12,y,ORG,3,9);line(c,x0,y,xd,y,1.4,'rgba(238,138,43,.7)');
+  detSide(c,xd,y,sc,drag);
+  list.forEach(d=>{const hit=(xd-x0)*Math.tan(ang(d));if(hit<=hb)[1,-1].forEach(sg=>disc(c,xd,y-sg*hit,2.6,ORG,1));});
+  disc(c,x0,y,narrow?5:7,GRN,2);
+  const yt=h-(narrow?24:28);[150,400,800,1200].forEach(d=>{const x=x0+d*sc;line(c,x,yt-3,x,yt+3,2);txt(c,d===1200?'1.2 m':d+' mm',x,yt+(narrow?12:14),fs,'center','#52606b');});
+  line(c,x0,yt,x0+1200*sc,yt,1.6,'#52606b');
+  cap(c,'crystal',x0,y+(narrow?22:28),'center',fs);
+  tag(c,narrow?'detector: drag it':'detector: drag it left or right',Math.min(w-6,xd+DETG.hd*sc),Math.min(yt-(narrow?14:16),y+DETG.hh*sc/2+(narrow?26:30)),'right',fs);
+  if(!narrow)txt(c,'numbers: the detail each ray carries',xr-2,yt+14,fs,'right','#52606b');
+  return {x0,sc,xd,y,hh:DETG.hh*sc/2,hd:DETG.hd*sc};}
+// lets the detector in a geoDraw figure be dragged along the beam. geo() gives the figure's last geometry, and id is the distance slider
+function geoDrag(cvId,id,geo,setDrag){const cv=$(cvId),sl=$(id),pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};let on=false;
+  const near=e=>{const g=geo();if(!g)return false;const [x,y]=pos(e);return x>g.xd-18&&x<g.xd+g.hd+10&&Math.abs(y-g.y)<g.hh+12;};
+  const set=e=>{const g=geo(),[x]=pos(e),st=+sl.step||5;sl.value=Math.max(+sl.min,Math.min(+sl.max,Math.round((x-g.grab-g.x0)/g.sc/st)*st));sl.dispatchEvent(new Event('input'));};
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{if(!near(e))return;const g=geo();g.grab=pos(e)[0]-g.xd;on=true;setDrag(true);cv.setPointerCapture(e.pointerId);e.preventDefault();});
+  cv.addEventListener('pointermove',e=>{if(on){const g=geo();const gr=g.grab;set(e);geo().grab=gr;}else cv.style.cursor=near(e)?'ew-resize':'';});
+  const stop=()=>{if(on){on=false;setDrag(false);}};cv.addEventListener('pointerup',stop);cv.addEventListener('pointercancel',stop);}
+// ---------- the detector on 24-ID-C, an EIGER2 XE 16M, as a cartoon (sizes in millimeters, from the manufacturer's specification) ----------
+// Its sensitive area holds 32 sensor modules, 4 across and 8 down. The gaps between them (12 pixels between columns, 38 between rows)
+// count nothing. The housing is 400 wide, 430 high and 500 deep: black, with a blue frame around a white window that fills most of the
+// front, as in the manufacturer's picture of it. The width of the frame is judged from that picture.
+const DETG={fw:311.1,fh:327.2,hw:400,hh:430,hd:500,mw:77.1,mh:38.4,gx:0.9,gy:2.85,body:'#2c2f35',frame:'#3f63ad',gap:'#c3ccd4',rim:0.04};
+// face on, with its middle at (cx, cy) and z pixels to the millimeter. Returns the box of the sensitive area, for the spots
+function detFace(c,cx,cy,z,housing=true){const G=DETG,W=G.fw*z,H=G.fh*z,x=cx-W/2,y=cy-H/2;
+  if(housing){const hw=G.hw*z,hh=G.hh*z,r=Math.min(16,hw*0.05),m=hw*G.rim;
+    c.beginPath();c.roundRect(cx-hw/2,cy-hh/2,hw,hh,r);c.fillStyle=G.frame;c.fill();pen(c,Math.min(3,Math.max(1.6,z*3)));c.stroke();
+    c.beginPath();c.roundRect(cx-hw/2+m,cy-hh/2+m,hw-2*m,hh-2*m,Math.max(1,r-m));c.fillStyle=WHITE;c.fill();pen(c,1.2);c.stroke();}
+  else rectF(c,x,y,W,H,WHITE,2);
+  // the sensitive area, and the gaps between its modules
+  c.fillStyle=G.gap;for(let i=1;i<4;i++)c.fillRect(x+(i*G.mw+(i-1)*G.gx)*z,y,Math.max(1,G.gx*z),H);
+  for(let j=1;j<8;j++)c.fillRect(x,y+(j*G.mh+(j-1)*G.gy)*z,W,Math.max(1.2,G.gy*z));
+  pen(c,1.2,'#9aa7b3');c.strokeRect(x,y,W,H);
+  return {x,y,w:W,h:H};}
+// from the side, with the middle of its window at (xf, cy): the window faces left and the black housing runs back to the right
+function detSide(c,xf,cy,z,lit){const G=DETG,hh=G.hh*z,hd=G.hd*z,r=Math.min(10,hh*0.06),fb=Math.max(4,hd*0.06);
+  rectF(c,xf+hd*0.12,cy+hh/2,hd*0.76,Math.max(5,hh*0.07),'#5d6a73',2);                       // the base it stands on
+  pen(c,Math.max(2.5,hh*0.035),'#3f6ea8');c.beginPath();c.moveTo(xf+hd,cy-hh*0.2);c.bezierCurveTo(xf+hd*1.18,cy-hh*0.2,xf+hd*1.16,cy+hh*0.5,xf+hd*1.3,cy+hh*0.62);c.stroke();   // a cooling hose at the back
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.fillStyle=lit?'#3d424b':G.body;c.fill();pen(c,2.4);c.stroke();
+  c.save();c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.clip();c.fillStyle=G.frame;c.fillRect(xf,cy-hh/2,fb,hh);c.restore();     // the blue frame at the front
+  line(c,xf+fb+3,cy-hh/2+Math.max(3,hh*0.04),xf+hd-r,cy-hh/2+Math.max(3,hh*0.04),1.4,'rgba(255,255,255,.28)');
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);pen(c,2.4);c.stroke();
+  // the maker's name and the model, where they are on the real housing, in plain lettering (not the maker's own lettering)
+  if(hh>70){const fz=hh*0.085,tx=xf+hd*0.12,ty=cy+hh*0.12;c.fillStyle='rgba(255,255,255,.5)';c.textAlign='left';c.textBaseline='middle';
+    c.font=`600 ${fz.toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('DECTRIS',tx,ty);c.fillText('EIGER2 XE',tx,ty+fz*1.15);
+    c.font=`700 ${(fz*1.7).toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('16M',tx,ty+fz*2.75);}
+  rectF(c,xf-Math.max(2,hd*0.012),cy-hh*(0.5-G.rim),Math.max(4,hd*0.024),hh*(1-2*G.rim),WHITE,1.6);}                    // the window, edge on
+// a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
+function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
+  const setEq=o=>{eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}};
+  eqBtn.addEventListener('click',()=>setEq(!eqOpen));try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}}
+// ---------- the guide "How does an X-ray detector work?" (Introductory level) ----------
+// Four stops, one figure and one control at each. The script is the drawing kit, introkit.js and this file.
+const PIX=0.075, FW=DETG.fw, FH=DETG.fh;   // pixel size and window of the EIGER2 XE 16M, in millimeters
+
+// ---------- opening figure: a data collection, image by image ----------
+// A made-up crystal (cell 40 x 45 x 52 Å, tilted) turns about an upright axis in a beam of 1 Å X-rays. Each image shows the lattice
+// points that lie close to the sphere of reflection at that angle, so the spots fall in curved bands, lunes, that move as it turns.
+if($('pixHeroCv')){
+const RMAX=1/2.4,TX=Math.tan(2*Math.asin(0.5/2.5)),TY=TX*FH/FW,SG=0.0009,PTS=(()=>{
+  const ca=Math.cos(0.30),sa=Math.sin(0.30),cb=Math.cos(0.16),sb=Math.sin(0.16),cg=Math.cos(0.10),sg=Math.sin(0.10),P=[];
+  const hash=(h,k,l)=>{let q=(h*73856093)^(k*19349663)^(l*83492791);q=(q^(q>>>13))>>>0;q=Math.imul(q,1274126177)>>>0;return ((q^(q>>>16))>>>0)/4294967296;};
+  for(let h=-17;h<=17;h++)for(let k=-19;k<=19;k++)for(let l=-22;l<=22;l++){if(!h&&!k&&!l)continue;let x=h/40,y=k/45,z=l/52;const r=Math.hypot(x,y,z);if(r>RMAX)continue;
+    let t=x*ca-y*sa;y=x*sa+y*ca;x=t;t=y*cb-z*sb;z=y*sb+z*cb;y=t;t=x*cg+z*sg;z=-x*sg+z*cg;x=t;   // tilt the lattice
+    P.push(x,y,z,Math.pow(hash(h,k,l),1.6)*Math.exp(-2.2*(r/RMAX)*(r/RMAX)));}
+  return new Float32Array(P);})();
+let shown=-1,SPOTS=[];
+// the spots on image n: 0.3 degrees of turn for each image
+function image(n){const ph=n*0.3*Math.PI/180,cs=Math.cos(ph),sn=Math.sin(ph),S=[],px=FW/(DETG.mw+DETG.gx),py=FH/(DETG.mh+DETG.gy);
+  for(let i=0;i<PTS.length;i+=4){const x=PTS[i]*cs+PTS[i+2]*sn,y=PTS[i+1],kz=-PTS[i]*sn+PTS[i+2]*cs+1;if(kz<=0)continue;
+    const e=Math.sqrt(x*x+y*y+kz*kz)-1;if(e>3*SG||e<-3*SG)continue;const u=x/kz/TX,v=y/kz/TY;if(u<-1||u>1||v<-1||v>1||u*u+v*v<0.004)continue;
+    // nothing is counted in the gaps between the modules
+    const mx=((u+1)/2*FW)%(DETG.mw+DETG.gx),my=((v+1)/2*FH)%(DETG.mh+DETG.gy);if(mx>DETG.mw||my>DETG.mh)continue;
+    const a=PTS[i+3]*Math.exp(-e*e/(2*SG*SG));if(a>0.02)S.push({u,v,a});}
+  return S;}
+fig('pixHeroCv',w=>w<560?1.1:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const S=narrow?h*0.66:h*0.9,dc=narrow?[w*0.36,h*0.58]:[w*0.3,h*0.5],R=narrow?h*0.26:h*0.36,mc=narrow?[w*0.78,h*0.36]:[w*0.72,h*0.5];
+  const n=Math.floor(t*10);if(n!==shown){SPOTS=image(n);shown=n;}
+  const B=detFace(c,dc[0],dc[1],S/DETG.hh),k=B.w/230;
+  SPOTS.forEach(s=>{c.fillStyle=`rgba(27,27,27,${Math.min(1,0.45+2.5*s.a).toFixed(2)})`;c.beginPath();c.arc(dc[0]+s.u*B.w/2,dc[1]+s.v*B.h/2,(0.6+2.3*Math.sqrt(s.a))*k,0,7);c.fill();});
+  disc(c,dc[0],dc[1],Math.max(3,B.w*0.022),GREY,1.4);
+  // a magnified patch: pixels, each with its count
+  const U0=-0.42,V0=0.38,HW=0.085,qx=dc[0]+U0*B.w/2,qy=dc[1]+V0*B.h/2,qs=HW*B.w/2;pen(c,1.8);c.strokeRect(qx-qs,qy-qs*FW/FH*1.05,2*qs,2*qs*FW/FH*1.05);
+  line(c,qx+qs,qy-qs,mc[0]-R*0.72,mc[1]-R*0.6,1.6,INK,[4,4]);
+  disc(c,mc[0],mc[1],R,WHITE,2.5);c.save();c.beginPath();c.arc(mc[0],mc[1],R-1.5,0,7);c.clip();
+  const near=SPOTS.filter(s=>Math.abs(s.u-U0)<HW*1.3&&Math.abs(s.v-V0)<HW*1.3),p=R/2.6;
+  for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){let cnt=(Math.imul(n*31+i*7+j*13+977,2654435761)>>>29)%3;
+    near.forEach(s=>{const gu=(s.u-U0)/HW*2.6,gv=(s.v-V0)/HW*2.6;cnt+=Math.round(260*Math.min(1,s.a*2.5)*Math.exp(-((i-gu)*(i-gu)+(j-gv)*(j-gv))/0.9));});
+    const x=mc[0]+(i-0.5)*p,y=mc[1]+(j-0.5)*p;c.fillStyle=`rgba(238,138,43,${Math.min(1,cnt/150).toFixed(2)})`;c.fillRect(x,y,p,p);pen(c,1,'rgba(27,27,27,.5)');c.strokeRect(x,y,p,p);txt(c,String(cnt),x+p/2,y+p/2,Math.max(9,p*0.34),'center');}
+  c.restore();disc(c,mc[0],mc[1],R,null,2.5);
+  cap(c,'detector',Math.max(6,dc[0]-S*0.47-(narrow?0:40)),Math.max(13,dc[1]-S/2+(narrow?-2:10)),'left',fs);cap(c,'pixels, each with its count',Math.min(w-6,mc[0]+R),Math.max(13,mc[1]-R-(narrow?14:18)),'right',fs);
+  tag(c,'image '+(n%1200+1)+', as the crystal turns',narrow?w*0.03:mc[0]-R,narrow?h-12:Math.min(h-12,mc[1]+R+(narrow?12:16)),'left',fs);
+});
+}
+
+// ---------- stop 1: zoom in to the pixels ----------
+if($('pZoomCv')){
+let Z=0,VW0=760;const SP=mkSpots(31,1.8),vwOf=z=>VW0*Math.pow(0.6/VW0,z),S0=SP.reduce((a,b)=>Math.hypot(b.x-0.3,b.y-0.2)<Math.hypot(a.x-0.3,a.y-0.2)?b:a);
+const F=fig('pZoomCv',w=>w<560?1.0:2.2,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  VW0=450*Math.max(1,w/h);readZ();   // wide enough to show the whole detector at the start
+  const vw=vwOf(Z),z=w/vw,u=Math.min(1,Z*3),hx=FW/2*0.95,hy=FH/2*0.95,ox=S0.x*hx*u,oy=S0.y*hy*u,X=x=>w/2+(x-ox)*z,Y=y=>h/2+(y-oy)*z,p=PIX*z;
+  detFace(c,X(0),Y(0),z);
+  // the pixel that holds the middle of the chosen spot, and the counts around it
+  const pi=Math.floor(S0.x*hx/PIX),pj=Math.floor(S0.y*hy/PIX);
+  if(p>5){const n=Math.ceil(w/p/2)+1,m=Math.ceil(h/p/2)+1;
+    for(let i=-n;i<=n;i++)for(let j=-m;j<=m;j++){const di=i,dj=j,cnt=Math.round(240*Math.exp(-(di*di+dj*dj)/1.7))+((i*7+j*13+700)%3),x=X((pi+i)*PIX),y=Y((pj+j)*PIX);
+      if(cnt>3){c.fillStyle=`rgba(238,138,43,${Math.min(1,cnt/200).toFixed(2)})`;c.fillRect(x,y,p,p);}
+      if(p>30)txt(c,String(cnt),x+p/2,y+p/2,Math.min(18,p*0.3),'center');}
+    pen(c,1,'rgba(27,27,27,.45)');c.beginPath();for(let i=-n;i<=n+1;i++){c.moveTo(X((pi+i)*PIX),0);c.lineTo(X((pi+i)*PIX),h);}for(let j=-m;j<=m+1;j++){c.moveTo(0,Y((pj+j)*PIX));c.lineTo(w,Y((pj+j)*PIX));}c.stroke();
+  }else SP.forEach(s=>{const x=X(s.x*hx),y=Y(s.y*hy);if(x<-9||x>w+9||y<-9||y>h+9)return;c.fillStyle=s===S0?ORG:INK;c.beginPath();c.arc(x,y,Math.max(0.8+1.6*s.s,0.1*z*(0.6+s.s)),0,7);c.fill();});
+  if(p<=5&&u>0.05){disc(c,X(S0.x*hx),Y(S0.y*hy),Math.max(8,0.25*z),null,2);}
+  const bars=[100,50,20,10,5,2,1,0.5,0.2,0.1],b=bars.find(v=>v<=vw*0.3)||0.1,bx=w*0.04,by=h-(narrow?16:20);
+  rectF(c,bx-6,by-(narrow?30:36),Math.max(b*z,70)+12,narrow?44:52,'rgba(255,255,255,.85)',0.01);line(c,bx,by,bx+b*z,by,4);line(c,bx,by-6,bx,by+6,2);line(c,bx+b*z,by-6,bx+b*z,by+6,2);
+  txt(c,b>=1?b+' mm':Math.round(b*1000)+' µm',bx,by-(narrow?17:20),fs);
+},false);
+function readZ(){const vw=vwOf(Z),m=VW0/vw;setT('pW',vw>=10?vw.toFixed(0)+' mm':vw.toFixed(1)+' mm');setT('pP',big(vw/PIX));setT('pZO',(m<10?m.toFixed(1):Math.round(m))+'×');}
+bind('pZ',v=>{const m=VW0/vwOf(v);return (m<10?m.toFixed(1):Math.round(m))+'×';},()=>{Z=+$('pZ').value;readZ();F.w&&F.draw(F);});
+}
+
+// ---------- stop 2: counting X-rays one at a time ----------
+if($('pThrCv')){
+let TH=0.5;const r=rng(41),EV=[];
+for(let i=0;i<12;i++)EV.push({x:0.04+(i+0.2+0.6*r())/12*0.92,a:0.96+0.08*r(),ph:true});
+for(let i=0;i<46;i++)EV.push({x:0.02+0.96*r(),a:0.05+0.24*r()*r(),ph:false});
+const F=fig('pThrCv',w=>w<560?1.2:2.8,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const x0=w*0.05,x1=w*0.97,yb=h*0.82,yt=h*0.16,Y=v=>yb-v*(yb-yt)/1.35,wd=(x1-x0)*0.006;
+  line(c,x0,yb,x1,yb,1.4,'#52606b');
+  // the signal from one pixel: a sharp pulse for each X-ray, and small bumps of noise
+  pen(c,2,INK);c.beginPath();for(let px=0;px<=x1-x0;px+=1){const xx=px/(x1-x0);let v=0.012*Math.sin(px*0.9)+0.01*Math.sin(px*0.37);
+    EV.forEach(e=>{const d=(xx-e.x)*(x1-x0);if(d>-wd*1.2&&d<wd*9)v+=e.a*(d<0?Math.max(0,1+d/(wd*1.2)):Math.exp(-d/(wd*2.2)));});px?c.lineTo(x0+px,Y(v)):c.moveTo(x0+px,Y(v));}c.stroke();
+  line(c,x0,Y(TH),x1,Y(TH),2,RED,[7,5]);tag(c,'threshold',x1,Y(TH)-(narrow?12:14),'right',fs,RED);
+  EV.forEach(e=>{if(e.a>TH){const x=x0+e.x*(x1-x0);poly(c,[[x,yt-(narrow?2:4)],[x-5,yt-(narrow?11:14)],[x+5,yt-(narrow?11:14)]],e.ph?GRN:RED,1.2);}});
+  txt(c,'time',x1,yb+(narrow?12:14),fs,'right','#52606b');txt(c,'each mark is one count',x0,narrow?10:13,fs,'left','#52606b');
+},false);
+bind('pT',v=>Math.round(v*100)+'% of a full pulse',()=>{TH=+$('pT').value;const np=EV.filter(e=>e.ph&&e.a>TH).length,nn=EV.filter(e=>!e.ph&&e.a>TH).length;
+  setT('pCnt',(np+nn)+' (12 X-rays arrived)');setT('pVer',nn>0?nn+' of the counts are only noise':np<12?(12-np)+' X-rays were missed':'every X-ray counted once, and no noise');F.w&&F.draw(F);});
+}
+
+// ---------- stop 3: image after image, with no pause ----------
+if($('pFastCv')){
+// K counts the images drawn so far and A is the angle of the crystal. Both advance a little each frame at the rate set by the slider,
+// so a change of rate never makes the picture jump. Up to 4 images a second the animation runs at true speed. Above that it is slowed,
+// but it always runs faster for a faster setting: 560 a second is drawn at about 20 a second.
+let RT=25,K=0,A=0,last=null;
+const shownRate=r=>r<=4?r:4*Math.pow(r/4,0.33);
+fig('pFastCv',w=>w<560?1.3:3.2,f=>{const {ctx:c,w,h,t}=f;const dt=last===null?0:Math.min(0.05,Math.max(0,t-last));last=t;K+=dt*shownRate(RT);A+=dt*shownRate(RT)*0.14;
+  bg(c,w,h);const narrow=w<560,fs=narrow?12:15,n=narrow?7:13,x0=w*0.22,x1=w*0.97,fw=(x1-x0)/n,y=h*0.5,fh=Math.min(fw*0.86,h*0.5),cx=w*0.1,k0=Math.floor(K),fr=K-k0;
+  // the crystal, turning without stopping
+  line(c,cx,y+12,cx,y+h*0.3,3);const bw=narrow?16:24,wa=bw*Math.abs(Math.cos(A)),wb=bw*0.75*Math.abs(Math.sin(A));
+  if(wa>0.5)rectF(c,cx-(wa+wb)/2,y-bw*0.55,wa,bw*1.1,GRN,2);if(wb>0.5)rectF(c,cx-(wa+wb)/2+wa,y-bw*0.55,wb,bw*1.1,GDK,2);
+  // the images, newest on the right, moving left as each new one starts
+  c.save();c.beginPath();c.rect(x0,0,x1-x0,h);c.clip();
+  for(let j=-1;j<=n;j++){const i=k0-j,x=x1-fw*(j+1+fr);if(i<0)continue;rectF(c,x+3,y-fh/2,fw-6,fh,j<0?'#e6eef3':WHITE,2);
+    if(j>=0){const rr=rng(i*7+3),m=j===0?Math.max(1,Math.round(14*fr)):14;for(let q=0;q<m;q++){c.fillStyle=j===0?ORG:INK;c.beginPath();c.arc(x+3+(0.12+0.76*rr())*(fw-6),y-fh/2+(0.12+0.76*rr())*fh,j===0?2:1.3,0,7);c.fill();}}}
+  c.restore();
+  cap(c,'one image after another, with no gap',x0+3,y-fh/2-(narrow?14:18),'left',fs);
+  const slow=RT/shownRate(RT);tag(c,slow<1.05?'shown at true speed':'shown '+(slow<10?slow.toFixed(1):Math.round(slow))+' times slower than real',x1-3,y+fh/2+(narrow?14:18),'right',fs);
+});
+bind('pR',v=>v.toFixed(0),()=>{RT=+$('pR').value;const s=1800/RT;setT('pTurn',s>=120?(s/60).toFixed(0)+' minutes':s>=60?(s/60).toFixed(1)+' minutes':s.toFixed(s<10?1:0)+' seconds');setT('pEach',(1000/RT).toFixed(RT>100?1:0)+' thousandths of a second');});
+}
+
+// ---------- stop 4: near or far ----------
+if($('pDistCv')){
+let D=300,GEO=null,DRAG=false;
+const F=fig('pDistCv',w=>w<560?1.0:2.1,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const gr=GEO&&GEO.grab;GEO=geoDraw(c,w,h,D,w<560?12:15,w<560,DRAG);GEO.grab=gr;},false);
+geoDrag('pDistCv','pD',()=>GEO,v=>{DRAG=v;F.w&&F.draw(F);});
+bind('pD',v=>v>=1000?(v/1000).toFixed(2)+' m':v.toFixed(0)+' mm',()=>{D=+$('pD').value;const sep=LAMBDA*D/300;
+  setT('pRes',resAt(D).toFixed(1)+' Å');setT('pSep',(sep/PIX).toFixed(0)+' pixels');F.w&&F.draw(F);});
+}
+capK();
+})();
+
+</script>
+
+<script data-goatcounter="https://frankvm04.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body></html>

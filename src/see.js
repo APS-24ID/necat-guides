@@ -1,35 +1,5 @@
 // ---------- the guide "How do we see a protein?" (Introductory level) ----------
 // The script is the drawing kit, introkit.js and this file.
-// the piece of myoglobin used for the maps: amino acids 4 to 16 of its first helix, seen from the side and flattened onto the page
-const MOL={at:MB.hel.map(([x,y,z,e])=>({x,y:-y,w:z,z:e})),bonds:MB.helBonds};
-const mapScale=(W,H)=>Math.min(W/25.5,H/18),MAPC=[0.75,0.1];   // the piece is about 22 by 15 ångströms; MAPC is its middle
-const MCACHE=new Map();
-// The map at detail d, seen from the side. Each atom is spread into a round cloud whose width grows with d, the clouds are added up in
-// three dimensions, and each point of the picture takes the highest value along the line of sight. The outline drawn is where that
-// value passes 40% of the map's highest peak, so it is the silhouette of the surface a crystallographer would draw around the map.
-function mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d){const sg=Math.hypot(0.28*d,0.25),cut=3*sg,dz=Math.max(0.35,0.6*sg),nz=Math.ceil(16/dz)+1,z0=-8,G=new Float32Array(nx*ny*nz),h=step/sc,gx0=(X0-cx)/sc,gy0=(Y0-cy)/sc,k=1/(2*sg*sg);
-  for(const a of MOL.at){const i0=Math.max(0,Math.ceil((a.x-cut-gx0)/h)),i1=Math.min(nx-1,Math.floor((a.x+cut-gx0)/h)),j0=Math.max(0,Math.ceil((a.y-cut-gy0)/h)),j1=Math.min(ny-1,Math.floor((a.y+cut-gy0)/h)),k0=Math.max(0,Math.ceil((a.w-cut-z0)/dz)),k1=Math.min(nz-1,Math.floor((a.w+cut-z0)/dz));
-    const ex=[],ez=[];for(let i=i0;i<=i1;i++){const u=gx0+i*h-a.x;ex.push(Math.exp(-u*u*k));}for(let q=k0;q<=k1;q++){const u=z0+q*dz-a.w;ez.push(Math.exp(-u*u*k));}
-    for(let j=j0;j<=j1;j++){const u=gy0+j*h-a.y,ey=a.z*Math.exp(-u*u*k);for(let i=i0;i<=i1;i++){const e=ey*ex[i-i0],o=(j*nx+i)*nz;for(let q=k0;q<=k1;q++)G[o+q]+=e*ez[q-k0];}}}
-  const v=new Float32Array(nx*ny);let top=0;for(let p=0;p<nx*ny;p++){let m=0;for(let q=0;q<nz;q++){const g=G[p*nz+q];if(g>m)m=g;}v[p]=m;if(m>top)top=m;}
-  return {v,L:0.4*top};}
-function drawMap(c,X0,Y0,W,H,d,step=4){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc,nx=Math.ceil(W/step)+1,ny=Math.ceil(H/step)+1,key=[Math.round(W),Math.round(H),step,d.toFixed(2)].join();
-  let m=MCACHE.get(key);
-  if(!m){m=mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d);if(MCACHE.size>80)MCACHE.clear();MCACHE.set(key,m);}
-  const v=m.v,L=m.L;
-  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
-  c.fillStyle=LTBLUE;for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i];if((a+b+e+f)/4>L)c.fillRect(X0+i*step,Y0+j*step,step+0.5,step+0.5);}
-  pen(c,1.7,BLUE);c.beginPath();
-  for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i],x=X0+i*step,y=Y0+j*step,p=[];
-    if((a>L)!==(b>L))p.push([x+step*(L-a)/(b-a),y]);if((b>L)!==(e>L))p.push([x+step,y+step*(L-b)/(e-b)]);
-    if((f>L)!==(e>L))p.push([x+step*(L-f)/(e-f),y+step]);if((a>L)!==(f>L))p.push([x,y+step*(L-a)/(f-a)]);
-    if(p.length===2){c.moveTo(p[0][0],p[0][1]);c.lineTo(p[1][0],p[1][1]);}
-    else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>{c.moveTo(p[u][0],p[u][1]);c.lineTo(p[w2][0],p[w2][1]);});}}
-  c.stroke();c.restore();}
-const atomCol=z=>z===8?RED:z===7?BLUE:'#5d6a73';
-function drawMol(c,X0,Y0,W,H,alpha=1){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc;c.save();c.globalAlpha=alpha;
-  MOL.bonds.forEach(([i,j])=>{const a=MOL.at[i],b=MOL.at[j];line(c,cx+a.x*sc,cy+a.y*sc,cx+b.x*sc,cy+b.y*sc,Math.max(1.6,sc*0.09));});
-  MOL.at.forEach(a=>disc(c,cx+a.x*sc,cy+a.y*sc,Math.max(2.2,sc*0.17),atomCol(a.z),1.2));c.restore();}
 // the pattern of spots, with the ones inside the circle of radius r (0 to 1) dark and the rest pale
 const DEDGE=1.2, SP=mkSpots(21,DEDGE);
 function drawSpots(c,cx,cy,S,r,t){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,2.4);

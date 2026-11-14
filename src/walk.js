@@ -159,9 +159,9 @@ let PH=0,prev=0;
 const F=fig('wDetCv',w=>w<560?0.8:2.3,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
   const S=narrow?Math.min(w*0.86,h*0.64):Math.min(h*0.86,w*0.42), dc=narrow?[w/2,h-S/2-h*0.035]:[w*0.72,h/2], xc=narrow?[w*0.5,h*0.12]:[w*0.15,h*0.5];
   arrow(c,w*0.01,xc[1],xc[0]-(narrow?16:22),xc[1],ORG,3,9);
-  rectF(c,dc[0]-S/2,dc[1]-S/2,S,S,WHITE,3);
+  const B=detFace(c,dc[0],dc[1],S/DETG.hh);
   line(c,xc[0],xc[1],dc[0],dc[1],2,'rgba(238,138,43,.85)');
-  SP.forEach(s=>{const x=dc[0]+s.x*S/2*0.95,y=dc[1]+s.y*S/2*0.95,on=Math.abs(PH-s.a)<1.6;
+  SP.forEach(s=>{const x=dc[0]+s.x*B.w/2*0.95,y=dc[1]+s.y*B.h/2*0.95,on=Math.abs(PH-s.a)<1.6;
     if(on){line(c,xc[0],xc[1],x,y,1.1,'rgba(238,138,43,.5)');c.fillStyle=ORG;c.beginPath();c.arc(x,y,2.2+3*s.s,0,7);c.fill();}
     else if(s.seen){c.fillStyle=INK;c.beginPath();c.arc(x,y,0.9+1.7*s.s,0,7);c.fill();}});
   disc(c,dc[0],dc[1],Math.max(5,S*0.03),GREY,2);

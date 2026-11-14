@@ -28,7 +28,7 @@ for(const k of Object.keys(OUT))if(!fs.existsSync('body-'+k+'.html'))delete OUT[
 let urls={};try{urls=JSON.parse(fs.readFileSync('urls.json','utf8'));}catch(e){}
 const src=fs.readFileSync('src-script.v6.js','utf8'), kit=src.slice(0,src.indexOf('// ---- beamline settings'))+src.slice(src.indexOf('// ---- ligne claire palette'),src.indexOf('// ---------- HERO'));
 const IK=fs.readFileSync('introkit.js','utf8');   // helpers shared by the Introductory guides
-const SCRIPT={shared:fs.readFileSync('shared.js','utf8'),aps:kit+fs.readFileSync('aps.js','utf8'),mx:OUT.mx?kit+fs.readFileSync('mx.js','utf8'):'',};
+const SCRIPT={shared:fs.readFileSync('shared.js','utf8'),aps:kit+fs.readFileSync('aps.js','utf8'),mx:OUT.mx?kit+fs.readFileSync('mbdata.js','utf8')+fs.readFileSync('mx.js','utf8'):'',};
 for(const k of ['walk','syn','cold','damage','hutch','detintro','det','see'])if(OUT[k])SCRIPT[k]=kit+IK+(k==='see'?fs.readFileSync('mbdata.js','utf8'):'')+fs.readFileSync(k+'.js','utf8');   // mbdata.js: myoglobin, for the guides that draw it
 const US=[['centimetre','centimeter'],['millimetre','millimeter'],['centre','center'],['Centre','Center'],['neighbouring','neighboring'],['travelling','traveling'],['Travelling','Traveling'],['The maths,','The math,'],['colours','colors'],['goes round','goes around'],['other way round','other way around']];
 const SP='<mspace width="0.17em"></mspace>';let n=0;

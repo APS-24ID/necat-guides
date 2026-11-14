@@ -2,6 +2,12 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.6 — 2026-11-13
+
+- New five-minute guide, "How does an X-ray detector work?": 18 million pixels that each count X-rays one at a time, with no pause between images, at a distance chosen for each crystal. Four stops, no equations. Its opening figure is a simulated data collection, and its last figure shows which of the rays from the crystal the detector catches as it is moved.
+- The detector on 24-ID-C, an EIGER2 XE 16M, is drawn as a cartoon of the real one in this guide and at the last stop of "A walk down the beamline".
+- The index lists the new guide in the beamline series.
+
 ## 1.5.2 — 2026-11-13
 
 - "How do we see a protein?": the helices of myoglobin are now colored from the HELIX records of entry 1MBN. One helix ends one amino acid earlier than before.
