@@ -1,0 +1,501 @@
+<!doctype html>
+<!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="What X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, and how a crystal that is half water is cooled without turning to ice. Four stops, no equations.">
+<meta name="author" content="NE-CAT, Cornell University">
+<link rel="canonical" href="https://aps-24id.github.io/necat-guides/radiation-damage-intro.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="NE-CAT beamline guides">
+<meta property="og:title" content="Why are we freezing our crystals?">
+<meta property="og:description" content="What X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, and how a crystal that is half water is cooled without turning to ice. Four stops, no equations.">
+<meta property="og:url" content="https://aps-24id.github.io/necat-guides/radiation-damage-intro.html">
+<meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/cold.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Opening figure of the guide “Why are we freezing our crystals?”">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Why Are We Freezing Our Crystals?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">
+<style>
+/* Three linked guides share this sheet. Layout: a comic album page. One reading column (~66ch); figures are inked panels up to 980px wide with yellow narration boxes; equations sit on ruled cards with a symbol-by-symbol reading. Single light theme by design (ligne claire is a paper style). */
+:root{
+  --paper:#fffdf6; --ink:#1b1b1b; --muted:#55575c; --sky:#dcecf5; --cap:#ffe98a;
+  --red:#d8412f; --blue:#2f6db5; --orange:#ee8a2b; --green:#5aa469; --card:#ffffff; --rule:#1b1b1b;
+  --f-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive;
+  --f-math:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:980px;margin:0 auto}
+.prose{max-width:66ch;margin:0 auto}
+.prose>*+*{margin-top:1em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(2.3rem,6.4vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.6vw,2.2rem);font-weight:750}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--blue)}
+math{font-family:var(--f-math);font-size:1.06em}
+mi[mathvariant="bold"],mi[mathvariant="bold-italic"]{font-weight:700}
+.hero{padding-block:44px 20px;display:grid;gap:20px}
+.kicker{font-family:var(--f-hand);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;display:inline-block;background:var(--cap);border:2.5px solid var(--ink);padding:2px 12px;justify-self:start}
+.lede{font-size:1.22rem;line-height:1.5;max-width:62ch}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.chain a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.chain a:hover,.chain a:focus-visible{background:var(--cap);outline:none}
+section{padding-block:52px 4px;display:grid;gap:22px}
+.sec-head{display:grid;gap:12px}
+.stepno{font-family:var(--f-display);font-weight:800;font-size:1.05rem;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:#fff;border:2.5px solid var(--ink);display:grid;place-items:center}
+.panel{display:grid;gap:12px}
+.panel canvas{width:100%;display:block;border:3px solid var(--ink);background:var(--sky)}
+.figcap{font-size:.93rem;color:var(--muted);line-height:1.45;max-width:78ch}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;align-items:end;background:var(--card);border:2.5px solid var(--ink);padding:12px 14px}
+.ctl{display:grid;gap:2px;min-width:0}
+.ctl label{font-family:var(--f-hand);font-size:1.05rem;display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-weight:700;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--red)}
+input[type=number],select{width:100%;font-family:var(--f-hand);font-size:1.1rem;padding:4px 8px;border:2.5px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-hand);font-size:1.02rem;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:0;padding:2px 10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--cap)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.ro{background:var(--cap);border:2.5px solid var(--ink);padding:6px 12px;min-width:0}
+.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}
+.ro .v{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-hand);font-size:1rem}
+.key i{display:inline-block;width:16px;height:12px;border:2px solid var(--ink);vertical-align:-1px;margin-right:6px}
+/* equation cards */
+.eqcard{background:var(--card);border:2.5px solid var(--ink);max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqcard .tag{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;background:var(--ink);color:var(--paper);padding:2px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.eqcard .eqn{padding:14px 14px 10px;overflow-x:auto;font-size:1.12rem;border-bottom:2px dashed var(--ink)}
+.eqcard .body{padding:12px 14px 14px;display:grid;gap:10px;font-size:.96rem;line-height:1.5}
+.read{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.read dt{font-weight:600;white-space:nowrap}
+.read dd{margin:0;min-width:0}
+.says b,.num b{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;background:var(--cap);border:2px solid var(--ink);padding:0 6px;margin-right:6px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;padding-top:10px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar label{font-family:var(--f-hand);font-size:1.02rem;background:var(--cap);border:2.5px solid var(--ink);padding:1px 8px;display:flex;align-items:center;gap:8px;max-width:100%}
+.bar select{width:auto;max-width:100%;border:0;background:transparent;padding:2px 4px;font-size:1.02rem}
+.using{font-family:var(--f-hand);font-size:1.02rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:4px 12px}
+.tblwrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--card)}
+table.settings{border-collapse:collapse;width:100%;min-width:720px;font-size:.93rem;line-height:1.35;font-variant-numeric:tabular-nums}
+table.settings th,table.settings td{border:1.5px solid var(--ink);padding:5px 10px;text-align:left;vertical-align:top}
+table.settings thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+table.settings tbody th{font-weight:600;background:var(--paper)}
+table.settings .on{background:var(--cap)}
+table.settings thead th.on{background:var(--red);color:#fff}
+.notes{font-size:.9rem;color:var(--muted);line-height:1.45;max-width:78ch;margin-inline:auto;width:100%}
+.notes p+p{margin-top:.5em}
+ul.refs{padding-left:1.2em;margin:0}
+ul.refs li+li{margin-top:.4em}
+@media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
+
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
+details.eqcard>summary{cursor:pointer;list-style:none}
+details.eqcard>summary::-webkit-details-marker{display:none}
+details.eqcard>summary .eqno{white-space:nowrap}
+details.eqcard>summary::after{content:"+ show";background:var(--cap);color:var(--ink);padding:0 8px;margin-left:auto;white-space:nowrap}
+details.eqcard[open]>summary::after{content:"\2212  hide"}
+details.eqcard>summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+details.eqcard:not([open]) .eqn{display:none}
+.eqgroup{display:grid;gap:8px;max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqlabel{font-family:var(--f-hand);font-size:1.05rem}
+.guides{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.guides span.lbl{text-transform:uppercase;letter-spacing:.06em}
+.guides a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.guides a[aria-current="page"]{background:var(--red);color:#fff}
+.guides a:hover,.guides a:focus-visible{background:var(--cap);color:var(--ink)}
+table.rules{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.rules th,table.rules td{border:1.5px solid var(--ink);padding:5px 10px;text-align:right}
+table.rules th:first-child,table.rules td:first-child{text-align:left}
+table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+</style>
+</head><body>
+
+<div class="wrap">
+  <div class="bar"><button id="motionBtn" aria-pressed="false">Pause motion</button></div>
+  <header class="hero">
+    <div class="kicker">NE-CAT guides · cold crystals in five minutes</div>
+    <h1>Why are we freezing our crystals?</h1>
+    <p class="lede">X-rays show us the atoms in a crystal, and at the same time they slowly destroy it. Cooling the crystal to 173 degrees below zero makes it last far longer. This guide explains what the X-rays do, why cold helps, and how a crystal that is half water is cooled without turning to ice.</p>
+    <p class="lede" style="font-size:1.05rem">Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.</p>
+    <div class="panel">
+      <canvas id="coldHeroCv" aria-label="Animation: a crystal on a loop sits in the X-ray beam while cold gas streams over it from a nozzle. A label gives its temperature, minus 173 degrees Celsius. The pattern of spots it makes is beside it"></canvas>
+      <div class="figcap">A crystal in the X-ray beam, with cold nitrogen gas streaming over it from the nozzle. The gas keeps it at 173 degrees below zero for as long as it is being measured.</div>
+    </div>
+    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="index.html">← Home</a><span class="lbl">Series 3 · The experiment</span><span class="level lv-intro">5 minutes</span></nav>
+    <nav class="chain" aria-label="Sections"><a href="#damage">1 Damage</a><a href="#cold">2 Cold</a><a href="#ice">3 No ice</a><a href="#scale">4 How cold</a></nav>
+  </header>
+
+  <section id="damage">
+    <div class="sec-head prose">
+      <div class="stepno">1</div>
+      <h2>X-rays wear the crystal out</h2>
+      <p>Most X-rays pass straight through the crystal. A few are absorbed, and each of those knocks an electron out of an atom with great force. That electron tears through its neighbors and breaks chemical bonds as it goes.</p>
+      <p>Broken bonds mean that the molecules in the crystal are no longer all alike. The crystal still gives spots, but the spots that carry the finest detail fade first. Keep going and only a coarse picture is left.</p>
+      <p>So every crystal has a budget. Once it has absorbed a certain amount of X-ray energy, the fine detail is gone for good.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The beam on 24-ID-C carries about 15 trillion X-rays a second into a spot smaller than the crystal. At full strength it would use up a crystal's budget in less than a second, so the strength of the beam and the time spent in it are chosen with care.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="cFadeCv" aria-label="Interactive: a crystal in the X-ray beam and the pattern of spots it gives. A slider adds to the X-ray energy the crystal has absorbed. The spots at the edge of the pattern, which carry the fine detail, fade first, and the crystal turns brown"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="cfT">X-ray energy the crystal has absorbed <output id="cfTO">0% of the limit</output></label><input id="cfT" type="range" min="0" max="200" step="1" value="0"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Detail that is still clear</div><div class="v" id="cfD">–</div></div>
+        <div class="ro"><div class="k">Spots still easy to see</div><div class="v" id="cfN">–</div></div>
+      </div>
+      <div class="figcap">The spots near the middle of the pattern carry the coarse outline of the molecule. The ones toward the edge carry the fine detail. As the crystal absorbs more X-ray energy the outer spots fade first. The slider counts that energy as a share of the limit most experiments keep to. The crystal is drawn turning brown, as real ones often do. An ångström, written Å, is a ten-millionth of a millimeter, about the size of an atom. The fading follows a rule of thumb, and real crystals vary.</div>
+    </div>
+  </section>
+
+  <section id="cold">
+    <div class="sec-head prose">
+      <div class="stepno">2</div>
+      <h2>Cold stops the damage from spreading</h2>
+      <p>The first hit is only the start. Each broken bond leaves fragments that react with almost anything. A warm crystal is about half water, and in it these fragments drift about and attack whatever they meet. One X-ray ends up harming molecules far from where it landed.</p>
+      <p>Cold changes that. At 173 degrees below zero the water in the crystal is solid, and the fragments are stuck where they formed. The first hit still happens. The spreading does not.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The crystal sits in a stream of nitrogen gas at 100 kelvin, which is 173 degrees below zero Celsius. A cold crystal lasts roughly 70 times longer in the beam than a warm one.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="cWarmCv" aria-label="Interactive: a field of green chemical bonds. X-rays land at five places and each leaves a red reactive fragment. At room temperature the fragments wander and break the bonds they pass, which turn red. At minus 173 degrees they stay where they formed and the damage does not spread. Two buttons choose the temperature"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label id="cWL">Temperature of the crystal</label><div class="btns" id="cW" role="group" aria-labelledby="cWL"><button type="button" data-v="0" aria-pressed="true">Room temperature</button><button type="button" data-v="1" aria-pressed="false">Cold: −173 °C</button></div></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Bonds broken so far</div><div class="v" id="cwB">–</div></div>
+        <div class="ro"><div class="k">How long the crystal lasts</div><div class="v" id="cwL">–</div></div>
+      </div>
+      <div class="figcap">The green lines are chemical bonds in the crystal. Five X-rays land, and each leaves a reactive fragment, drawn as a red dot. Warm, the fragments wander and break the bonds they pass. Cold, they are stuck where they formed. Switch between the two and watch the count. The picture runs for 16 seconds and starts again. It is a drawing of the idea, not a calculation.</div>
+    </div>
+  </section>
+
+  <section id="ice">
+    <div class="sec-head prose">
+      <div class="stepno">3</div>
+      <h2>The trick is to cool it without making ice</h2>
+      <p>A protein crystal is about half water. If that water freezes into ordinary ice, the ice crystals grow, push the protein molecules out of line and ruin the crystal. Ice also puts rings of its own on the detector, and they hide the spots underneath.</p>
+      <p>The answer is to cool the crystal so fast that the water has no time to form ice crystals. It stays as disordered as a liquid, but solid. That is a glass. The crystal is plunged into liquid nitrogen, often after a soak in an antifreeze such as glycerol, which makes the glass easier to form.</p>
+      <p>So freezing is not quite the right word. People in the field say the crystal is cryocooled, or vitrified, which means turned to glass.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> Crystals arrive at NE-CAT already cooled, in liquid nitrogen at 196 degrees below zero. A robot moves each one from its store to the beam quickly enough that it stays cold all the way.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="cIceCv" aria-label="Interactive: a frozen drop holding a crystal, and the pattern on the detector. With no antifreeze the drop is full of ice crystals and the pattern is crossed by dark rings. A slider adds antifreeze: the ice goes, the drop becomes a clear glass and the rings disappear"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="cA">Antifreeze added before cooling <output id="cAO">0%</output></label><input id="cA" type="range" min="0" max="40" step="1" value="0"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Ice in the sample</div><div class="v" id="ciI">–</div></div>
+        <div class="ro"><div class="k">Rings on the detector</div><div class="v" id="ciR">–</div></div>
+      </div>
+      <div class="figcap">Left: the drop of liquid that surrounds the crystal, after cooling. Right: what the detector sees. Ice in the drop puts dark rings across the pattern and weakens the spots. Add antifreeze and the water sets as a clear glass, with no rings. How much antifreeze a crystal needs depends on the crystal and on how fast it is cooled. The amounts here are only to show the trend.</div>
+    </div>
+  </section>
+
+  <section id="scale">
+    <div class="sec-head prose">
+      <div class="stepno">4</div>
+      <h2>How cold is that?</h2>
+      <p>173 degrees below zero is colder than the air has ever been anywhere on Earth. It is about 20 degrees warmer than liquid nitrogen, which is what does the cooling.</p>
+      <p>Scientists usually call it 100 kelvin. The kelvin scale counts up from absolute zero, the temperature at which there is no heat left to take away.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The gas stream holds the crystal at 100 kelvin for as long as it is in the beam, whether that is a few seconds or several hours.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="cThermCv" aria-label="Interactive: a temperature scale from absolute zero to body temperature, with markers for a warm room, freezing water, dry ice, the coldest air recorded on Earth, the crystal in the beam and liquid nitrogen. A slider moves along the scale"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="cK">Temperature <output id="cKO">20 °C</output></label><input id="cK" type="range" min="-273" max="40" step="1" value="20"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">On the kelvin scale</div><div class="v" id="ctK">–</div></div>
+        <div class="ro"><div class="k">Nearest marker</div><div class="v" id="ctN">–</div></div>
+      </div>
+      <div class="figcap">A scale of temperature from absolute zero, at the left, to body temperature. The crystal in the beam is marked in red. It is colder than anything in everyday life, and still 100 degrees above the coldest temperature there can be.</div>
+    </div>
+  </section>
+
+  <section id="further">
+    <div class="sec-head prose">
+      <h2>One thing to remember</h2>
+      <p class="remember">X-rays slowly destroy the crystal they measure. Keeping it at 173 degrees below zero stops the damage from spreading, so it lasts about 70 times longer, as long as it was cooled fast enough that no ice formed.</p>
+      <p>A longer guide to this subject, with the equations and the real numbers, is being written.</p>
+      <details class="classroom"><summary>For a class</summary><ul><li>Food keeps longer in a freezer. In what way is that like the crystal in the cold stream, and in what way is it different?</li><li>Why does ordinary ice harm a crystal when a glass does not?</li><li>A bigger crystal can soak up more X-ray energy in total. Why does that not let it last longer in the same beam?</li><li>Try it: at the first stop, how much of the limit can the crystal absorb before detail finer than 2 Å is lost?</li></ul></details>
+    </div>
+    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="scatter" href="fluorescence.html">Next: X-ray fluorescence at NE-CAT →</a></nav>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.7. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let playing = !reduce;
+const mBtn = document.getElementById('motionBtn');
+const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
+setMotionLabel();
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();});
+const $=id=>document.getElementById(id);
+
+// ---- ligne claire palette: flat colors, one ink line ----
+const INK='#1b1b1b', SKY='#dcecf5', WHITE='#ffffff', RED='#d8412f', BLUE='#2f6db5', YEL='#f6c52e', CAP='#ffe98a',
+      GRN='#5aa469', ORG='#ee8a2b', GREY='#b9c2c9', PUR='#8a63c2', LTGRN='#cfe6c9', LTYEL='#ffe9a3', LTRED='#f4c9c2',
+      LTBLUE='#c6d9f0', STEEL='#9fb6cc', FLOOR='#efe3c4', LTORG='#ffd98a', MINT='#bfe0c4';
+const HAND='"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive';
+
+const figs=[];
+function fig(id,aspect,draw,animated=true){
+  const cv=$(id), ctx=cv.getContext('2d');
+  const f={cv,ctx,draw,animated,visible:true,w:0,h:0,t:0};
+  function size(){const dpr=Math.min(window.devicePixelRatio||1,2);const w=cv.clientWidth;if(!w)return;const asp=typeof aspect==='function'?aspect(w):aspect;const h=Math.round(w/asp);
+    cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);f.w=w;f.h=h;f.draw(f);}
+  new ResizeObserver(size).observe(cv);
+  new IntersectionObserver(es=>{es.forEach(e=>f.visible=e.isIntersecting)}).observe(cv);
+  figs.push(f); return f;
+}
+const redrawAll=()=>figs.forEach(f=>f.w&&f.draw(f));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(redrawAll);
+let last=performance.now();
+function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
+  figs.forEach(f=>{if(f.animated&&f.visible&&playing&&f.w){f.t+=dt;f.draw(f);}});requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+// ---- drawing kit ----
+function pen(c,w=2,col=INK){c.strokeStyle=col;c.lineWidth=w;c.lineJoin='round';c.lineCap='round';c.setLineDash([]);}
+function bg(c,w,h,col=SKY){c.fillStyle=col;c.fillRect(0,0,w,h);}
+function rectF(c,x,y,w,h,fill,lw=2){c.fillStyle=fill;c.fillRect(x,y,w,h);pen(c,lw);c.strokeRect(x,y,w,h);}
+function disc(c,x,y,r,fill,lw=2){c.beginPath();c.arc(x,y,r,0,7);if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function poly(c,pts,fill,lw=2){c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function line(c,x0,y0,x1,y1,lw=2,col=INK,dash){pen(c,lw,col);if(dash)c.setLineDash(dash);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.setLineDash([]);}
+function arrow(c,x0,y0,x1,y1,col=INK,lw=2.2,head=8){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);pen(c,lw,col);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();if(L<3)return;
+  const ux=dx/L,uy=dy/L,h=Math.min(head,L*0.7);c.fillStyle=col;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1-ux*h-uy*h*0.5,y1-uy*h+ux*h*0.5);c.lineTo(x1-ux*h+uy*h*0.5,y1-uy*h-ux*h*0.5);c.closePath();c.fill();c.stroke();}
+function fatArrow(c,x0,y0,x1,y1,fill,wd=7){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);if(L<4)return;const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;const hd=Math.min(wd*2.2,L*0.65),hw=wd*1.35;const bx=x1-ux*hd,by=y1-uy*hd;
+  poly(c,[[x0+nx*wd/2,y0+ny*wd/2],[bx+nx*wd/2,by+ny*wd/2],[bx+nx*hw,by+ny*hw],[x1,y1],[bx-nx*hw,by-ny*hw],[bx-nx*wd/2,by-ny*wd/2],[x0-nx*wd/2,y0-ny*wd/2]],fill);}
+function txt(c,s,x,y,size=16,align='left',col=INK){c.fillStyle=col;c.font=`${size}px ${HAND}`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);}
+function cap(c,s,x,y,align='left',size=15){s=s.replace(/[a-z]/g,ch=>ch.toUpperCase());c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+16,ph=size+10;
+  const x0=align==='center'?x-pw/2:align==='right'?x-pw:x;rectF(c,x0,y-ph/2,pw,ph,CAP,2);c.fillStyle=INK;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+8,y+1);}
+function electron(c,x,y,r=8){disc(c,x,y,r,YEL);line(c,x-r*0.45,y,x+r*0.45,y,2);}
+function eye(c,x,y,ang){c.save();c.translate(x,y);c.rotate(ang);c.beginPath();c.ellipse(0,0,15,9,0,0,7);c.fillStyle=WHITE;c.fill();pen(c,2);c.stroke();disc(c,-5,0,4.5,INK);c.restore();}
+function sampleLoop(c,x,y,s=1){line(c,x,y+7*s,x,y+34*s,3);disc(c,x,y,9*s,WHITE);poly(c,[[x-5*s,y],[x,y-5*s],[x+5*s,y],[x,y+5*s]],GRN,1.6);}
+function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fmt(+el.value);cb&&cb();};el.addEventListener('input',up);up();return el;}
+
+// ---------- helpers shared by the Introductory guides. The script of each is the drawing kit, this file, and the guide's own file ----------
+const GDK='#2f7a45';
+function tag(c,s,x,y,align='left',size=15,col=INK){c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+10,ph=size+6,x0=align==='center'?x-pw/2:align==='right'?x-pw:x;
+  c.fillStyle=WHITE;c.fillRect(x0,y-ph/2,pw,ph);pen(c,1.6);c.strokeRect(x0,y-ph/2,pw,ph);c.fillStyle=col;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+5,y+1);}
+// seeded random numbers, so that figures do not flicker
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+const setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+// a color to stand for an X-ray energy between 6 and 20 keV: red for low, violet for high
+const hueE=E=>`hsl(${Math.round(Math.max(0,Math.min(1,(E-6)/14))*270)},78%,50%)`;
+function stopNo(c,n,x,y,r=13){disc(c,x,y,r,RED,2);txt(c,String(n),x,y+1,Math.round(r*1.25),'center','#fff');}
+function wave(c,x0,x1,y,amp,lam,ph,col,lw=2){if(x1<=x0)return;pen(c,lw,col);c.beginPath();for(let x=x0;x<=x1;x+=2){const yy=y+amp*Math.sin((x-x0)/lam*6.2832-ph);x===x0?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();}
+function magnets(c,x0,x1,y,hh,n,flip){const bw=(x1-x0)/n;for(let i=0;i<n;i++)rectF(c,x0+i*bw,y,bw,hh,((i%2)^flip)?RED:BLUE,2);}
+
+const fmtE=le=>{const e=Math.pow(10,le);return e<1e6?(e/1e3).toFixed(e<1e4?1:0)+' keV':e<1e9?(e/1e6).toFixed(e<1e7?1:0)+' MeV':(e/1e9).toFixed(1)+' GeV';};
+// the ring's pipe, seen from above
+function pipe(c,cx,cy,R,pw){pen(c,pw*2,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+pw,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-pw,0,7);c.stroke();}
+// a made-up diffraction pattern: spots on a lattice. Each spot stands for detail of d ångströms, with dEdge at the edge of the picture
+function mkSpots(seed,dEdge){const r=rng(seed),S=[];for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.09||Math.abs(x)>0.97||r()<0.4)continue;S.push({x,y,rad,d:dEdge/rad,s:(0.45+r())*(1-0.5*rad)});}return S;}
+const ICE=[3.90,3.67,3.44,2.67,2.25,2.07,1.95,1.92,1.88];   // spacings of the rings from ordinary (hexagonal) ice, in ångströms
+// draws the pattern in a square of side S. Spots fade with dose by the rule of 10 MGy for each ångström. ice from 0 to 1 adds ice rings
+function drawPattern(c,cx,cy,S,spots,dose,dEdge,ice){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,3);
+  if(ice>0.01)ICE.forEach((d,i)=>{const R=dEdge/d*S/2*0.95;if(R<S/2-2){pen(c,(i<3?3.2:2)*(0.4+0.6*ice),`rgba(70,80,92,${(0.6*ice).toFixed(3)})`);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();}});
+  spots.forEach(s=>{const k=Math.pow(2,-dose/(10*s.d))*(1-0.55*(ice||0));if(k<0.04)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(3)})`;c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.sqrt(k),0,7);c.fill();});
+  disc(c,cx,cy,Math.max(4,S*0.025),GREY,1.6);}
+// a crystal seen side on, as a six-sided shape of half-size s
+function xtal(c,x,y,s,fill=GRN,lw=2){poly(c,[[x-s,y-s*0.45],[x-s*0.35,y-s],[x+s*0.8,y-s*0.8],[x+s,y+s*0.3],[x+s*0.3,y+s],[x-s*0.85,y+s*0.7]],fill,lw);}
+const mix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// numbers in plain words
+const big=n=>n<1e3?String(Math.round(n)):n<1e6?(Math.round(n/Math.pow(10,Math.floor(Math.log10(n))-1))*Math.pow(10,Math.floor(Math.log10(n))-1)).toLocaleString('en-US'):n<1e9?(n/1e6).toFixed(n<1e7?1:0)+' million':n<1e12?(n/1e9).toFixed(n<1e10?1:0)+' billion':(n/1e12).toFixed(n<1e13?1:0)+' trillion';
+// the crystal, the cone of rays that the detector catches, and the detector, seen from the side. D is the distance in mm (150 to 1200)
+const DET_HALF=155.55, LAMBDA=0.9792;   // half the width of the detector face in mm (EIGER2 X 16M), and the wavelength at 12.662 keV in ångströms
+const resAt=D=>LAMBDA/(2*Math.sin(0.5*Math.atan(DET_HALF/D)));
+// Adapted from the diffraction figure of How NE-CAT works: the rays that leave the crystal fan out, each carrying detail of one size
+// (the wider the angle, the finer the detail). The fan is fixed. The detector catches the part of it that lands on its window:
+// the darker wedge and the solid rays. Returns where things are, so that the detector can be dragged (see geoDrag)
+function geoDraw(c,w,h,D,fs,narrow,drag){const sc=(w*(narrow?0.62:0.6))/1200,x0=w*(narrow?0.1:0.08),y=h*(narrow?0.44:0.47),xd=x0+D*sc,hb=DET_HALF*sc,top=narrow?30:34,bot=2*y-top,xr=w-4;
+  const list=narrow?[8,5,3,2,1.5,1.2]:[12,8,6,4,3,2.5,2,1.6,1.3,1.1],ang=d=>2*Math.asin(LAMBDA/(2*d)),amax=ang(list[list.length-1]);
+  const end=(a,sg)=>{const x=Math.min(xr,x0+(y-top)/Math.tan(a));return [x,y-sg*(x-x0)*Math.tan(a)];};
+  // the whole fan, pale, and the part the detector catches, darker
+  const eu=end(amax,1),ed=end(amax,-1),fan=[[x0,y],eu];if(eu[0]<xr){fan.push([xr,top]);fan.push([xr,bot]);}fan.push(ed);
+  c.beginPath();fan.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='#fff6d9';c.fill();
+  const tc=Math.min(Math.atan(DET_HALF/D),amax),yc=(xd-x0)*Math.tan(tc);
+  c.beginPath();c.moveTo(x0,y);c.lineTo(xd,y-yc);c.lineTo(xd,y+yc);c.closePath();c.fillStyle=LTORG;c.fill();
+  list.forEach(d=>{const a=ang(d),hit=(xd-x0)*Math.tan(a),rec=hit<=hb;[1,-1].forEach(sg=>{const e=end(a,sg);
+    line(c,x0,y,e[0],e[1],1.2,'rgba(238,138,43,.75)',[4,5]);if(rec)line(c,x0,y,xd,y-sg*hit,2,ORG);
+    if(sg>0){if(e[0]<xr)txt(c,d+' Å',e[0],top-11,fs,'center',rec?'#b85f10':'#52606b');else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?'#b85f10':'#52606b');}});});
+  arrow(c,0,y,x0-12,y,ORG,3,9);line(c,x0,y,xd,y,1.4,'rgba(238,138,43,.7)');
+  detSide(c,xd,y,sc,drag);
+  list.forEach(d=>{const hit=(xd-x0)*Math.tan(ang(d));if(hit<=hb)[1,-1].forEach(sg=>disc(c,xd,y-sg*hit,2.6,ORG,1));});
+  disc(c,x0,y,narrow?5:7,GRN,2);
+  const yt=h-(narrow?24:28);[150,400,800,1200].forEach(d=>{const x=x0+d*sc;line(c,x,yt-3,x,yt+3,2);txt(c,d===1200?'1.2 m':d+' mm',x,yt+(narrow?12:14),fs,'center','#52606b');});
+  line(c,x0,yt,x0+1200*sc,yt,1.6,'#52606b');
+  cap(c,'crystal',x0,y+(narrow?22:28),'center',fs);
+  tag(c,narrow?'detector: drag it':'detector: drag it left or right',Math.min(w-6,xd+DETG.hd*sc),Math.min(yt-(narrow?14:16),y+DETG.hh*sc/2+(narrow?26:30)),'right',fs);
+  if(!narrow)txt(c,'numbers: the detail each ray carries',xr-2,yt+14,fs,'right','#52606b');
+  return {x0,sc,xd,y,hh:DETG.hh*sc/2,hd:DETG.hd*sc};}
+// lets the detector in a geoDraw figure be dragged along the beam. geo() gives the figure's last geometry, and id is the distance slider
+function geoDrag(cvId,id,geo,setDrag){const cv=$(cvId),sl=$(id),pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};let on=false;
+  const near=e=>{const g=geo();if(!g)return false;const [x,y]=pos(e);return x>g.xd-18&&x<g.xd+g.hd+10&&Math.abs(y-g.y)<g.hh+12;};
+  const set=e=>{const g=geo(),[x]=pos(e),st=+sl.step||5;sl.value=Math.max(+sl.min,Math.min(+sl.max,Math.round((x-g.grab-g.x0)/g.sc/st)*st));sl.dispatchEvent(new Event('input'));};
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{if(!near(e))return;const g=geo();g.grab=pos(e)[0]-g.xd;on=true;setDrag(true);cv.setPointerCapture(e.pointerId);e.preventDefault();});
+  cv.addEventListener('pointermove',e=>{if(on){const g=geo();const gr=g.grab;set(e);geo().grab=gr;}else cv.style.cursor=near(e)?'ew-resize':'';});
+  const stop=()=>{if(on){on=false;setDrag(false);}};cv.addEventListener('pointerup',stop);cv.addEventListener('pointercancel',stop);}
+// ---------- the detector on 24-ID-C, an EIGER2 XE 16M, as a cartoon (sizes in millimeters, from the manufacturer's specification) ----------
+// Its sensitive area holds 32 sensor modules, 4 across and 8 down. The gaps between them (12 pixels between columns, 38 between rows)
+// count nothing. The housing is 400 wide, 430 high and 500 deep: black, with a blue frame around a white window that fills most of the
+// front, as in the manufacturer's picture of it. The width of the frame is judged from that picture.
+const DETG={fw:311.1,fh:327.2,hw:400,hh:430,hd:500,mw:77.1,mh:38.4,gx:0.9,gy:2.85,body:'#2c2f35',frame:'#3f63ad',gap:'#c3ccd4',rim:0.04};
+// face on, with its middle at (cx, cy) and z pixels to the millimeter. Returns the box of the sensitive area, for the spots
+function detFace(c,cx,cy,z,housing=true){const G=DETG,W=G.fw*z,H=G.fh*z,x=cx-W/2,y=cy-H/2;
+  if(housing){const hw=G.hw*z,hh=G.hh*z,r=Math.min(16,hw*0.05),m=hw*G.rim;
+    c.beginPath();c.roundRect(cx-hw/2,cy-hh/2,hw,hh,r);c.fillStyle=G.frame;c.fill();pen(c,Math.min(3,Math.max(1.6,z*3)));c.stroke();
+    c.beginPath();c.roundRect(cx-hw/2+m,cy-hh/2+m,hw-2*m,hh-2*m,Math.max(1,r-m));c.fillStyle=WHITE;c.fill();pen(c,1.2);c.stroke();}
+  else rectF(c,x,y,W,H,WHITE,2);
+  // the sensitive area, and the gaps between its modules
+  c.fillStyle=G.gap;for(let i=1;i<4;i++)c.fillRect(x+(i*G.mw+(i-1)*G.gx)*z,y,Math.max(1,G.gx*z),H);
+  for(let j=1;j<8;j++)c.fillRect(x,y+(j*G.mh+(j-1)*G.gy)*z,W,Math.max(1.2,G.gy*z));
+  pen(c,1.2,'#9aa7b3');c.strokeRect(x,y,W,H);
+  return {x,y,w:W,h:H};}
+// from the side, with the middle of its window at (xf, cy): the window faces left and the black housing runs back to the right
+function detSide(c,xf,cy,z,lit){const G=DETG,hh=G.hh*z,hd=G.hd*z,r=Math.min(10,hh*0.06),fb=Math.max(4,hd*0.06);
+  rectF(c,xf+hd*0.12,cy+hh/2,hd*0.76,Math.max(5,hh*0.07),'#5d6a73',2);                       // the base it stands on
+  pen(c,Math.max(2.5,hh*0.035),'#3f6ea8');c.beginPath();c.moveTo(xf+hd,cy-hh*0.2);c.bezierCurveTo(xf+hd*1.18,cy-hh*0.2,xf+hd*1.16,cy+hh*0.5,xf+hd*1.3,cy+hh*0.62);c.stroke();   // a cooling hose at the back
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.fillStyle=lit?'#3d424b':G.body;c.fill();pen(c,2.4);c.stroke();
+  c.save();c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.clip();c.fillStyle=G.frame;c.fillRect(xf,cy-hh/2,fb,hh);c.restore();     // the blue frame at the front
+  line(c,xf+fb+3,cy-hh/2+Math.max(3,hh*0.04),xf+hd-r,cy-hh/2+Math.max(3,hh*0.04),1.4,'rgba(255,255,255,.28)');
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);pen(c,2.4);c.stroke();
+  // the maker's name and the model, where they are on the real housing, in plain lettering (not the maker's own lettering)
+  if(hh>70){const fz=hh*0.085,tx=xf+hd*0.12,ty=cy+hh*0.12;c.fillStyle='rgba(255,255,255,.5)';c.textAlign='left';c.textBaseline='middle';
+    c.font=`600 ${fz.toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('DECTRIS',tx,ty);c.fillText('EIGER2 XE',tx,ty+fz*1.15);
+    c.font=`700 ${(fz*1.7).toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('16M',tx,ty+fz*2.75);}
+  rectF(c,xf-Math.max(2,hd*0.012),cy-hh*(0.5-G.rim),Math.max(4,hd*0.024),hh*(1-2*G.rim),WHITE,1.6);}                    // the window, edge on
+// a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
+function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
+  const setEq=o=>{eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}};
+  eqBtn.addEventListener('click',()=>setEq(!eqOpen));try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}}
+// ---------- the guide "Why are we freezing our crystals?" (Introductory level) ----------
+// Four stops, one figure and one control at each. The script is the drawing kit, introkit.js and this file.
+const BROWN='#8a6a3b', ICEB='#e8f4fb';
+// the nozzle of the cold stream and the gas leaving it, toward the point (x,y)
+function coldStream(c,x,y,L,t,n=14){const ax=x+L*0.72,ay=y-L*0.72;
+  for(let k=0;k<n;k++){const u=((t*0.9+k/n)%1),px=ax+(x-ax)*u*1.25,py=ay+(y-ay)*u*1.25,sp=(1-u)*0.5+0.5;c.fillStyle=`rgba(255,255,255,${(0.9-0.6*u).toFixed(2)})`;c.beginPath();c.arc(px+Math.sin(k*7.3)*L*0.07*sp,py+Math.cos(k*5.1)*L*0.07*sp,2+3*u,0,7);c.fill();}
+  c.save();c.translate(ax,ay);c.rotate(Math.PI*0.75);rectF(c,-L*0.34,-L*0.1,L*0.34,L*0.2,STEEL,2);rectF(c,-L*0.05,-L*0.13,L*0.05,L*0.26,GREY,2);c.restore();}
+
+// ---------- opening figure ----------
+if($('coldHeroCv')){
+const HS=mkSpots(7,1.8);
+fig('coldHeroCv',w=>w<560?1.15:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const x=w*(narrow?0.3:0.3),y=h*(narrow?0.36:0.56),S=narrow?Math.min(w*0.5,h*0.5):h*0.78,dc=narrow?[w*0.68,h*0.68]:[w*0.78,h*0.5],L=narrow?70:110;
+  arrow(c,w*0.02,y,x-18,y,ORG,3,9);line(c,x,y,dc[0],dc[1],1.6,'rgba(238,138,43,.6)');
+  drawPattern(c,dc[0],dc[1],S,HS,0,1.8,0);
+  coldStream(c,x,y,L,t);
+  line(c,x,y+8,x,y+(narrow?40:70),3);xtal(c,x,y,narrow?10:14);
+  cap(c,'x-rays',w*0.02,y-(narrow?18:24),'left',fs);tag(c,'−173 °C',x+(narrow?16:24),y+(narrow?22:30),'left',fs+1);
+  cap(c,'cold nitrogen gas',Math.min(w-8,x+L*0.72+ (narrow?70:120)),Math.max(13,y-L*0.72-(narrow?24:34)),'right',fs);
+});
+}
+
+// ---------- stop 1: the spots fade as the crystal takes up X-rays ----------
+if($('cFadeCv')){
+let D=0;const SP=mkSpots(11,1.5);
+const F=fig('cFadeCv',w=>w<560?0.85:2.4,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const S=narrow?Math.min(w*0.86,h*0.64):Math.min(h*0.86,w*0.42),dc=narrow?[w/2,h-S/2-h*0.035]:[w*0.72,h/2],xc=narrow?[w*0.5,h*0.13]:[w*0.16,h*0.5],u=Math.min(1,D/45);
+  arrow(c,w*0.01,xc[1],xc[0]-(narrow?20:28),xc[1],ORG,3,9);line(c,xc[0],xc[1],dc[0],dc[1],1.6,'rgba(238,138,43,.6)');
+  drawPattern(c,dc[0],dc[1],S,SP,D,1.5,0);
+  line(c,xc[0],xc[1]+10,xc[0],xc[1]+(narrow?26:h*0.24),3);xtal(c,xc[0],xc[1],narrow?13:20,mix('#5aa469',BROWN,u));
+  cap(c,'crystal',narrow?xc[0]+24:xc[0],narrow?xc[1]:xc[1]-(narrow?24:38),narrow?'left':'center',fs);
+  txt(c,'coarse detail',dc[0],dc[1]+S*0.09,fs,'center','#52606b');txt(c,'fine detail',dc[0],dc[1]+S/2-(narrow?10:13),fs,'center','#52606b');
+},false);
+bind('cfT',v=>v.toFixed(0)+'% of the limit',()=>{D=0.3*(+$('cfT').value);const dh=D/10;
+  setT('cfD',dh<=1.5?'all of it, down to 1.5 Å':'only detail coarser than '+dh.toFixed(1)+' Å');
+  setT('cfN',SP.filter(s=>Math.pow(2,-D/(10*s.d))>=0.25).length+' of '+SP.length);F.w&&F.draw(F);});
+}
+
+// ---------- stop 2: warm, the damage spreads; cold, it stays where it started ----------
+if($('cWarmCv')){
+let COLD=0,T0=0;const r=rng(5),NB=90,NR=5,NS=150,BD=[],RD=[];
+for(let i=0;i<NB;i++)BD.push({x:0.04+0.92*r(),y:0.08+0.84*r(),a:r()*3.14});
+for(let k=0;k<NR;k++){const p=[{x:0.12+0.76*r(),y:0.15+0.7*r()}];for(let s=1;s<NS;s++){const q=p[s-1],a=r()*6.2832;p.push({x:Math.min(0.97,Math.max(0.03,q.x+0.035*Math.cos(a))),y:Math.min(0.95,Math.max(0.05,q.y+0.06*Math.sin(a)))});}RD.push(p);}
+// the step at which each bond is broken: warm, by a fragment wandering past; cold, only if the X-ray landed on it
+const near=(b,p)=>Math.hypot((b.x-p.x),(b.y-p.y)*0.6)<0.045;
+BD.forEach(b=>{b.w=Infinity;b.c=Infinity;RD.forEach(p=>{if(near(b,p[0]))b.c=0;for(let s=0;s<NS;s++)if(near(b,p[s])){b.w=Math.min(b.w,s);break;}});});
+let shown=-1;
+const F=fig('cWarmCv',w=>w<560?1.1:2.6,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h,'#eef6ee');const narrow=w<560,fs=narrow?12:15;
+  const tau=(t-T0)%16,s=Math.min(NS-1,Math.floor(tau*10)),L=narrow?9:13;let n=0;
+  BD.forEach(b=>{const broken=(COLD?b.c:b.w)<=s;if(broken)n++;const x=b.x*w,y=b.y*h,dx=L*Math.cos(b.a),dy=L*Math.sin(b.a);
+    if(broken){line(c,x-dx,y-dy,x-dx*0.25,y-dy*0.25,3,RED);line(c,x+dx*0.25,y+dy*0.25,x+dx,y+dy,3,RED);}else line(c,x-dx,y-dy,x+dx,y+dy,3,GDK);});
+  RD.forEach((p,k)=>{const q=COLD?p[0]:p[s],jx=COLD?Math.sin(t*9+k)*1.5:0,jy=COLD?Math.cos(t*8+k*2)*1.5:0;
+    if(tau<0.6){pen(c,2.5,ORG);c.beginPath();c.arc(p[0].x*w,p[0].y*h,6+tau*40,0,7);c.stroke();}
+    if(!COLD){pen(c,1.2,'rgba(216,65,47,.35)');c.beginPath();for(let i=0;i<=s;i++)i?c.lineTo(p[i].x*w,p[i].y*h):c.moveTo(p[i].x*w,p[i].y*h);c.stroke();}
+    disc(c,q.x*w+jx,q.y*h+jy,narrow?4.5:6,RED,1.6);});
+  cap(c,COLD?'cold: the fragments stay put':'warm: the fragments wander',w/2,narrow?14:18,'center',fs);
+  if(n!==shown){shown=n;setT('cwB',n+' of '+NB);}
+});
+choice('cW',v=>{COLD=+v;T0=F.t;shown=-1;setT('cwL',COLD?'about 70 times longer':'this is the comparison');if(!playing&&F.w)F.draw(F);});
+}
+
+// ---------- stop 3: cool it without making ice ----------
+if($('cIceCv')){
+let A=0;const SP=mkSpots(19,1.8),r=rng(3),HX=[];for(let i=0;i<16;i++)HX.push({x:(r()-0.5)*1.5,y:(r()-0.5)*1.5,s:0.12+0.12*r(),a:r()});
+const F=fig('cIceCv',w=>w<560?0.85:2.4,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
+  const ice=Math.max(0,Math.min(1,1-A/25)),S=narrow?Math.min(w*0.86,h*0.6):Math.min(h*0.86,w*0.42),dc=narrow?[w/2,h-S/2-h*0.035]:[w*0.72,h/2],xc=narrow?[w*0.5,h*0.17]:[w*0.2,h*0.5],R=narrow?h*0.12:h*0.3;
+  // the frozen drop that holds the crystal
+  disc(c,xc[0],xc[1],R,mix('#c6d9f0','#f4f8fb',ice),2.5);
+  c.save();c.beginPath();c.arc(xc[0],xc[1],R-2,0,7);c.clip();
+  HX.forEach((q,i)=>{if(i>=Math.round(ice*HX.length))return;const s=q.s*R;poly(c,[0,1,2,3,4,5].map(k=>[xc[0]+q.x*R*0.62+s*Math.cos(k*1.0472+q.a),xc[1]+q.y*R*0.62+s*Math.sin(k*1.0472+q.a)]),WHITE,1.4);});
+  c.restore();xtal(c,xc[0],xc[1],R*0.22);
+  cap(c,ice>0.02?'ice in the drop':'a clear glass',xc[0],narrow?xc[1]+R+14:xc[1]-R-(narrow?14:20),'center',fs);
+  line(c,xc[0]+R,xc[1],dc[0]-S/2,dc[1],1.6,'rgba(238,138,43,.6)');
+  drawPattern(c,dc[0],dc[1],S,SP,0,1.8,ice);
+  if(ice>0.02)tag(c,'ice rings',dc[0]+S/2-8,dc[1]-S/2+(narrow?14:18),'right',fs);
+},false);
+bind('cA',v=>v.toFixed(0)+'%',()=>{A=+$('cA').value;const ice=Math.max(0,Math.min(1,1-A/25));
+  setT('ciI',ice>0.6?'a lot':ice>0.25?'some':ice>0.02?'a trace':'none: the water is a glass');setT('ciR',ice>0.6?'strong, hiding many spots':ice>0.25?'clear to see':ice>0.02?'faint':'none');F.w&&F.draw(F);});
+}
+
+// ---------- stop 4: how cold is cold ----------
+if($('cThermCv')){
+let TC=20;const LM=[[37,'body','body temperature'],[20,'room','a warm room'],[0,'water freezes','water freezes'],[-78,'dry ice','dry ice'],[-89,'coldest air on Earth','the coldest air recorded on Earth'],[-173,'the crystal','the crystal in the X-ray beam'],[-196,'liquid nitrogen','liquid nitrogen boils'],[-273,'absolute zero','absolute zero, the coldest there is']];
+const F=fig('cThermCv',w=>w<560?1.25:3.2,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?11:14;
+  const x0=w*0.05,x1=w*0.95,y=h*0.5,bh=narrow?14:18,X=T=>x0+(T+273)/313*(x1-x0);
+  for(let i=0;i<80;i++){c.fillStyle=mix('#2f6db5','#d8412f',i/79);c.fillRect(x0+i*(x1-x0)/80,y-bh/2,(x1-x0)/80+1,bh);}pen(c,2);c.strokeRect(x0,y-bh/2,x1-x0,bh);
+  LM.forEach(([T,s],i)=>{const x=X(T),up=i%2===0,yy=y+(up?-1:1)*(narrow?(i%4<2?30:52):(i%4<2?34:58));
+    line(c,x,y+(up?-bh/2:bh/2),x,yy+(up?9:-9),1.6,INK,[3,3]);tag(c,s,Math.max(x0-4+2,Math.min(x1+4,x)),yy,x>w*0.8?'right':x<w*0.2?'left':'center',fs,T===-173?RED:INK);});
+  const x=X(TC);poly(c,[[x,y-bh/2-1],[x-7,y-bh/2-13],[x+7,y-bh/2-13]],INK,1.5);poly(c,[[x,y+bh/2+1],[x-7,y+bh/2+13],[x+7,y+bh/2+13]],INK,1.5);
+},false);
+bind('cK',v=>(v<0?'−'+Math.abs(v).toFixed(0):v.toFixed(0))+' °C',()=>{TC=+$('cK').value;setT('ctK',Math.round(TC+273.15)+' K');
+  const n=LM.reduce((a,b)=>Math.abs(b[0]-TC)<Math.abs(a[0]-TC)?b:a);setT('ctN',n[2]+(Math.abs(n[0]-TC)<1.5?'':': '+Math.round(Math.abs(n[0]-TC))+' degrees '+(TC>n[0]?'colder':'warmer')));F.w&&F.draw(F);});
+}
+capK();
+})();
+
+</script>
+
+<script data-goatcounter="https://frankvm04.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body></html>

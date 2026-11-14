@@ -2,6 +2,11 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.7 — 2026-11-13
+
+- New five-minute guide, "Why are we freezing our crystals?": what X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, how a crystal that is half water is cooled without turning to ice, and how cold that is. Four stops, no equations.
+- The index lists it in the experiment series.
+
 ## 1.6.1 — 2026-11-13
 
 - "A walk down the beamline": the beamstop is now drawn where it is on the beamline, just behind the crystal, not on the detector. The text and the caption say so.
