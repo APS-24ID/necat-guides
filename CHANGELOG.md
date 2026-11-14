@@ -2,6 +2,10 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.5.2 — 2026-11-13
+
+- "How do we see a protein?": the helices of myoglobin are now colored from the HELIX records of entry 1MBN. One helix ends one amino acid earlier than before.
+
 ## 1.5.1 — 2026-11-13
 
 - Corrections from a review of the open questions in the live guides.
