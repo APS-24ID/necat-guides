@@ -549,18 +549,21 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       </ul>
     </div>
     <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="detintro" href="detector-intro.html">Next: How does an X-ray detector work? →</a></nav>
-    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.8.2. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.8.3. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
   </section>
 </div>
 
 <script>
 (()=>{
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Motion plays unless the reader's system asks for reduced motion. Once the reader has used the button, that choice is kept in the
+// browser (nothing is sent anywhere) and applies on every guide and on later visits.
 let playing = !reduce;
+try{const m=localStorage.getItem('necat-guide-motion');if(m==='1')playing=true;else if(m==='0')playing=false;}catch(e){}
 const mBtn = document.getElementById('motionBtn');
 const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
 setMotionLabel();
-mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();});
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();try{localStorage.setItem('necat-guide-motion',playing?'1':'0');}catch(e){}});
 const $=id=>document.getElementById(id);
 
 // ---- beamline settings (see the table and its notes for sources and assumptions) ----

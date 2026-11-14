@@ -1,10 +1,13 @@
 (()=>{
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Motion plays unless the reader's system asks for reduced motion. Once the reader has used the button, that choice is kept in the
+// browser (nothing is sent anywhere) and applies on every guide and on later visits.
 let playing = !reduce;
+try{const m=localStorage.getItem('necat-guide-motion');if(m==='1')playing=true;else if(m==='0')playing=false;}catch(e){}
 const mBtn = document.getElementById('motionBtn');
 const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
 setMotionLabel();
-mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();});
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();try{localStorage.setItem('necat-guide-motion',playing?'1':'0');}catch(e){}});
 const $=id=>document.getElementById(id);
 
 // ---- beamline settings (see the table and its notes for sources and assumptions) ----

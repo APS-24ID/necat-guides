@@ -2,6 +2,10 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.8.3 — 2026-11-14
+
+- The "Pause motion" button now remembers the reader's choice. It applies on every guide and on later visits. The choice is kept in the reader's own browser and is not sent anywhere.
+
 ## 1.8.2 — 2026-11-14
 
 - Every page now states at its foot that the guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT. The README says the same.
