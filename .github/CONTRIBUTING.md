@@ -43,3 +43,7 @@ Every change is reviewed by NE-CAT before it is published. Releases are numbered
 ## Credit and license
 
 The guides are released under the [MIT License](../LICENSE), and contributions are accepted under the same license. The text, figures and code were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.
+
+## Code of conduct
+
+Everyone taking part is expected to follow the [code of conduct](CODE_OF_CONDUCT.md).
