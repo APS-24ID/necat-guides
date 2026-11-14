@@ -1,0 +1,34 @@
+name: Suggest a topic
+description: A question the guides should answer, or a guide you would like to see.
+title: "[Topic] "
+labels: ["topic"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What question should the guide answer?
+      description: Put it the way a visitor or a student would ask it.
+      placeholder: "How does a robot change the samples?"
+    validations:
+      required: true
+  - type: dropdown
+    id: reader
+    attributes:
+      label: Who is it for?
+      options:
+        - The general public and high-school students (a five-minute guide, no equations)
+        - Undergraduates and new researchers (an in-depth guide, with equations)
+        - Both
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it belong in guides about NE-CAT?
+      description: For example, it is about the beamlines' own equipment, methods or results, or other guides would lean on it.
+  - type: textarea
+    id: sources
+    attributes:
+      label: Anything to start from?
+      description: A paper, a talk, a figure, a page that already explains it well.

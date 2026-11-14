@@ -26,7 +26,7 @@ The files whose names begin `NE-CAT_` are small redirect pages. They are the add
 
 The protein drawn in "How do we see a protein?" is sperm whale myoglobin. Its atomic positions are from entry [1MBN](https://www.rcsb.org/structure/1MBN) in the Protein Data Bank. The detector on 24-ID-C, an EIGER2 XE 16M made by DECTRIS, is drawn from the dimensions in the manufacturer's specification and a picture of it.
 
-Values that are assumed or calculated, and not taken from a published source, are marked in the notes of each guide. Corrections are welcome: please open an issue.
+Values that are assumed or calculated, and not taken from a published source, are marked in the notes of each guide. Corrections are welcome: please [open an issue](https://github.com/APS-24ID/necat-guides/issues/new/choose). [CONTRIBUTING.md](.github/CONTRIBUTING.md) says how to report an error, suggest a topic or change a guide.
 
 ## Building
 

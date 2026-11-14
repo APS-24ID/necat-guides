@@ -1,0 +1,57 @@
+name: Report an error in a guide
+description: A wrong number, a misleading sentence, a figure that misbehaves, or a typo.
+title: "[Correction] "
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you. Corrections are the most useful thing a reader can send. One problem per issue is easiest to act on.
+  - type: dropdown
+    id: guide
+    attributes:
+      label: Which guide?
+      options:
+        - What is a synchrotron?
+        - How APS works
+        - A walk down the beamline
+        - How NE-CAT works
+        - Why the X-ray beam is polarized
+        - How does an X-ray detector work?
+        - Why is the experiment in a shielded room?
+        - How do we see a protein?
+        - Why are we freezing our crystals?
+        - X-ray fluorescence at NE-CAT
+        - The index page
+        - More than one, or not sure
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where in the guide?
+      description: The section number, the figure, or the sentence.
+      placeholder: "Section 3, the figure with the slider for detector distance"
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong?
+      description: Quote the text or describe what the figure does.
+    validations:
+      required: true
+  - type: textarea
+    id: right
+    attributes:
+      label: What should it say or do?
+      description: If you know. A source (a paper, a specification, a facility page) helps us check it.
+  - type: input
+    id: device
+    attributes:
+      label: For a figure that misbehaves, your device and browser
+      placeholder: "iPhone, Safari"
+  - type: input
+    id: release
+    attributes:
+      label: Release shown at the foot of the page
+      placeholder: "1.8.2"

@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the guides
+    url: https://aps-24id.github.io/necat-guides/
+    about: The published guides. Each page shows its release number at its foot.
