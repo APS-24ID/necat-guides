@@ -2,6 +2,11 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.8 — 2026-11-14
+
+- New five-minute guide, "Why is the experiment in a shielded room?": the stray X-rays around the sample, how little steel it takes to stop them, how the door and the beam shutter are locked together, and how the experiment is run from outside. Four stops, no equations.
+- The index lists it in the beamline series.
+
 ## 1.7 — 2026-11-13
 
 - New five-minute guide, "Why are we freezing our crystals?": what X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, how a crystal that is half water is cooled without turning to ice, and how cold that is. Four stops, no equations.
