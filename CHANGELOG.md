@@ -2,6 +2,10 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.8.4 — 2026-11-16
+
+- Every guide and the index now say how to report a mistake: by email to necat@cornell.edu, or with the correction form on GitHub. The email link fills in the name of the guide and its release.
+
 ## 1.8.3 — 2026-11-14
 
 - The "Pause motion" button now remembers the reader's choice. It applies on every guide and on later visits. The choice is kept in the reader's own browser and is not sent anywhere.

@@ -4,7 +4,7 @@ These are illustrated, interactive guides to the Advanced Photon Source, the NE-
 
 ## Report an error
 
-This is the most useful contribution. [Open an issue](https://github.com/APS-24ID/necat-guides/issues/new/choose) and choose "Report an error in a guide". Say which guide, where in it, what is wrong and, if you know, what is right. A source helps: a paper, a manufacturer's specification, a facility page.
+This is the most useful contribution. [Open an issue](https://github.com/APS-24ID/necat-guides/issues/new/choose) and choose "Report an error in a guide". Say which guide, where in it, what is wrong and, if you know, what is right. A source helps: a paper, a manufacturer's specification, a facility page. If you have no GitHub account, write to necat@cornell.edu instead.
 
 Each guide's notes mark the values that are assumed or calculated and not taken from a published source. Those are the ones most in need of a check by someone who knows the real number.
 

@@ -453,10 +453,17 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.8.3','November 14, 2026')
+RELEASE=('1.8.4','November 16, 2026')
 UPDATED={'aps':'November 13, 2026','overview':'November 13, 2026','polarization':'November 13, 2026','scatter':'November 13, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
-def stamp(when): return 'Last updated %s. Release %s. <a href="%s" target="_blank" rel="noopener">What changed</a>.'%(when,RELEASE[0],CHLOG)
+# the line under every guide and the index: its date and release, and how to report a mistake (by email, or with the correction form on GitHub)
+MAILTO='necat@cornell.edu'
+ISSUE='https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml'
+def stamp(when,title='the index page'):
+    from urllib.parse import quote
+    subj=quote('NE-CAT guides: a correction to %s (release %s)'%(title,RELEASE[0]))
+    return ('Last updated %s. Release %s. <a href="%s" target="_blank" rel="noopener">What changed</a>.'%(when,RELEASE[0],CHLOG)
+      +'<br>Found a mistake? Write to <a href="mailto:%s?subject=%s">%s</a>, or <a href="%s" target="_blank" rel="noopener">report it on GitHub</a>.'%(MAILTO,subj,MAILTO,ISSUE))
 # helpers for the Introductory guides
 def _here(t,label='Here at NE-CAT.'): return '<span class="here"><b>'+label+'</b> '+t+'</span>'
 # a choice between a few named states, as a row of buttons. choice() in introkit.js wires them up
@@ -554,7 +561,7 @@ def page(g):
                     o.append('    <details class="eqcard" id="eq-%s">\n      <summary class="tag"><span class="eqno">Equation %s</span><span class="eqtitle">%s</span></summary>%s    </details>\n'%(e,g['eqnum'][e],EQ[e]['title'],EQ[e]['inner']))
                 o.append('    </div>\n')
         o.append('  </section>\n')
-    o.append(('\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>One thing to remember</h2>\n      <p class="remember">'+g['remember']+'</p>\n      <p>'+('A longer guide to this subject, with the equations and the real numbers, is being written.' if not g.get('deeper') else g['more']%glink(g['deeper'],GK[g['deeper']]['h1']) if g.get('more') else 'Want the details, with the equations and the real numbers? Go deeper with the guide '+glink(g['deeper'],GK[g['deeper']]['h1'])+'.')+'</p>\n      <details class="classroom"><summary>For a class</summary><ul>'+''.join('<li>%s</li>'%q for q in g['classroom'])+'</ul></details>\n    </div>\n' if g['level']=='Introductory' else '\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>Where to go deeper</h2>\n      <ul class="refs">\n'+g['further']+'\n      </ul>\n    </div>\n')+'    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="{{home}}">← Home</a>'+('<a class="guidelink" data-guide="%s" href="{{link:%s}}">Next: %s →</a>'%(G[gi]['key'],G[gi]['key'],G[gi]['name']) if gi<len(G) else '')+'</nav>\n    <div class="notes" style="text-align:center;margin-top:18px"><p>'+stamp(UPDATED[g['key']])+'<br>'+ACK+'<br>'+MADE+'<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>\n  </section>\n</div>\n')
+    o.append(('\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>One thing to remember</h2>\n      <p class="remember">'+g['remember']+'</p>\n      <p>'+('A longer guide to this subject, with the equations and the real numbers, is being written.' if not g.get('deeper') else g['more']%glink(g['deeper'],GK[g['deeper']]['h1']) if g.get('more') else 'Want the details, with the equations and the real numbers? Go deeper with the guide '+glink(g['deeper'],GK[g['deeper']]['h1'])+'.')+'</p>\n      <details class="classroom"><summary>For a class</summary><ul>'+''.join('<li>%s</li>'%q for q in g['classroom'])+'</ul></details>\n    </div>\n' if g['level']=='Introductory' else '\n  <section id="further">\n    <div class="sec-head prose">\n      <h2>Where to go deeper</h2>\n      <ul class="refs">\n'+g['further']+'\n      </ul>\n    </div>\n')+'    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="{{home}}">← Home</a>'+('<a class="guidelink" data-guide="%s" href="{{link:%s}}">Next: %s →</a>'%(G[gi]['key'],G[gi]['key'],G[gi]['name']) if gi<len(G) else '')+'</nav>\n    <div class="notes" style="text-align:center;margin-top:18px"><p>'+stamp(UPDATED[g['key']],g['name'])+'<br>'+ACK+'<br>'+MADE+'<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>\n  </section>\n</div>\n')
     html=resolve(''.join(o),g)
     # a label holding a subscript is wrapped so that it stays one piece in the flex row
     html=re.sub(r'(<label for="\w+">)((?:(?!<output|</label>).)*<sub>(?:(?!<output|</label>).)*?)(\s*<output|</label>)',lambda m:m.group(1)+'<span>'+m.group(2)+'</span>'+m.group(3),html)
