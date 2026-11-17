@@ -341,7 +341,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   </section>
   </main>
 
-  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 17, 2026. Release 1.9. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20the%20index%20page%20%28release%201.9%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
+  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 17, 2026. Release 1.9.1. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20the%20index%20page%20%28release%201.9.1%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
 </div>
 
 <script>
@@ -399,6 +399,230 @@ function eye(c,x,y,ang){c.save();c.translate(x,y);c.rotate(ang);c.beginPath();c.
 function sampleLoop(c,x,y,s=1){line(c,x,y+7*s,x,y+34*s,3);disc(c,x,y,9*s,WHITE);poly(c,[[x-5*s,y],[x,y-5*s],[x+5*s,y],[x,y+5*s]],GRN,1.6);}
 function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fmt(+el.value);cb&&cb();};el.addEventListener('input',up);up();return el;}
 
+// ---------- helpers shared by the Introductory guides. The script of each is the drawing kit, this file, and the guide's own file ----------
+const GDK='#2f7a45';
+function tag(c,s,x,y,align='left',size=15,col=INK){c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+10,ph=size+6,x0=align==='center'?x-pw/2:align==='right'?x-pw:x;
+  c.fillStyle=WHITE;c.fillRect(x0,y-ph/2,pw,ph);pen(c,1.6);c.strokeRect(x0,y-ph/2,pw,ph);c.fillStyle=col;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+5,y+1);}
+// seeded random numbers, so that figures do not flicker
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+const setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+// a color to stand for an X-ray energy between 6 and 20 keV: red for low, violet for high
+const hueE=E=>`hsl(${Math.round(Math.max(0,Math.min(1,(E-6)/14))*270)},78%,50%)`;
+function stopNo(c,n,x,y,r=13){disc(c,x,y,r,RED,2);txt(c,String(n),x,y+1,Math.round(r*1.25),'center','#fff');}
+function wave(c,x0,x1,y,amp,lam,ph,col,lw=2){if(x1<=x0)return;pen(c,lw,col);c.beginPath();for(let x=x0;x<=x1;x+=2){const yy=y+amp*Math.sin((x-x0)/lam*6.2832-ph);x===x0?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();}
+function magnets(c,x0,x1,y,hh,n,flip){const bw=(x1-x0)/n;for(let i=0;i<n;i++)rectF(c,x0+i*bw,y,bw,hh,((i%2)^flip)?RED:BLUE,2);}
+
+const fmtE=le=>{const e=Math.pow(10,le);return e<1e6?(e/1e3).toFixed(e<1e4?1:0)+' keV':e<1e9?(e/1e6).toFixed(e<1e7?1:0)+' MeV':(e/1e9).toFixed(1)+' GeV';};
+// the ring's pipe, seen from above
+function pipe(c,cx,cy,R,pw){pen(c,pw*2,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+pw,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-pw,0,7);c.stroke();}
+// a made-up diffraction pattern: spots on a lattice. Each spot stands for detail of d ångströms, with dEdge at the edge of the picture
+function mkSpots(seed,dEdge){const r=rng(seed),S=[];for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.09||Math.abs(x)>0.97||r()<0.4)continue;S.push({x,y,rad,d:dEdge/rad,s:(0.45+r())*(1-0.5*rad)});}return S;}
+const ICE=[3.90,3.67,3.44,2.67,2.25,2.07,1.95,1.92,1.88];   // spacings of the rings from ordinary (hexagonal) ice, in ångströms
+// draws the pattern in a square of side S. Spots fade with dose by the rule of 10 MGy for each ångström. ice from 0 to 1 adds ice rings
+function drawPattern(c,cx,cy,S,spots,dose,dEdge,ice){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,3);
+  if(ice>0.01)ICE.forEach((d,i)=>{const R=dEdge/d*S/2*0.95;if(R<S/2-2){pen(c,(i<3?3.2:2)*(0.4+0.6*ice),`rgba(70,80,92,${(0.6*ice).toFixed(3)})`);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();}});
+  spots.forEach(s=>{const k=Math.pow(2,-dose/(10*s.d))*(1-0.55*(ice||0));if(k<0.04)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(3)})`;c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.sqrt(k),0,7);c.fill();});
+  disc(c,cx,cy,Math.max(4,S*0.025),GREY,1.6);}
+// a crystal seen side on, as a six-sided shape of half-size s
+function xtal(c,x,y,s,fill=GRN,lw=2){poly(c,[[x-s,y-s*0.45],[x-s*0.35,y-s],[x+s*0.8,y-s*0.8],[x+s,y+s*0.3],[x+s*0.3,y+s],[x-s*0.85,y+s*0.7]],fill,lw);}
+const mix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// numbers in plain words
+const big=n=>n<1e3?String(Math.round(n)):n<1e6?(Math.round(n/Math.pow(10,Math.floor(Math.log10(n))-1))*Math.pow(10,Math.floor(Math.log10(n))-1)).toLocaleString('en-US'):n<1e9?(n/1e6).toFixed(n<1e7?1:0)+' million':n<1e12?(n/1e9).toFixed(n<1e10?1:0)+' billion':(n/1e12).toFixed(n<1e13?1:0)+' trillion';
+// the crystal, the cone of rays that the detector catches, and the detector, seen from the side. D is the distance in mm (150 to 1200)
+const DET_HALF=155.55, LAMBDA=0.9792;   // half the width of the detector face in mm (EIGER2 X 16M), and the wavelength at 12.662 keV in ångströms
+const resAt=D=>LAMBDA/(2*Math.sin(0.5*Math.atan(DET_HALF/D)));
+// Adapted from the diffraction figure of How NE-CAT works: the rays that leave the crystal fan out, each carrying detail of one size
+// (the wider the angle, the finer the detail). The fan is fixed. The detector catches the part of it that lands on its window:
+// the darker wedge and the solid rays. Returns where things are, so that the detector can be dragged (see geoDrag)
+function geoDraw(c,w,h,D,fs,narrow,drag){const sc=(w*(narrow?0.62:0.6))/1200,x0=w*(narrow?0.1:0.08),y=h*(narrow?0.44:0.47),xd=x0+D*sc,hb=DET_HALF*sc,top=narrow?30:34,bot=2*y-top,xr=w-4;
+  const list=narrow?[8,5,3,2,1.5,1.2]:[12,8,6,4,3,2.5,2,1.6,1.3,1.1],ang=d=>2*Math.asin(LAMBDA/(2*d)),amax=ang(list[list.length-1]);
+  const end=(a,sg)=>{const x=Math.min(xr,x0+(y-top)/Math.tan(a));return [x,y-sg*(x-x0)*Math.tan(a)];};
+  // the whole fan, pale, and the part the detector catches, darker
+  const eu=end(amax,1),ed=end(amax,-1),fan=[[x0,y],eu];if(eu[0]<xr){fan.push([xr,top]);fan.push([xr,bot]);}fan.push(ed);
+  c.beginPath();fan.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='#fff6d9';c.fill();
+  const tc=Math.min(Math.atan(DET_HALF/D),amax),yc=(xd-x0)*Math.tan(tc);
+  c.beginPath();c.moveTo(x0,y);c.lineTo(xd,y-yc);c.lineTo(xd,y+yc);c.closePath();c.fillStyle=LTORG;c.fill();
+  list.forEach(d=>{const a=ang(d),hit=(xd-x0)*Math.tan(a),rec=hit<=hb;[1,-1].forEach(sg=>{const e=end(a,sg);
+    line(c,x0,y,e[0],e[1],1.2,'rgba(238,138,43,.75)',[4,5]);if(rec)line(c,x0,y,xd,y-sg*hit,2,ORG);
+    if(sg>0){if(e[0]<xr)txt(c,d+' Å',e[0],top-11,fs,'center',rec?'#b85f10':'#52606b');else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?'#b85f10':'#52606b');}});});
+  arrow(c,0,y,x0-12,y,ORG,3,9);line(c,x0,y,xd,y,1.4,'rgba(238,138,43,.7)');
+  detSide(c,xd,y,sc,drag);
+  list.forEach(d=>{const hit=(xd-x0)*Math.tan(ang(d));if(hit<=hb)[1,-1].forEach(sg=>disc(c,xd,y-sg*hit,2.6,ORG,1));});
+  disc(c,x0,y,narrow?5:7,GRN,2);
+  const yt=h-(narrow?24:28);[150,400,800,1200].forEach(d=>{const x=x0+d*sc;line(c,x,yt-3,x,yt+3,2);txt(c,d===1200?'1.2 m':d+' mm',x,yt+(narrow?12:14),fs,'center','#52606b');});
+  line(c,x0,yt,x0+1200*sc,yt,1.6,'#52606b');
+  cap(c,'crystal',x0,y+(narrow?22:28),'center',fs);
+  tag(c,narrow?'detector: drag it':'detector: drag it left or right',Math.min(w-6,xd+DETG.hd*sc),Math.min(yt-(narrow?14:16),y+DETG.hh*sc/2+(narrow?26:30)),'right',fs);
+  if(!narrow)txt(c,'numbers: the detail each ray carries',xr-2,yt+14,fs,'right','#52606b');
+  return {x0,sc,xd,y,hh:DETG.hh*sc/2,hd:DETG.hd*sc};}
+// lets the detector in a geoDraw figure be dragged along the beam. geo() gives the figure's last geometry, and id is the distance slider
+function geoDrag(cvId,id,geo,setDrag){const cv=$(cvId),sl=$(id),pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};let on=false;
+  const near=e=>{const g=geo();if(!g)return false;const [x,y]=pos(e);return x>g.xd-18&&x<g.xd+g.hd+10&&Math.abs(y-g.y)<g.hh+12;};
+  const set=e=>{const g=geo(),[x]=pos(e),st=+sl.step||5;sl.value=Math.max(+sl.min,Math.min(+sl.max,Math.round((x-g.grab-g.x0)/g.sc/st)*st));sl.dispatchEvent(new Event('input'));};
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{if(!near(e))return;const g=geo();g.grab=pos(e)[0]-g.xd;on=true;setDrag(true);cv.setPointerCapture(e.pointerId);e.preventDefault();});
+  cv.addEventListener('pointermove',e=>{if(on){const g=geo();const gr=g.grab;set(e);geo().grab=gr;}else cv.style.cursor=near(e)?'ew-resize':'';});
+  const stop=()=>{if(on){on=false;setDrag(false);}};cv.addEventListener('pointerup',stop);cv.addEventListener('pointercancel',stop);}
+// ---------- a data collection, image by image ----------
+// A made-up crystal (cell 40 x 45 x 52 Å, tilted) turns about an upright axis in a beam of 1 Å X-rays. Each image shows the lattice
+// points that lie close to the sphere of reflection at that angle, so the spots fall in curved bands, lunes, that move as it turns.
+// rotImage(n) gives the spots on image n (0.3 degrees of turn for each image) as places u, v from -1 to 1 across the detector's window, with a strength a
+let ROT=null;
+function rotImage(n){if(!ROT){const RMAX=1/2.4,TX=Math.tan(2*Math.asin(0.5/2.5)),TY=TX*DETG.fh/DETG.fw,SG=0.0009,PTS=(()=>{
+  const ca=Math.cos(0.30),sa=Math.sin(0.30),cb=Math.cos(0.16),sb=Math.sin(0.16),cg=Math.cos(0.10),sg=Math.sin(0.10),P=[];
+  const hash=(h,k,l)=>{let q=(h*73856093)^(k*19349663)^(l*83492791);q=(q^(q>>>13))>>>0;q=Math.imul(q,1274126177)>>>0;return ((q^(q>>>16))>>>0)/4294967296;};
+  for(let h=-17;h<=17;h++)for(let k=-19;k<=19;k++)for(let l=-22;l<=22;l++){if(!h&&!k&&!l)continue;let x=h/40,y=k/45,z=l/52;const r=Math.hypot(x,y,z);if(r>RMAX)continue;
+    let t=x*ca-y*sa;y=x*sa+y*ca;x=t;t=y*cb-z*sb;z=y*sb+z*cb;y=t;t=x*cg+z*sg;z=-x*sg+z*cg;x=t;   // tilt the lattice
+    P.push(x,y,z,Math.pow(hash(h,k,l),1.6)*Math.exp(-2.2*(r/RMAX)*(r/RMAX)));}
+  return new Float32Array(P);})();ROT={RMAX,TX,TY,SG,PTS};}
+  const {TX,TY,SG,PTS}=ROT,FW=DETG.fw,FH=DETG.fh;const ph=n*0.3*Math.PI/180,cs=Math.cos(ph),sn=Math.sin(ph),S=[],px=FW/(DETG.mw+DETG.gx),py=FH/(DETG.mh+DETG.gy);
+  for(let i=0;i<PTS.length;i+=4){const x=PTS[i]*cs+PTS[i+2]*sn,y=PTS[i+1],kz=-PTS[i]*sn+PTS[i+2]*cs+1;if(kz<=0)continue;
+    const e=Math.sqrt(x*x+y*y+kz*kz)-1;if(e>3*SG||e<-3*SG)continue;const u=x/kz/TX,v=y/kz/TY;if(u<-1||u>1||v<-1||v>1||u*u+v*v<0.004)continue;
+    // nothing is counted in the gaps between the modules
+    const mx=((u+1)/2*FW)%(DETG.mw+DETG.gx),my=((v+1)/2*FH)%(DETG.mh+DETG.gy);if(mx>DETG.mw||my>DETG.mh)continue;
+    const a=PTS[i+3]*Math.exp(-e*e/(2*SG*SG));if(a>0.02)S.push({u,v,a});}
+  return S;}
+// ---------- the detector on 24-ID-C, an EIGER2 XE 16M, as a cartoon (sizes in millimeters, from the manufacturer's specification) ----------
+// Its sensitive area holds 32 sensor modules, 4 across and 8 down. The gaps between them (12 pixels between columns, 38 between rows)
+// count nothing. The housing is 400 wide, 430 high and 500 deep: black, with a blue frame around a white window that fills most of the
+// front, as in the manufacturer's picture of it. The width of the frame is judged from that picture.
+const DETG={fw:311.1,fh:327.2,hw:400,hh:430,hd:500,mw:77.1,mh:38.4,gx:0.9,gy:2.85,body:'#2c2f35',frame:'#3f63ad',gap:'#c3ccd4',rim:0.04};
+// face on, with its middle at (cx, cy) and z pixels to the millimeter. Returns the box of the sensitive area, for the spots
+function detFace(c,cx,cy,z,housing=true){const G=DETG,W=G.fw*z,H=G.fh*z,x=cx-W/2,y=cy-H/2;
+  if(housing){const hw=G.hw*z,hh=G.hh*z,r=Math.min(16,hw*0.05),m=hw*G.rim;
+    c.beginPath();c.roundRect(cx-hw/2,cy-hh/2,hw,hh,r);c.fillStyle=G.frame;c.fill();pen(c,Math.min(3,Math.max(1.6,z*3)));c.stroke();
+    c.beginPath();c.roundRect(cx-hw/2+m,cy-hh/2+m,hw-2*m,hh-2*m,Math.max(1,r-m));c.fillStyle=WHITE;c.fill();pen(c,1.2);c.stroke();}
+  else rectF(c,x,y,W,H,WHITE,2);
+  // the sensitive area, and the gaps between its modules
+  c.fillStyle=G.gap;for(let i=1;i<4;i++)c.fillRect(x+(i*G.mw+(i-1)*G.gx)*z,y,Math.max(1,G.gx*z),H);
+  for(let j=1;j<8;j++)c.fillRect(x,y+(j*G.mh+(j-1)*G.gy)*z,W,Math.max(1.2,G.gy*z));
+  pen(c,1.2,'#9aa7b3');c.strokeRect(x,y,W,H);
+  return {x,y,w:W,h:H};}
+// from the side, with the middle of its window at (xf, cy): the window faces left and the black housing runs back to the right
+function detSide(c,xf,cy,z,lit){const G=DETG,hh=G.hh*z,hd=G.hd*z,r=Math.min(10,hh*0.06),fb=Math.max(4,hd*0.06);
+  rectF(c,xf+hd*0.12,cy+hh/2,hd*0.76,Math.max(5,hh*0.07),'#5d6a73',2);                       // the base it stands on
+  pen(c,Math.max(2.5,hh*0.035),'#3f6ea8');c.beginPath();c.moveTo(xf+hd,cy-hh*0.2);c.bezierCurveTo(xf+hd*1.18,cy-hh*0.2,xf+hd*1.16,cy+hh*0.5,xf+hd*1.3,cy+hh*0.62);c.stroke();   // a cooling hose at the back
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.fillStyle=lit?'#3d424b':G.body;c.fill();pen(c,2.4);c.stroke();
+  c.save();c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.clip();c.fillStyle=G.frame;c.fillRect(xf,cy-hh/2,fb,hh);c.restore();     // the blue frame at the front
+  line(c,xf+fb+3,cy-hh/2+Math.max(3,hh*0.04),xf+hd-r,cy-hh/2+Math.max(3,hh*0.04),1.4,'rgba(255,255,255,.28)');
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);pen(c,2.4);c.stroke();
+  // the maker's name and the model, where they are on the real housing, in plain lettering (not the maker's own lettering)
+  if(hh>70){const fz=hh*0.085,tx=xf+hd*0.12,ty=cy+hh*0.12;c.fillStyle='rgba(255,255,255,.5)';c.textAlign='left';c.textBaseline='middle';
+    c.font=`600 ${fz.toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('DECTRIS',tx,ty);c.fillText('EIGER2 XE',tx,ty+fz*1.15);
+    c.font=`700 ${(fz*1.7).toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('16M',tx,ty+fz*2.75);}
+  rectF(c,xf-Math.max(2,hd*0.012),cy-hh*(0.5-G.rim),Math.max(4,hd*0.024),hh*(1-2*G.rim),WHITE,1.6);}                    // the window, edge on
+// a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
+function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
+  const setEq=o=>{eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}};
+  eqBtn.addEventListener('click',()=>setEq(!eqOpen));try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}}
+// ---------- myoglobin, the protein used in the figures of the five-minute guides ----------
+// Positions are from entry 1MBN in the Protein Data Bank (sperm whale myoglobin; Watson, 1969), turned to a convenient view.
+// MB.ca: one point for each of the 153 amino acids (x, y on the page and z toward the reader, in ångströms). MB.heme: the ring of the heme group and its iron.
+// MB.helices: the eight helices, A to H, as first and last amino acid, from the HELIX records of the entry.
+// MB.helP: every atom of amino acids 4 to 16 in the same view as MB.ca (same order as MB.hel).
+// MB.rot and MB.off turn MB.hel into MB.helP: helP = rot x hel + off.
+// MB.hel: every atom of amino acids 4 to 16, part of the first helix, with the helix lying along x: [x, y, z, atomic number].
+const MB={ca:[[-17.5,-7.3,2.5],[-17.5,-3.5,2.6],[-20.5,-1.2,1.9],[-21.9,0.5,-1.2],[-21.4,3.8,0.8],[-17.9,2.9,2.1],[-16.6,1.9,-1.4],[-18.0,5.4,-2.2],[-15.7,7.0,0.3],[-12.7,4.7,-0.4],[-13.0,5.6,-4.1],[-13.2,9.4,-4.1],[-10.0,9.6,-1.9],[-8.4,7.4,-4.6],[-9.3,9.7,-7.4],[-7.5,12.4,-5.4],[-4.4,10.3,-4.7],[-4.5,9.8,-8.5],[-3.8,13.5,-8.9],[-0.2,13.0,-7.9],[0.7,9.3,-7.8],[4.5,9.5,-7.7],[4.3,12.1,-4.9],[2.2,9.8,-2.8],[4.2,6.7,-3.5],[7.4,8.6,-2.6],[5.4,9.6,0.5],[4.2,6.2,1.6],[7.6,4.7,0.8],[9.5,7.1,2.9],[7.0,6.8,5.7],[7.4,3.0,5.6],[11.2,3.1,5.3],[11.6,5.5,8.2],[9.1,3.8,10.4],[10.1,0.1,9.7],[13.7,-0.1,8.8],[13.3,-3.8,8.3],[11.0,-3.4,5.2],[13.6,-1.5,3.1],[16.4,-3.9,4.1],[14.4,-6.2,1.9],[14.6,-4.1,-1.3],[18.1,-4.6,-2.7],[17.6,-1.7,-5.1],[17.1,0.6,-2.1],[19.1,-0.5,0.9],[21.9,1.8,-0.2],[19.5,4.6,0.6],[20.7,6.4,3.8],[18.6,9.6,4.4],[15.2,11.1,3.8],[17.0,13.4,1.6],[18.5,10.6,-0.4],[15.1,8.8,-0.7],[13.1,11.7,-2.0],[16.1,12.4,-4.2],[16.2,9.0,-5.9],[14.1,8.5,-9.0],[14.0,4.7,-9.0],[12.2,5.1,-5.7],[9.8,7.5,-7.5],[9.1,4.9,-10.2],[8.7,2.4,-7.4],[5.9,4.2,-5.5],[4.3,4.3,-9.0],[4.5,0.6,-9.6],[2.9,-0.0,-6.3],[0.2,2.7,-6.2],[-0.9,1.4,-9.6],[-1.5,-2.2,-8.6],[-3.1,-0.8,-5.4],[-5.8,1.3,-7.2],[-6.4,-1.5,-9.6],[-7.6,-3.5,-6.5],[-9.6,-0.8,-4.9],[-11.5,0.1,-7.9],[-12.6,-3.6,-8.0],[-14.5,-3.1,-4.8],[-13.5,-6.4,-3.4],[-13.8,-8.6,-6.5],[-10.1,-8.1,-6.8],[-8.8,-11.6,-7.2],[-7.4,-11.0,-10.7],[-4.8,-8.7,-9.4],[-4.1,-10.1,-5.9],[-3.3,-13.6,-6.7],[-0.1,-12.9,-8.7],[0.9,-10.4,-6.0],[0.4,-12.8,-3.1],[2.6,-15.3,-4.9],[5.1,-12.7,-5.9],[5.3,-11.4,-2.3],[5.3,-14.9,-0.6],[7.6,-16.6,-3.1],[10.4,-14.2,-4.1],[9.9,-10.8,-2.2],[9.6,-12.4,1.3],[7.2,-9.8,2.6],[5.4,-10.4,6.0],[1.7,-9.7,6.4],[3.2,-7.5,9.1],[4.5,-5.4,6.2],[1.2,-5.2,4.4],[-0.0,-3.9,7.7],[3.0,-1.6,8.1],[2.7,-0.3,4.6],[-1.1,0.0,5.2],[-0.2,2.4,8.0],[2.1,4.9,6.2],[-0.8,4.7,3.5],[-3.4,6.3,5.8],[-1.0,8.6,7.6],[0.1,9.7,4.1],[-3.5,10.1,3.1],[-4.3,12.0,6.2],[-1.1,14.1,5.9],[-2.0,15.0,2.4],[-5.8,15.5,2.5],[-6.7,17.4,5.6],[-10.3,18.4,4.6],[-11.0,15.5,2.1],[-10.3,12.8,4.8],[-12.1,12.9,8.0],[-13.3,9.7,9.8],[-15.9,8.5,7.3],[-13.2,8.2,4.8],[-10.5,6.9,7.2],[-12.3,3.8,8.3],[-13.7,2.9,4.7],[-10.0,3.1,3.8],[-8.8,0.9,6.7],[-11.6,-1.6,6.0],[-10.5,-1.8,2.4],[-6.9,-2.4,3.5],[-7.5,-5.3,6.0],[-9.4,-6.7,3.1],[-6.4,-6.7,0.8],[-4.7,-8.0,3.9],[-7.2,-10.8,4.4],[-6.9,-12.4,0.9],[-3.2,-12.0,0.5],[-3.1,-13.8,3.9],[-5.2,-16.7,2.8],[-3.2,-17.3,-0.3],[-0.0,-17.3,1.8],[-1.5,-20.1,3.9],[-2.5,-22.1,0.9],[1.1,-21.6,0.0],[2.8,-22.2,3.3],[3.6,-18.7,4.3],[2.0,-16.8,7.2],[3.4,-17.2,10.7]],heme:[[7.8,-5.7,-6.4],[3.1,-4.3,-5.6],[4.0,-3.8,-0.9],[8.7,-5.2,-1.7],[6.4,-5.3,-6.6],[5.7,-5.4,-7.9],[4.4,-4.9,-7.7],[4.2,-4.7,-6.3],[2.9,-4.1,-4.2],[1.7,-3.6,-3.6],[1.9,-3.5,-2.2],[3.3,-3.9,-2.0],[5.4,-4.2,-0.6],[6.0,-4.1,0.7],[7.4,-4.6,0.5],[7.4,-4.8,-0.9],[8.8,-5.5,-3.0],[10.1,-5.8,-3.6],[9.8,-6.0,-5.0],[8.4,-5.7,-5.1],[5.5,-4.9,-5.5],[4.0,-4.2,-3.3],[6.2,-4.6,-1.6],[7.8,-5.3,-3.9],[5.8,-5.0,-3.6]],hemeBonds:[[0,4],[0,19],[1,7],[1,8],[2,11],[2,12],[3,15],[3,16],[4,5],[4,20],[5,6],[6,7],[7,20],[8,9],[8,21],[9,10],[10,11],[11,21],[12,13],[12,22],[13,14],[14,15],[15,22],[16,17],[16,23],[17,18],[18,19],[19,23],[20,24],[21,24],[22,24],[23,24]],helices:[[3,18],[20,35],[36,42],[51,57],[58,77],[86,94],[100,118],[125,148]],piece:[4,16],
+  helP:[[-21.7,-0.2,0.0],[-21.9,0.5,-1.2],[-21.3,1.9,-0.8],[-20.4,2.4,-1.5],[-23.1,1.0,-2.0],[-23.1,0.8,-3.5],[-21.8,-0.1,-4.1],[-21.8,-1.1,-3.3],[-21.1,0.3,-4.9],[-21.8,2.5,0.2],[-21.4,3.8,0.8],[-19.9,3.9,0.9],[-19.2,4.8,0.4],[-19.3,2.9,1.7],[-17.9,2.9,2.1],[-16.9,2.8,0.9],[-15.9,3.4,1.0],[-17.7,1.7,3.1],[-18.3,1.9,4.5],[-18.2,0.6,5.4],[-17.8,-0.3,4.8],[-18.7,0.7,6.5],[-17.4,2.0,-0.2],[-16.6,1.9,-1.4],[-16.6,3.4,-1.9],[-15.5,4.0,-2.2],[-17.0,0.9,-2.4],[-16.6,-0.6,-1.9],[-17.4,-1.7,-1.6],[-15.3,-1.1,-1.9],[-16.6,-2.8,-1.3],[-15.3,-2.5,-1.4],[-14.0,-0.5,-2.1],[-14.3,-3.3,-1.3],[-13.0,-1.4,-2.0],[-13.0,-2.7,-1.6],[-17.8,4.1,-1.9],[-18.0,5.4,-2.2],[-16.8,6.3,-1.8],[-16.1,7.0,-2.5],[-19.0,6.0,-3.1],[-18.5,7.2,-3.8],[-19.5,7.9,-4.8],[-19.2,9.1,-5.2],[-20.5,7.1,-5.1],[-16.6,6.3,-0.4],[-15.7,7.0,0.3],[-14.3,6.6,-0.1],[-13.3,7.5,-0.4],[-15.5,6.7,1.8],[-16.1,7.5,2.8],[-17.0,8.6,2.1],[-16.8,6.8,3.8],[-14.1,5.3,-0.0],[-12.7,4.7,-0.4],[-12.3,5.2,-1.8],[-11.1,5.6,-1.9],[-12.2,3.3,-0.2],[-11.0,3.0,-1.0],[-12.1,2.9,1.3],[-13.2,5.2,-2.7],[-13.0,5.6,-4.1],[-12.6,7.1,-4.5],[-11.8,7.3,-5.4],[-13.7,4.9,-5.2],[-13.4,3.5,-5.4],[-14.5,2.8,-6.2],[-12.1,3.3,-6.1],[-13.3,8.0,-3.8],[-13.2,9.4,-4.1],[-11.8,9.9,-3.6],[-11.2,10.8,-4.3],[-14.2,10.0,-3.1],[-14.1,11.5,-3.1],[-14.6,12.4,-4.1],[-13.8,12.3,-2.0],[-14.4,13.7,-3.7],[-13.9,13.7,-2.5],[-11.3,9.4,-2.6],[-10.0,9.6,-1.9],[-8.9,9.2,-3.0],[-8.0,9.8,-3.3],[-9.3,9.3,-0.6],[-8.0,10.1,-0.4],[-10.3,9.3,0.5],[-9.2,8.0,-3.5],[-8.4,7.4,-4.6],[-8.1,8.4,-5.6],[-7.0,8.8,-5.9],[-8.5,5.8,-4.8],[-7.4,5.2,-5.6],[-7.4,4.9,-6.8],[-6.2,4.6,-5.1],[-6.1,4.2,-7.2],[-5.5,4.1,-6.1],[-5.7,4.6,-3.7],[-4.1,3.5,-6.0],[-4.4,4.0,-3.7],[-3.6,3.6,-4.7],[-9.2,8.7,-6.3],[-9.3,9.7,-7.4],[-8.4,10.9,-7.1],[-7.7,11.5,-8.1],[-10.6,10.5,-7.6],[-8.3,11.3,-5.9],[-7.5,12.4,-5.4],[-6.1,12.1,-5.3],[-5.2,12.9,-5.8],[-8.3,12.7,-4.1],[-9.4,13.8,-4.2],[-10.2,14.1,-2.9],[-11.4,14.8,-3.1],[-12.1,15.1,-1.9]],
+  rot:[[0.7686,-0.5092,0.3873],[0.5281,0.8467,0.0654],[-0.3612,0.1542,0.9196]],off:[-13.75, 5.71, -2.39],
+  hel:[[-10.1,-0.6,-1.3,7],[-9.4,-0.0,-2.3,6],[-8.4,0.8,-1.7,6],[-7.2,0.8,-2.0,8],[-9.8,0.8,-3.6,6],[-9.3,0.4,-4.9,6],[-8.7,-1.0,-5.0,6],[-9.4,-1.8,-4.4,8],[-7.6,-1.2,-5.5,8],[-8.9,1.8,-0.9,7],[-8.0,2.8,-0.2,6],[-6.9,2.1,0.6,6],[-5.7,2.4,0.4,8],[-7.2,1.1,1.4,7],[-6.3,0.4,2.3,6],[-5.2,-0.3,1.6,6],[-4.1,-0.3,2.1,8],[-7.1,-0.5,3.2,6],[-8.0,0.1,4.3,6],[-8.9,-0.9,5.1,6],[-8.8,-1.9,4.7,8],[-9.6,-0.4,5.9,8],[-5.5,-0.9,0.4,7],[-4.6,-1.6,-0.4,6],[-3.6,-0.4,-0.8,6],[-2.3,-0.5,-0.6,8],[-5.1,-2.4,-1.6,6],[-5.7,-3.8,-1.1,6],[-7.0,-4.3,-1.2,6],[-5.0,-4.9,-0.6,6],[-7.1,-5.6,-0.6,7],[-5.9,-6.0,-0.3,6],[-3.6,-5.1,-0.2,6],[-5.5,-7.2,0.2,6],[-3.3,-6.3,0.2,6],[-4.2,-7.4,0.5,6],[-4.1,0.7,-1.2,7],[-3.5,1.9,-1.5,6],[-2.3,2.1,-0.6,6],[-1.1,2.3,-1.0,8],[-3.6,2.8,-2.7,6],[-2.4,3.5,-3.1,6],[-2.4,4.4,-4.3,6],[-1.4,5.2,-4.5,8],[-3.4,4.2,-5.0,7],[-2.6,2.2,0.7,7],[-1.7,2.5,1.8,6],[-0.8,1.4,2.0,6],[0.5,1.6,2.1,8],[-2.3,2.3,3.2,6],[-2.7,3.5,4.0,6],[-2.6,4.8,3.1,6],[-4.0,3.4,4.5,6],[-1.3,0.2,2.0,7],[-0.5,-1.1,2.2,6],[0.6,-1.1,1.1,6],[1.8,-1.3,1.4,8],[-0.9,-2.5,2.4,6],[0.2,-3.5,2.2,6],[-1.5,-2.7,3.8,6],[0.2,-0.7,-0.1,7],[1.2,-0.7,-1.3,6],[2.4,0.2,-1.4,6],[3.5,-0.1,-1.9,8],[0.7,-1.1,-2.6,6],[0.2,-2.5,-2.8,6],[-0.7,-2.7,-4.0,6],[1.4,-3.5,-2.9,6],[2.1,1.5,-1.0,7],[3.0,2.6,-1.1,6],[4.1,2.4,-0.1,6],[5.3,2.7,-0.4,8],[2.2,3.7,-0.6,6],[3.0,5.0,-0.4,6],[3.5,5.8,-1.5,7],[3.4,5.7,0.8,6],[4.2,6.9,-0.9,6],[4.2,6.8,0.4,7],[3.9,1.8,1.0,7],[4.8,1.5,2.1,6],[5.7,0.4,1.6,6],[6.9,0.4,1.7,8],[4.7,1.0,3.6,6],[6.0,1.1,4.4,6],[3.5,1.7,4.3,6],[5.1,-0.6,0.9,7],[5.8,-1.6,0.2,6],[6.9,-1.1,-0.6,6],[8.1,-1.3,-0.4,8],[4.9,-2.9,-0.2,6],[5.8,-4.2,-0.5,6],[6.1,-4.7,-1.7,6],[6.2,-5.2,0.4,6],[6.8,-5.9,-1.5,7],[6.8,-6.1,-0.3,6],[6.1,-5.2,1.8,6],[7.5,-7.4,0.2,6],[6.8,-6.4,2.3,6],[7.5,-7.3,1.6,6],[6.5,-0.4,-1.7,7],[7.3,0.3,-2.6,6],[8.6,0.9,-1.9,6],[9.7,1.0,-2.5,8],[6.9,1.6,-3.3,6],[8.3,1.4,-0.7,7],[9.4,2.0,0.1,6],[10.3,1.0,0.7,6],[11.6,1.2,0.7,8],[8.5,2.9,1.0,6],[8.3,4.3,0.5,6],[7.4,5.2,1.4,6],[6.9,6.4,0.9,6],[6.0,7.2,1.7,7]],helBonds:[[0,1],[1,2],[1,4],[2,3],[2,9],[4,5],[5,6],[6,7],[6,8],[9,10],[10,11],[11,12],[11,13],[13,14],[14,15],[14,17],[15,16],[15,22],[17,18],[18,19],[19,20],[19,21],[22,23],[23,24],[23,26],[24,25],[24,36],[26,27],[27,28],[27,29],[28,30],[29,31],[29,32],[30,31],[31,33],[32,34],[33,35],[34,35],[36,37],[37,38],[37,40],[38,39],[38,45],[40,41],[41,42],[42,43],[42,44],[45,46],[46,47],[46,49],[47,48],[47,53],[49,50],[50,51],[50,52],[53,54],[54,55],[54,57],[55,56],[55,60],[57,58],[57,59],[60,61],[61,62],[61,64],[62,63],[62,68],[64,65],[65,66],[65,67],[68,69],[69,70],[69,72],[70,71],[70,78],[72,73],[73,74],[73,75],[74,76],[75,77],[76,77],[78,79],[79,80],[79,82],[80,81],[80,85],[82,83],[82,84],[85,86],[86,87],[86,89],[87,88],[87,99],[89,90],[90,91],[90,92],[91,93],[92,94],[92,95],[93,94],[94,96],[95,97],[96,98],[97,98],[99,100],[100,101],[100,103],[101,102],[101,104],[104,105],[105,106],[105,108],[106,107],[108,109],[109,110],[110,111],[111,112]]};
+const mbMix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// the chain as a smooth tube through the 153 points: helices blue, the loops between them grey, far parts drawn first.
+// s is pixels to the ångström. hi, if given, is a range of amino acids to pick out in orange
+const MBPC=(()=>{const P=MB.ca,n=P.length,Q=[P[0]],K=6,inH=i=>MB.helices.some(([a,b])=>i+1>=a&&i+1<=b),S=[];
+  for(let i=0;i<n-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(n-1,i+2)];
+    for(let k=1;k<=K;k++){const t=k/K,t2=t*t,t3=t2*t;Q.push([0,1,2].map(d=>0.5*(2*p1[d]+(-p0[d]+p2[d])*t+(2*p0[d]-5*p1[d]+4*p2[d]-p3[d])*t2+(-p0[d]+3*p1[d]-3*p2[d]+p3[d])*t3)));}}
+  // one piece of tube for each amino acid, from halfway to the one before to halfway to the one after
+  for(let i=0;i<n;i++){const a=Math.max(0,i*K-K/2),b=Math.min(Q.length-1,i*K+K/2);const h=inH(i),lo=i>0&&inH(i-1)===h?4:0,up=i<n-1&&inH(i+1)===h?4:0;S.push({core:Q.slice(a,b+1),ext:Q.slice(Math.max(0,a-lo),Math.min(Q.length,b+1+up)),z:P[i][2],mid:P[i],h,res:i+1});}
+  MB.hemeBonds.forEach(([i,j])=>{const a=MB.heme[i],b=MB.heme[j];S.push({core:[a,b],ext:[a,b],z:(a[2]+b[2])/2,mid:a,heme:true});});
+  return S.sort((u,v)=>u.z-v.z);})();
+// tf, if given, replaces the plain view: it takes a point [x, y, z] in ångströms and returns where it is drawn, [x, y] in pixels and its depth z in ångströms
+function drawMb(c,cx,cy,s,hi,tf){c.save();c.lineCap='round';c.lineJoin='round';const P=tf||(p=>[cx+p[0]*s,cy-p[1]*s,p[2]]);
+  const path=pts=>{c.beginPath();pts.forEach((p,i)=>{const q=P(p);i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});c.stroke();};
+  const L=tf?MBPC.map(g=>({g,z:P(g.mid)[2]})).sort((u,v)=>u.z-v.z):MBPC.map(g=>({g,z:g.z}));
+  L.forEach(({g,z})=>{const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
+    // the ink edge of this piece, then its color, run a little way into neighbors of the same width so that the pieces join without a seam
+    c.strokeStyle=INK;c.lineWidth=lw+2*ow;path(g.core);
+    c.strokeStyle=g.heme?RED:on?ORG:g.h?mbMix('#7ea3d6','#c6d9f0',k):mbMix('#8d979e','#d5dbdf',k);c.lineWidth=lw;path(g.ext);});
+  c.restore();}
+// where a given amino acid, or the iron of the heme, falls on the page
+const mbAt=(i,cx,cy,s)=>[cx+MB.ca[i-1][0]*s,cy-MB.ca[i-1][1]*s], mbFe=(cx,cy,s)=>{const f=MB.heme[MB.heme.length-1];return [cx+f[0]*s,cy-f[1]*s];};
+
+// ---------- maps of the piece, used by How do we see a protein? and How MX works ----------
+// the piece of myoglobin used for the maps: amino acids 4 to 16 of its first helix, seen from the side and flattened onto the page
+const MOL={at:MB.hel.map(([x,y,z,e])=>({x,y:-y,w:z,z:e})),bonds:MB.helBonds};
+const mapScale=(W,H)=>Math.min(W/25.5,H/18),MAPC=[0.75,0.1];   // the piece is about 22 by 15 ångströms; MAPC is its middle
+const MCACHE=new Map();
+// The map at detail d, seen from the side. Each atom is spread into a round cloud whose width grows with d, the clouds are added up in
+// three dimensions, and each point of the picture takes the highest value along the line of sight. The outline drawn is where that
+// value passes a set share (lv, 40% unless given) of the map's highest peak, so it is the silhouette of the surface a crystallographer would draw around the map.
+function mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms=0,atoms=MOL.at,Labs=0){const sg=Math.hypot(0.28*d,0.25),cut=3*sg,dz=Math.max(0.35,0.6*sg),nz=Math.ceil(16/dz)+1,z0=-8,G=new Float32Array(nx*ny*nz),h=step/sc,gx0=(X0-cx)/sc,gy0=(Y0-cy)/sc,k=1/(2*sg*sg);
+  for(const a of atoms){const i0=Math.max(0,Math.ceil((a.x-cut-gx0)/h)),i1=Math.min(nx-1,Math.floor((a.x+cut-gx0)/h)),j0=Math.max(0,Math.ceil((a.y-cut-gy0)/h)),j1=Math.min(ny-1,Math.floor((a.y+cut-gy0)/h)),k0=Math.max(0,Math.ceil((a.w-cut-z0)/dz)),k1=Math.min(nz-1,Math.floor((a.w+cut-z0)/dz));
+    const ex=[],ez=[];for(let i=i0;i<=i1;i++){const u=gx0+i*h-a.x;ex.push(Math.exp(-u*u*k));}for(let q=k0;q<=k1;q++){const u=z0+q*dz-a.w;ez.push(Math.exp(-u*u*k));}
+    for(let j=j0;j<=j1;j++){const u=gy0+j*h-a.y,ey=a.z*Math.exp(-u*u*k);for(let i=i0;i<=i1;i++){const e=ey*ex[i-i0],o=(j*nx+i)*nz;for(let q=k0;q<=k1;q++)G[o+q]+=e*ez[q-k0];}}}
+  const v=new Float32Array(nx*ny);let top=0;for(let p=0;p<nx*ny;p++){let m=0;for(let q=0;q<nz;q++){const g=G[p*nz+q];if(g>m)m=g;}v[p]=m;if(m>top)top=m;}
+  const L=Labs||lv*top;if(!ms)return {v,L,top};
+  // the wire mesh: the surface at level L, cut by three sets of flat sheets a distance ms apart, as crystallographic programs draw a map.
+  // Sheets that face the viewer give closed loops. Sheets seen edge on give straight lines across the inside of the outline.
+  const S=[],seg=(a,b,c2,d2)=>S.push(X0+a*step,Y0+b*step,X0+c2*step,Y0+d2*step),kz=Math.max(1,Math.round(ms/dz)),kr=Math.max(2,Math.round(ms/h));
+  for(let q=(nz>>1)%kz;q<nz;q+=kz)for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=G[(j*nx+i)*nz+q],b=G[(j*nx+i+1)*nz+q],e=G[((j+1)*nx+i+1)*nz+q],f=G[((j+1)*nx+i)*nz+q];
+    if(a<=L&&b<=L&&e<=L&&f<=L)continue;const p=[];
+    if((a>L)!==(b>L))p.push([i+(L-a)/(b-a),j]);if((b>L)!==(e>L))p.push([i+1,j+(L-b)/(e-b)]);if((f>L)!==(e>L))p.push([i+(L-f)/(e-f),j+1]);if((a>L)!==(f>L))p.push([i,j+(L-a)/(f-a)]);
+    if(p.length===2)seg(p[0][0],p[0][1],p[1][0],p[1][1]);
+    else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>seg(p[u][0],p[u][1],p[w2][0],p[w2][1]));}}
+  for(let j=kr>>1;j<ny;j+=kr){let s0=-1;for(let i=0;i<nx;i++){const a=v[j*nx+i],on=a>L;if(on&&s0<0)s0=i?i-1+(L-v[j*nx+i-1])/(a-v[j*nx+i-1]):0;
+    if(s0>=0&&(!on||i===nx-1)){seg(s0,j,on?i:i-1+(L-v[j*nx+i-1])/(a-v[j*nx+i-1]),j);s0=-1;}}}
+  for(let i=kr>>1;i<nx;i+=kr){let s0=-1;for(let j=0;j<ny;j++){const a=v[j*nx+i],on=a>L;if(on&&s0<0)s0=j?j-1+(L-v[(j-1)*nx+i])/(a-v[(j-1)*nx+i]):0;
+    if(s0>=0&&(!on||j===ny-1)){seg(i,s0,i,on?j:j-1+(L-v[(j-1)*nx+i])/(a-v[(j-1)*nx+i]));s0=-1;}}}
+  return {v,L,top,segs:new Float32Array(S)};}
+// opt, if given, draws the mesh of another set of atoms: {atoms, key (a name for the cache), col, L (the level itself, not a share of the peak)}
+function drawMap(c,X0,Y0,W,H,d,step=4,lv=0.4,wire=false,opt=null){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc,nx=Math.ceil(W/step)+1,ny=Math.ceil(H/step)+1,ms=wire?Math.max(0.5,Math.min(1.6,d/3)):0,key=[Math.round(W),Math.round(H),step,d.toFixed(2),lv.toFixed(2),ms?'w':'',opt?opt.key:''].join();
+  let m=MCACHE.get(key);
+  if(!m){m=opt?mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms,opt.atoms,opt.L):mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms);if(MCACHE.size>80)MCACHE.clear();MCACHE.set(key,m);}
+  const v=m.v,L=m.L;
+  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  if(m.segs){const s=m.segs;pen(c,opt&&opt.lw||1.1,opt&&opt.col||BLUE);c.beginPath();for(let i=0;i<s.length;i+=4){c.moveTo(s[i],s[i+1]);c.lineTo(s[i+2],s[i+3]);}c.stroke();c.restore();return m;}
+  c.fillStyle=LTBLUE;for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i];if((a+b+e+f)/4>L)c.fillRect(X0+i*step,Y0+j*step,step+0.5,step+0.5);}
+  pen(c,1.7,BLUE);c.beginPath();
+  for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i],x=X0+i*step,y=Y0+j*step,p=[];
+    if((a>L)!==(b>L))p.push([x+step*(L-a)/(b-a),y]);if((b>L)!==(e>L))p.push([x+step,y+step*(L-b)/(e-b)]);
+    if((f>L)!==(e>L))p.push([x+step*(L-f)/(e-f),y+step]);if((a>L)!==(f>L))p.push([x,y+step*(L-a)/(f-a)]);
+    if(p.length===2){c.moveTo(p[0][0],p[0][1]);c.lineTo(p[1][0],p[1][1]);}
+    else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>{c.moveTo(p[u][0],p[u][1]);c.lineTo(p[w2][0],p[w2][1]);});}}
+  c.stroke();c.restore();return m;}
+const atomCol=z=>z===8?RED:z===7?BLUE:'#5d6a73';
+function drawMol(c,X0,Y0,W,H,alpha=1){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc;c.save();c.globalAlpha=alpha;
+  MOL.bonds.forEach(([i,j])=>{const a=MOL.at[i],b=MOL.at[j];line(c,cx+a.x*sc,cy+a.y*sc,cx+b.x*sc,cy+b.y*sc,Math.max(1.6,sc*0.09));});
+  MOL.at.forEach(a=>disc(c,cx+a.x*sc,cy+a.y*sc,Math.max(2.2,sc*0.17),atomCol(a.z),1.2));c.restore();}
+
+// ---------- from the atoms in the map to the whole protein (used by How do we see a protein? and How MX works) ----------
+// draws something at less than full strength: whole on a spare canvas first, so that overlapping pieces do not show through one another
+let OFF=null;
+function faded(f,c,a,go){if(a<=0)return;if(a>=1)return go(c);const o=OFF||(OFF=document.createElement('canvas'));if(o.width!==f.cv.width||o.height!==f.cv.height){o.width=f.cv.width;o.height=f.cv.height;}const k=o.getContext('2d'),r=f.cv.width/f.w;k.setTransform(1,0,0,1,0,0);k.clearRect(0,0,o.width,o.height);k.setTransform(r,0,0,r,0,0);go(k);c.save();c.globalAlpha=a;c.drawImage(o,0,0,f.w,f.h);c.restore();}
+// turning from the side view of the helix (the view of the maps) to the view of the whole protein: a rotation about one axis, taken a part at a time
+const TURN=(()=>{const R=MB.rot,th=Math.acos(Math.max(-1,Math.min(1,(R[0][0]+R[1][1]+R[2][2]-1)/2))),k=2*Math.sin(th)||1;
+  // axis and angle of the turn that takes the protein's view back to the helix's (the inverse of MB.rot)
+  return {th,ax:[(R[1][2]-R[2][1])/k,(R[2][0]-R[0][2])/k,(R[0][1]-R[1][0])/k]};})();
+function turned(p,ang){const [x,y,z]=[p[0]-MB.off[0],p[1]-MB.off[1],p[2]-MB.off[2]],[a,b,d]=TURN.ax,cs=Math.cos(ang),sn=Math.sin(ang),dot=(a*x+b*y+d*z)*(1-cs);
+  return [x*cs+(b*z-d*y)*sn+a*dot,y*cs+(d*x-a*z)*sn+b*dot,z*cs+(a*y-b*x)*sn+d*dot];}
+
+// The move from the atoms of the piece, as they sit in the map, to the whole protein: the view turns and pulls back. q0 runs from 0 to 1.
+// Returns where the protein ends up: its center and its scale in pixels to the ångström
+const HPH=MB.helP.map((p,i)=>({p,e:MB.hel[i][3]}));
+function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,H),s1=Math.min(W/56,H/52),s=s0*Math.pow(s1/s0,q),k=(s0-s)/(s0-s1),ang=TURN.th*(1-q),pcx=X0+W/2,pcy=Y0+H/2-1.9*s1+(narrow?0:6);
+  // where the middle of the piece is drawn: from its place in the map to its place in the protein
+  const ax0=X0+W/2-MAPC[0]*s0,ay0=Y0+H/2+MAPC[1]*s0,ax1=pcx+MB.off[0]*s1,ay1=pcy-MB.off[1]*s1,ax=ax0+(ax1-ax0)*k,ay=ay0+(ay1-ay0)*k;
+  const tf=p=>{const v=turned(p,ang);return [ax+v[0]*s,ay-v[1]*s,v[2]];};
+  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  faded(f,c,Math.max(0,Math.min(1,(q-0.12)/0.4)),k2=>{k2.save();k2.beginPath();k2.rect(X0,Y0,W,H);k2.clip();drawMb(k2,0,0,s,MB.piece,tf);k2.restore();});
+  const al=Math.max(0,Math.min(1,(0.9-q)/0.35));
+  if(al>0){c.globalAlpha=al;const A=HPH.map(a=>({q:tf(a.p),e:a.e}));MB.helBonds.forEach(([i,j])=>line(c,A[i].q[0],A[i].q[1],A[j].q[0],A[j].q[1],Math.max(1,s*0.09)));
+    A.slice().sort((m,n)=>m.q[2]-n.q[2]).forEach(a=>disc(c,a.q[0],a.q[1],Math.max(1.2,s*0.17),atomCol(a.e),Math.min(1.2,Math.max(0.5,s*0.06))));}
+  c.restore();return {cx:pcx,cy:pcy,s:s1};}
 // ---------- WELCOME BANNER: from the ring to your data ----------
 fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?11:14;
   const yb=h*0.5, Rr=h*1.15, rcx=w*0.15, rcy=yb+Rr;
@@ -515,20 +739,24 @@ if($('ceCv'))fig('ceCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.7,px
   [[BLUE,lw+4],[LTBLUE,lw]].forEach(([col,wd])=>{c.strokeStyle=col;c.lineWidth=wd;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();T.forEach(([x,y])=>c.lineTo(x,y));c.stroke();});c.lineCap='butt';
   if(u>0.6){c.save();c.globalAlpha=Math.min(1,(u-0.6)*6);P.forEach((p,i)=>{const q=P[(i+1)%6];line(c,p[0],p[1],q[0],q[1],2);});line(c,P[0][0],P[0][1],T[1][0],T[1][1],2);line(c,T[1][0],T[1][1],T[2][0],T[2][1],2);P.concat(T.slice(1)).forEach(([x,y],i)=>disc(c,x,y,3.4,i===7?RED:'#5d6a73',1.3));c.restore();}
 });
-// guide 3: a crystal, its spots, and the density they give
-if($('cmCv'))fig('cmCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
-  const cy=h*0.52,x1=w*0.15,x2=w*0.45,x3=w*0.79,s=h*0.26;
-  line(c,w*0.03,cy,x1-s*0.5,cy,2.6,BLUE);
-  poly(c,[[x1,cy-s],[x1+s*0.8,cy-s*0.25],[x1+s*0.5,cy+s],[x1-s*0.5,cy+s],[x1-s*0.8,cy-s*0.25]],GRN,2.2);line(c,x1-s*0.8,cy-s*0.25,x1+s*0.8,cy-s*0.25,1.4);
-  rectF(c,x2-s*1.25,cy-s*1.25,s*2.5,s*2.5,WHITE,2.2);
-  for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){const x=i+0.5*(j&1),y=j*0.87,d=Math.hypot(x,y);if(d<0.6||d>3.4)continue;const on=Math.sin(t*1.4+i*1.7+j*2.3)>0.86;
-    c.fillStyle=on?ORG:INK;c.beginPath();c.arc(x2+x*s*0.34,cy+y*s*0.34,(on?3.4:1.2+1.6*Math.abs(Math.sin(i*12.9+j*78.2)))*(1-d*0.12),0,7);c.fill();}
-  const P=[[-0.96,0.33],[-0.48,-0.3],[0,0.33],[0.48,-0.3],[0.96,0.33]];
-  c.lineJoin='round';c.lineCap='round';c.strokeStyle=INK;c.lineWidth=s*0.95;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();
-  c.strokeStyle=LTBLUE;c.lineWidth=s*0.95-5;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();
-  pen(c,2.6);c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();P.forEach(([x,y],i)=>disc(c,x3+x*s,cy+y*s,4.2,i===2?RED:i===4?BLUE:'#5d6a73',1.6));
-  fatArrow(c,x1+s*1.05,cy,x2-s*1.45,cy,YEL,6);fatArrow(c,x2+s*1.45,cy,x3-s*1.6,cy,YEL,6);
-});
+// How MX works: a crystal turning in the beam, the images on the detector, and the structure (myoglobin), as in the guide's opening figure
+if($('cmCv')){let cmN=-1,cmS=[];
+fig('cmCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+  const cy=h*0.5,x1=w*0.105,x2=w*0.405,x3=w*0.815,s=h*0.21,n=Math.floor(t*10);if(n!==cmN){cmS=rotImage(n);cmN=n;}
+  // the crystal in its loop, on a pin
+  const th=n*0.3*Math.PI/180*4,ct=Math.cos(th),st=Math.sin(th),tl=0.42,la=th+0.5,lrx=Math.max(0.05,Math.abs(Math.cos(la)))*s*0.78,rf=Math.sin(2*la)<0;
+  const half=front=>{pen(c,1.8);c.beginPath();if(front===rf)c.ellipse(x1,cy,lrx,s*0.58,0,-Math.PI/2,Math.PI/2);else c.ellipse(x1,cy,lrx,s*0.58,0,Math.PI/2,1.5*Math.PI);c.stroke();};
+  line(c,w*0.02,cy,x1-s*0.3,cy,2.6,BLUE);line(c,x1,cy+s*0.56,x1,cy+s*1.05,2.4);half(false);
+  const V=[];for(const X of[-1,1])for(const Y of[-1,1])for(const Z of[-1,1]){const x=X*0.4,y=Y*0.29,z=Z*0.24,xa=x*ct+z*st,za=-x*st+z*ct,yb=y*Math.cos(tl)-za*Math.sin(tl),zb=y*Math.sin(tl)+za*Math.cos(tl);V.push([x1+xa*s,cy-yb*s,zb]);}
+  [[0,1,3,2,GRN],[4,6,7,5,GRN],[0,4,5,1,'#4a8f5a'],[2,3,7,6,LTGRN],[0,2,6,4,'#6fb37e'],[1,5,7,3,'#6fb37e']].map(q=>({q,z:(V[q[0]][2]+V[q[1]][2]+V[q[2]][2]+V[q[3]][2])/4})).sort((a,b)=>a.z-b.z).slice(3).forEach(({q})=>poly(c,[V[q[0]],V[q[1]],V[q[2]],V[q[3]]],q[4],1.8));
+  half(true);
+  // the detector, with the spots of this image
+  const B=detFace(c,x2,cy,h*0.8/DETG.hh),k=Math.max(0.55,B.w/230);
+  cmS.forEach(q=>{c.fillStyle=`rgba(27,27,27,${Math.min(1,0.5+2.5*q.a).toFixed(2)})`;c.beginPath();c.arc(x2+q.u*B.w/2,cy+q.v*B.h/2,(0.7+2.3*Math.sqrt(q.a))*k,0,7);c.fill();});
+  // the structure
+  const W=w*0.31,H=h*0.8;rectF(c,x3-W/2,cy-H/2,W,H,WHITE,2.2);const sm=Math.min(W/56,H/52);c.save();c.beginPath();c.rect(x3-W/2,cy-H/2,W,H);c.clip();drawMb(c,x3,cy-1.9*sm,sm);c.restore();
+  arrow(c,w*0.19,cy,w*0.232,cy,INK,2.2,7);arrow(c,w*0.585,cy,w*0.648,cy,INK,2.2,7);
+});}
 // the chooser at the top of the index: show every guide, the five-minute ones or the in-depth ones. ?level=intro or ?level=depth in the address sets it
 const ts=$('trackSel');if(ts){const bs=[...ts.querySelectorAll('button')];
   const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));document.querySelectorAll('.card[data-level]').forEach(el=>{el.hidden=v!=='all'&&el.dataset.level!==v;});

@@ -114,20 +114,24 @@ if($('ceCv'))fig('ceCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.7,px
   [[BLUE,lw+4],[LTBLUE,lw]].forEach(([col,wd])=>{c.strokeStyle=col;c.lineWidth=wd;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();T.forEach(([x,y])=>c.lineTo(x,y));c.stroke();});c.lineCap='butt';
   if(u>0.6){c.save();c.globalAlpha=Math.min(1,(u-0.6)*6);P.forEach((p,i)=>{const q=P[(i+1)%6];line(c,p[0],p[1],q[0],q[1],2);});line(c,P[0][0],P[0][1],T[1][0],T[1][1],2);line(c,T[1][0],T[1][1],T[2][0],T[2][1],2);P.concat(T.slice(1)).forEach(([x,y],i)=>disc(c,x,y,3.4,i===7?RED:'#5d6a73',1.3));c.restore();}
 });
-// guide 3: a crystal, its spots, and the density they give
-if($('cmCv'))fig('cmCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
-  const cy=h*0.52,x1=w*0.15,x2=w*0.45,x3=w*0.79,s=h*0.26;
-  line(c,w*0.03,cy,x1-s*0.5,cy,2.6,BLUE);
-  poly(c,[[x1,cy-s],[x1+s*0.8,cy-s*0.25],[x1+s*0.5,cy+s],[x1-s*0.5,cy+s],[x1-s*0.8,cy-s*0.25]],GRN,2.2);line(c,x1-s*0.8,cy-s*0.25,x1+s*0.8,cy-s*0.25,1.4);
-  rectF(c,x2-s*1.25,cy-s*1.25,s*2.5,s*2.5,WHITE,2.2);
-  for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){const x=i+0.5*(j&1),y=j*0.87,d=Math.hypot(x,y);if(d<0.6||d>3.4)continue;const on=Math.sin(t*1.4+i*1.7+j*2.3)>0.86;
-    c.fillStyle=on?ORG:INK;c.beginPath();c.arc(x2+x*s*0.34,cy+y*s*0.34,(on?3.4:1.2+1.6*Math.abs(Math.sin(i*12.9+j*78.2)))*(1-d*0.12),0,7);c.fill();}
-  const P=[[-0.96,0.33],[-0.48,-0.3],[0,0.33],[0.48,-0.3],[0.96,0.33]];
-  c.lineJoin='round';c.lineCap='round';c.strokeStyle=INK;c.lineWidth=s*0.95;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();
-  c.strokeStyle=LTBLUE;c.lineWidth=s*0.95-5;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();
-  pen(c,2.6);c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x3+x*s,cy+y*s):c.moveTo(x3+x*s,cy+y*s));c.stroke();P.forEach(([x,y],i)=>disc(c,x3+x*s,cy+y*s,4.2,i===2?RED:i===4?BLUE:'#5d6a73',1.6));
-  fatArrow(c,x1+s*1.05,cy,x2-s*1.45,cy,YEL,6);fatArrow(c,x2+s*1.45,cy,x3-s*1.6,cy,YEL,6);
-});
+// How MX works: a crystal turning in the beam, the images on the detector, and the structure (myoglobin), as in the guide's opening figure
+if($('cmCv')){let cmN=-1,cmS=[];
+fig('cmCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+  const cy=h*0.5,x1=w*0.105,x2=w*0.405,x3=w*0.815,s=h*0.21,n=Math.floor(t*10);if(n!==cmN){cmS=rotImage(n);cmN=n;}
+  // the crystal in its loop, on a pin
+  const th=n*0.3*Math.PI/180*4,ct=Math.cos(th),st=Math.sin(th),tl=0.42,la=th+0.5,lrx=Math.max(0.05,Math.abs(Math.cos(la)))*s*0.78,rf=Math.sin(2*la)<0;
+  const half=front=>{pen(c,1.8);c.beginPath();if(front===rf)c.ellipse(x1,cy,lrx,s*0.58,0,-Math.PI/2,Math.PI/2);else c.ellipse(x1,cy,lrx,s*0.58,0,Math.PI/2,1.5*Math.PI);c.stroke();};
+  line(c,w*0.02,cy,x1-s*0.3,cy,2.6,BLUE);line(c,x1,cy+s*0.56,x1,cy+s*1.05,2.4);half(false);
+  const V=[];for(const X of[-1,1])for(const Y of[-1,1])for(const Z of[-1,1]){const x=X*0.4,y=Y*0.29,z=Z*0.24,xa=x*ct+z*st,za=-x*st+z*ct,yb=y*Math.cos(tl)-za*Math.sin(tl),zb=y*Math.sin(tl)+za*Math.cos(tl);V.push([x1+xa*s,cy-yb*s,zb]);}
+  [[0,1,3,2,GRN],[4,6,7,5,GRN],[0,4,5,1,'#4a8f5a'],[2,3,7,6,LTGRN],[0,2,6,4,'#6fb37e'],[1,5,7,3,'#6fb37e']].map(q=>({q,z:(V[q[0]][2]+V[q[1]][2]+V[q[2]][2]+V[q[3]][2])/4})).sort((a,b)=>a.z-b.z).slice(3).forEach(({q})=>poly(c,[V[q[0]],V[q[1]],V[q[2]],V[q[3]]],q[4],1.8));
+  half(true);
+  // the detector, with the spots of this image
+  const B=detFace(c,x2,cy,h*0.8/DETG.hh),k=Math.max(0.55,B.w/230);
+  cmS.forEach(q=>{c.fillStyle=`rgba(27,27,27,${Math.min(1,0.5+2.5*q.a).toFixed(2)})`;c.beginPath();c.arc(x2+q.u*B.w/2,cy+q.v*B.h/2,(0.7+2.3*Math.sqrt(q.a))*k,0,7);c.fill();});
+  // the structure
+  const W=w*0.31,H=h*0.8;rectF(c,x3-W/2,cy-H/2,W,H,WHITE,2.2);const sm=Math.min(W/56,H/52);c.save();c.beginPath();c.rect(x3-W/2,cy-H/2,W,H);c.clip();drawMb(c,x3,cy-1.9*sm,sm);c.restore();
+  arrow(c,w*0.19,cy,w*0.232,cy,INK,2.2,7);arrow(c,w*0.585,cy,w*0.648,cy,INK,2.2,7);
+});}
 // the chooser at the top of the index: show every guide, the five-minute ones or the in-depth ones. ?level=intro or ?level=depth in the address sets it
 const ts=$('trackSel');if(ts){const bs=[...ts.querySelectorAll('button')];
   const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));document.querySelectorAll('.card[data-level]').forEach(el=>{el.hidden=v!=='all'&&el.dataset.level!==v;});

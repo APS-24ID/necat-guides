@@ -453,7 +453,7 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.9','November 17, 2026')
+RELEASE=('1.9.1','November 17, 2026')
 UPDATED={'aps':'November 13, 2026','overview':'November 17, 2026','polarization':'November 13, 2026','scatter':'November 17, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
 # the line under every guide and the index: its date and release, and how to report a mistake (by email, or with the correction form on GitHub)

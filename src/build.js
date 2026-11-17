@@ -67,7 +67,7 @@ for(const k of Object.keys(OUT)){
 console.log('equations',n);
 fs.copyFileSync('favicon.svg',DIR+'favicon.svg');
 // ---- the landing page: same style sheet and drawing kit, its own small script ----
-{let page=fs.readFileSync('body-home.html','utf8')+'\n<script>\n'+kit+fs.readFileSync('home.js','utf8')+'\n</script>\n';
+{let page=fs.readFileSync('body-home.html','utf8')+'\n<script>\n'+kit+IK+fs.readFileSync('mbdata.js','utf8')+fs.readFileSync('home.js','utf8')+'\n</script>\n';
  for(const [x,y] of US) page=page.split(x).join(y);
  const link=linker(page);
  if(ART)fs.writeFileSync(ART+'necat-guides-home.html',link('art'));

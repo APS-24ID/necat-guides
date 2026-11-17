@@ -2,6 +2,10 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.9.1 — 2026-11-17
+
+- The picture on the index card for *How MX works* is redrawn to match the guide: a crystal turning in its loop, the images on the detector, and myoglobin.
+
 ## 1.9 — 2026-11-17
 
 - New guide: **How MX works**, the in-depth guide to macromolecular crystallography. Why structures matter, why X-rays and why a crystal, where the spots fall, what a spot is (a wave in a Fourier series), the phase problem, the map and the model, refinement, and what limits a structure. Its figures use myoglobin, a simulated data collection on the detector of 24-ID-C, a map drawn as a wire mesh, and a model with mistakes that can be corrected against its difference map.
