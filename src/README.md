@@ -53,6 +53,7 @@ The build has three steps, run in order by `build.sh`.
 | | `detintro_guide.py` | How does an X-ray detector work?, Introductory. Read by `compose.py`. |
 | | `hutch_guide.py` | Why is the experiment in a shielded room?, Introductory. Read by `compose.py`. |
 | | `see_guide.py` | How do we see a protein?, Introductory. Read by `compose.py`. |
+| | `mx_guide.py` | How MX works, In-depth. Read by `compose.py`. Its figures are in `mx.js`. |
 | | `cold_guide.py` | Why are we freezing our crystals?, Introductory. Read by `compose.py`. |
 | | `xrf_guide.py` | X-ray fluorescence at NE-CAT. Read by `compose.py`. |
 | | `src-body.v6.html` | The original polarization guide. `compose.py` takes the style sheet and the first equation cards and figure panels from it. Do not edit it: change `compose.py` instead. |
@@ -68,8 +69,8 @@ The build has three steps, run in order by `build.sh`.
 | | `hutch.js` | The figures of Why is the experiment in a shielded room? |
 | | `see.js` | The figures of How do we see a protein? |
 | | `cold.js` | The figures of Why are we freezing our crystals? |
-| | `mbdata.js` | Myoglobin, the protein drawn in How do we see a protein?: the positions of its chain, its heme and the atoms of one helix, and the code that draws the chain as a tube and the maps of the helix. |
-| | `introkit.js` | Drawing helpers for the guides added from release 1.3 on, including the cartoon of the detector (`detFace`, `detSide`) and the figure of the rays that reach it (`geoDraw`). |
+| | `mbdata.js` | Myoglobin, the protein drawn in How do we see a protein? and How MX works: the positions of its chain, its heme and the atoms of one helix, and the code that draws the chain as a tube and the maps of the helix. |
+| | `introkit.js` | Drawing helpers for the guides added from release 1.3 on, including the cartoon of the detector (`detFace`, `detSide`), the figure of the rays that reach it (`geoDraw`) and the simulated data collection (`rotImage`). |
 | | `home.js` | The figures of the landing page. |
 | | `ogimages.js` | Not part of the build. Makes the link-preview pictures and the icons from the built pages. |
 | | `favicon.svg` | The site icon. Copied to the site by `build.js`. |

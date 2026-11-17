@@ -2,6 +2,13 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.9 — 2026-11-17
+
+- New guide: **How MX works**, the in-depth guide to macromolecular crystallography. Why structures matter, why X-rays and why a crystal, where the spots fall, what a spot is (a wave in a Fourier series), the phase problem, the map and the model, refinement, and what limits a structure. Its figures use myoglobin, a simulated data collection on the detector of 24-ID-C, a map drawn as a wire mesh, and a model with mistakes that can be corrected against its difference map.
+- *How do we see a protein?* now links to it as its longer partner. Its count of myoglobin's atoms is corrected to about 1,260, and "every atom" is reworded: hydrogen atoms and parts that move are usually not seen.
+- *How NE-CAT works* and *X-ray fluorescence at NE-CAT* each gained one sentence pointing to the new guide.
+- The index lists the new guide.
+
 ## 1.8.4 — 2026-11-16
 
 - Every guide and the index now say how to report a mistake: by email to necat@cornell.edu, or with the correction form on GitHub. The email link fills in the name of the guide and its release.

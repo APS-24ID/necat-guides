@@ -1,0 +1,1260 @@
+<!doctype html>
+<!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="What macromolecular crystallography is, and how it gets from a crystal to a structure. Why a crystal is needed, what the spots are, the phase problem, the electron density map, and how a model is refined and judged.">
+<meta name="author" content="NE-CAT, Cornell University">
+<link rel="canonical" href="https://aps-24id.github.io/necat-guides/how-mx-works.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="NE-CAT beamline guides">
+<meta property="og:title" content="How MX works">
+<meta property="og:description" content="What macromolecular crystallography is, and how it gets from a crystal to a structure. Why a crystal is needed, what the spots are, the phase problem, the electron density map, and how a model is refined and judged.">
+<meta property="og:url" content="https://aps-24id.github.io/necat-guides/how-mx-works.html">
+<meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/mx.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Opening figure of the guide “How MX works”">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>How MX Works</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">
+<style>
+/* Three linked guides share this sheet. Layout: a comic album page. One reading column (~66ch); figures are inked panels up to 980px wide with yellow narration boxes; equations sit on ruled cards with a symbol-by-symbol reading. Single light theme by design (ligne claire is a paper style). */
+:root{
+  --paper:#fffdf6; --ink:#1b1b1b; --muted:#55575c; --sky:#dcecf5; --cap:#ffe98a;
+  --red:#d8412f; --blue:#2f6db5; --orange:#ee8a2b; --green:#5aa469; --card:#ffffff; --rule:#1b1b1b;
+  --f-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive;
+  --f-math:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:980px;margin:0 auto}
+.prose{max-width:66ch;margin:0 auto}
+.prose>*+*{margin-top:1em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(2.3rem,6.4vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.6vw,2.2rem);font-weight:750}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--blue)}
+math{font-family:var(--f-math);font-size:1.06em}
+mi[mathvariant="bold"],mi[mathvariant="bold-italic"]{font-weight:700}
+.hero{padding-block:44px 20px;display:grid;gap:20px}
+.kicker{font-family:var(--f-hand);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;display:inline-block;background:var(--cap);border:2.5px solid var(--ink);padding:2px 12px;justify-self:start}
+.lede{font-size:1.22rem;line-height:1.5;max-width:62ch}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.chain a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.chain a:hover,.chain a:focus-visible{background:var(--cap);outline:none}
+section{padding-block:52px 4px;display:grid;gap:22px}
+.sec-head{display:grid;gap:12px}
+.stepno{font-family:var(--f-display);font-weight:800;font-size:1.05rem;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:#fff;border:2.5px solid var(--ink);display:grid;place-items:center}
+.panel{display:grid;gap:12px}
+.panel canvas{width:100%;display:block;border:3px solid var(--ink);background:var(--sky)}
+.figcap{font-size:.93rem;color:var(--muted);line-height:1.45;max-width:78ch}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;align-items:end;background:var(--card);border:2.5px solid var(--ink);padding:12px 14px}
+.ctl{display:grid;gap:2px;min-width:0}
+.ctl label{font-family:var(--f-hand);font-size:1.05rem;display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-weight:700;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--red)}
+input[type=number],select{width:100%;font-family:var(--f-hand);font-size:1.1rem;padding:4px 8px;border:2.5px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-hand);font-size:1.02rem;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:0;padding:2px 10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--cap)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.ro{background:var(--cap);border:2.5px solid var(--ink);padding:6px 12px;min-width:0}
+.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}
+.ro .v{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-hand);font-size:1rem}
+.key i{display:inline-block;width:16px;height:12px;border:2px solid var(--ink);vertical-align:-1px;margin-right:6px}
+/* equation cards */
+.eqcard{background:var(--card);border:2.5px solid var(--ink);max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqcard .tag{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;background:var(--ink);color:var(--paper);padding:2px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.eqcard .eqn{padding:14px 14px 10px;overflow-x:auto;font-size:1.12rem;border-bottom:2px dashed var(--ink)}
+.eqcard .body{padding:12px 14px 14px;display:grid;gap:10px;font-size:.96rem;line-height:1.5}
+.read{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.read dt{font-weight:600;white-space:nowrap}
+.read dd{margin:0;min-width:0}
+.says b,.num b{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;background:var(--cap);border:2px solid var(--ink);padding:0 6px;margin-right:6px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;padding-top:10px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar label{font-family:var(--f-hand);font-size:1.02rem;background:var(--cap);border:2.5px solid var(--ink);padding:1px 8px;display:flex;align-items:center;gap:8px;max-width:100%}
+.bar select{width:auto;max-width:100%;border:0;background:transparent;padding:2px 4px;font-size:1.02rem}
+.using{font-family:var(--f-hand);font-size:1.02rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:4px 12px}
+.tblwrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--card)}
+table.settings{border-collapse:collapse;width:100%;min-width:720px;font-size:.93rem;line-height:1.35;font-variant-numeric:tabular-nums}
+table.settings th,table.settings td{border:1.5px solid var(--ink);padding:5px 10px;text-align:left;vertical-align:top}
+table.settings thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+table.settings tbody th{font-weight:600;background:var(--paper)}
+table.settings .on{background:var(--cap)}
+table.settings thead th.on{background:var(--red);color:#fff}
+.notes{font-size:.9rem;color:var(--muted);line-height:1.45;max-width:78ch;margin-inline:auto;width:100%}
+.notes p+p{margin-top:.5em}
+ul.refs{padding-left:1.2em;margin:0}
+ul.refs li+li{margin-top:.4em}
+@media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
+
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
+details.eqcard>summary{cursor:pointer;list-style:none}
+details.eqcard>summary::-webkit-details-marker{display:none}
+details.eqcard>summary .eqno{white-space:nowrap}
+details.eqcard>summary::after{content:"+ show";background:var(--cap);color:var(--ink);padding:0 8px;margin-left:auto;white-space:nowrap}
+details.eqcard[open]>summary::after{content:"\2212  hide"}
+details.eqcard>summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+details.eqcard:not([open]) .eqn{display:none}
+.eqgroup{display:grid;gap:8px;max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqlabel{font-family:var(--f-hand);font-size:1.05rem}
+.guides{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.guides span.lbl{text-transform:uppercase;letter-spacing:.06em}
+.guides a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.guides a[aria-current="page"]{background:var(--red);color:#fff}
+.guides a:hover,.guides a:focus-visible{background:var(--cap);color:var(--ink)}
+table.rules{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.rules th,table.rules td{border:1.5px solid var(--ink);padding:5px 10px;text-align:right}
+table.rules th:first-child,table.rules td:first-child{text-align:left}
+table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+</style>
+</head><body>
+
+<div class="wrap">
+  <div class="bar"><button id="eqAll" aria-pressed="false">Open all equations</button><button id="motionBtn" aria-pressed="false">Pause motion</button></div>
+  <header class="hero">
+    <div class="kicker">NE-CAT guides · macromolecular crystallography</div>
+    <h1>How MX works</h1>
+    <p class="lede">Macromolecular crystallography, MX for short, finds where the atoms are in the large molecules of life: proteins, DNA and RNA, and machines as large as a ribosome or the shell of a virus. It does this by shining X-rays on a crystal of the molecule and working back from the pattern of spots the crystal throws onto a detector. This guide explains why the shape of a molecule is worth knowing, why the method needs a crystal, what the spots are, and how they are turned into a structure that can be trusted.</p>
+    <p class="lede" style="font-size:1.05rem">Each section has a plain explanation and a figure you can adjust. The equations are folded away under the figures. Open any of them, or all of them with the button at the top, if you want the detail. Short on time? <a class="guidelink" data-guide="see" href="how-mx-works-intro.html">How do we see a protein?</a> is the five-minute version, with no equations.</p>
+    <div class="panel">
+      <canvas id="mxHeroCv" aria-label="Animation in three parts: a crystal turns in the X-ray beam; the detector takes image after image, with the spots falling in curved bands that move as the crystal turns; and from the spots comes a map, into which atoms are fitted, until the view pulls back to show the whole protein, myoglobin"></canvas>
+      <div class="figcap">The whole method in one line. A crystal turns in the X-ray beam, and the detector takes thousands of images of the spots it throws. From the spots a map of the electrons is worked out, atoms are fitted into the map, and the result is a model of the molecule, atom by atom. The protein here is myoglobin, drawn from its real structure. The images are a simulation of a small made-up crystal on the detector of 24-ID-C, and the map shows one helix of the protein.</div>
+    </div>
+    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="index.html">← Home</a><span class="lbl">Series 3 · The experiment</span><span class="level lv-depth">In depth</span></nav>
+    <nav class="chain" aria-label="Sections"><a href="#why">1 Why structures</a><a href="#xrays">2 Why X-rays</a><a href="#crystal">3 Why a crystal</a><a href="#pattern">4 The pattern</a><a href="#waves">5 Spots as waves</a><a href="#phase">6 The phase problem</a><a href="#map">7 Map and model</a><a href="#refine">8 Refinement</a><a href="#damage">9 Limits</a></nav>
+  </header>
+
+  <section id="why">
+    <div class="sec-head prose">
+      <div class="stepno">1</div>
+      <h2>Big molecules, and why their shapes matter</h2>
+      <p>Macromolecules are the large molecules of life: proteins, DNA and RNA, and the assemblies they build together. They are large by the standards of chemistry. Myoglobin, a small protein, has about 1,260 atoms, not counting hydrogen. A ribosome has about 150,000, and the shell of a virus several hundred thousand. Crystallography can find the positions of nearly all of them. Hydrogen atoms are usually too faint to see, and parts of a molecule that do not hold still in the crystal do not show up.</p>
+      <p>A protein is a chain of amino acids, folded into a particular shape. The chain can be short or long: insulin has 51 amino acids, a typical protein has a few hundred, and the largest have thousands. The shape is a large part of what lets a protein do its job, but not the whole of it. The chemistry of the amino acids matters as well, and so does the way the protein moves. An enzyme has a pocket that fits one molecule and no other, lined with the chemical groups that carry out its reaction. An antibody has a surface that matches its target in shape and in charge. Many proteins change shape as they work. A structure shows all of this at once: which atoms are where, what they are next to, and, from structures caught in different states, how they move.</p>
+      <p>Knowing where the atoms are turns a name in a genome into a mechanism. It shows how an enzyme speeds up its reaction and why a single changed amino acid causes a disease. It shows where a drug binds and what could be changed to make it bind better. Many of the medicines in use today were designed with the structure of their target in hand.</p>
+      <p>The Protein Data Bank, the public archive of these structures, passed 250,000 entries in March 2026. Most of them were determined by X-ray crystallography.</p>
+    </div>
+    <div class="panel">
+      <canvas id="galCv" aria-label="Interactive: seven structures drawn to one scale, from myoglobin through hemoglobin, a nucleosome, an antibody, GroEL with GroES and a ribosome to the shell of a rhinovirus, with a scale bar of 100 angstroms"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="gSel">Structure</label><select id="gSel"><option value="mb">Myoglobin</option><option value="hb">Hemoglobin</option><option value="ncp">A nucleosome</option><option value="igg">An antibody</option><option value="gro">GroEL and GroES</option><option value="ribo" selected>A ribosome</option><option value="vir">The shell of a cold virus</option></select></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Mass</div><div class="v" id="gM">–</div></div>
+        <div class="ro"><div class="k">Atoms, not counting hydrogen</div><div class="v" id="gA">–</div></div>
+        <div class="ro"><div class="k">Across</div><div class="v" id="gS">–</div></div>
+        <div class="ro"><div class="k">What it is</div><div class="v" id="gW">–</div></div>
+      </div>
+      <div class="figcap">Seven structures that crystallography has solved, drawn to the same scale. Choose one from the menu, or click on it. The smallest, myoglobin, has about 1,260 atoms. The largest here has several hundred thousand, and crystallography placed nearly every one. Each colored shape is one chain, or one folded part of a chain. In the nucleosome and the ribosome the orange and yellow are DNA and RNA. Myoglobin is drawn from its real chain, entry 1MBN in the Protein Data Bank, with its helices in blue. The others are cartoons drawn from the known sizes and arrangements of the molecules, not from their deposited coordinates. Masses, sizes and atom counts are rounded.</div>
+    </div>
+  </section>
+
+  <section id="xrays">
+    <div class="sec-head prose">
+      <div class="stepno">2</div>
+      <h2>Why X-rays, and why there is no X-ray microscope</h2>
+      <p>Large as these molecules are, their atoms are no bigger than any others. Bonded atoms are about 1.5 Å apart: fifteen billionths of a centimeter. Light cannot show detail much finer than half its wavelength, and the wavelength of visible light is several thousand ångströms. Seeing atoms takes light with a wavelength of about one ångström, and that is an X-ray.</p>
+      <p>There is a second difficulty. A microscope uses a lens to gather the light scattered by an object and bring it back together as an image. No lens can do that for X-rays finely enough to show atoms. In crystallography the scattered X-rays are recorded as they are, and the work of the lens is done afterward by calculation.</p>
+    </div>
+    <div class="panel">
+      <canvas id="scaleCv" aria-label="Interactive: a ruler from one angstrom to a tenth of a millimeter with a bond between atoms, DNA, hemoglobin, a ribosome, a virus, a bacterium, a red blood cell and a protein crystal on it, and a marker for the finest detail that light of the chosen wavelength can show"></canvas>
+      <div class="controls">
+        <div class="btns" style="grid-column:1/-1"><button id="zBV">Visible light</button><button id="zBX">X-rays at NE-CAT</button></div>
+        <div class="ctl" style="grid-column:1/-1"><label for="zL">Wavelength of the light <output id="zLO">500 nm</output></label><input id="zL" type="range" min="-10.5" max="-6" step="0.01" value="-6.3"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Kind of light</div><div class="v" id="zK">–</div></div>
+        <div class="ro"><div class="k">Energy of one photon</div><div class="v" id="zE">–</div></div>
+        <div class="ro"><div class="k">Finest detail it can show</div><div class="v" id="zD">–</div></div>
+      </div>
+      <div class="figcap">A ruler from one ångström to a tenth of a millimeter. Each step to the right is ten times larger. The things in the shaded part are big enough for the chosen light to show, and the rest are faded. With visible light a bacterium can be seen and a virus cannot. To see the atoms of a protein the wavelength has to come down to about an ångström, and light of that wavelength is an X-ray. Half a wavelength is the usual rough limit. Sizes are typical values.</div>
+    </div>
+    <div class="eqgroup">
+      <div class="eqlabel">The math, if you want it</div>
+    <details class="eqcard" id="eq-m_res">
+      <summary class="tag"><span class="eqno">Equation 2.1</span><span class="eqtitle">How fine a detail light can show</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>d</mi><mi>min</mi><mo>⁡</mo><mspace width="0.17em"></mspace></msub><mo>≈</mo><mfrac><mi>λ</mi><mn>2</mn></mfrac><mspace width="2em"/><mspace width="2em"/><mi>λ</mi><mtext> </mtext><mo stretchy="false">[</mo><mover accent="true"><mtext>A</mtext><mo>˚</mo></mover><mo stretchy="false">]</mo><mo>=</mo><mfrac><mn>12.398</mn><mrow><mi>E</mi><mtext> </mtext><mo stretchy="false">[</mo><mtext>keV</mtext><mo stretchy="false">]</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">d_{\min}\approx\frac{\lambda}{2}\qquad\qquad \lambda\,[\text{Å}]=\frac{12.398}{E\,[\text{keV}]}</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>min</mi><mo>⁡</mo><mspace width="0.17em"></mspace></msub></mrow><annotation encoding="application/x-tex">d_{\min}</annotation></semantics></math></span></dt><dd>The smallest spacing between two things that can still be told apart.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span></dt><dd>The wavelength of the light.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span></dt><dd>The energy of one photon of that light.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>A wave cannot report on detail much finer than half its own length. Shorter waves show finer detail, and shorter waves are photons of higher energy. This is why a light microscope stops at about a quarter of a micron, and why seeing atoms takes X-rays.</p>
+        <p class="num"><b>In numbers</b>Green light, 500 nm: about 250 nm, which is 1,700 times the distance between two bonded atoms. X-rays of 12.662 keV: a wavelength of 0.979 Å, short enough in principle to show detail of half an ångström. In practice the crystal sets the limit, not the wavelength.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section id="crystal">
+    <div class="sec-head prose">
+      <div class="stepno">3</div>
+      <h2>Why a crystal: one molecule is far too faint</h2>
+      <p>X-rays are scattered by electrons, and a single protein molecule does not have many. The scatter from one molecule is far too weak to measure, and the X-rays needed to try would destroy it first.</p>
+      <p>A crystal solves both problems. It is the same molecule repeated in the same orientation: about a hundred billion times, for a typical crystal. The repeat runs in all three dimensions: rows side by side make a layer, and layers stack to make the crystal. Each copy scatters the same faint wave. In most directions those waves are out of step and cancel. In certain directions they are exactly in step, and add. The scatter of the whole crystal is gathered into those directions as sharp, bright spots.</p>
+      <p>The crystal also shares out the damage. Every X-ray that is absorbed damages a molecule somewhere, but the pattern is the average over all the copies, and it survives until a good fraction of them have been hit.</p>
+      <p>The price is that the molecule has to be persuaded to crystallize, which is often the hardest step of all. A guide to how crystals are grown will be added to this series. A protein crystal is a fragile thing, about half water, held together by a few weak contacts between neighbors. That water is also why the structure in a crystal is close to the one the molecule has in the cell.</p>
+    </div>
+    <div class="panel">
+      <canvas id="latCv" aria-label="Interactive: a row of identical molecules, and below it the brightness they scatter against angle, which gathers into sharp spots as more copies are added"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="lN">Copies of the molecule <output id="lNO">3</output></label><input id="lN" type="range" min="1" max="40" step="1" value="3"></div>
+        <div class="ctl"><label for="lA">Distance from one copy to the next <output id="lAO">14 Å</output></label><input id="lA" type="range" min="8" max="40" step="1" value="14"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Brightest spot, against one molecule</div><div class="v" id="lB">–</div></div>
+        <div class="ro"><div class="k">Width of each spot</div><div class="v" id="lW">–</div></div>
+        <div class="ro"><div class="k">Number of spots</div><div class="v" id="lS">–</div></div>
+      </div>
+      <div class="figcap">Top: a row of identical molecules, each drawn as four atoms. Bottom: how brightly the row scatters in each direction. The dashed red line is the pattern of one molecule alone, which is weak and smooth. Add copies and the scatter gathers into sharp spots, because only in certain directions do the waves from every copy arrive in step. Each copy added makes the spots brighter and narrower. Their heights follow the red line: the molecule decides how strong each spot is, and the lattice decides where the spots are. Move the copies further apart and the spots crowd together. This is one row. A real crystal repeats in three directions, a few thousand times in each.</div>
+    </div>
+    <div class="eqgroup">
+      <div class="eqlabel">The math, if you want it</div>
+    <details class="eqcard" id="eq-m_lat">
+      <summary class="tag"><span class="eqno">Equation 3.1</span><span class="eqtitle">Many copies scattering in step</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>I</mi><mi>N</mi></msub><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo fence="true">∣</mo><mi>F</mi><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo><mo fence="true">∣</mo></mrow><mn>2</mn></msup><mtext>  </mtext><mfrac><mrow><msup><mrow><mi>sin</mi><mo>⁡</mo><mspace width="0.17em"></mspace></mrow><mn>2</mn></msup><mo stretchy="false">(</mo><mi>π</mi><mi>N</mi><mi>q</mi><mi>a</mi><mo stretchy="false">)</mo></mrow><mrow><msup><mrow><mi>sin</mi><mo>⁡</mo><mspace width="0.17em"></mspace></mrow><mn>2</mn></msup><mo stretchy="false">(</mo><mi>π</mi><mi>q</mi><mi>a</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">I_N(q)=\left|F(q)\right|^{2}\;\frac{\sin^{2}(\pi N q a)}{\sin^{2}(\pi q a)}</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">I_N</annotation></semantics></math></span></dt><dd>The brightness scattered by a row of N identical molecules.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">F(q)</annotation></semantics></math></span></dt><dd>The wave scattered by one molecule in the direction q. Its square is the dashed red line in the figure.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span></dt><dd>A measure of the scattering angle: one over the size of detail that direction reports on.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span></dt><dd>The distance from one molecule to the next.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The fraction is close to zero in most directions and rises to N² wherever q times a is a whole number. So the scatter of N copies is gathered into spots a distance 1/a apart, each N² times as bright as one molecule and 1/N as wide. The energy in each spot grows in step with the number of copies. Where the spots are depends only on the lattice. How strong each one is depends only on the molecule.</p>
+        <p class="num"><b>In numbers</b>A crystal 50 µm across with a repeat of 100 Å has 5,000 unit cells along each edge, and about a hundred billion in all. Every spot holds a hundred billion times the energy that one unit cell would send in that direction.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section id="pattern">
+    <div class="sec-head prose">
+      <div class="stepno">4</div>
+      <h2>Where the spots fall, and why the crystal is turned</h2>
+      <p>The positions of the spots say nothing about the molecule. They are set by the lattice: the size and shape of the unit cell, the block that repeats to make the crystal. A large unit cell gives spots that are close together, and a small one gives spots that are far apart.</p>
+      <p>Each spot can be thought of as a reflection of the beam from one set of parallel planes through the lattice. A set of planes reflects only when the beam meets it at exactly the right angle: the angle at which the waves reflected from one plane and the next are exactly in step. That condition is Bragg's law, named for William Lawrence Bragg, who worked it out in 1912. It ties the angle of a spot to the spacing of its planes and the wavelength of the X-rays, and it is given with the equations below. With the crystal held still, very few sets of planes are at their angle, and only a few spots appear.</p>
+      <p>So the crystal is turned in the beam while the detector records. The figure below shows why, using a construction called the Ewald sphere. As it turns, one set of planes after another comes to its angle, flashes, and passes on. A full data set is a few hundred to a few thousand images covering a half turn or more, and can hold hundreds of thousands of spots.</p>
+      <p>How far the crystal must turn depends on its symmetry. The unit cell often holds several copies of the molecule, each a turned or shifted copy of the others. Proteins are built from amino acids of one handedness, so their crystals cannot contain mirror images, and that leaves 65 ways of arranging the copies, called space groups. Symmetry in the crystal makes sets of spots equal in brightness, so a crystal of high symmetry gives a complete data set from a smaller turn.</p>
+      <p>The angle of a spot from the direct beam says how fine a detail it reports on. Spots near the middle of the detector come from widely spaced planes and carry the overall shape of the molecule. Spots near the edge come from closely spaced planes and carry the fine detail. The resolution of a data set is the spacing of the finest planes that still give measurable spots. The guide <a class="guidelink" data-guide="overview" href="how-necat-works.html">How NE-CAT works</a> shows how the beam energy and the detector distance set what the detector can catch, and <a class="guidelink" data-guide="detintro" href="detector-intro.html">How does an X-ray detector work?</a> shows how the detector counts the X-rays in each spot.</p>
+    </div>
+    <div class="panel">
+      <canvas id="ewCv" aria-label="Animation with controls: seen from above, a lattice of possible diffraction directions turns with the crystal, and each point diffracts as it crosses a circle set by the wavelength; beside it the detector, face on, collects every spot recorded so far"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="eA">Size of the repeating unit <output id="eAO">10 Å</output></label><input id="eA" type="range" min="6" max="14" step="1" value="10"></div>
+        <div class="ctl"><label for="eE">X-ray energy <output id="eEO">12.66 keV</output></label><input id="eE" type="range" min="8" max="16" step="0.02" value="12.66"></div>
+        <div class="btns"><button id="eR">Start again</button></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Spots recorded</div><div class="v" id="eN">–</div></div>
+        <div class="ro"><div class="k">The crystal has turned</div><div class="v" id="eT">–</div></div>
+        <div class="ro"><div class="k">Finest detail at the detector edge</div><div class="v" id="eD">–</div></div>
+      </div>
+      <div class="figcap">Left, seen from above. The dots are the directions in which the crystal could diffract, one layer of them, laid out on a lattice that turns with the crystal. It is called the reciprocal lattice, and the space it lies in, reciprocal space. The gray circle is the Ewald sphere, seen in cross-section, named for Paul Ewald. Its radius is set by the wavelength, and it is Bragg's law drawn as a picture: a dot diffracts only at the moment it crosses the circle. When one does, an orange ray leaves the crystal and strikes the detector. Right: the detector seen face on, keeping every spot it has caught, from all the layers. A still crystal would give only the few spots that happen to lie on the circle. Turning it sweeps the rest through. A larger repeating unit packs the dots closer, and a higher energy makes the circle larger and squeezes the pattern toward the middle. The repeating unit here is about ten times smaller than a protein's, so that the dots can be told apart. A protein crystal gives the same picture with about a thousand times as many spots.</div>
+    </div>
+    <div class="eqgroup">
+      <div class="eqlabel">The math, if you want it</div>
+    <details class="eqcard" id="eq-m_bragg">
+      <summary class="tag"><span class="eqno">Equation 4.1</span><span class="eqtitle">Bragg's law: when a spot appears</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>2</mn><mtext> </mtext><mi>d</mi><mtext> </mtext><mi>sin</mi><mo>⁡</mo><mspace width="0.17em"></mspace><mi>θ</mi><mo>=</mo><mi>n</mi><mtext> </mtext><mi>λ</mi></mrow><annotation encoding="application/x-tex">2\,d\,\sin\theta=n\,\lambda</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span></dt><dd>The spacing of one set of parallel planes through the crystal lattice.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span></dt><dd>The angle between the beam and those planes. The beam is turned through twice this.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span></dt><dd>The X-ray wavelength.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span></dt><dd>A whole number.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Each spot can be thought of as a reflection of the beam from one set of planes in the crystal. The reflections from successive planes add up only when the extra path from one plane to the next is a whole number of wavelengths. For a given set of planes that happens at one angle only, which is why the crystal has to be turned. Fine spacings reflect at large angles, so the fine detail of the structure is at the edge of the detector.</p>
+        <p class="num"><b>In numbers</b>At 12.662 keV, 0.979 Å: planes 50 Å apart turn the beam through 1.1°, planes 2 Å apart through 28°, and planes 1 Å apart through 59°.</p>
+      </div>
+    </details>
+    <details class="eqcard" id="eq-m_spacing">
+      <summary class="tag"><span class="eqno">Equation 4.2</span><span class="eqtitle">How far apart the spots are</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>≈</mo><mfrac><mrow><mi>λ</mi><mtext> </mtext><mi>D</mi></mrow><mi>a</mi></mfrac></mrow><annotation encoding="application/x-tex">\Delta\approx\frac{\lambda\,D}{a}</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi></mrow><annotation encoding="application/x-tex">\Delta</annotation></semantics></math></span></dt><dd>The distance between neighboring spots on the detector.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span></dt><dd>The distance from the crystal to the detector.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span></dt><dd>The length of the unit cell, the repeating unit of the crystal.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The pattern is the reverse of the crystal: the larger the repeating unit, the closer the spots. A crystal with a very large unit cell needs the detector moved back, or a more parallel beam, to keep its spots from running into each other.</p>
+        <p class="num"><b>In numbers</b>At 0.979 Å with the detector 300 mm away: a 100 Å cell puts the spots 2.9 mm apart, and a 400 Å cell 0.7 mm apart.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section id="waves">
+    <div class="sec-head prose">
+      <div class="stepno">5</div>
+      <h2>What a spot is: one wave of electron density</h2>
+      <p>The positions of the spots come from the lattice. Their brightness comes from the molecule, and this is where the structure is.</p>
+      <p>What X-rays see is electron density: how many electrons there are at each point in the unit cell. Picture it as a landscape, with a peak at every atom. Because the crystal repeats, the landscape repeats, and a repeating pattern has a property that Joseph Fourier found in the early 1800s. It can be built exactly by adding up simple waves, and the only waves needed are those that fit the repeat a whole number of times: one crest across the unit cell, then two, then three, and so on. A sum of this kind is called a Fourier series. Its broad waves give the general shape of the landscape, and its finer and finer waves give the detail.</p>
+      <p>Each spot in the diffraction pattern is one wave of that series. The position of the spot says which wave it is: the direction its crests run in, and how many of them cross the unit cell. Those counts are the three index numbers of the spot, written h, k and l. The brightness of the spot says how tall the wave is: the height is the square root of the brightness. In effect, the crystal takes its own electron density apart into waves and sends each one to a different place on the detector.</p>
+      <p>To add a wave to the sum, one more thing is needed: where its crests lie within the unit cell. That is the wave's phase. Shift a wave by half its spacing and it puts a valley where there was a peak. The height and the phase of a wave together are called the structure factor of its spot.</p>
+      <p>Add up all the waves, each with its height and its phase, and the electron density appears. This sum is called a Fourier synthesis, and it is the calculation that does the work of the missing lens. Leave out the fine waves, and the result is a blurred version of the density. That is what resolution means: a 3 Å data set has no waves finer than 3 Å in it.</p>
+    </div>
+    <div class="panel">
+      <canvas id="fouCv" aria-label="Interactive: the electron density of five atoms on a line, built up one wave at a time from the spots, with a choice of the right phases, zero phases, random phases or the phases of a different molecule"></canvas>
+      <div class="controls">
+        <div class="btns" style="grid-column:1/-1"><button id="fBt" aria-pressed="true">The right phases</button><button id="fBz" aria-pressed="false">All phases zero</button><button id="fBr" aria-pressed="false">Random phases</button><button id="fBo" aria-pressed="false">Phases from another molecule</button></div>
+        <div class="ctl" style="grid-column:1/-1"><label for="fN">Spots included <output id="fNO">4 spots</output></label><input id="fN" type="range" min="0" max="20" step="1" value="4"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Finest wave included</div><div class="v" id="fR">–</div></div>
+        <div class="ro"><div class="k">Phases used</div><div class="v" id="fP">–</div></div>
+        <div class="ro"><div class="k">Match to the true density</div><div class="v" id="fC">–</div></div>
+      </div>
+      <div class="figcap">A molecule of five atoms on a line, repeated every 20 Å. Each bar is one spot: its height is the strength of the spot, and the number under it is the spacing of the wave it stands for. Slide to add the waves one at a time. The coarse waves give the rough outline, and the fine ones sharpen it until the two atoms 1.5 Å apart come apart. Then change the phases. With the strengths unchanged and the phases wrong, the atoms are lost. With the phases of a different molecule, shown by the purple rings, the peaks move to where that molecule's atoms are. The phases carry most of the picture.</div>
+    </div>
+    <div class="eqgroup">
+      <div class="eqlabel">The math, if you want it</div>
+    <details class="eqcard" id="eq-m_sf">
+      <summary class="tag"><span class="eqno">Equation 5.1</span><span class="eqtitle">What sets the strength and phase of a spot</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>h</mi><mi>k</mi><mi>l</mi><mo stretchy="false">)</mo><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>f</mi><mi>j</mi></msub><mtext>  </mtext><msup><mi>e</mi><mrow><mtext> </mtext><mn>2</mn><mi>π</mi><mi>i</mi><mtext> </mtext><mo stretchy="false">(</mo><mi>h</mi><msub><mi>x</mi><mi>j</mi></msub><mo>+</mo><mi>k</mi><msub><mi>y</mi><mi>j</mi></msub><mo>+</mo><mi>l</mi><msub><mi>z</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">F(hkl)=\sum_{j}f_j\;e^{\,2\pi i\,(h x_j+k y_j+l z_j)}</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>h</mi><mi>k</mi><mi>l</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">F(hkl)</annotation></semantics></math></span></dt><dd>The structure factor of the spot with indices h, k and l: a wave with a strength and a phase.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">f_j</annotation></semantics></math></span></dt><dd>How strongly atom j scatters: roughly its number of electrons, falling off at larger angles.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>j</mi></msub><mo separator="true">,</mo><mtext> </mtext><msub><mi>y</mi><mi>j</mi></msub><mo separator="true">,</mo><mtext> </mtext><msub><mi>z</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">x_j,\ y_j,\ z_j</annotation></semantics></math></span></dt><dd>The position of atom j, as fractions of the unit cell.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>Every atom in the unit cell contributes to every spot. Each contribution is a small wave whose phase depends on where the atom sits. Where the contributions agree the spot is strong, and where they cancel it is weak. So no single spot belongs to any one atom: the whole structure is spread over the whole pattern.</p>
+      </div>
+    </details>
+    <details class="eqcard" id="eq-m_synth">
+      <summary class="tag"><span class="eqno">Equation 5.2</span><span class="eqtitle">From the spots back to the density</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ρ</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo separator="true">,</mo><mi>z</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>V</mi></mfrac><munder><mo>∑</mo><mrow><mi>h</mi><mi>k</mi><mi>l</mi></mrow></munder><mrow><mo fence="true">∣</mo><mi>F</mi><mo stretchy="false">(</mo><mi>h</mi><mi>k</mi><mi>l</mi><mo stretchy="false">)</mo><mo fence="true">∣</mo></mrow><mtext> </mtext><mi>cos</mi><mo>⁡</mo><mspace width="0.17em"></mspace><mtext> ⁣</mtext><mo fence="true" stretchy="true" minsize="1.2em" maxsize="1.2em">[</mo><mn>2</mn><mi>π</mi><mo stretchy="false">(</mo><mi>h</mi><mi>x</mi><mo>+</mo><mi>k</mi><mi>y</mi><mo>+</mo><mi>l</mi><mi>z</mi><mo stretchy="false">)</mo><mo>−</mo><mi>φ</mi><mo stretchy="false">(</mo><mi>h</mi><mi>k</mi><mi>l</mi><mo stretchy="false">)</mo><mo fence="true" stretchy="true" minsize="1.2em" maxsize="1.2em">]</mo></mrow><annotation encoding="application/x-tex">\rho(x,y,z)=\frac{1}{V}\sum_{hkl}\left|F(hkl)\right|\,\cos\!\bigl[2\pi(hx+ky+lz)-\varphi(hkl)\bigr]</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span></dt><dd>The electron density at the point x, y, z of the unit cell.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span></dt><dd>The volume of the unit cell.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo fence="true">∣</mo><mi>F</mi><mo fence="true">∣</mo></mrow><annotation encoding="application/x-tex">\left|F\right|</annotation></semantics></math></span></dt><dd>The strength of each spot, which is measured.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span></dt><dd>The phase of each spot, which is not.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The density is a sum of waves, one for each spot. The spot's indices give the wave's direction and spacing, its strength gives the wave's height, and its phase says where the crests lie. This sum is the job a lens does in a microscope. It needs both numbers for every spot.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section id="phase">
+    <div class="sec-head prose">
+      <div class="stepno">6</div>
+      <h2>The catch: the phases are not recorded</h2>
+      <p>The detector records how bright each spot is. That gives the height of each wave. It does not record the phase, and as the figure above shows, the phases matter more than the heights. Half of what is needed to build the density is missing.</p>
+      <p>This is the phase problem, and every structure determination has to get around it. There are several ways to do so, and each is a subject of its own. Later guides will take them up. For the rest of this guide, take it that the phases have been found.</p>
+    </div>
+    <div class="eqgroup">
+      <div class="eqlabel">The math, if you want it</div>
+    <details class="eqcard" id="eq-m_int">
+      <summary class="tag"><span class="eqno">Equation 6.1</span><span class="eqtitle">What the detector keeps</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mo stretchy="false">(</mo><mi>h</mi><mi>k</mi><mi>l</mi><mo stretchy="false">)</mo><mo>∝</mo><msup><mrow><mo fence="true">∣</mo><mi>F</mi><mo stretchy="false">(</mo><mi>h</mi><mi>k</mi><mi>l</mi><mo stretchy="false">)</mo><mo fence="true">∣</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">I(hkl)\propto\left|F(hkl)\right|^{2}</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false">(</mo><mi>h</mi><mi>k</mi><mi>l</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">I(hkl)</annotation></semantics></math></span></dt><dd>The brightness of a spot, which is what the detector records.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The detector counts photons. That gives the square of the strength of each wave and nothing about its phase. This is the phase problem. It is not a flaw of the detector: X-rays vibrate about three billion billion times a second, and nothing can follow that.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section id="map">
+    <div class="sec-head prose">
+      <div class="stepno">7</div>
+      <h2>The map, and the model built into it</h2>
+      <p>With heights and phases for all the spots, the waves can be added up. The result is the electron density map: a three-dimensional picture of where the electrons are in the unit cell. It is drawn as a surface, like a net, around the regions where the density is high.</p>
+      <p>The map is not yet a structure. A structure is a list of atoms and their positions, and someone, or some program, has to work out which atoms account for the density. The amino acid sequence is known, so the task is to thread a known chain through the map.</p>
+      <p>A macromolecule has thousands of atoms to place, so the figure below looks at one short piece: thirteen amino acids of a helix of myoglobin. How hard the job is depends on the resolution. Near 1 Å, individual atoms can be seen. By 1.5 Å they have begun to merge, though rings still show the holes in their middles. At 2 Å the shapes of the side chains are clear, and ordered water molecules show up. At 3 Å the chain can be traced and the larger side chains placed. At 4 Å helices appear as rods, and the model rests heavily on what is already known about how proteins are built.</p>
+    </div>
+    <div class="panel">
+      <canvas id="mapCv" aria-label="Interactive: the map of one helix of myoglobin, thirteen amino acids long, at a chosen resolution, drawn as a wire mesh or as a filled outline, with its model of atoms and bonds"></canvas>
+      <div class="controls">
+        <div class="ctl"><label for="pD">Resolution of the data <output id="pDO">2.0 Å</output></label><input id="pD" type="range" min="-6" max="-1" step="0.1" value="-2"></div>
+        <div class="ctl"><label for="pS">Contour level <output id="pSO">40% of the highest peak</output></label><input id="pS" type="range" min="20" max="70" step="1" value="40"></div>
+        <div class="btns"><button id="pWm" aria-pressed="true">Wire mesh</button><button id="pWo" aria-pressed="false">Outline</button></div>
+        <div class="btns"><button id="pB" aria-pressed="true">Show the model</button></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">What the map shows</div><div class="v" id="pW">–</div></div>
+      </div>
+      <div class="figcap">The map of one piece of a real protein: amino acids 4 to 16 of myoglobin, part of its first helix, with 113 atoms. A structure is built from many pieces like it. The helix is seen from the side. The blue mesh is the surface of the map at the chosen contour level, drawn the way crystallographic programs draw it: as a net of wires, so that the model can be seen through it. The curved wires are where flat sheets facing you cut the surface, and the straight ones are sheets seen edge on. The Outline button shows the same surface as a single line around a shaded area, which is easier to read when the resolution is low. Hide the model and try to place the atoms from the map alone, as a crystallographer has to. The map is made by spreading each atom into a round cloud whose width grows with the resolution, and adding the clouds up. A map calculated from real spots would also show faint ripples, from stopping the sum of waves at a sharp limit. The positions of the atoms are from entry 1MBN in the Protein Data Bank.</div>
+    </div>
+  </section>
+
+  <section id="refine">
+    <div class="sec-head prose">
+      <div class="stepno">8</div>
+      <h2>Refinement: making the model fit, and knowing when to stop</h2>
+      <p>A first model is roughly right. Refinement makes it better. From the model, the brightness of every spot can be calculated and compared with what was measured. The atoms are then moved, a little at a time, to make the two agree, while bond lengths and angles are kept close to their known values.</p>
+      <p>Each round improves the phases too, because the phases now come from a better model. The new map shows things the old one did not: a side chain in a different position, a bound water, a ligand. The model is corrected, and the cycle repeats.</p>
+      <p>A special map guides the corrections. The difference map shows where the data call for more density than the model has, and where they call for less. In the first figure below it is drawn in green and red over a model with a mistake in it. An atom in the wrong place sits in red, where the data call for less, and leaves green where it belongs. The second figure shows the same thing for four atoms on a line, and lets the model be refined.</p>
+      <p>The danger is fitting the model to the noise. The check is to set aside a few percent of the spots at the very start and never use them in refinement. If the model is truly improving, it will predict those spots better too. That score is called R-free, and it is the first number to look at in judging a structure, along with the resolution.</p>
+      <p>Refinement stops when further changes no longer lower R-free and the difference map is flat. The model is then checked against what is known of chemistry, apart from the data: its bond lengths and angles, the twists of its backbone, and whether any atoms sit too close together. Last, the structure is deposited in the Protein Data Bank together with the measured spots, so that anyone can recalculate the map and judge the model for themselves.</p>
+    </div>
+    <div class="panel">
+      <canvas id="difCv" aria-label="Interactive: the helix of myoglobin with its map as a pale mesh and a model in which one amino acid is wrong. Buttons choose the mistake: a ring turned, a side chain turned, or atoms left out. A menu chooses the amino acid, and a slider or a dial on the bond sets how far it is turned, or how many atoms are built. Green mesh marks where the data call for more density than the model has, and red mesh where they call for less"></canvas>
+      <div class="controls">
+        <div class="btns" style="grid-column:1/-1"><button id="dfA" aria-pressed="true">A ring turned</button><button id="dfB" aria-pressed="false">A side chain turned</button><button id="dfC" aria-pressed="false">Atoms left out</button></div>
+        <div class="ctl"><label for="dfR">Amino acid</label><select id="dfR"></select></div>
+        <div class="ctl"><label for="dfT">Turned by <output id="dfTO">180°</output></label><input id="dfT" type="range" min="0" max="355" step="5" value="180"></div>
+        <div class="ctl"><label for="dfN">Atoms built <output id="dfNO">0 of 4</output></label><input id="dfN" type="range" min="0" max="4" step="1" value="0"></div>
+        <div class="btns"><button id="dfD">Correct it</button></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Amino acid with the mistake</div><div class="v" id="dfW">–</div></div>
+        <div class="ro"><div class="k">What the difference map says</div><div class="v" id="dfS">–</div></div>
+      </div>
+      <div class="figcap">The same piece of myoglobin as in the map figure, at 2 Å, with a model that is wrong in one amino acid. The pale blue mesh is the map. The green mesh is where the data call for more density than the model has, and the red mesh is where they call for less. Choose a kind of mistake and the amino acid to make it in. A ring or a side chain turns about the bond marked in orange: drag the knob on the dial around that bond, or use the slider. The mark at the top of the dial is the right position, and as the knob comes round to it the red and green shrink and vanish. Atoms left out of the model show as green alone, and the slider builds them back one at a time. Everywhere else the model is right, and there the difference map is flat: it shows the mistakes and nothing else. The difference density here is worked out directly from the true positions of the atoms. In a real structure it is calculated with phases from the model, which makes it weaker (a missing atom comes back at about half its height) and adds noise, so it is usually drawn at three times its typical value.</div>
+    </div>
+    <div class="panel">
+      <canvas id="refCv" aria-label="Interactive: four atoms on a line that can be dragged or refined automatically, the difference map above them, and bars comparing each measured spot with the value calculated from the model"></canvas>
+      <div class="controls">
+        <div class="btns" style="grid-column:1/-1"><button id="rBa">Refine</button><button id="rBs">Shake the atoms</button><button id="rBw">Start from a wrong model</button></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">R</div><div class="v" id="rR">–</div></div>
+        <div class="ro"><div class="k">R-free</div><div class="v" id="rF">–</div></div>
+        <div class="ro"><div class="k">Error in the atom positions</div><div class="v" id="rE">–</div></div>
+      </div>
+      <div class="figcap">A structure of four atoms on a line. The measured spot strengths come from the true structure, which is hidden. Drag the atoms of the model, or press Refine, and watch three things. The dark bars move toward the pale ones as the model comes to explain the measurements. R, the overall disagreement, falls. And the difference map goes flat: green and red mark where the data want more density, or less, than the model has. R-free is the same sum over three spots that the refinement is never allowed to use. The measurements have a little noise in them, so neither number reaches zero. Then start from a wrong model, with atoms in each other's places, and press Refine. It stops at a poor answer. Refinement polishes a model that is nearly right and cannot rescue one that is not. The last read-out can be shown only because this is a test case. It allows for the whole model being slid along the line or mirrored, which the spots cannot detect.</div>
+    </div>
+    <div class="eqgroup">
+      <div class="eqlabel">The math, if you want it</div>
+    <details class="eqcard" id="eq-m_R">
+      <summary class="tag"><span class="eqno">Equation 8.1</span><span class="eqtitle">The R-factor</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mo>=</mo><mfrac><mrow><mo>∑</mo><mo fence="true" stretchy="true" minsize="1.2em" maxsize="1.2em">∣</mo><mtext> </mtext><mi mathvariant="normal">∣</mi><msub><mi>F</mi><mtext>obs</mtext></msub><mi mathvariant="normal">∣</mi><mo>−</mo><mi mathvariant="normal">∣</mi><msub><mi>F</mi><mtext>calc</mtext></msub><mi mathvariant="normal">∣</mi><mtext> </mtext><mo fence="true" stretchy="true" minsize="1.2em" maxsize="1.2em">∣</mo></mrow><mrow><mo>∑</mo><mi mathvariant="normal">∣</mi><msub><mi>F</mi><mtext>obs</mtext></msub><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">R=\frac{\sum\bigl|\,|F_{\text{obs}}|-|F_{\text{calc}}|\,\bigr|}{\sum|F_{\text{obs}}|}</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mtext>obs</mtext></msub></mrow><annotation encoding="application/x-tex">F_{\text{obs}}</annotation></semantics></math></span></dt><dd>The strength of each spot as measured.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mtext>calc</mtext></msub></mrow><annotation encoding="application/x-tex">F_{\text{calc}}</annotation></semantics></math></span></dt><dd>The strength of the same spot calculated from the model.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span></dt><dd>The overall disagreement. R-free is the same sum over a small set of spots kept out of the refinement.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>R is the total disagreement between the measured spots and the model, as a fraction of the total. Refinement lowers it. R alone can be driven down by adding detail the data do not support, so a few percent of the spots are set aside from the start and never used. Their R, called R-free, falls only if the model is truly getting better.</p>
+        <p class="num"><b>In numbers</b>Atoms placed at random give an R of about 59%. A finished structure at 2 Å typically has R near 20% and R-free a few points higher. A wide gap between the two is a warning.</p>
+      </div>
+    </details>
+    <details class="eqcard" id="eq-m_obs">
+      <summary class="tag"><span class="eqno">Equation 8.2</span><span class="eqtitle">Measurements against unknowns</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>N</mi><mtext>spots</mtext></msub><mo>≈</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mtext> </mtext><mfrac><mi>V</mi><msup><mi>d</mi><mn>3</mn></msup></mfrac><mspace width="2em"/><mspace width="2em"/><msub><mi>N</mi><mtext>unknowns</mtext></msub><mo>≈</mo><mn>4</mn><mtext> </mtext><msub><mi>N</mi><mtext>atoms</mtext></msub></mrow><annotation encoding="application/x-tex">N_{\text{spots}}\approx\frac{2\pi}{3}\,\frac{V}{d^{3}}\qquad\qquad N_{\text{unknowns}}\approx 4\,N_{\text{atoms}}</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mtext>spots</mtext></msub></mrow><annotation encoding="application/x-tex">N_{\text{spots}}</annotation></semantics></math></span></dt><dd>The number of different spots out to resolution d, counting a spot and its opposite on the far side of the pattern as one. Symmetry in the crystal lowers it further.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span></dt><dd>The volume of the unit cell.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mtext>unknowns</mtext></msub></mrow><annotation encoding="application/x-tex">N_{\text{unknowns}}</annotation></semantics></math></span></dt><dd>Three coordinates and one B-factor for each atom. The B-factor says how much the atom moves or varies from cell to cell.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>The number of spots rises steeply as the resolution improves: twice the resolution, eight times the spots. The number of unknowns stays the same. At high resolution the data outnumber the unknowns many times. At low resolution they do not, and the model leans on what is already known of bond lengths and angles.</p>
+        <p class="num"><b>In numbers</b>A unit cell 100 Å on each side, half protein and half solvent, holds about 28,500 atoms of protein, not counting hydrogen or the solvent: 114,000 unknowns. At 2 Å it gives about 260,000 spots, a little over two for each unknown. At 3 Å it gives 78,000, fewer than the unknowns.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section id="damage">
+    <div class="sec-head prose">
+      <div class="stepno">9</div>
+      <h2>What limits a structure</h2>
+      <p><b>The crystal.</b> No measurement can show more than the crystal holds. If the molecules are not all in quite the same position and orientation, the fine waves blur out, and the spots at the edge of the detector fade into the background. Much of the work of crystallography is in finding conditions that give better-ordered crystals.</p>
+      <p><b>Radiation damage.</b> The X-rays that give the pattern also destroy the crystal. Each absorbed photon sets loose electrons that break bonds. Crystals are held in a stream of nitrogen gas at 100 K, which slows the spread of the damage many times over, but does not stop it. The fine detail goes first. The guide <a class="guidelink" data-guide="cold" href="radiation-damage-intro.html">Why are we freezing our crystals?</a> explains why the cold helps.</p>
+      <p><b>Many crystals.</b> When no one crystal can give a full data set, the data are gathered from many: a few images from each of hundreds or thousands of small crystals, combined afterward. This is serial crystallography. It spreads the dose so thinly that data can be collected at room temperature, where the molecule moves as it does in life, and with short enough exposures it can follow a reaction as it happens.</p>
+      <p><b>The beam.</b> A crystal can take only so much dose, however it is delivered. What a brighter and smaller beam offers is the chance to use smaller crystals, to pick out the best part of a crystal, and to collect quickly. The guides <a class="guidelink" data-guide="aps" href="how-aps-works.html">How APS works</a> and <a class="guidelink" data-guide="overview" href="how-necat-works.html">How NE-CAT works</a> describe where that beam comes from.</p>
+      <p>Crystallography is not the only route to a structure. Nuclear magnetic resonance, NMR, gives the structures of small proteins in solution, with no crystal at all. Electron microscopy of frozen single particles needs no crystal and does well with large assemblies. Computer prediction gives a good first model for many proteins. Crystallography remains the most direct route to fine detail, and to seeing exactly how a drug, a substrate or a water molecule sits in its site. It is also fast: once crystals are in hand, a data set takes minutes or less.</p>
+    </div>
+    <div class="panel">
+      <canvas id="doseCv" aria-label="Interactive: a diffraction pattern whose outer spots fade as the absorbed dose rises, beside a curve of the brightness left against the detail the spots carry"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="dD">Dose absorbed by the crystal <output id="dDO">0 MGy</output></label><input id="dD" type="range" min="0" max="90" step="1" value="0"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Spots below half brightness</div><div class="v" id="dH">–</div></div>
+        <div class="ro"><div class="k">Brightness left at 2 Å</div><div class="v" id="d2">–</div></div>
+        <div class="ro"><div class="k">Against the 30 MGy limit</div><div class="v" id="dL">–</div></div>
+      </div>
+      <div class="figcap">Left: a diffraction pattern, with the fine detail toward the edge. Right: how much of the original brightness is left at each level of detail. As the dose builds up the spots fade from the outside in. The rule of thumb drawn here is that spots lose half their brightness after about 10 MGy for each ångström of the detail they carry, so the 2 Å spots are down to half at 20 MGy. Real crystals vary around this. Damage to particular groups, such as the breaking of disulfide bonds, starts at much lower doses.</div>
+    </div>
+    <div class="eqgroup">
+      <div class="eqlabel">The math, if you want it</div>
+    <details class="eqcard" id="eq-m_dose">
+      <summary class="tag"><span class="eqno">Equation 9.1</span><span class="eqtitle">How the spots fade with dose</span></summary>
+      <div class="eqn"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo><mo>≈</mo><msub><mi>I</mi><mn>0</mn></msub><mtext>  </mtext><msup><mn>2</mn><mrow><mo>−</mo><mi>D</mi><mi mathvariant="normal">/</mi><msub><mi>D</mi><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>2</mn></mrow></msub></mrow></msup><mspace width="2em"/><mspace width="2em"/><msub><mi>D</mi><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>2</mn></mrow></msub><mo>≈</mo><mn>10</mn><mtext> MGy</mtext><mo>×</mo><mi>d</mi><mtext> </mtext><mo stretchy="false">[</mo><mover accent="true"><mtext>A</mtext><mo>˚</mo></mover><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">I(D)\approx I_0\;2^{-D/D_{1/2}}\qquad\qquad D_{1/2}\approx 10\ \text{MGy}\times d\,[\text{Å}]</annotation></semantics></math></span></div>
+      <div class="body">
+        <dl class="read">
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span></dt><dd>The dose: the energy the crystal has absorbed from the beam for each kilogram of its mass. 1 Gy is 1 joule per kilogram.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>0</mn></msub><mo separator="true">,</mo><mtext> </mtext><mi>I</mi></mrow><annotation encoding="application/x-tex">I_0,\ I</annotation></semantics></math></span></dt><dd>The brightness of a spot at the start and after the dose D.</dd>
+          <dt><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">D_{1/2}</annotation></semantics></math></span></dt><dd>The dose that halves the brightness of spots carrying detail of size d.</dd>
+        </dl>
+        <p class="says"><b>What it says</b>A rule of thumb for crystals held at 100 K. The damage disorders the crystal a little at a time, and fine detail is the first to go. A commonly used limit for a whole data set is 30 MGy. The dose a crystal can take depends very little on how fast it is delivered, so a brighter beam means shorter exposures, not more data from each crystal. More data needs more crystal: a larger one, or many of them.</p>
+        <p class="num"><b>In numbers</b>After 20 MGy the 2 Å spots are at half their brightness and the 4 Å spots at 71%. After 30 MGy: 35% and 59%.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section id="further">
+    <div class="sec-head prose">
+      <h2>Where to go deeper</h2>
+      <ul class="refs">
+        <li>B. Rupp, <i>Biomolecular Crystallography: Principles, Practice, and Application to Structural Biology</i> (2010). The standard full-length textbook.</li>
+        <li>G. Rhodes, <i>Crystallography Made Crystal Clear</i>, 3rd edition (2006). A shorter introduction for readers of structures.</li>
+        <li>J. Drenth, <i>Principles of Protein X-ray Crystallography</i>, 3rd edition (2007). The physics of diffraction and phasing.</li>
+        <li>A. T. Brünger, "Free R value: a novel statistical quantity for assessing the accuracy of crystal structures", <i>Nature</i> 355, 472 (1992). The origin of R-free.</li>
+        <li>R. L. Owen, E. Rudiño-Piñera and E. F. Garman, "Experimental determination of the radiation dose limit for cryocooled protein crystals", <i>Proc. Natl. Acad. Sci. USA</i> 103, 4912 (2006). The 30 MGy limit.</li>
+        <li>M. R. Howells et al., "An assessment of the resolution limitation due to radiation-damage in X-ray diffraction microscopy", <i>J. Electron Spectrosc. Relat. Phenom.</i> 170, 4 (2009). The rule of 10 MGy for each ångström.</li>
+        <li><a href="https://www.rcsb.org" target="_blank" rel="noopener">RCSB Protein Data Bank</a>. The archive of structures, with teaching material at PDB-101.</li>
+      </ul>
+    </div>
+    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="cold" href="radiation-damage-intro.html">Next: Why are we freezing our crystals? →</a></nav>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 17, 2026. Release 1.9. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20MX%20works%20%28release%201.9%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Motion plays unless the reader's system asks for reduced motion. Once the reader has used the button, that choice is kept in the
+// browser (nothing is sent anywhere) and applies on every guide and on later visits.
+let playing = !reduce;
+try{const m=localStorage.getItem('necat-guide-motion');if(m==='1')playing=true;else if(m==='0')playing=false;}catch(e){}
+const mBtn = document.getElementById('motionBtn');
+const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
+setMotionLabel();
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();try{localStorage.setItem('necat-guide-motion',playing?'1':'0');}catch(e){}});
+const $=id=>document.getElementById(id);
+
+// ---- ligne claire palette: flat colors, one ink line ----
+const INK='#1b1b1b', SKY='#dcecf5', WHITE='#ffffff', RED='#d8412f', BLUE='#2f6db5', YEL='#f6c52e', CAP='#ffe98a',
+      GRN='#5aa469', ORG='#ee8a2b', GREY='#b9c2c9', PUR='#8a63c2', LTGRN='#cfe6c9', LTYEL='#ffe9a3', LTRED='#f4c9c2',
+      LTBLUE='#c6d9f0', STEEL='#9fb6cc', FLOOR='#efe3c4', LTORG='#ffd98a', MINT='#bfe0c4';
+const HAND='"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive';
+
+const figs=[];
+function fig(id,aspect,draw,animated=true){
+  const cv=$(id), ctx=cv.getContext('2d');
+  const f={cv,ctx,draw,animated,visible:true,w:0,h:0,t:0};
+  function size(){const dpr=Math.min(window.devicePixelRatio||1,2);const w=cv.clientWidth;if(!w)return;const asp=typeof aspect==='function'?aspect(w):aspect;const h=Math.round(w/asp);
+    cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);f.w=w;f.h=h;f.draw(f);}
+  new ResizeObserver(size).observe(cv);
+  new IntersectionObserver(es=>{es.forEach(e=>f.visible=e.isIntersecting)}).observe(cv);
+  figs.push(f); return f;
+}
+const redrawAll=()=>figs.forEach(f=>f.w&&f.draw(f));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(redrawAll);
+let last=performance.now();
+function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
+  figs.forEach(f=>{if(f.animated&&f.visible&&playing&&f.w){f.t+=dt;f.draw(f);}});requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+// ---- drawing kit ----
+function pen(c,w=2,col=INK){c.strokeStyle=col;c.lineWidth=w;c.lineJoin='round';c.lineCap='round';c.setLineDash([]);}
+function bg(c,w,h,col=SKY){c.fillStyle=col;c.fillRect(0,0,w,h);}
+function rectF(c,x,y,w,h,fill,lw=2){c.fillStyle=fill;c.fillRect(x,y,w,h);pen(c,lw);c.strokeRect(x,y,w,h);}
+function disc(c,x,y,r,fill,lw=2){c.beginPath();c.arc(x,y,r,0,7);if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function poly(c,pts,fill,lw=2){c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function line(c,x0,y0,x1,y1,lw=2,col=INK,dash){pen(c,lw,col);if(dash)c.setLineDash(dash);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.setLineDash([]);}
+function arrow(c,x0,y0,x1,y1,col=INK,lw=2.2,head=8){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);pen(c,lw,col);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();if(L<3)return;
+  const ux=dx/L,uy=dy/L,h=Math.min(head,L*0.7);c.fillStyle=col;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1-ux*h-uy*h*0.5,y1-uy*h+ux*h*0.5);c.lineTo(x1-ux*h+uy*h*0.5,y1-uy*h-ux*h*0.5);c.closePath();c.fill();c.stroke();}
+function fatArrow(c,x0,y0,x1,y1,fill,wd=7){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);if(L<4)return;const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;const hd=Math.min(wd*2.2,L*0.65),hw=wd*1.35;const bx=x1-ux*hd,by=y1-uy*hd;
+  poly(c,[[x0+nx*wd/2,y0+ny*wd/2],[bx+nx*wd/2,by+ny*wd/2],[bx+nx*hw,by+ny*hw],[x1,y1],[bx-nx*hw,by-ny*hw],[bx-nx*wd/2,by-ny*wd/2],[x0-nx*wd/2,y0-ny*wd/2]],fill);}
+function txt(c,s,x,y,size=16,align='left',col=INK){c.fillStyle=col;c.font=`${size}px ${HAND}`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);}
+function cap(c,s,x,y,align='left',size=15){s=s.replace(/[a-z]/g,ch=>ch.toUpperCase());c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+16,ph=size+10;
+  const x0=align==='center'?x-pw/2:align==='right'?x-pw:x;rectF(c,x0,y-ph/2,pw,ph,CAP,2);c.fillStyle=INK;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+8,y+1);}
+function electron(c,x,y,r=8){disc(c,x,y,r,YEL);line(c,x-r*0.45,y,x+r*0.45,y,2);}
+function eye(c,x,y,ang){c.save();c.translate(x,y);c.rotate(ang);c.beginPath();c.ellipse(0,0,15,9,0,0,7);c.fillStyle=WHITE;c.fill();pen(c,2);c.stroke();disc(c,-5,0,4.5,INK);c.restore();}
+function sampleLoop(c,x,y,s=1){line(c,x,y+7*s,x,y+34*s,3);disc(c,x,y,9*s,WHITE);poly(c,[[x-5*s,y],[x,y-5*s],[x+5*s,y],[x,y+5*s]],GRN,1.6);}
+function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fmt(+el.value);cb&&cb();};el.addEventListener('input',up);up();return el;}
+
+// ---------- helpers shared by the Introductory guides. The script of each is the drawing kit, this file, and the guide's own file ----------
+const GDK='#2f7a45';
+function tag(c,s,x,y,align='left',size=15,col=INK){c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+10,ph=size+6,x0=align==='center'?x-pw/2:align==='right'?x-pw:x;
+  c.fillStyle=WHITE;c.fillRect(x0,y-ph/2,pw,ph);pen(c,1.6);c.strokeRect(x0,y-ph/2,pw,ph);c.fillStyle=col;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+5,y+1);}
+// seeded random numbers, so that figures do not flicker
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+const setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+// a color to stand for an X-ray energy between 6 and 20 keV: red for low, violet for high
+const hueE=E=>`hsl(${Math.round(Math.max(0,Math.min(1,(E-6)/14))*270)},78%,50%)`;
+function stopNo(c,n,x,y,r=13){disc(c,x,y,r,RED,2);txt(c,String(n),x,y+1,Math.round(r*1.25),'center','#fff');}
+function wave(c,x0,x1,y,amp,lam,ph,col,lw=2){if(x1<=x0)return;pen(c,lw,col);c.beginPath();for(let x=x0;x<=x1;x+=2){const yy=y+amp*Math.sin((x-x0)/lam*6.2832-ph);x===x0?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();}
+function magnets(c,x0,x1,y,hh,n,flip){const bw=(x1-x0)/n;for(let i=0;i<n;i++)rectF(c,x0+i*bw,y,bw,hh,((i%2)^flip)?RED:BLUE,2);}
+
+const fmtE=le=>{const e=Math.pow(10,le);return e<1e6?(e/1e3).toFixed(e<1e4?1:0)+' keV':e<1e9?(e/1e6).toFixed(e<1e7?1:0)+' MeV':(e/1e9).toFixed(1)+' GeV';};
+// the ring's pipe, seen from above
+function pipe(c,cx,cy,R,pw){pen(c,pw*2,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+pw,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-pw,0,7);c.stroke();}
+// a made-up diffraction pattern: spots on a lattice. Each spot stands for detail of d ångströms, with dEdge at the edge of the picture
+function mkSpots(seed,dEdge){const r=rng(seed),S=[];for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.09||Math.abs(x)>0.97||r()<0.4)continue;S.push({x,y,rad,d:dEdge/rad,s:(0.45+r())*(1-0.5*rad)});}return S;}
+const ICE=[3.90,3.67,3.44,2.67,2.25,2.07,1.95,1.92,1.88];   // spacings of the rings from ordinary (hexagonal) ice, in ångströms
+// draws the pattern in a square of side S. Spots fade with dose by the rule of 10 MGy for each ångström. ice from 0 to 1 adds ice rings
+function drawPattern(c,cx,cy,S,spots,dose,dEdge,ice){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,3);
+  if(ice>0.01)ICE.forEach((d,i)=>{const R=dEdge/d*S/2*0.95;if(R<S/2-2){pen(c,(i<3?3.2:2)*(0.4+0.6*ice),`rgba(70,80,92,${(0.6*ice).toFixed(3)})`);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();}});
+  spots.forEach(s=>{const k=Math.pow(2,-dose/(10*s.d))*(1-0.55*(ice||0));if(k<0.04)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(3)})`;c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.sqrt(k),0,7);c.fill();});
+  disc(c,cx,cy,Math.max(4,S*0.025),GREY,1.6);}
+// a crystal seen side on, as a six-sided shape of half-size s
+function xtal(c,x,y,s,fill=GRN,lw=2){poly(c,[[x-s,y-s*0.45],[x-s*0.35,y-s],[x+s*0.8,y-s*0.8],[x+s,y+s*0.3],[x+s*0.3,y+s],[x-s*0.85,y+s*0.7]],fill,lw);}
+const mix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// numbers in plain words
+const big=n=>n<1e3?String(Math.round(n)):n<1e6?(Math.round(n/Math.pow(10,Math.floor(Math.log10(n))-1))*Math.pow(10,Math.floor(Math.log10(n))-1)).toLocaleString('en-US'):n<1e9?(n/1e6).toFixed(n<1e7?1:0)+' million':n<1e12?(n/1e9).toFixed(n<1e10?1:0)+' billion':(n/1e12).toFixed(n<1e13?1:0)+' trillion';
+// the crystal, the cone of rays that the detector catches, and the detector, seen from the side. D is the distance in mm (150 to 1200)
+const DET_HALF=155.55, LAMBDA=0.9792;   // half the width of the detector face in mm (EIGER2 X 16M), and the wavelength at 12.662 keV in ångströms
+const resAt=D=>LAMBDA/(2*Math.sin(0.5*Math.atan(DET_HALF/D)));
+// Adapted from the diffraction figure of How NE-CAT works: the rays that leave the crystal fan out, each carrying detail of one size
+// (the wider the angle, the finer the detail). The fan is fixed. The detector catches the part of it that lands on its window:
+// the darker wedge and the solid rays. Returns where things are, so that the detector can be dragged (see geoDrag)
+function geoDraw(c,w,h,D,fs,narrow,drag){const sc=(w*(narrow?0.62:0.6))/1200,x0=w*(narrow?0.1:0.08),y=h*(narrow?0.44:0.47),xd=x0+D*sc,hb=DET_HALF*sc,top=narrow?30:34,bot=2*y-top,xr=w-4;
+  const list=narrow?[8,5,3,2,1.5,1.2]:[12,8,6,4,3,2.5,2,1.6,1.3,1.1],ang=d=>2*Math.asin(LAMBDA/(2*d)),amax=ang(list[list.length-1]);
+  const end=(a,sg)=>{const x=Math.min(xr,x0+(y-top)/Math.tan(a));return [x,y-sg*(x-x0)*Math.tan(a)];};
+  // the whole fan, pale, and the part the detector catches, darker
+  const eu=end(amax,1),ed=end(amax,-1),fan=[[x0,y],eu];if(eu[0]<xr){fan.push([xr,top]);fan.push([xr,bot]);}fan.push(ed);
+  c.beginPath();fan.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='#fff6d9';c.fill();
+  const tc=Math.min(Math.atan(DET_HALF/D),amax),yc=(xd-x0)*Math.tan(tc);
+  c.beginPath();c.moveTo(x0,y);c.lineTo(xd,y-yc);c.lineTo(xd,y+yc);c.closePath();c.fillStyle=LTORG;c.fill();
+  list.forEach(d=>{const a=ang(d),hit=(xd-x0)*Math.tan(a),rec=hit<=hb;[1,-1].forEach(sg=>{const e=end(a,sg);
+    line(c,x0,y,e[0],e[1],1.2,'rgba(238,138,43,.75)',[4,5]);if(rec)line(c,x0,y,xd,y-sg*hit,2,ORG);
+    if(sg>0){if(e[0]<xr)txt(c,d+' Å',e[0],top-11,fs,'center',rec?'#b85f10':'#52606b');else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?'#b85f10':'#52606b');}});});
+  arrow(c,0,y,x0-12,y,ORG,3,9);line(c,x0,y,xd,y,1.4,'rgba(238,138,43,.7)');
+  detSide(c,xd,y,sc,drag);
+  list.forEach(d=>{const hit=(xd-x0)*Math.tan(ang(d));if(hit<=hb)[1,-1].forEach(sg=>disc(c,xd,y-sg*hit,2.6,ORG,1));});
+  disc(c,x0,y,narrow?5:7,GRN,2);
+  const yt=h-(narrow?24:28);[150,400,800,1200].forEach(d=>{const x=x0+d*sc;line(c,x,yt-3,x,yt+3,2);txt(c,d===1200?'1.2 m':d+' mm',x,yt+(narrow?12:14),fs,'center','#52606b');});
+  line(c,x0,yt,x0+1200*sc,yt,1.6,'#52606b');
+  cap(c,'crystal',x0,y+(narrow?22:28),'center',fs);
+  tag(c,narrow?'detector: drag it':'detector: drag it left or right',Math.min(w-6,xd+DETG.hd*sc),Math.min(yt-(narrow?14:16),y+DETG.hh*sc/2+(narrow?26:30)),'right',fs);
+  if(!narrow)txt(c,'numbers: the detail each ray carries',xr-2,yt+14,fs,'right','#52606b');
+  return {x0,sc,xd,y,hh:DETG.hh*sc/2,hd:DETG.hd*sc};}
+// lets the detector in a geoDraw figure be dragged along the beam. geo() gives the figure's last geometry, and id is the distance slider
+function geoDrag(cvId,id,geo,setDrag){const cv=$(cvId),sl=$(id),pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};let on=false;
+  const near=e=>{const g=geo();if(!g)return false;const [x,y]=pos(e);return x>g.xd-18&&x<g.xd+g.hd+10&&Math.abs(y-g.y)<g.hh+12;};
+  const set=e=>{const g=geo(),[x]=pos(e),st=+sl.step||5;sl.value=Math.max(+sl.min,Math.min(+sl.max,Math.round((x-g.grab-g.x0)/g.sc/st)*st));sl.dispatchEvent(new Event('input'));};
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{if(!near(e))return;const g=geo();g.grab=pos(e)[0]-g.xd;on=true;setDrag(true);cv.setPointerCapture(e.pointerId);e.preventDefault();});
+  cv.addEventListener('pointermove',e=>{if(on){const g=geo();const gr=g.grab;set(e);geo().grab=gr;}else cv.style.cursor=near(e)?'ew-resize':'';});
+  const stop=()=>{if(on){on=false;setDrag(false);}};cv.addEventListener('pointerup',stop);cv.addEventListener('pointercancel',stop);}
+// ---------- a data collection, image by image ----------
+// A made-up crystal (cell 40 x 45 x 52 Å, tilted) turns about an upright axis in a beam of 1 Å X-rays. Each image shows the lattice
+// points that lie close to the sphere of reflection at that angle, so the spots fall in curved bands, lunes, that move as it turns.
+// rotImage(n) gives the spots on image n (0.3 degrees of turn for each image) as places u, v from -1 to 1 across the detector's window, with a strength a
+let ROT=null;
+function rotImage(n){if(!ROT){const RMAX=1/2.4,TX=Math.tan(2*Math.asin(0.5/2.5)),TY=TX*DETG.fh/DETG.fw,SG=0.0009,PTS=(()=>{
+  const ca=Math.cos(0.30),sa=Math.sin(0.30),cb=Math.cos(0.16),sb=Math.sin(0.16),cg=Math.cos(0.10),sg=Math.sin(0.10),P=[];
+  const hash=(h,k,l)=>{let q=(h*73856093)^(k*19349663)^(l*83492791);q=(q^(q>>>13))>>>0;q=Math.imul(q,1274126177)>>>0;return ((q^(q>>>16))>>>0)/4294967296;};
+  for(let h=-17;h<=17;h++)for(let k=-19;k<=19;k++)for(let l=-22;l<=22;l++){if(!h&&!k&&!l)continue;let x=h/40,y=k/45,z=l/52;const r=Math.hypot(x,y,z);if(r>RMAX)continue;
+    let t=x*ca-y*sa;y=x*sa+y*ca;x=t;t=y*cb-z*sb;z=y*sb+z*cb;y=t;t=x*cg+z*sg;z=-x*sg+z*cg;x=t;   // tilt the lattice
+    P.push(x,y,z,Math.pow(hash(h,k,l),1.6)*Math.exp(-2.2*(r/RMAX)*(r/RMAX)));}
+  return new Float32Array(P);})();ROT={RMAX,TX,TY,SG,PTS};}
+  const {TX,TY,SG,PTS}=ROT,FW=DETG.fw,FH=DETG.fh;const ph=n*0.3*Math.PI/180,cs=Math.cos(ph),sn=Math.sin(ph),S=[],px=FW/(DETG.mw+DETG.gx),py=FH/(DETG.mh+DETG.gy);
+  for(let i=0;i<PTS.length;i+=4){const x=PTS[i]*cs+PTS[i+2]*sn,y=PTS[i+1],kz=-PTS[i]*sn+PTS[i+2]*cs+1;if(kz<=0)continue;
+    const e=Math.sqrt(x*x+y*y+kz*kz)-1;if(e>3*SG||e<-3*SG)continue;const u=x/kz/TX,v=y/kz/TY;if(u<-1||u>1||v<-1||v>1||u*u+v*v<0.004)continue;
+    // nothing is counted in the gaps between the modules
+    const mx=((u+1)/2*FW)%(DETG.mw+DETG.gx),my=((v+1)/2*FH)%(DETG.mh+DETG.gy);if(mx>DETG.mw||my>DETG.mh)continue;
+    const a=PTS[i+3]*Math.exp(-e*e/(2*SG*SG));if(a>0.02)S.push({u,v,a});}
+  return S;}
+// ---------- the detector on 24-ID-C, an EIGER2 XE 16M, as a cartoon (sizes in millimeters, from the manufacturer's specification) ----------
+// Its sensitive area holds 32 sensor modules, 4 across and 8 down. The gaps between them (12 pixels between columns, 38 between rows)
+// count nothing. The housing is 400 wide, 430 high and 500 deep: black, with a blue frame around a white window that fills most of the
+// front, as in the manufacturer's picture of it. The width of the frame is judged from that picture.
+const DETG={fw:311.1,fh:327.2,hw:400,hh:430,hd:500,mw:77.1,mh:38.4,gx:0.9,gy:2.85,body:'#2c2f35',frame:'#3f63ad',gap:'#c3ccd4',rim:0.04};
+// face on, with its middle at (cx, cy) and z pixels to the millimeter. Returns the box of the sensitive area, for the spots
+function detFace(c,cx,cy,z,housing=true){const G=DETG,W=G.fw*z,H=G.fh*z,x=cx-W/2,y=cy-H/2;
+  if(housing){const hw=G.hw*z,hh=G.hh*z,r=Math.min(16,hw*0.05),m=hw*G.rim;
+    c.beginPath();c.roundRect(cx-hw/2,cy-hh/2,hw,hh,r);c.fillStyle=G.frame;c.fill();pen(c,Math.min(3,Math.max(1.6,z*3)));c.stroke();
+    c.beginPath();c.roundRect(cx-hw/2+m,cy-hh/2+m,hw-2*m,hh-2*m,Math.max(1,r-m));c.fillStyle=WHITE;c.fill();pen(c,1.2);c.stroke();}
+  else rectF(c,x,y,W,H,WHITE,2);
+  // the sensitive area, and the gaps between its modules
+  c.fillStyle=G.gap;for(let i=1;i<4;i++)c.fillRect(x+(i*G.mw+(i-1)*G.gx)*z,y,Math.max(1,G.gx*z),H);
+  for(let j=1;j<8;j++)c.fillRect(x,y+(j*G.mh+(j-1)*G.gy)*z,W,Math.max(1.2,G.gy*z));
+  pen(c,1.2,'#9aa7b3');c.strokeRect(x,y,W,H);
+  return {x,y,w:W,h:H};}
+// from the side, with the middle of its window at (xf, cy): the window faces left and the black housing runs back to the right
+function detSide(c,xf,cy,z,lit){const G=DETG,hh=G.hh*z,hd=G.hd*z,r=Math.min(10,hh*0.06),fb=Math.max(4,hd*0.06);
+  rectF(c,xf+hd*0.12,cy+hh/2,hd*0.76,Math.max(5,hh*0.07),'#5d6a73',2);                       // the base it stands on
+  pen(c,Math.max(2.5,hh*0.035),'#3f6ea8');c.beginPath();c.moveTo(xf+hd,cy-hh*0.2);c.bezierCurveTo(xf+hd*1.18,cy-hh*0.2,xf+hd*1.16,cy+hh*0.5,xf+hd*1.3,cy+hh*0.62);c.stroke();   // a cooling hose at the back
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.fillStyle=lit?'#3d424b':G.body;c.fill();pen(c,2.4);c.stroke();
+  c.save();c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.clip();c.fillStyle=G.frame;c.fillRect(xf,cy-hh/2,fb,hh);c.restore();     // the blue frame at the front
+  line(c,xf+fb+3,cy-hh/2+Math.max(3,hh*0.04),xf+hd-r,cy-hh/2+Math.max(3,hh*0.04),1.4,'rgba(255,255,255,.28)');
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);pen(c,2.4);c.stroke();
+  // the maker's name and the model, where they are on the real housing, in plain lettering (not the maker's own lettering)
+  if(hh>70){const fz=hh*0.085,tx=xf+hd*0.12,ty=cy+hh*0.12;c.fillStyle='rgba(255,255,255,.5)';c.textAlign='left';c.textBaseline='middle';
+    c.font=`600 ${fz.toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('DECTRIS',tx,ty);c.fillText('EIGER2 XE',tx,ty+fz*1.15);
+    c.font=`700 ${(fz*1.7).toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('16M',tx,ty+fz*2.75);}
+  rectF(c,xf-Math.max(2,hd*0.012),cy-hh*(0.5-G.rim),Math.max(4,hd*0.024),hh*(1-2*G.rim),WHITE,1.6);}                    // the window, edge on
+// a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
+function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
+  const setEq=o=>{eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}};
+  eqBtn.addEventListener('click',()=>setEq(!eqOpen));try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}}
+// ---------- myoglobin, the protein used in the figures of the five-minute guides ----------
+// Positions are from entry 1MBN in the Protein Data Bank (sperm whale myoglobin; Watson, 1969), turned to a convenient view.
+// MB.ca: one point for each of the 153 amino acids (x, y on the page and z toward the reader, in ångströms). MB.heme: the ring of the heme group and its iron.
+// MB.helices: the eight helices, A to H, as first and last amino acid, from the HELIX records of the entry.
+// MB.helP: every atom of amino acids 4 to 16 in the same view as MB.ca (same order as MB.hel).
+// MB.rot and MB.off turn MB.hel into MB.helP: helP = rot x hel + off.
+// MB.hel: every atom of amino acids 4 to 16, part of the first helix, with the helix lying along x: [x, y, z, atomic number].
+const MB={ca:[[-17.5,-7.3,2.5],[-17.5,-3.5,2.6],[-20.5,-1.2,1.9],[-21.9,0.5,-1.2],[-21.4,3.8,0.8],[-17.9,2.9,2.1],[-16.6,1.9,-1.4],[-18.0,5.4,-2.2],[-15.7,7.0,0.3],[-12.7,4.7,-0.4],[-13.0,5.6,-4.1],[-13.2,9.4,-4.1],[-10.0,9.6,-1.9],[-8.4,7.4,-4.6],[-9.3,9.7,-7.4],[-7.5,12.4,-5.4],[-4.4,10.3,-4.7],[-4.5,9.8,-8.5],[-3.8,13.5,-8.9],[-0.2,13.0,-7.9],[0.7,9.3,-7.8],[4.5,9.5,-7.7],[4.3,12.1,-4.9],[2.2,9.8,-2.8],[4.2,6.7,-3.5],[7.4,8.6,-2.6],[5.4,9.6,0.5],[4.2,6.2,1.6],[7.6,4.7,0.8],[9.5,7.1,2.9],[7.0,6.8,5.7],[7.4,3.0,5.6],[11.2,3.1,5.3],[11.6,5.5,8.2],[9.1,3.8,10.4],[10.1,0.1,9.7],[13.7,-0.1,8.8],[13.3,-3.8,8.3],[11.0,-3.4,5.2],[13.6,-1.5,3.1],[16.4,-3.9,4.1],[14.4,-6.2,1.9],[14.6,-4.1,-1.3],[18.1,-4.6,-2.7],[17.6,-1.7,-5.1],[17.1,0.6,-2.1],[19.1,-0.5,0.9],[21.9,1.8,-0.2],[19.5,4.6,0.6],[20.7,6.4,3.8],[18.6,9.6,4.4],[15.2,11.1,3.8],[17.0,13.4,1.6],[18.5,10.6,-0.4],[15.1,8.8,-0.7],[13.1,11.7,-2.0],[16.1,12.4,-4.2],[16.2,9.0,-5.9],[14.1,8.5,-9.0],[14.0,4.7,-9.0],[12.2,5.1,-5.7],[9.8,7.5,-7.5],[9.1,4.9,-10.2],[8.7,2.4,-7.4],[5.9,4.2,-5.5],[4.3,4.3,-9.0],[4.5,0.6,-9.6],[2.9,-0.0,-6.3],[0.2,2.7,-6.2],[-0.9,1.4,-9.6],[-1.5,-2.2,-8.6],[-3.1,-0.8,-5.4],[-5.8,1.3,-7.2],[-6.4,-1.5,-9.6],[-7.6,-3.5,-6.5],[-9.6,-0.8,-4.9],[-11.5,0.1,-7.9],[-12.6,-3.6,-8.0],[-14.5,-3.1,-4.8],[-13.5,-6.4,-3.4],[-13.8,-8.6,-6.5],[-10.1,-8.1,-6.8],[-8.8,-11.6,-7.2],[-7.4,-11.0,-10.7],[-4.8,-8.7,-9.4],[-4.1,-10.1,-5.9],[-3.3,-13.6,-6.7],[-0.1,-12.9,-8.7],[0.9,-10.4,-6.0],[0.4,-12.8,-3.1],[2.6,-15.3,-4.9],[5.1,-12.7,-5.9],[5.3,-11.4,-2.3],[5.3,-14.9,-0.6],[7.6,-16.6,-3.1],[10.4,-14.2,-4.1],[9.9,-10.8,-2.2],[9.6,-12.4,1.3],[7.2,-9.8,2.6],[5.4,-10.4,6.0],[1.7,-9.7,6.4],[3.2,-7.5,9.1],[4.5,-5.4,6.2],[1.2,-5.2,4.4],[-0.0,-3.9,7.7],[3.0,-1.6,8.1],[2.7,-0.3,4.6],[-1.1,0.0,5.2],[-0.2,2.4,8.0],[2.1,4.9,6.2],[-0.8,4.7,3.5],[-3.4,6.3,5.8],[-1.0,8.6,7.6],[0.1,9.7,4.1],[-3.5,10.1,3.1],[-4.3,12.0,6.2],[-1.1,14.1,5.9],[-2.0,15.0,2.4],[-5.8,15.5,2.5],[-6.7,17.4,5.6],[-10.3,18.4,4.6],[-11.0,15.5,2.1],[-10.3,12.8,4.8],[-12.1,12.9,8.0],[-13.3,9.7,9.8],[-15.9,8.5,7.3],[-13.2,8.2,4.8],[-10.5,6.9,7.2],[-12.3,3.8,8.3],[-13.7,2.9,4.7],[-10.0,3.1,3.8],[-8.8,0.9,6.7],[-11.6,-1.6,6.0],[-10.5,-1.8,2.4],[-6.9,-2.4,3.5],[-7.5,-5.3,6.0],[-9.4,-6.7,3.1],[-6.4,-6.7,0.8],[-4.7,-8.0,3.9],[-7.2,-10.8,4.4],[-6.9,-12.4,0.9],[-3.2,-12.0,0.5],[-3.1,-13.8,3.9],[-5.2,-16.7,2.8],[-3.2,-17.3,-0.3],[-0.0,-17.3,1.8],[-1.5,-20.1,3.9],[-2.5,-22.1,0.9],[1.1,-21.6,0.0],[2.8,-22.2,3.3],[3.6,-18.7,4.3],[2.0,-16.8,7.2],[3.4,-17.2,10.7]],heme:[[7.8,-5.7,-6.4],[3.1,-4.3,-5.6],[4.0,-3.8,-0.9],[8.7,-5.2,-1.7],[6.4,-5.3,-6.6],[5.7,-5.4,-7.9],[4.4,-4.9,-7.7],[4.2,-4.7,-6.3],[2.9,-4.1,-4.2],[1.7,-3.6,-3.6],[1.9,-3.5,-2.2],[3.3,-3.9,-2.0],[5.4,-4.2,-0.6],[6.0,-4.1,0.7],[7.4,-4.6,0.5],[7.4,-4.8,-0.9],[8.8,-5.5,-3.0],[10.1,-5.8,-3.6],[9.8,-6.0,-5.0],[8.4,-5.7,-5.1],[5.5,-4.9,-5.5],[4.0,-4.2,-3.3],[6.2,-4.6,-1.6],[7.8,-5.3,-3.9],[5.8,-5.0,-3.6]],hemeBonds:[[0,4],[0,19],[1,7],[1,8],[2,11],[2,12],[3,15],[3,16],[4,5],[4,20],[5,6],[6,7],[7,20],[8,9],[8,21],[9,10],[10,11],[11,21],[12,13],[12,22],[13,14],[14,15],[15,22],[16,17],[16,23],[17,18],[18,19],[19,23],[20,24],[21,24],[22,24],[23,24]],helices:[[3,18],[20,35],[36,42],[51,57],[58,77],[86,94],[100,118],[125,148]],piece:[4,16],
+  helP:[[-21.7,-0.2,0.0],[-21.9,0.5,-1.2],[-21.3,1.9,-0.8],[-20.4,2.4,-1.5],[-23.1,1.0,-2.0],[-23.1,0.8,-3.5],[-21.8,-0.1,-4.1],[-21.8,-1.1,-3.3],[-21.1,0.3,-4.9],[-21.8,2.5,0.2],[-21.4,3.8,0.8],[-19.9,3.9,0.9],[-19.2,4.8,0.4],[-19.3,2.9,1.7],[-17.9,2.9,2.1],[-16.9,2.8,0.9],[-15.9,3.4,1.0],[-17.7,1.7,3.1],[-18.3,1.9,4.5],[-18.2,0.6,5.4],[-17.8,-0.3,4.8],[-18.7,0.7,6.5],[-17.4,2.0,-0.2],[-16.6,1.9,-1.4],[-16.6,3.4,-1.9],[-15.5,4.0,-2.2],[-17.0,0.9,-2.4],[-16.6,-0.6,-1.9],[-17.4,-1.7,-1.6],[-15.3,-1.1,-1.9],[-16.6,-2.8,-1.3],[-15.3,-2.5,-1.4],[-14.0,-0.5,-2.1],[-14.3,-3.3,-1.3],[-13.0,-1.4,-2.0],[-13.0,-2.7,-1.6],[-17.8,4.1,-1.9],[-18.0,5.4,-2.2],[-16.8,6.3,-1.8],[-16.1,7.0,-2.5],[-19.0,6.0,-3.1],[-18.5,7.2,-3.8],[-19.5,7.9,-4.8],[-19.2,9.1,-5.2],[-20.5,7.1,-5.1],[-16.6,6.3,-0.4],[-15.7,7.0,0.3],[-14.3,6.6,-0.1],[-13.3,7.5,-0.4],[-15.5,6.7,1.8],[-16.1,7.5,2.8],[-17.0,8.6,2.1],[-16.8,6.8,3.8],[-14.1,5.3,-0.0],[-12.7,4.7,-0.4],[-12.3,5.2,-1.8],[-11.1,5.6,-1.9],[-12.2,3.3,-0.2],[-11.0,3.0,-1.0],[-12.1,2.9,1.3],[-13.2,5.2,-2.7],[-13.0,5.6,-4.1],[-12.6,7.1,-4.5],[-11.8,7.3,-5.4],[-13.7,4.9,-5.2],[-13.4,3.5,-5.4],[-14.5,2.8,-6.2],[-12.1,3.3,-6.1],[-13.3,8.0,-3.8],[-13.2,9.4,-4.1],[-11.8,9.9,-3.6],[-11.2,10.8,-4.3],[-14.2,10.0,-3.1],[-14.1,11.5,-3.1],[-14.6,12.4,-4.1],[-13.8,12.3,-2.0],[-14.4,13.7,-3.7],[-13.9,13.7,-2.5],[-11.3,9.4,-2.6],[-10.0,9.6,-1.9],[-8.9,9.2,-3.0],[-8.0,9.8,-3.3],[-9.3,9.3,-0.6],[-8.0,10.1,-0.4],[-10.3,9.3,0.5],[-9.2,8.0,-3.5],[-8.4,7.4,-4.6],[-8.1,8.4,-5.6],[-7.0,8.8,-5.9],[-8.5,5.8,-4.8],[-7.4,5.2,-5.6],[-7.4,4.9,-6.8],[-6.2,4.6,-5.1],[-6.1,4.2,-7.2],[-5.5,4.1,-6.1],[-5.7,4.6,-3.7],[-4.1,3.5,-6.0],[-4.4,4.0,-3.7],[-3.6,3.6,-4.7],[-9.2,8.7,-6.3],[-9.3,9.7,-7.4],[-8.4,10.9,-7.1],[-7.7,11.5,-8.1],[-10.6,10.5,-7.6],[-8.3,11.3,-5.9],[-7.5,12.4,-5.4],[-6.1,12.1,-5.3],[-5.2,12.9,-5.8],[-8.3,12.7,-4.1],[-9.4,13.8,-4.2],[-10.2,14.1,-2.9],[-11.4,14.8,-3.1],[-12.1,15.1,-1.9]],
+  rot:[[0.7686,-0.5092,0.3873],[0.5281,0.8467,0.0654],[-0.3612,0.1542,0.9196]],off:[-13.75, 5.71, -2.39],
+  hel:[[-10.1,-0.6,-1.3,7],[-9.4,-0.0,-2.3,6],[-8.4,0.8,-1.7,6],[-7.2,0.8,-2.0,8],[-9.8,0.8,-3.6,6],[-9.3,0.4,-4.9,6],[-8.7,-1.0,-5.0,6],[-9.4,-1.8,-4.4,8],[-7.6,-1.2,-5.5,8],[-8.9,1.8,-0.9,7],[-8.0,2.8,-0.2,6],[-6.9,2.1,0.6,6],[-5.7,2.4,0.4,8],[-7.2,1.1,1.4,7],[-6.3,0.4,2.3,6],[-5.2,-0.3,1.6,6],[-4.1,-0.3,2.1,8],[-7.1,-0.5,3.2,6],[-8.0,0.1,4.3,6],[-8.9,-0.9,5.1,6],[-8.8,-1.9,4.7,8],[-9.6,-0.4,5.9,8],[-5.5,-0.9,0.4,7],[-4.6,-1.6,-0.4,6],[-3.6,-0.4,-0.8,6],[-2.3,-0.5,-0.6,8],[-5.1,-2.4,-1.6,6],[-5.7,-3.8,-1.1,6],[-7.0,-4.3,-1.2,6],[-5.0,-4.9,-0.6,6],[-7.1,-5.6,-0.6,7],[-5.9,-6.0,-0.3,6],[-3.6,-5.1,-0.2,6],[-5.5,-7.2,0.2,6],[-3.3,-6.3,0.2,6],[-4.2,-7.4,0.5,6],[-4.1,0.7,-1.2,7],[-3.5,1.9,-1.5,6],[-2.3,2.1,-0.6,6],[-1.1,2.3,-1.0,8],[-3.6,2.8,-2.7,6],[-2.4,3.5,-3.1,6],[-2.4,4.4,-4.3,6],[-1.4,5.2,-4.5,8],[-3.4,4.2,-5.0,7],[-2.6,2.2,0.7,7],[-1.7,2.5,1.8,6],[-0.8,1.4,2.0,6],[0.5,1.6,2.1,8],[-2.3,2.3,3.2,6],[-2.7,3.5,4.0,6],[-2.6,4.8,3.1,6],[-4.0,3.4,4.5,6],[-1.3,0.2,2.0,7],[-0.5,-1.1,2.2,6],[0.6,-1.1,1.1,6],[1.8,-1.3,1.4,8],[-0.9,-2.5,2.4,6],[0.2,-3.5,2.2,6],[-1.5,-2.7,3.8,6],[0.2,-0.7,-0.1,7],[1.2,-0.7,-1.3,6],[2.4,0.2,-1.4,6],[3.5,-0.1,-1.9,8],[0.7,-1.1,-2.6,6],[0.2,-2.5,-2.8,6],[-0.7,-2.7,-4.0,6],[1.4,-3.5,-2.9,6],[2.1,1.5,-1.0,7],[3.0,2.6,-1.1,6],[4.1,2.4,-0.1,6],[5.3,2.7,-0.4,8],[2.2,3.7,-0.6,6],[3.0,5.0,-0.4,6],[3.5,5.8,-1.5,7],[3.4,5.7,0.8,6],[4.2,6.9,-0.9,6],[4.2,6.8,0.4,7],[3.9,1.8,1.0,7],[4.8,1.5,2.1,6],[5.7,0.4,1.6,6],[6.9,0.4,1.7,8],[4.7,1.0,3.6,6],[6.0,1.1,4.4,6],[3.5,1.7,4.3,6],[5.1,-0.6,0.9,7],[5.8,-1.6,0.2,6],[6.9,-1.1,-0.6,6],[8.1,-1.3,-0.4,8],[4.9,-2.9,-0.2,6],[5.8,-4.2,-0.5,6],[6.1,-4.7,-1.7,6],[6.2,-5.2,0.4,6],[6.8,-5.9,-1.5,7],[6.8,-6.1,-0.3,6],[6.1,-5.2,1.8,6],[7.5,-7.4,0.2,6],[6.8,-6.4,2.3,6],[7.5,-7.3,1.6,6],[6.5,-0.4,-1.7,7],[7.3,0.3,-2.6,6],[8.6,0.9,-1.9,6],[9.7,1.0,-2.5,8],[6.9,1.6,-3.3,6],[8.3,1.4,-0.7,7],[9.4,2.0,0.1,6],[10.3,1.0,0.7,6],[11.6,1.2,0.7,8],[8.5,2.9,1.0,6],[8.3,4.3,0.5,6],[7.4,5.2,1.4,6],[6.9,6.4,0.9,6],[6.0,7.2,1.7,7]],helBonds:[[0,1],[1,2],[1,4],[2,3],[2,9],[4,5],[5,6],[6,7],[6,8],[9,10],[10,11],[11,12],[11,13],[13,14],[14,15],[14,17],[15,16],[15,22],[17,18],[18,19],[19,20],[19,21],[22,23],[23,24],[23,26],[24,25],[24,36],[26,27],[27,28],[27,29],[28,30],[29,31],[29,32],[30,31],[31,33],[32,34],[33,35],[34,35],[36,37],[37,38],[37,40],[38,39],[38,45],[40,41],[41,42],[42,43],[42,44],[45,46],[46,47],[46,49],[47,48],[47,53],[49,50],[50,51],[50,52],[53,54],[54,55],[54,57],[55,56],[55,60],[57,58],[57,59],[60,61],[61,62],[61,64],[62,63],[62,68],[64,65],[65,66],[65,67],[68,69],[69,70],[69,72],[70,71],[70,78],[72,73],[73,74],[73,75],[74,76],[75,77],[76,77],[78,79],[79,80],[79,82],[80,81],[80,85],[82,83],[82,84],[85,86],[86,87],[86,89],[87,88],[87,99],[89,90],[90,91],[90,92],[91,93],[92,94],[92,95],[93,94],[94,96],[95,97],[96,98],[97,98],[99,100],[100,101],[100,103],[101,102],[101,104],[104,105],[105,106],[105,108],[106,107],[108,109],[109,110],[110,111],[111,112]]};
+const mbMix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// the chain as a smooth tube through the 153 points: helices blue, the loops between them grey, far parts drawn first.
+// s is pixels to the ångström. hi, if given, is a range of amino acids to pick out in orange
+const MBPC=(()=>{const P=MB.ca,n=P.length,Q=[P[0]],K=6,inH=i=>MB.helices.some(([a,b])=>i+1>=a&&i+1<=b),S=[];
+  for(let i=0;i<n-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(n-1,i+2)];
+    for(let k=1;k<=K;k++){const t=k/K,t2=t*t,t3=t2*t;Q.push([0,1,2].map(d=>0.5*(2*p1[d]+(-p0[d]+p2[d])*t+(2*p0[d]-5*p1[d]+4*p2[d]-p3[d])*t2+(-p0[d]+3*p1[d]-3*p2[d]+p3[d])*t3)));}}
+  // one piece of tube for each amino acid, from halfway to the one before to halfway to the one after
+  for(let i=0;i<n;i++){const a=Math.max(0,i*K-K/2),b=Math.min(Q.length-1,i*K+K/2);const h=inH(i),lo=i>0&&inH(i-1)===h?4:0,up=i<n-1&&inH(i+1)===h?4:0;S.push({core:Q.slice(a,b+1),ext:Q.slice(Math.max(0,a-lo),Math.min(Q.length,b+1+up)),z:P[i][2],mid:P[i],h,res:i+1});}
+  MB.hemeBonds.forEach(([i,j])=>{const a=MB.heme[i],b=MB.heme[j];S.push({core:[a,b],ext:[a,b],z:(a[2]+b[2])/2,mid:a,heme:true});});
+  return S.sort((u,v)=>u.z-v.z);})();
+// tf, if given, replaces the plain view: it takes a point [x, y, z] in ångströms and returns where it is drawn, [x, y] in pixels and its depth z in ångströms
+function drawMb(c,cx,cy,s,hi,tf){c.save();c.lineCap='round';c.lineJoin='round';const P=tf||(p=>[cx+p[0]*s,cy-p[1]*s,p[2]]);
+  const path=pts=>{c.beginPath();pts.forEach((p,i)=>{const q=P(p);i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});c.stroke();};
+  const L=tf?MBPC.map(g=>({g,z:P(g.mid)[2]})).sort((u,v)=>u.z-v.z):MBPC.map(g=>({g,z:g.z}));
+  L.forEach(({g,z})=>{const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
+    // the ink edge of this piece, then its color, run a little way into neighbors of the same width so that the pieces join without a seam
+    c.strokeStyle=INK;c.lineWidth=lw+2*ow;path(g.core);
+    c.strokeStyle=g.heme?RED:on?ORG:g.h?mbMix('#7ea3d6','#c6d9f0',k):mbMix('#8d979e','#d5dbdf',k);c.lineWidth=lw;path(g.ext);});
+  c.restore();}
+// where a given amino acid, or the iron of the heme, falls on the page
+const mbAt=(i,cx,cy,s)=>[cx+MB.ca[i-1][0]*s,cy-MB.ca[i-1][1]*s], mbFe=(cx,cy,s)=>{const f=MB.heme[MB.heme.length-1];return [cx+f[0]*s,cy-f[1]*s];};
+
+// ---------- maps of the piece, used by How do we see a protein? and How MX works ----------
+// the piece of myoglobin used for the maps: amino acids 4 to 16 of its first helix, seen from the side and flattened onto the page
+const MOL={at:MB.hel.map(([x,y,z,e])=>({x,y:-y,w:z,z:e})),bonds:MB.helBonds};
+const mapScale=(W,H)=>Math.min(W/25.5,H/18),MAPC=[0.75,0.1];   // the piece is about 22 by 15 ångströms; MAPC is its middle
+const MCACHE=new Map();
+// The map at detail d, seen from the side. Each atom is spread into a round cloud whose width grows with d, the clouds are added up in
+// three dimensions, and each point of the picture takes the highest value along the line of sight. The outline drawn is where that
+// value passes a set share (lv, 40% unless given) of the map's highest peak, so it is the silhouette of the surface a crystallographer would draw around the map.
+function mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms=0,atoms=MOL.at,Labs=0){const sg=Math.hypot(0.28*d,0.25),cut=3*sg,dz=Math.max(0.35,0.6*sg),nz=Math.ceil(16/dz)+1,z0=-8,G=new Float32Array(nx*ny*nz),h=step/sc,gx0=(X0-cx)/sc,gy0=(Y0-cy)/sc,k=1/(2*sg*sg);
+  for(const a of atoms){const i0=Math.max(0,Math.ceil((a.x-cut-gx0)/h)),i1=Math.min(nx-1,Math.floor((a.x+cut-gx0)/h)),j0=Math.max(0,Math.ceil((a.y-cut-gy0)/h)),j1=Math.min(ny-1,Math.floor((a.y+cut-gy0)/h)),k0=Math.max(0,Math.ceil((a.w-cut-z0)/dz)),k1=Math.min(nz-1,Math.floor((a.w+cut-z0)/dz));
+    const ex=[],ez=[];for(let i=i0;i<=i1;i++){const u=gx0+i*h-a.x;ex.push(Math.exp(-u*u*k));}for(let q=k0;q<=k1;q++){const u=z0+q*dz-a.w;ez.push(Math.exp(-u*u*k));}
+    for(let j=j0;j<=j1;j++){const u=gy0+j*h-a.y,ey=a.z*Math.exp(-u*u*k);for(let i=i0;i<=i1;i++){const e=ey*ex[i-i0],o=(j*nx+i)*nz;for(let q=k0;q<=k1;q++)G[o+q]+=e*ez[q-k0];}}}
+  const v=new Float32Array(nx*ny);let top=0;for(let p=0;p<nx*ny;p++){let m=0;for(let q=0;q<nz;q++){const g=G[p*nz+q];if(g>m)m=g;}v[p]=m;if(m>top)top=m;}
+  const L=Labs||lv*top;if(!ms)return {v,L,top};
+  // the wire mesh: the surface at level L, cut by three sets of flat sheets a distance ms apart, as crystallographic programs draw a map.
+  // Sheets that face the viewer give closed loops. Sheets seen edge on give straight lines across the inside of the outline.
+  const S=[],seg=(a,b,c2,d2)=>S.push(X0+a*step,Y0+b*step,X0+c2*step,Y0+d2*step),kz=Math.max(1,Math.round(ms/dz)),kr=Math.max(2,Math.round(ms/h));
+  for(let q=(nz>>1)%kz;q<nz;q+=kz)for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=G[(j*nx+i)*nz+q],b=G[(j*nx+i+1)*nz+q],e=G[((j+1)*nx+i+1)*nz+q],f=G[((j+1)*nx+i)*nz+q];
+    if(a<=L&&b<=L&&e<=L&&f<=L)continue;const p=[];
+    if((a>L)!==(b>L))p.push([i+(L-a)/(b-a),j]);if((b>L)!==(e>L))p.push([i+1,j+(L-b)/(e-b)]);if((f>L)!==(e>L))p.push([i+(L-f)/(e-f),j+1]);if((a>L)!==(f>L))p.push([i,j+(L-a)/(f-a)]);
+    if(p.length===2)seg(p[0][0],p[0][1],p[1][0],p[1][1]);
+    else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>seg(p[u][0],p[u][1],p[w2][0],p[w2][1]));}}
+  for(let j=kr>>1;j<ny;j+=kr){let s0=-1;for(let i=0;i<nx;i++){const a=v[j*nx+i],on=a>L;if(on&&s0<0)s0=i?i-1+(L-v[j*nx+i-1])/(a-v[j*nx+i-1]):0;
+    if(s0>=0&&(!on||i===nx-1)){seg(s0,j,on?i:i-1+(L-v[j*nx+i-1])/(a-v[j*nx+i-1]),j);s0=-1;}}}
+  for(let i=kr>>1;i<nx;i+=kr){let s0=-1;for(let j=0;j<ny;j++){const a=v[j*nx+i],on=a>L;if(on&&s0<0)s0=j?j-1+(L-v[(j-1)*nx+i])/(a-v[(j-1)*nx+i]):0;
+    if(s0>=0&&(!on||j===ny-1)){seg(i,s0,i,on?j:j-1+(L-v[(j-1)*nx+i])/(a-v[(j-1)*nx+i]));s0=-1;}}}
+  return {v,L,top,segs:new Float32Array(S)};}
+// opt, if given, draws the mesh of another set of atoms: {atoms, key (a name for the cache), col, L (the level itself, not a share of the peak)}
+function drawMap(c,X0,Y0,W,H,d,step=4,lv=0.4,wire=false,opt=null){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc,nx=Math.ceil(W/step)+1,ny=Math.ceil(H/step)+1,ms=wire?Math.max(0.5,Math.min(1.6,d/3)):0,key=[Math.round(W),Math.round(H),step,d.toFixed(2),lv.toFixed(2),ms?'w':'',opt?opt.key:''].join();
+  let m=MCACHE.get(key);
+  if(!m){m=opt?mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms,opt.atoms,opt.L):mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms);if(MCACHE.size>80)MCACHE.clear();MCACHE.set(key,m);}
+  const v=m.v,L=m.L;
+  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  if(m.segs){const s=m.segs;pen(c,opt&&opt.lw||1.1,opt&&opt.col||BLUE);c.beginPath();for(let i=0;i<s.length;i+=4){c.moveTo(s[i],s[i+1]);c.lineTo(s[i+2],s[i+3]);}c.stroke();c.restore();return m;}
+  c.fillStyle=LTBLUE;for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i];if((a+b+e+f)/4>L)c.fillRect(X0+i*step,Y0+j*step,step+0.5,step+0.5);}
+  pen(c,1.7,BLUE);c.beginPath();
+  for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i],x=X0+i*step,y=Y0+j*step,p=[];
+    if((a>L)!==(b>L))p.push([x+step*(L-a)/(b-a),y]);if((b>L)!==(e>L))p.push([x+step,y+step*(L-b)/(e-b)]);
+    if((f>L)!==(e>L))p.push([x+step*(L-f)/(e-f),y+step]);if((a>L)!==(f>L))p.push([x,y+step*(L-a)/(f-a)]);
+    if(p.length===2){c.moveTo(p[0][0],p[0][1]);c.lineTo(p[1][0],p[1][1]);}
+    else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>{c.moveTo(p[u][0],p[u][1]);c.lineTo(p[w2][0],p[w2][1]);});}}
+  c.stroke();c.restore();return m;}
+const atomCol=z=>z===8?RED:z===7?BLUE:'#5d6a73';
+function drawMol(c,X0,Y0,W,H,alpha=1){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc;c.save();c.globalAlpha=alpha;
+  MOL.bonds.forEach(([i,j])=>{const a=MOL.at[i],b=MOL.at[j];line(c,cx+a.x*sc,cy+a.y*sc,cx+b.x*sc,cy+b.y*sc,Math.max(1.6,sc*0.09));});
+  MOL.at.forEach(a=>disc(c,cx+a.x*sc,cy+a.y*sc,Math.max(2.2,sc*0.17),atomCol(a.z),1.2));c.restore();}
+
+// ---------- from the atoms in the map to the whole protein (used by How do we see a protein? and How MX works) ----------
+// draws something at less than full strength: whole on a spare canvas first, so that overlapping pieces do not show through one another
+let OFF=null;
+function faded(f,c,a,go){if(a<=0)return;if(a>=1)return go(c);const o=OFF||(OFF=document.createElement('canvas'));if(o.width!==f.cv.width||o.height!==f.cv.height){o.width=f.cv.width;o.height=f.cv.height;}const k=o.getContext('2d'),r=f.cv.width/f.w;k.setTransform(1,0,0,1,0,0);k.clearRect(0,0,o.width,o.height);k.setTransform(r,0,0,r,0,0);go(k);c.save();c.globalAlpha=a;c.drawImage(o,0,0,f.w,f.h);c.restore();}
+// turning from the side view of the helix (the view of the maps) to the view of the whole protein: a rotation about one axis, taken a part at a time
+const TURN=(()=>{const R=MB.rot,th=Math.acos(Math.max(-1,Math.min(1,(R[0][0]+R[1][1]+R[2][2]-1)/2))),k=2*Math.sin(th)||1;
+  // axis and angle of the turn that takes the protein's view back to the helix's (the inverse of MB.rot)
+  return {th,ax:[(R[1][2]-R[2][1])/k,(R[2][0]-R[0][2])/k,(R[0][1]-R[1][0])/k]};})();
+function turned(p,ang){const [x,y,z]=[p[0]-MB.off[0],p[1]-MB.off[1],p[2]-MB.off[2]],[a,b,d]=TURN.ax,cs=Math.cos(ang),sn=Math.sin(ang),dot=(a*x+b*y+d*z)*(1-cs);
+  return [x*cs+(b*z-d*y)*sn+a*dot,y*cs+(d*x-a*z)*sn+b*dot,z*cs+(a*y-b*x)*sn+d*dot];}
+
+// The move from the atoms of the piece, as they sit in the map, to the whole protein: the view turns and pulls back. q0 runs from 0 to 1.
+// Returns where the protein ends up: its center and its scale in pixels to the ångström
+const HPH=MB.helP.map((p,i)=>({p,e:MB.hel[i][3]}));
+function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,H),s1=Math.min(W/56,H/52),s=s0*Math.pow(s1/s0,q),k=(s0-s)/(s0-s1),ang=TURN.th*(1-q),pcx=X0+W/2,pcy=Y0+H/2-1.9*s1+(narrow?0:6);
+  // where the middle of the piece is drawn: from its place in the map to its place in the protein
+  const ax0=X0+W/2-MAPC[0]*s0,ay0=Y0+H/2+MAPC[1]*s0,ax1=pcx+MB.off[0]*s1,ay1=pcy-MB.off[1]*s1,ax=ax0+(ax1-ax0)*k,ay=ay0+(ay1-ay0)*k;
+  const tf=p=>{const v=turned(p,ang);return [ax+v[0]*s,ay-v[1]*s,v[2]];};
+  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  faded(f,c,Math.max(0,Math.min(1,(q-0.12)/0.4)),k2=>{k2.save();k2.beginPath();k2.rect(X0,Y0,W,H);k2.clip();drawMb(k2,0,0,s,MB.piece,tf);k2.restore();});
+  const al=Math.max(0,Math.min(1,(0.9-q)/0.35));
+  if(al>0){c.globalAlpha=al;const A=HPH.map(a=>({q:tf(a.p),e:a.e}));MB.helBonds.forEach(([i,j])=>line(c,A[i].q[0],A[i].q[1],A[j].q[0],A[j].q[1],Math.max(1,s*0.09)));
+    A.slice().sort((m,n)=>m.q[2]-n.q[2]).forEach(a=>disc(c,a.q[0],a.q[1],Math.max(1.2,s*0.17),atomCol(a.e),Math.min(1.2,Math.max(0.5,s*0.06))));}
+  c.restore();return {cx:pcx,cy:pcy,s:s1};}
+// ---------- the MX guide ("How MX works") ----------
+// the drawing kit, introkit.js (helpers, the detector, the data collection) and mbdata.js (myoglobin and its maps) come before this file
+const MUT='#52606b';
+const fmtLen=m=>m<0.995e-9?(m*1e10).toFixed(m<1e-9/5?2:1)+' Å':m<0.995e-6?(m*1e9).toFixed(m<1e-8?1:0)+' nm':(m*1e6).toFixed(m<1e-5?1:0)+' µm';
+// the maps and the chain of myoglobin are in mbdata.js
+
+// ---------- big structures, drawn as cartoons from their known sizes and arrangements (not from deposited coordinates) ----------
+// Each structure is a list of groups {col, r, pts}: a chain or domain drawn as a cluster of discs of radius r (angstroms).
+const BIG=(()=>{const R=rng(17),PB='#9bbbe3',PG='#7fb08a',PY='#f2c14e',PR='#e07a6c',PP='#b7a3d9',PL='#f0b7ad',RN='#f4b860',RY='#f6d77a';
+  const ell=(n,cx,cy,cz,rx,ry,rz)=>{const p=[];while(p.length<n){const x=R()*2-1,y=R()*2-1,z=R()*2-1;if(x*x+y*y+z*z<=1)p.push([cx+x*rx,cy+y*ry,cz+z*rz]);}return p;};
+  const inPoly=(P,x,y)=>{let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){if((P[i][1]>y)!==(P[j][1]>y)&&x<(P[j][0]-P[i][0])*(y-P[i][1])/(P[j][1]-P[i][1])+P[i][0])c=!c;}return c;};
+  const fill=(P,n,z,dz=6)=>{const xs=P.map(q=>q[0]),ys=P.map(q=>q[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),p=[];let t=0;
+    while(p.length<n&&t++<60000){const x=x0+R()*(x1-x0),y=y0+R()*(y1-y0);if(inPoly(P,x,y))p.push([x,y,z+(R()-0.5)*dz]);}return p;};
+  const S={};
+  // myoglobin: one compact chain and its heme
+  S.mb=[{col:PL,r:6,pts:ell(46,0,0,0,18,14,11)},{col:'#d8412f',r:4,pts:[[5,2,12],[8,3,12],[5,5,12]]}];
+  // hemoglobin: two alpha and two beta chains
+  S.hb=[[-14,13,9,PL],[14,-13,9,PL],[15,14,-9,PR],[-15,-14,-9,PR]].map(([x,y,z,col])=>({col,r:6,pts:ell(40,x,y,z,16,15,13)}));
+  // an antibody: twelve domains in a Y. Heavy chains in blue, light chains in yellow
+  S.igg=[];{const dom=(x,y,col,z)=>S.igg.push({col,r:5.5,pts:ell(20,x,y,z,10,12,9)});
+    [[-9,62],[9,62],[-13,34],[13,34]].forEach(([x,y],i)=>dom(x,y,PB,i%2?2:-2));
+    for(const sg of[-1,1]){const ux=sg*0.82,uy=-0.57,nx=-uy*sg,ny=ux*sg,bx=sg*8,by=4;
+      [[24,PB,PY],[53,PB,PY]].forEach(([d,c1,c2])=>{dom(bx+ux*d+nx*9,by+uy*d+ny*9,c1,3);dom(bx+ux*d-nx*9,by+uy*d-ny*9,c2,-3);});
+      const hp=[];for(let u=0;u<=1.001;u+=0.125)hp.push([sg*(14-8*u),-4+30*u,-6]);S.igg.push({col:PB,r:3.2,pts:hp});}}
+  // nucleosome: eight histones, and 147 base pairs of DNA wound 1.65 times around them, seen down the axis of the winding
+  S.ncp=[];{const hc=[PB,PG,PY,PL];for(let i=0;i<8;i++){const a=i*Math.PI/2+(i>3?Math.PI/4:0),z=i>3?-12:12;S.ncp.push({col:hc[i%4],r:6,pts:ell(28,17*Math.cos(a),17*Math.sin(a),z,14,14,11)});}
+    for(let st=0;st<2;st++)for(let seg=0;seg<25;seg++){const pts=[];for(let i=seg*6;i<Math.min(148,seg*6+7);i++)for(let f=0;f<2;f++){const u=(i+f*0.5)/146,ph=2*Math.PI*1.65*u-0.6,ps=2*Math.PI*(i+f*0.5)/10.2+st*2.5,
+        cx=41.8*Math.cos(ph),cy=41.8*Math.sin(ph),cz=25.9*1.65*u-21;pts.push([cx+9.5*Math.cos(ph)*Math.cos(ps),cy+9.5*Math.sin(ph)*Math.cos(ps),cz+9.5*Math.sin(ps)]);}
+      S.ncp.push({col:st?'#ee8a2b':RY,r:3.4,pts});}}
+  // GroEL and GroES: two rings of seven, one capped, seen from the side
+  S.gro=[];for(let k=0;k<7;k++){const a=k*2*Math.PI/7+0.2,cs=Math.cos(a),sn=Math.sin(a);
+    [[38,14,PB],[50,38,PB],[45,60,PB],[38,-14,PG],[48,-42,PG],[52,-66,PG],[27,-90,PY]].forEach(([r,y,col])=>S.gro.push({col,r:6,pts:ell(13,r*cs,y,r*sn,13,13,13)}));}
+  S.gro.push({col:PY,r:6,pts:ell(14,0,-99,0,16,7,16)});
+  // the ribosome: small subunit on the left, large on the right, three tRNAs between. RNA in orange and yellow, proteins on top
+  {const k=0.8,L=[[20,120],[70,105],[105,65],[118,10],[112,-40],[125,-75],[150,-100],[128,-112],[98,-92],[80,-100],[62,-128],[30,-140],[5,-128],[-10,-100],[-30,-95],[-48,-112],[-70,-118],[-78,-100],[-60,-78],[-62,-40],[-70,10],[-58,60],[-30,100]].map(([x,y])=>[(x+40)*k,y*k]),
+      Sm=[[-150,115],[-120,125],[-98,95],[-90,50],[-82,5],[-78,-30],[-92,-48],[-80,-70],[-84,-100],[-105,-122],[-135,-125],[-158,-108],[-165,-80],[-150,-55],[-168,-30],[-175,20],[-172,70]].map(([x,y])=>[(x+62)*k,y*k]);
+    S.ribo=[{col:RN,r:9,pts:fill(L,520,0)},{col:RY,r:9,pts:fill(Sm,300,14)}];
+    fill(L,26,8,2).forEach(p=>S.ribo.push({col:PB,r:7,pts:ell(5,p[0],p[1],p[2],9,9,3)}));
+    fill(Sm,15,22,2).forEach(p=>S.ribo.push({col:PP,r:7,pts:ell(5,p[0],p[1],p[2],9,9,3)}));
+    [[-14,-18,PR],[-27,-30,PG],[-40,-40,'#c98bd0']].forEach(([x,y,col],i)=>{const pts=[];for(let u=0;u<=1.001;u+=0.1)pts.push([x*k+u*26*k,y*k+u*34*k,30+i],[x*k+26*k-u*20*k,y*k+34*k+u*14*k,30+i]);S.ribo.push({col,r:5,pts});});}
+  // a rhinovirus shell: sixty copies of three proteins on the outside, arranged with the symmetry of an icosahedron
+  {const ph=(1+Math.sqrt(5))/2,nrm=v=>{const n=Math.hypot(...v);return v.map(q=>q/n);},rot=(u,a)=>{const c=Math.cos(a),s=Math.sin(a),t=1-c,[x,y,z]=u;return [[t*x*x+c,t*x*y-s*z,t*x*z+s*y],[t*x*y+s*z,t*y*y+c,t*y*z-s*x],[t*x*z-s*y,t*y*z+s*x,t*z*z+c]];},
+      mul=(A,B)=>A.map(r=>[0,1,2].map(j=>r[0]*B[0][j]+r[1]*B[1][j]+r[2]*B[2][j])),app=(M,v)=>M.map(r=>r[0]*v[0]+r[1]*v[1]+r[2]*v[2]);
+    const gens=[rot(nrm([0,1,ph]),2*Math.PI/5),rot([0,0,1],Math.PI)],G=[[[1,0,0],[0,1,0],[0,0,1]]];
+    for(let i=0;i<G.length;i++)for(const g of gens){const M=mul(g,G[i]);if(!G.some(Q=>Q.every((r,a)=>r.every((v,b)=>Math.abs(v-M[a][b])<1e-6))))G.push(M);}
+    const v5=nrm([0,1,ph]),v3=nrm([ph,0,2*ph+1]),v2=[0,0,1],mix=(a,b,c)=>nrm([0,1,2].map(i=>a*v5[i]+b*v3[i]+c*v2[i])),tilt=rot(nrm([1,0.3,0]),0.35);
+    const VP=[[mix(0.62,0.2,0.18),'#6f9bd6'],[mix(0.13,0.25,0.62),PG],[mix(0.18,0.62,0.2),PR]];S.vir=[];
+    G.forEach(M=>VP.forEach(([d,col])=>{const c=app(tilt,app(M,d));if(c[2]<-0.25)return;S.vir.push({col,r:11,pts:ell(8,c[0]*138,c[1]*138,c[2]*138,17,17,17)});}));S.nsym=G.length;}
+  // bounding boxes and depth order
+  const out={};for(const k of['mb','hb','igg','ncp','gro','ribo','vir']){const g=S[k];let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;g.forEach(q=>{q.z=q.pts.reduce((s,p)=>s+p[2],0)/q.pts.length;q.pts.forEach(p=>{x0=Math.min(x0,p[0]-q.r);x1=Math.max(x1,p[0]+q.r);y0=Math.min(y0,p[1]-q.r);y1=Math.max(y1,p[1]+q.r);});});
+    g.sort((a,b)=>a.z-b.z);out[k]={g,x0,x1,y0,y1,w:x1-x0,h:y1-y0};}
+  out.nsym=S.nsym;return out;})();
+// draws one structure centered at (cx, cy) at s pixels to the angstrom: each group as a flat shape with an ink outline, far groups first
+function drawBig(c,k,cx,cy,s,lw=1.3){if(k==='mb'){drawMb(c,cx,cy-1.9*s,s);return;}   // myoglobin is drawn from its real chain
+  const b=BIG[k],ox=cx-(b.x0+b.x1)/2*s,oy=cy-(b.y0+b.y1)/2*s;
+  b.g.forEach(q=>{c.fillStyle=INK;c.beginPath();q.pts.forEach(p=>{const X=ox+p[0]*s,Y=oy+p[1]*s;c.moveTo(X+q.r*s+lw,Y);c.arc(X,Y,q.r*s+lw,0,7);});c.fill();
+    c.fillStyle=q.col;c.beginPath();q.pts.forEach(p=>{const X=ox+p[0]*s,Y=oy+p[1]*s;c.moveTo(X+q.r*s,Y);c.arc(X,Y,Math.max(0.5,q.r*s),0,7);});c.fill();});}
+const GAL=[['mb','myoglobin','17 kDa','about 1,260','45 Å','It stores oxygen in muscle, and was the first protein whose structure was solved.'],
+  ['hb','hemoglobin','64 kDa','about 4,500','65 Å','Four chains that carry oxygen in the blood and pass it on where it is needed.'],
+  ['ncp','a nucleosome','200 kDa','about 13,000','100 Å','DNA wound nearly twice around eight histone proteins: the way DNA is packed in the cell.'],
+  ['igg','an antibody','150 kDa','about 10,000','150 Å','Two arms that each grip a target, and a stem that calls in the rest of the immune system.'],
+  ['gro','GroEL and GroES','870 kDa','about 60,000','185 Å','A chamber with a lid, inside which other proteins are given room to fold.'],
+  ['ribo','a ribosome','2.5 MDa','about 150,000','250 Å','The machine that builds every protein: three RNA molecules and more than fifty proteins.'],
+  ['vir','the shell of a cold virus','6 MDa','about 400,000','300 Å','The protein coat of a rhinovirus: sixty copies of each of its proteins, arranged with the symmetry of a soccer ball.']];
+
+// ---------- A GALLERY OF STRUCTURES, to one scale ----------
+if($('galCv')){
+let gSel='ribo',gHit=[],gImg=null,gKey='';
+const galFig=fig('galCv',w=>w<560?1.0:2.75,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:15;
+  const rows=narrow?[[0,1,2,3],[4,5,6]]:[[0,1,2,3,4,5,6]],gap=narrow?24:34,mx=w*0.03,top=narrow?40:44,lab=fs*2+16,SH={mb:'myoglobin',hb:'hemoglobin',ncp:'nucleosome',igg:'antibody',gro:'GroEL',ribo:'ribosome',vir:'cold virus'};
+  const need=rows.map(r=>r.reduce((s,i)=>s+BIG[GAL[i][0]].w,0)+gap*(r.length-1)),hs=rows.map(r=>Math.max(...r.map(i=>BIG[GAL[i][0]].h)));
+  const s=Math.min((w-2*mx)/Math.max(...need),(h-top-rows.length*lab-8)/hs.reduce((a,b)=>a+b,0));
+  const key=Math.round(w)+'x'+Math.round(h);
+  if(key!==gKey){gImg=document.createElement('canvas');const dpr=Math.min(window.devicePixelRatio||1,2);gImg.width=Math.round(w*dpr);gImg.height=Math.round(h*dpr);const g=gImg.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);gKey=key;gHit=[];
+    // each row is spread across the width, so that the names under the small structures have room
+    let y=top;rows.forEach((r,ri)=>{const used=r.reduce((a,i)=>a+BIG[GAL[i][0]].w,0)*s,gp=(w-2*mx-used)/r.length;let x=mx+gp/2;const cy=y+hs[ri]*s/2;r.forEach(i=>{const k=GAL[i][0],b=BIG[k];drawBig(g,k,x+b.w*s/2,cy,s,narrow?0.9:1.3);gHit.push({k,i,x:x+b.w*s/2,y:cy,hw:b.w*s/2,yl:y+hs[ri]*s+12});x+=b.w*s+gp;});y+=hs[ri]*s+lab;});}
+  c.drawImage(gImg,0,0,w,h);
+  // names under the structures, nudged apart where two would run into each other
+  c.font=`${fs}px ${HAND}`;const L=gHit.map(q=>{const nm=narrow?SH[q.k]:GAL[q.i][1],tw=c.measureText(nm).width+(q.k===gSel?16:0);return {q,nm,tw,x:Math.min(Math.max(q.x,tw/2+10),w-tw/2-10)};});
+  for(let pass=0;pass<2;pass++)for(let i=1;i<L.length;i++){if(Math.abs(L[i].q.yl-L[i-1].q.yl)>1)continue;const ov=L[i-1].x+L[i-1].tw/2+10-(L[i].x-L[i].tw/2);if(ov>0){L[i-1].x=Math.max(L[i-1].tw/2+8,L[i-1].x-ov/2);L[i].x=Math.max(L[i].x+ov/2,L[i-1].x+L[i-1].tw/2+10+L[i].tw/2);}}
+  L.forEach(({q,nm,x})=>{if(q.k===gSel)cap(c,nm,x,q.yl,'center',fs);else txt(c,nm,x,q.yl,fs,'center');txt(c,GAL[q.i][2],x,q.yl+fs+(q.k===gSel?8:5),fs-1,'center',MUT);});
+  // scale bar
+  const bx=narrow?w-mx-100*s:mx+4,by=narrow?top-10:h-16;line(c,bx,by,bx+100*s,by,3);line(c,bx,by-5,bx,by+5,2);line(c,bx+100*s,by-5,bx+100*s,by+5,2);txt(c,'100 Å (10 nm)',narrow?bx-6:bx+100*s+8,by,fs-1,narrow?'right':'left');
+  cap(c,narrow?'All to one scale':'Structures solved by crystallography, all to one scale',12,18,'left',narrow?12:15);
+},false);
+function gaUpd(){const q=GAL.find(v=>v[0]===gSel);$('gSel').value=gSel;$('gM').textContent=q[2];$('gA').textContent=q[3];$('gS').textContent=q[4];$('gW').textContent=q[5];galFig.w&&galFig.draw(galFig);}
+$('gSel').addEventListener('input',()=>{gSel=$('gSel').value;gaUpd();});
+galFig.cv.style.cursor='pointer';
+galFig.cv.addEventListener('click',e=>{const r=galFig.cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;let best=null,bd=1e9;gHit.forEach(q=>{const d=Math.abs(q.x-x)-q.hw;if(d<bd&&Math.abs(y-q.y)<q.yl-q.y+34){bd=d;best=q.k;}});if(best&&bd<16){gSel=best;gaUpd();}});
+gaUpd();
+}
+
+// ---------- CRYSTAL TO STRUCTURE (opening figure) ----------
+if($('mxHeroCv')){
+// Three panels. The crystal and the images keep step: each image is 0.3 degrees of turn, 20 images a second. The third panel takes 14 s:
+// the map of one piece of myoglobin (a helix), then the atoms fitted into it, then the view pulls back to the whole protein.
+let hShown=-1,hSpots=[];
+fig('mxHeroCv',w=>w<560?0.5:2.6,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?13:15;
+  const P=narrow?[[w*0.5,h*0.12,h*0.09],[w*0.5,h*0.44,h*0.135],[w*0.5,h*0.8,h*0.125]]:[[w*0.12,h*0.5,h*0.28],[w*0.415,h*0.52,h*0.37],[w*0.805,h*0.52,h*0.36]];
+  const n=Math.floor(t*20);if(n!==hShown){hSpots=rotImage(n);hShown=n;}
+  // 1: a crystal turning in the beam
+  {const [cx,cy,s]=P[0],th=n*0.3*Math.PI/180,ct=Math.cos(th),st=Math.sin(th),tl=0.42;
+    line(c,cx-s*(narrow?2.6:1.5),cy,cx-s*0.2,cy,3,BLUE);arrow(c,cx-s*1.1,cy,cx-s*0.75,cy,BLUE,3,9);
+    // the loop that holds the crystal turns with it: its far half is drawn before the crystal and its near half after
+    const la=th+0.5,lrx=Math.max(0.05,Math.abs(Math.cos(la)))*s*0.78,rf=Math.sin(2*la)<0,half=front=>{pen(c,2.2);c.beginPath();if(front===rf)c.ellipse(cx,cy,lrx,s*0.58,0,-Math.PI/2,Math.PI/2);else c.ellipse(cx,cy,lrx,s*0.58,0,Math.PI/2,1.5*Math.PI);c.stroke();};
+    line(c,cx,cy+s*0.56,cx,cy+s*1.0,3);half(false);
+    const V=[];for(const X of[-1,1])for(const Y of[-1,1])for(const Z of[-1,1]){const x=X*0.4,y=Y*0.29,z=Z*0.24,x1=x*ct+z*st,z1=-x*st+z*ct,y2=y*Math.cos(tl)-z1*Math.sin(tl),z2=y*Math.sin(tl)+z1*Math.cos(tl);V.push([cx+x1*s,cy-y2*s,z2]);}
+    const F=[[0,1,3,2,GRN],[4,6,7,5,GRN],[0,4,5,1,'#4a8f5a'],[2,3,7,6,LTGRN],[0,2,6,4,'#6fb37e'],[1,5,7,3,'#6fb37e']];
+    F.map(q=>({q,z:(V[q[0]][2]+V[q[1]][2]+V[q[2]][2]+V[q[3]][2])/4})).sort((a,b)=>a.z-b.z).slice(3).forEach(({q})=>poly(c,[V[q[0]],V[q[1]],V[q[2]],V[q[3]]],q[4],2));half(true);
+    // the turn, drawn around the pin
+    pen(c,1.8,MUT);c.beginPath();c.ellipse(cx,cy+s*0.84,s*0.26,s*0.08,0,0.5,5.6);c.stroke();arrow(c,cx+s*0.2,cy+s*0.79,cx+s*0.26,cy+s*0.83,MUT,1.8,6);
+    txt(c,narrow?'a crystal turns in the X-ray beam':'a crystal turns in the beam',narrow?cx:Math.max(cx,w*0.125),cy+s*1.3,fs,'center');}
+  // 2: the images on the detector, drawn as the real one
+  {const [cx,cy,s]=P[1],B=detFace(c,cx,cy,2*s/DETG.hh),k=Math.max(0.7,B.w/230);
+    hSpots.forEach(q=>{c.fillStyle=`rgba(27,27,27,${Math.min(1,0.45+2.5*q.a).toFixed(2)})`;c.beginPath();c.arc(cx+q.u*B.w/2,cy+q.v*B.h/2,(0.6+2.3*Math.sqrt(q.a))*k,0,7);c.fill();});
+    txt(c,narrow?'thousands of images of spots':'the detector takes thousands of images',cx,cy+s+(narrow?13:16),fs,'center');}
+  // 3: from the map to the atoms to the whole protein
+  {const [cx,cy,s]=P[2],W=Math.round(narrow?w*0.84:w*0.35),H=Math.round(s*2),X0=cx-W/2,Y0=cy-H/2,u=t%14;
+    rectF(c,X0,Y0,W,H,WHITE,2.5);const x=X0+2,y=Y0+2,W2=W-4,H2=H-4;
+    if(u<6.4){drawMap(c,x,y,W2,H2,1.5,4);
+      if(u>=2.6){if(u>=5.6){c.save();c.globalAlpha=Math.min(1,(u-5.6)/0.7);c.fillStyle=WHITE;c.fillRect(x,y,W2,H2);c.restore();}drawMol(c,x,y,W2,H2,Math.min(1,(u-2.6)/1.2));}}
+    else pullBack(f,c,x,y,W2,H2,Math.min(1,(u-6.4)/4),narrow);
+    pen(c,2.5);c.strokeRect(X0,Y0,W,H);
+    txt(c,u<2.6?'from the spots: a map of the electrons':u<6.4?'atoms are fitted into the map':narrow?'the structure: myoglobin':'the structure: myoglobin, about 1,260 atoms',cx,cy+s+(narrow?13:16),fs,'center');}
+  if(narrow){fatArrow(c,w*0.5,h*0.262,w*0.5,h*0.298,YEL,6);fatArrow(c,w*0.5,h*0.612,w*0.5,h*0.648,YEL,6);}
+  else{fatArrow(c,w*0.222,h*0.52,w*0.262,h*0.52,YEL,7);fatArrow(c,w*0.572,h*0.52,w*0.618,h*0.52,YEL,7);}
+  cap(c,'From crystal to structure',12,18,'left',narrow?12:15);
+});
+}
+
+// ---------- HOW SMALL: what each kind of light can show ----------
+if($('scaleCv')){
+const SC=[['bond between two atoms',1.5e-10,'atom'],['DNA double helix, across',2e-9,'dna'],['hemoglobin',6.5e-9,'prot'],['ribosome',2.5e-8,'ribo'],['a virus',1e-7,'virus'],['a bacterium',2e-6,'bact'],['red blood cell',7.5e-6,'cell'],['a protein crystal',5e-5,'xtal']];
+let zL=-6.3;
+function icon(c,k,x,y,s){
+  if(k==='atom'){line(c,x-s*0.45,y,x+s*0.45,y,2.5);disc(c,x-s*0.45,y,s*0.32,'#5d6a73',1.6);disc(c,x+s*0.45,y,s*0.32,RED,1.6);}
+  else if(k==='dna'){pen(c,2,BLUE);c.beginPath();for(let u=-1;u<=1.001;u+=0.05){const X=x+s*0.55*Math.sin(u*3.2),Y=y+u*s;u===-1?c.moveTo(X,Y):c.lineTo(X,Y);}c.stroke();pen(c,2,RED);c.beginPath();for(let u=-1;u<=1.001;u+=0.05){const X=x-s*0.55*Math.sin(u*3.2),Y=y+u*s;u===-1?c.moveTo(X,Y):c.lineTo(X,Y);}c.stroke();}
+  else if(k==='prot'){[[-0.4,-0.35],[0.4,-0.35],[-0.4,0.4],[0.4,0.4]].forEach(([a,b],i)=>disc(c,x+a*s,y+b*s,s*0.5,i%3?LTRED:RED,1.6));}
+  else if(k==='ribo'){c.beginPath();c.ellipse(x,y+s*0.3,s*0.95,s*0.62,0,0,7);c.fillStyle=LTBLUE;c.fill();pen(c,1.8);c.stroke();c.beginPath();c.ellipse(x,y-s*0.45,s*0.7,s*0.45,0,0,7);c.fillStyle=LTORG;c.fill();c.stroke();}
+  else if(k==='virus'){const p=[];for(let i=0;i<6;i++)p.push([x+s*Math.cos(i*Math.PI/3+0.52),y+s*Math.sin(i*Math.PI/3+0.52)]);poly(c,p,PUR,1.8);}
+  else if(k==='bact'){c.beginPath();c.roundRect(x-s*1.15,y-s*0.5,s*2.3,s,s*0.5);c.fillStyle=LTGRN;c.fill();pen(c,1.8);c.stroke();}
+  else if(k==='cell'){disc(c,x,y,s,LTRED,1.8);disc(c,x,y,s*0.42,'#eaa59b',1.2);}
+  else if(k==='xtal'){poly(c,[[x,y-s],[x+s*0.8,y-s*0.2],[x+s*0.5,y+s],[x-s*0.5,y+s],[x-s*0.8,y-s*0.2]],GRN,1.8);line(c,x-s*0.8,y-s*0.2,x+s*0.8,y-s*0.2,1.2);}}
+const scaleFig=fig('scaleCv',w=>w<560?0.78:2.6,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:15;
+  const La=-10.3,Lb=-4,x0=w*0.035,x1=w*0.965,X=L=>x0+(L-La)/(Lb-La)*(x1-x0),yA=h*(narrow?0.7:0.72),lim=zL-Math.log10(2),xl=X(Math.max(La,lim));
+  // the part of the scale this light can show
+  c.fillStyle='rgba(255,233,163,0.75)';c.fillRect(xl,h*0.13,x1-xl,yA-h*0.13);
+  [[4e-7,7e-7,narrow?'visible light':'wavelengths of visible light','rgba(246,197,46,0.55)'],[0.62e-10,2.07e-10,narrow?'X-rays at NE-CAT':'wavelengths of the X-rays at NE-CAT','rgba(47,109,181,0.35)']].forEach(([a,b,s2,col],i)=>{const xa=X(Math.log10(a)),xb=Math.max(X(Math.log10(b)),xa+5);c.fillStyle=col;c.fillRect(xa,yA+(narrow?34:38),xb-xa,10);pen(c,1.2);c.strokeRect(xa,yA+(narrow?34:38),xb-xa,10);
+    txt(c,s2,i?xa:(xa+xb)/2,yA+(narrow?54:59),fs-1,i?'left':'center');});
+  line(c,x0,yA,x1,yA,2.5);
+  [['1 Å',-10],['1 nm',-9],['10 nm',-8],['100 nm',-7],['1 µm',-6],['10 µm',-5],['100 µm',-4]].forEach(([s2,L])=>{line(c,X(L),yA-5,X(L),yA+5,1.8);txt(c,s2,L===-4?x1+(narrow?4:8):X(L),yA+17,fs-1,L===-4?'right':'center');});
+  const SN=['a bond','DNA','hemoglobin','ribosome','virus','bacterium','blood cell','crystal'];
+  SC.forEach(([nm0,m,k],i)=>{const nm=narrow?SN[i]:nm0,L=Math.log10(m),x=X(L),ok=L>=lim,s=narrow?9:13,lv=narrow?i%3:i%2,yi=yA-(narrow?26:34),yl=h*0.2+lv*(fs+5);
+    c.globalAlpha=ok?1:0.28;icon(c,k,x,yi,s);line(c,x,yi+s+3,x,yA,1,'#7d8b96');c.globalAlpha=1;
+    c.font=`${fs-1}px ${HAND}`;const tw=c.measureText(nm).width,xt=Math.min(Math.max(x,x0+tw/2),x1-tw/2);line(c,x,yl+fs*0.6,x,yi-s-3,1,ok?'#7d8b96':'#c3cbd1');txt(c,nm,xt,yl,fs-1,'center',ok?INK:'#8c979f');});
+  line(c,xl,h*0.13,xl,yA+8,2.4,RED);tag(c,narrow?'finest detail':'finest detail this light can show',Math.min(Math.max(xl,x0+(narrow?48:112)),x1-(narrow?48:112)),h*0.13,'center',fs,RED);
+  cap(c,narrow?'How small can you see?':'How small can you see? It depends on the light',12,18,'left',narrow?12:15);
+},false);
+function scUpd(){zL=+$('zL').value;const m=Math.pow(10,zL),ev=1239.84e-9/m;$('zLO').textContent=fmtLen(m);
+  $('zK').textContent=m>7e-7?'infrared':m>4e-7?'visible light':m>1e-8?'ultraviolet':m>2e-10?'soft X-rays':'hard X-rays';
+  $('zE').textContent=ev<1000?ev.toFixed(ev<10?1:0)+' eV':(ev/1000).toFixed(ev<1e4?2:1)+' keV';$('zD').textContent='about '+fmtLen(m/2);scaleFig.w&&scaleFig.draw(scaleFig);}
+$('zL').addEventListener('input',scUpd);
+[['zBV',-6.3],['zBX',-10.01]].forEach(([id,v])=>$(id).addEventListener('click',()=>{$('zL').value=v;scUpd();}));scUpd();
+}
+
+// ---------- WHY A CRYSTAL: many copies in step ----------
+if($('latCv')){
+const LM=[0,1.5,3.9,5.2];let lN=3,lA=14;
+const lEnv=q=>{let re=0,im=0;LM.forEach(x=>{re+=Math.cos(2*Math.PI*q*x);im+=Math.sin(2*Math.PI*q*x);});return (re*re+im*im)/16*Math.exp(-3*q*q);};
+const lInt=(q,N,a)=>{const s=Math.sin(Math.PI*q*a);return Math.abs(s)<1e-6?1:Math.pow(Math.sin(N*Math.PI*q*a)/(N*s),2);};
+const latFig=fig('latCv',w=>w<560?0.95:2.3,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:15;
+  const x0=w*(narrow?0.06:0.05),x1=w*0.97,ys=h*0.2,y0=h*0.36,y1=h*0.82,QM=0.5,X=q=>x0+q/QM*(x1-x0),Y=v=>y1-(y1-y0)*Math.min(1.04,v)/1.04;
+  // the row of molecules
+  const L=x1-x0,pa=Math.min(narrow?5:8,L/(lN*lA)),xs=(x0+x1)/2-lN*lA*pa/2,rd=Math.max(1.3,Math.min(4.5,pa*0.75));
+  for(let n=0;n<=lN;n++)line(c,xs+n*lA*pa,ys-10,xs+n*lA*pa,ys+10,1,'#7d8b96');
+  for(let n=0;n<lN;n++)LM.forEach((x,i)=>{c.fillStyle=i===2?RED:GRN;c.beginPath();c.arc(xs+(n*lA+x+1.2)*pa,ys+(i%2?-1:1)*rd*0.8,rd,0,7);c.fill();if(rd>2.5){pen(c,1.2);c.stroke();}});
+  txt(c,lN===1?'one molecule':lN+' copies in a row, each '+lA+' Å from the next',(x0+x1)/2,ys-(narrow?24:28),fs,'center');
+  // what they scatter
+  rectF(c,x0,y0,x1-x0,y1-y0,WHITE,2.5);
+  const n=narrow?900:2000;c.beginPath();c.moveTo(x0,y1);for(let i=0;i<=n;i++){const q=QM*i/n;c.lineTo(X(q),Y(lEnv(q)*lInt(q,lN,lA)));}c.lineTo(x1,y1);c.closePath();c.fillStyle=LTYEL;c.fill();pen(c,1.8);c.stroke();
+  pen(c,1.8,RED);c.setLineDash([5,4]);c.beginPath();for(let i=0;i<=300;i++){const q=QM*i/300;i?c.lineTo(X(q),Y(lEnv(q))):c.moveTo(X(q),Y(lEnv(q)));}c.stroke();c.setLineDash([]);
+  pen(c,2.5);c.strokeRect(x0,y0,x1-x0,y1-y0);
+  [[0.1,'10 Å'],[0.2,'5 Å'],[0.3,'3.3 Å'],[0.4,'2.5 Å'],[0.5,'2 Å']].forEach(([q,s2])=>{line(c,X(q),y1,X(q),y1+5,1.6);txt(c,s2,X(q),y1+16,fs-1,q===0.5?'right':'center');});
+  txt(c,'scattering angle →   (labeled by the size of detail it reports on)',x0,y1+34,fs-1,'left');
+  txt(c,narrow?'brightness (strongest spot = full height)':'brightness, with the strongest spot drawn full height',x0,y0-11,fs-1,'left');
+  line(c,x1-(narrow?150:190),y0+13,x1-(narrow?128:165),y0+13,1.8,RED,[5,4]);txt(c,narrow?'one molecule alone':'the pattern of one molecule',x1-8,y0+13,fs-1,'right',RED);
+  cap(c,'Why a crystal',12,18,'left',narrow?12:15);
+},false);
+function laUpd(){lN=+$('lN').value;lA=+$('lA').value;$('lNO').textContent=String(lN);$('lAO').textContent=lA+' Å';
+  $('lB').textContent=lN===1?'the same':(lN*lN).toLocaleString('en-US')+' times';$('lW').textContent=lN===1?'no spots yet: a smooth blur':'1/'+lN+' of the gap between spots';
+  $('lS').textContent=Math.floor(0.5*lA)+' out to 2 Å';latFig.w&&latFig.draw(latFig);}
+['lN','lA'].forEach(id=>$(id).addEventListener('input',laUpd));laUpd();
+}
+
+// ---------- THE ROTATION METHOD: the lattice, the sphere and the detector ----------
+if($('ewCv')){
+const EMAX=16,DD=2.2,DH=1.17;                     // detector distance and half-height, in units of the sphere radius at the highest energy
+let eA=10,eE=12.66,pts=null,gprev=null,phi=0,turned=0,nrec=0,img=null,imgG=null,imgKey='',lastT=0,flash=[];
+const hashI=(h,k,l)=>{if(h<0||(h===0&&(k<0||(k===0&&l<0)))){h=-h;k=-k;l=-l;}let a=(h*73856093)^(k*19349663)^(l*83492791);a=(a^(a>>>13))>>>0;a=Math.imul(a,1274126177)>>>0;return ((a^(a>>>16))>>>0)/4294967296;};
+function eInit(){const lam=12.398/eE,pm=2*Math.sin(0.5*Math.atan(DH*Math.SQRT2/DD))/lam,n=Math.ceil(pm*eA);pts=[];
+  for(let h=-n;h<=n;h++)for(let k=-n;k<=n;k++)for(let l=-n;l<=n;l++){const p=Math.hypot(h,k,l)/eA;if(p<1e-9||p>pm)continue;pts.push({x:h/eA,y:k/eA,z:l/eA,k,I:Math.pow(hashI(h,k,l),2)*Math.exp(-6*p*p),a:false,b:false});}
+  gprev=new Float32Array(pts.length).fill(NaN);nrec=0;turned=0;flash=[];imgKey='';}
+const ewFig=fig('ewCv',w=>w<560?0.58:2.0,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:15;
+  if(!pts)eInit();
+  const U=narrow?w*0.3:w*0.17,S=U/(EMAX/12.398),lam=12.398/eE,R=S/lam,Cx=narrow?w*0.09:w*0.07,Cy=narrow?h*0.27:h*0.53,Ox=Cx+R,xd=Cx+DD*U,hd=DH*U;
+  const fx=narrow?w*0.5:w*0.775,fy=narrow?h*0.74:h*0.53,fh=narrow?Math.min(w*0.42,h*0.22):hd,ks=fh/hd;
+  // the kept image of the detector, face on
+  const key=Math.round(fh)+'|'+eA+'|'+eE;if(key!==imgKey){img=document.createElement('canvas');const dpr=Math.min(window.devicePixelRatio||1,2);img.width=img.height=Math.round(2*fh*dpr);imgG=img.getContext('2d');imgG.setTransform(dpr,0,0,dpr,0,0);imgKey=key;pts.forEach(p=>{p.a=p.b=false;});nrec=0;turned=0;gprev.fill(NaN);}
+  const g=imgG,dt=t-lastT;lastT=t;const adv=dt>0&&dt<0.2;if(adv){const dp=dt*0.21;phi+=dp;turned=Math.min(360,turned+dp*180/Math.PI);}
+  const cp=Math.cos(phi),sp=Math.sin(phi),il=1/lam,lit=[];
+  for(let i=0;i<pts.length;i++){const p=pts[i],x=p.x*cp+p.z*sp,z=-p.x*sp+p.z*cp,gz=z+il,gv=x*x+p.y*p.y+gz*gz-il*il;
+    if(adv&&gprev[i]===gprev[i]&&(gv>0)!==(gprev[i]>0)&&gz>0){const X=DD*U*x/gz,Y=DD*U*p.y/gz;
+      if(Math.abs(X)<hd&&Math.abs(Y)<hd){const up=x>0;if(!(up?p.a:p.b)){if(up)p.a=true;else p.b=true;nrec++;const r=0.8+2.4*Math.sqrt(p.I);g.fillStyle=INK;g.beginPath();g.arc(fh+X*ks,fh-Y*ks,r*(narrow?0.8:1),0,7);g.fill();}
+        flash.push({X,Y,t,eq:p.k===0,x,z});}}
+    gprev[i]=gv;if(p.k===0)lit.push([x,z]);}
+  flash=flash.filter(q=>t-q.t<0.35);
+  // seen from above: the beam, the crystal, the sphere, one layer of the lattice, the detector edge on
+  line(c,Cx-(narrow?18:36),Cy,xd,Cy,2,BLUE,[6,5]);arrow(c,Cx-(narrow?18:36),Cy,Cx-8,Cy,BLUE,3,9);
+  pen(c,2,'#7d8b96');c.beginPath();c.arc(Cx,Cy,R,0,7);c.stroke();
+  c.fillStyle='rgba(27,27,27,0.55)';lit.forEach(([x,z])=>{c.beginPath();c.arc(Ox+z*S,Cy-x*S,narrow?1.3:1.9,0,7);c.fill();});
+  flash.forEach(q=>{if(!q.eq)return;c.globalAlpha=1-(t-q.t)/0.35;line(c,Cx,Cy,xd,Cy-q.X,2,ORG);disc(c,Ox+q.z*S,Cy-q.x*S,narrow?3.5:5,ORG,1.4);c.globalAlpha=1;});
+  rectF(c,xd-3,Cy-hd,6,2*hd,'#6b7f93',1.6);
+  c.save();c.translate(Cx,Cy);c.rotate(-phi);poly(c,[[0,-8],[8,0],[0,8],[-8,0]],GRN,2);c.restore();
+  disc(c,Ox,Cy,3,INK,1);
+  txt(c,'crystal',Cx,Cy+(narrow?20:22),fs-1,'center');txt(c,narrow?'detector':'detector, edge on',xd,Cy+hd+13,fs-1,narrow?'right':'center');
+  txt(c,narrow?'its lattice of spots':'its lattice of spots, turning with it',narrow?Cx:Ox,Cy+(narrow?hd-6:R+17),fs-1,narrow?'left':'center',MUT);
+  // the detector, face on
+  rectF(c,fx-fh,fy-fh,2*fh,2*fh,WHITE,2.5);c.drawImage(img,fx-fh,fy-fh,2*fh,2*fh);
+  flash.forEach(q=>{c.globalAlpha=1-(t-q.t)/0.35;disc(c,fx+q.X*ks,fy-q.Y*ks,narrow?3.5:5,ORG,1.2);c.globalAlpha=1;});
+  line(c,fx-fh,fy,fx-3,fy,narrow?2:3,'#8c979f');disc(c,fx,fy,narrow?3:4,'#8c979f',1);pen(c,2.5);c.strokeRect(fx-fh,fy-fh,2*fh,2*fh);
+  txt(c,'the detector, face on: every spot recorded so far',fx,fy+fh+14,fs-1,'center');
+  cap(c,narrow?'Seen from above':'Seen from above: only spots on the circle diffract',12,18,'left',narrow?12:15);
+  setT('eN',nrec.toLocaleString('en-US'));setT('eT',turned>=360?'a full turn':Math.floor(turned)+'°');
+});
+function ewUpd(){eA=+$('eA').value;eE=+$('eE').value;$('eAO').textContent=eA+' Å';$('eEO').textContent=eE.toFixed(2)+' keV';
+  $('eD').textContent=(12.398/eE/(2*Math.sin(0.5*Math.atan(DH/DD)))).toFixed(2)+' Å';eInit();ewFig.w&&ewFig.draw(ewFig);}
+['eA','eE'].forEach(id=>$(id).addEventListener('input',ewUpd));$('eR').addEventListener('click',ewUpd);ewUpd();
+}
+
+// ---------- EACH SPOT IS ONE WAVE: building the density from its waves ----------
+if($('fouCv')){
+const FA=20,FH=20,FAT=[[3.0,6],[4.5,8],[8.0,6],[11.2,7],[15.5,16]],FOT=[[2.2,8],[6.4,6],[9.6,16],[13.0,6],[17.1,7]];
+const sf=at=>{const F=[];for(let h=0;h<=FH;h++){let re=0,im=0;at.forEach(([x,z])=>{const g=z*Math.exp(-2*(h/FA)*(h/FA));re+=g*Math.cos(2*Math.PI*h*x/FA);im+=g*Math.sin(2*Math.PI*h*x/FA);});F.push([Math.hypot(re,im),Math.atan2(im,re)]);}return F;};
+const FT=sf(FAT),FO=sf(FOT),FR=(()=>{const r=rng(77);return FT.map(()=>r()*2*Math.PI);})();
+let fN=4,fMode='true';
+const fPh=h=>fMode==='true'?FT[h][1]:fMode==='zero'?0:fMode==='rand'?FR[h]:FO[h][1];
+const fRho=(x,N,ph)=>{let s=FT[0][0]/FA;for(let h=1;h<=N;h++)s+=2/FA*FT[h][0]*Math.cos(2*Math.PI*h*x/FA-ph(h));return s;};
+const fouFig=fig('fouCv',w=>w<560?0.8:2.1,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:15;
+  const x0=w*0.05,x1=w*0.97,y0=h*0.14,y1=h*0.56,b0=h*0.68,b1=h*0.88,X=x=>x0+x/FA*(x1-x0),n=narrow?240:500;
+  let mx=0;for(let i=0;i<=n;i++)mx=Math.max(mx,fRho(FA*i/n,FH,h2=>FT[h2][1]));const Y=v=>y1-(y1-y0)*(0.13+0.66*v/mx);
+  rectF(c,x0,y0,x1-x0,y1-y0,WHITE,2.5);line(c,x0,Y(0),x1,Y(0),1,GREY);
+  // the true density, the newest wave, and the density built so far
+  c.beginPath();c.moveTo(x0,Y(0));for(let i=0;i<=n;i++){const x=FA*i/n;c.lineTo(X(x),Y(fRho(x,FH,h2=>FT[h2][1])));}c.lineTo(x1,Y(0));c.closePath();c.fillStyle=LTGRN;c.fill();
+  if(fN>0){pen(c,1.6,ORG);c.beginPath();for(let i=0;i<=n;i++){const x=FA*i/n,v=2/FA*FT[fN][0]*Math.cos(2*Math.PI*fN*x/FA-fPh(fN));i?c.lineTo(X(x),Y(v)):c.moveTo(X(x),Y(v));}c.stroke();}
+  pen(c,2.4);c.beginPath();for(let i=0;i<=n;i++){const x=FA*i/n,v=fRho(x,fN,fPh);i?c.lineTo(X(x),Math.max(y0+2,Math.min(y1-2,Y(v)))):c.moveTo(X(x),Math.max(y0+2,Math.min(y1-2,Y(v))));}c.stroke();
+  (fMode==='other'?FOT:FAT).forEach(([x,z])=>{if(fMode==='other'){pen(c,2,PUR);c.beginPath();c.arc(X(x),y1+9,narrow?4:5,0,7);c.stroke();}});
+  FAT.forEach(([x,z])=>disc(c,X(x),y1+9,narrow?3+z/6:4+z/5,z===16?YEL:z===8?RED:z===7?BLUE:'#5d6a73',1.5));
+  pen(c,2.5);c.strokeRect(x0,y0,x1-x0,y1-y0);
+  txt(c,narrow?'green: true density.  black: built so far':'green: the true density.   black: built from the spots so far.   orange: the last wave added',x0+8,y0+13,fs-1,'left');
+  // the spots: one bar each
+  const bw=(x1-x0)/FH,am=Math.max(...FT.slice(1).map(q=>q[0]));
+  for(let hh=1;hh<=FH;hh++){const bx=x0+(hh-1)*bw+bw*0.18,bh=(b1-b0)*FT[hh][0]/am;rectF(c,bx,b1-bh,bw*0.64,bh,hh===fN?ORG:hh<=fN?'#5d6a73':WHITE,1.5);
+    if(!narrow||hh%2===0||hh===1)txt(c,(FA/hh).toFixed(FA/hh<10&&FA%hh?1:0),bx+bw*0.32,b1+13,fs-2,'center');}
+  txt(c,'strength of each spot, labeled by the spacing of its wave (Å)',x0,b0-12,fs-1,'left');
+  cap(c,'Every spot adds one wave',12,18,'left',narrow?12:15);
+},false);
+function foUpd(){fN=+$('fN').value;$('fNO').textContent=fN===0?'none':fN+(fN===1?' spot':' spots');$('fR').textContent=fN===0?'no detail at all':(FA/fN).toFixed(FA/fN<10?1:0)+' Å';
+  let sxy=0,sxx=0,syy=0,mx2=0,my=0;const N=200,a=[],b=[];for(let i=0;i<N;i++){const x=FA*i/N;a.push(fRho(x,FH,h=>FT[h][1]));b.push(fRho(x,fN,fPh));mx2+=a[i];my+=b[i];}mx2/=N;my/=N;
+  for(let i=0;i<N;i++){sxy+=(a[i]-mx2)*(b[i]-my);sxx+=(a[i]-mx2)**2;syy+=(b[i]-my)**2;}const cc=syy<1e-12?0:sxy/Math.sqrt(sxx*syy);
+  $('fC').textContent=(100*cc).toFixed(0).replace('-','−')+'%';$('fP').textContent={true:'the right ones',zero:'all set to zero',rand:'random',other:'from a different molecule'}[fMode];fouFig.w&&fouFig.draw(fouFig);}
+$('fN').addEventListener('input',foUpd);
+[['fBt','true'],['fBz','zero'],['fBr','rand'],['fBo','other']].forEach(([id,m])=>$(id).addEventListener('click',()=>{fMode=m;['fBt','fBz','fBr','fBo'].forEach(q=>$(q).setAttribute('aria-pressed',String(q===id)));foUpd();}));foUpd();
+}
+
+// ---------- THE MAP AND THE MODEL ----------
+if($('mapCv')){
+let pD=2,pS=0.4,pM=true,pWire=true;
+const mapFig=fig('mapCv',w=>w<560?1.05:2.2,f=>{const {ctx:c,w,h}=f;bg(c,w,h,WHITE);const narrow=w<560,y0=narrow?26:8,H=h-y0-8;
+  drawMap(c,0,y0,w,H,pD,narrow?3:4,pS,pWire);if(pM)drawMol(c,0,y0,w,H);cap(c,'The map at '+pD.toFixed(1)+' Å',12,18,'left',narrow?12:15);
+},false);
+// the slider runs from low resolution on the left (6 Å) to high on the right (1 Å), so its own value is minus the resolution
+function mpUpd(){pD=-$('pD').value;$('pD').setAttribute('aria-valuetext',pD.toFixed(1)+' ångströms');pS=+$('pS').value/100;$('pDO').textContent=pD.toFixed(1)+' Å';$('pSO').textContent=Math.round(pS*100)+'% of the highest peak';
+  $('pW').textContent=pD<=1.3?'separate atoms':pD<=2.0?'the rings, with holes in them':pD<=3.0?'the shape of each side chain':pD<=4.2?'the helix, with lumps for its side chains':'a blob the size of the helix';
+  mapFig.w&&mapFig.draw(mapFig);}
+['pD','pS'].forEach(id=>$(id).addEventListener('input',mpUpd));
+[['pWm',true],['pWo',false]].forEach(([id,v])=>$(id).addEventListener('click',()=>{pWire=v;$('pWm').setAttribute('aria-pressed',String(v));$('pWo').setAttribute('aria-pressed',String(!v));mpUpd();}));
+$('pB').addEventListener('click',()=>{pM=!pM;$('pB').setAttribute('aria-pressed',String(pM));mpUpd();});mpUpd();
+}
+
+// ---------- A WRONG MODEL AND ITS DIFFERENCE MAP ----------
+// The same piece of myoglobin as in the map figure, at 2 Å, with one amino acid of the model built wrongly: a ring or a whole side chain
+// turned about one of its bonds, or atoms left out. The difference density is the map of the true atoms less the map of the model's atoms.
+// Atoms the two share cancel exactly, so only the atoms that differ are summed: the true ones with their weight, the model's with the opposite sign.
+if($('difCv')){
+const H=MB.hel;
+// turn a point about the line from a to b
+const spin=(p,a,b,ang)=>{const k=[b[0]-a[0],b[1]-a[1],b[2]-a[2]],n=Math.hypot(k[0],k[1],k[2]),u=k.map(v=>v/n),v=[p[0]-a[0],p[1]-a[1],p[2]-a[2]],cs=Math.cos(ang),sn=Math.sin(ang),d=u[0]*v[0]+u[1]*v[1]+u[2]*v[2],
+  cr=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];return [0,1,2].map(i=>a[i]+v[i]*cs+cr[i]*sn+u[i]*d*(1-cs)).concat(p[3]);};
+// the amino acids of the piece: name, number, and how many atoms each has. In the file each starts N, CA, C, O, CB, and the side chain follows
+const RES=[['glutamate',4,9],['glycine',5,4],['glutamate',6,9],['tryptophan',7,14],['glutamine',8,9],['leucine',9,8],['valine',10,7],['leucine',11,8],['histidine',12,10],['valine',13,7],['tryptophan',14,14],['alanine',15,5],['lysine',16,9]];
+{let s=0;RES.forEach(r=>{r.push(s);s+=r[2];});}
+const byNo=n=>RES.find(r=>r[1]===n);
+// which amino acids each kind of mistake can be made in, and the one shown first
+const KIND={flip:{ok:r=>r[0]==='tryptophan',first:7,val:180,ax:[4,5],from:6},     // about the bond from CB to CG: the ring turns over
+  turn:{ok:r=>r[2]>5,first:12,val:120,ax:[1,4],from:5},                                              // about the bond from CA to CB: the whole side chain swings
+  miss:{ok:r=>r[2]>5,first:16,val:0,from:5}};                                                          // atoms past CB left out
+let dKind='flip',dRes=7,dVal=180,dDrag=false,dGeo=null;
+const toAt=p=>({x:p[0],y:-p[1],w:p[2],z:p[3]});
+// the model for the present choice, the atoms that differ, and whether anything is wrong
+function dModel(){const r=byNo(dRes),K=KIND[dKind],s=r[3],ids=[];for(let i=s+K.from;i<s+r[2];i++)ids.push(i);
+  const model=H.slice(),pos=[];let wrong=false;
+  if(dKind==='miss'){ids.forEach((i,n)=>{if(n>=dVal){model[i]=null;pos.push(toAt(H[i]));wrong=true;}});return {model,pos,neg:null,wrong,ax:null};}
+  const ang=dVal*Math.PI/180,a=H[s+K.ax[0]],b=H[s+K.ax[1]];wrong=dVal%360!==0;
+  if(wrong)ids.forEach(i=>{model[i]=spin(H[i],a,b,ang);pos.push(toAt(H[i]));const m=toAt(model[i]);m.z=-m.z;pos.push(m);});
+  return {model,pos,neg:pos.map(q=>({x:q.x,y:q.y,w:q.w,z:-q.z})),wrong,ax:[a,b]};}
+const difFig=fig('difCv',w=>w<560?0.84:2.2,f=>{const {ctx:c,w,h}=f;bg(c,w,h,WHITE);const narrow=w<560,fs=narrow?12:15,y0=narrow?26:8,Hh=h-y0-8,q=dModel(),key=dKind+dRes+'_'+dVal;
+  const m=drawMap(c,0,y0,w,Hh,2,narrow?3:4,0.4,true,{atoms:MOL.at,key:'pale',col:'#a9c4e6',lw:1}),L=0.3*m.top;
+  if(q.wrong){drawMap(c,0,y0,w,Hh,2,narrow?3:4,0.4,true,{atoms:q.pos,key:key+'+',col:'#1f9d55',L,lw:1.5});
+    if(q.neg)drawMap(c,0,y0,w,Hh,2,narrow?3:4,0.4,true,{atoms:q.neg,key:key+'-',col:RED,L,lw:1.5});}
+  // the model
+  const sc=mapScale(w,Hh),cx=w/2-MAPC[0]*sc,cy=y0+Hh/2+MAPC[1]*sc,X=p=>[cx+p[0]*sc,cy-p[1]*sc],P=q.model.map(p=>p&&X(p).concat(p[3]));
+  MB.helBonds.forEach(([i,j])=>{if(P[i]&&P[j])line(c,P[i][0],P[i][1],P[j][0],P[j][1],Math.max(1.6,sc*0.09));});
+  P.forEach(p=>{if(p)disc(c,p[0],p[1],Math.max(2.2,sc*0.17),atomCol(p[2]),1.2);});
+  // the dial on the bond that the atoms turn about: drag its knob
+  dGeo=null;
+  if(q.ax){const A=X(q.ax[0]),B=X(q.ax[1]),mx=(A[0]+B[0])/2,my=(A[1]+B[1])/2,R=narrow?20:27,ang=dVal*Math.PI/180-Math.PI/2,kx=mx+R*Math.cos(ang),ky=my+R*Math.sin(ang);
+    line(c,A[0],A[1],B[0],B[1],Math.max(3,sc*0.16),ORG);
+    pen(c,dDrag?2.6:1.8,ORG);c.setLineDash([5,4]);c.beginPath();c.arc(mx,my,R,0,7);c.stroke();c.setLineDash([]);
+    line(c,mx,my-R-5,mx,my-R+5,2,ORG);                                    // the mark for the right position, at the top
+    disc(c,kx,ky,narrow?7:8.5,ORG,2);
+    dGeo={mx,my,R};
+}
+  cap(c,'The model, and the difference map',12,18,'left',narrow?12:15);
+  // the key
+  const kx=narrow?w*0.03:w*0.025,ky=h-(narrow?46:54)-(q.ax?fs+5:0),row=(i,col,s)=>{line(c,kx,ky+i*(fs+5),kx+22,ky+i*(fs+5),2.4,col);txt(c,s,kx+29,ky+i*(fs+5)+1,fs,'left');};
+  row(0,'#1f9d55','green: the data want more here');row(1,RED,'red: the data want less here');row(2,'#a9c4e6','pale blue: the map');if(q.ax)row(3,ORG,'orange: drag the knob to turn');
+},false);
+const dCtl=id=>$(id).closest('.ctl');
+function dfUpd(){const r=byNo(dRes),miss=dKind==='miss',n=r[2]-5,q=dModel();
+  dCtl('dfT').style.display=miss?'none':'';dCtl('dfN').style.display=miss?'':'none';
+  if(miss){$('dfN').max=n;$('dfN').value=dVal;setT('dfNO',dVal+' of '+n);}else{$('dfT').value=dVal;setT('dfTO',dVal+'°');}
+  setT('dfS',!q.wrong?'nothing: the model accounts for the density':dKind==='flip'?'the ring is in the right place but turned. Turn it until the red and green are gone':dKind==='turn'?'the side chain points the wrong way. Swing it into the green':'atoms are missing from the model. Build them into the green');
+  setT('dfW',r[0]+' '+r[1]);
+  difFig.w&&difFig.draw(difFig);}
+function dfKind(k){dKind=k;const K=KIND[k],sel=$('dfR');sel.innerHTML='';RES.filter(K.ok).forEach(r=>{const o=document.createElement('option');o.value=r[1];o.textContent=r[0][0].toUpperCase()+r[0].slice(1)+' '+r[1];sel.appendChild(o);});
+  if(!K.ok(byNo(dRes)))dRes=K.first;sel.value=dRes;dVal=K.val;
+  [['dfA','flip'],['dfB','turn'],['dfC','miss']].forEach(([id,v])=>$(id).setAttribute('aria-pressed',String(v===k)));dfUpd();}
+[['dfA','flip'],['dfB','turn'],['dfC','miss']].forEach(([id,k])=>$(id).addEventListener('click',()=>{dRes=KIND[k].first;dfKind(k);}));
+$('dfR').addEventListener('change',()=>{dRes=+$('dfR').value;dVal=KIND[dKind].val;dfUpd();});
+$('dfT').addEventListener('input',()=>{dVal=+$('dfT').value;dfUpd();});
+$('dfN').addEventListener('input',()=>{dVal=+$('dfN').value;dfUpd();});
+$('dfD').addEventListener('click',()=>{dVal=dKind==='miss'?byNo(dRes)[2]-5:0;dfUpd();});
+// dragging the knob of the dial
+{const cv=$('difCv'),pos=e=>{const b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top];},near=e=>{if(!dGeo)return false;const [x,y]=pos(e);return Math.abs(Math.hypot(x-dGeo.mx,y-dGeo.my)-dGeo.R)<16||Math.hypot(x-dGeo.mx,y-dGeo.my)<dGeo.R;};
+  const set=e=>{const [x,y]=pos(e);let d=Math.round((Math.atan2(y-dGeo.my,x-dGeo.mx)*180/Math.PI+90+360)%360/5)*5;if(d>=360)d=0;dVal=d;dfUpd();};
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{if(!near(e))return;dDrag=true;cv.setPointerCapture(e.pointerId);set(e);e.preventDefault();});
+  cv.addEventListener('pointermove',e=>{if(dDrag)set(e);else cv.style.cursor=near(e)?'grab':'';});
+  const stop=()=>{if(dDrag){dDrag=false;dfUpd();}};cv.addEventListener('pointerup',stop);cv.addEventListener('pointercancel',stop);}
+dfKind('flip');
+}
+
+// ---------- REFINEMENT: move the atoms until the model explains the spots ----------
+if($('refCv')){
+const RA=20,RH=15,RZ=[8,6,7,6],RT=[3.2,7.9,12.4,16.1],FREE=[3,8,12],RS=[2.6,8.6,11.8,16.8];
+let rx=RS.slice(),rDrag=-1,rAuto=false,rIt=0;
+const rsf=xs=>{const F=[];for(let h=1;h<=RH;h++){let re=0,im=0;xs.forEach((x,i)=>{const g=RZ[i]*Math.exp(-4*(h/RA)*(h/RA));re+=g*Math.cos(2*Math.PI*h*x/RA);im+=g*Math.sin(2*Math.PI*h*x/RA);});F.push([Math.hypot(re,im),Math.atan2(im,re)]);}return F;};
+// the measured strengths: those of the true structure, with a few percent of noise
+const RFO=(()=>{const r=rng(5);return rsf(RT).map(q=>Math.max(0,q[0]*(1+0.046*(r()+r()+r()-1.5))));})();
+// distance of the model from the truth. The spots cannot tell a structure from the same one slid along the line or mirrored,
+// or with its two carbon atoms exchanged, so those are allowed for
+function rErr(xs){let best=1e9;for(const sg of[1,-1])for(const pm of[[0,1,2,3],[0,3,2,1]]){const d=xs.map((x,i)=>(x-sg*RT[pm[i]])*2*Math.PI/RA),s0=Math.atan2(d.reduce((a,v)=>a+Math.sin(v),0),d.reduce((a,v)=>a+Math.cos(v),0));
+  best=Math.min(best,Math.sqrt(d.reduce((a,v)=>{const u=Math.atan2(Math.sin(v-s0),Math.cos(v-s0))*RA/(2*Math.PI);return a+u*u;},0)/xs.length));}return best;}
+// the scale of the difference map is held at half the size it has for the opening model, so that a good model shows as a flat map
+const RDM=(()=>{const F=rsf(RS);let m=0;for(let i=0;i<=200;i++){const x=RA*i/200;let v=0;F.forEach((q,j)=>{v+=2/RA*(RFO[j]-q[0])*Math.cos(2*Math.PI*(j+1)*x/RA-q[1]);});m=Math.max(m,Math.abs(v));}return m*0.5;})();
+function rStat(xs){const F=rsf(xs);let a=0,b=0,fa=0,fb=0;F.forEach((q,i)=>{const d=Math.abs(RFO[i]-q[0]);if(FREE.includes(i+1)){fa+=d;fb+=RFO[i];}else{a+=d;b+=RFO[i];}});
+  return {F,R:a/b,Rf:fa/fb,err:rErr(xs)};}
+const rTarget=xs=>{const F=rsf(xs);let s=0;F.forEach((q,i)=>{if(!FREE.includes(i+1))s+=(RFO[i]-q[0])**2;});return s;};
+const refFig=fig('refCv',w=>w<560?0.85:2.1,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:15,st=rStat(rx);
+  if(rAuto){for(let it=0;it<3;it++){const g=rx.map((x,i)=>{const a=rx.slice(),b=rx.slice();a[i]+=0.01;b[i]-=0.01;return (rTarget(a)-rTarget(b))/0.02;}),gm=Math.hypot(...g);if(gm<0.02||++rIt>1500){rAuto=false;break;}rx=rx.map((x,i)=>x-Math.min(0.03,0.003*gm)*g[i]/gm);}rShow();}
+  const x0=w*0.05,x1=w*0.97,y0=h*0.17,y1=h*0.5,ya=y1+(narrow?14:17),b0=h*0.7,b1=h*0.88,X=x=>x0+x/RA*(x1-x0),n=narrow?220:420;
+  refFig.geo={x0,x1,ya};
+  rectF(c,x0,y0,x1-x0,y1-y0,WHITE,2.5);const ym=(y0+y1)/2,dif=x=>{let s=0;st.F.forEach((q,i)=>{s+=2/RA*(RFO[i]-q[0])*Math.cos(2*Math.PI*(i+1)*x/RA-q[1]);});return s;};
+  let dm=RDM;const dv=[];for(let i=0;i<=n;i++){const v=dif(RA*i/n);dv.push(v);dm=Math.max(dm,Math.abs(v));}
+  const Y=v=>ym-(y1-y0)*0.44*v/dm;
+  [[1,GRN,LTGRN],[-1,RED,LTRED]].forEach(([sg,col,fill])=>{c.beginPath();c.moveTo(x0,ym);for(let i=0;i<=n;i++)c.lineTo(x0+(x1-x0)*i/n,Y(sg>0?Math.max(0,dv[i]):Math.min(0,dv[i])));c.lineTo(x1,ym);c.closePath();c.fillStyle=fill;c.fill();pen(c,1.6,col);c.stroke();});
+  line(c,x0,ym,x1,ym,1.2,'#7d8b96');pen(c,2.5);c.strokeRect(x0,y0,x1-x0,y1-y0);
+  txt(c,narrow?'difference map: green, add; red, remove':'difference map.   green: the data want more density here.   red: less',x0,y0-11,fs-1,'left');
+  // the model atoms, which can be dragged
+  line(c,x0,ya,x1,ya,2);rx.forEach((x,i)=>{disc(c,X(x),ya,narrow?8:10,RZ[i]===8?RED:RZ[i]===7?BLUE:'#5d6a73',2);});
+  txt(c,narrow?'drag the atoms':'the model: drag the atoms along the line',x0,ya+(narrow?20:24),fs-1,'left');
+  // observed against calculated
+  const bw=(x1-x0)/RH,am=Math.max(...RFO);
+  for(let hh=1;hh<=RH;hh++){const bx=x0+(hh-1)*bw,fr=FREE.includes(hh),ho=(b1-b0)*RFO[hh-1]/am,hc=(b1-b0)*Math.min(1.25,st.F[hh-1][0]/am);
+    rectF(c,bx+bw*0.14,b1-ho,bw*0.36,ho,fr?LTORG:LTBLUE,1.5);rectF(c,bx+bw*0.5,b1-hc,bw*0.36,hc,'#5d6a73',1.5);if(fr)txt(c,narrow?'f':'free',bx+bw*0.5,b1+12,fs-2,'center','#b8641a');}
+  txt(c,narrow?'spots: measured (pale), from model (dark)':'each spot: measured (pale) beside calculated from the model (dark).   orange: set aside for R-free',x0,b0-12,fs-1,'left');
+  cap(c,'Refinement by hand',12,18,'left',narrow?12:15);
+});
+function rShow(){const st=rStat(rx);setT('rR',(100*st.R).toFixed(1)+'%');setT('rF',(100*st.Rf).toFixed(1)+'%');setT('rE',st.err.toFixed(2)+' Å');}
+{const cv=refFig.cv,at=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];},toX=px=>{const g=refFig.geo;return Math.max(0.3,Math.min(RA-0.3,(px-g.x0)/(g.x1-g.x0)*RA));};
+  const near=(x,y)=>{const g=refFig.geo;if(!g||Math.abs(y-g.ya)>26)return -1;let b=-1,bd=24;rx.forEach((v,i)=>{const d=Math.abs(g.x0+v/RA*(g.x1-g.x0)-x);if(d<bd){bd=d;b=i;}});return b;};
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{const [x,y]=at(e),i=near(x,y);if(i>=0){rDrag=i;rAuto=false;try{cv.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();}});
+  cv.addEventListener('pointermove',e=>{const [x,y]=at(e);if(rDrag>=0){rx[rDrag]=toX(x);rShow();refFig.draw(refFig);}cv.style.cursor=rDrag>=0||near(x,y)>=0?'ew-resize':'default';});
+  ['pointerup','pointercancel','lostpointercapture'].forEach(n=>cv.addEventListener(n,()=>{rDrag=-1;}));}
+$('rBa').addEventListener('click',()=>{rAuto=true;rIt=0;refFig.draw(refFig);});
+$('rBs').addEventListener('click',()=>{const r=rng(Date.now()&0xffff);rAuto=false;rx=RT.map(x=>Math.max(0.5,Math.min(RA-0.5,x-0.4+(r()-0.5)*1.2)));rShow();refFig.draw(refFig);});
+$('rBw').addEventListener('click',()=>{rAuto=false;rx=[RT[1]+0.3,RT[0]-0.4,RT[3]+0.2,RT[2]-0.3];rShow();refFig.draw(refFig);});
+rShow();
+}
+
+// ---------- RADIATION DAMAGE: the finest detail fades first ----------
+if($('doseCv')){
+const DSP=(()=>{const r=rng(4),s=[];for(let i=-13;i<=13;i++)for(let j=-13;j<=13;j++){const x=i+0.5*(j&1),y=j*0.87,q=Math.hypot(x,y)/13;if(q<0.1||q>1)continue;s.push({x:x/13,y:y/13,q,I:Math.pow(r(),2)*Math.exp(-2.2*q*q)});}return s;})();
+const DE=1.5;let dD=0;                                  // resolution at the edge of the picture, in angstroms
+const dHalf=d=>10*d, dKeep=(d,D)=>Math.pow(0.5,D/dHalf(d));
+const doseFig=fig('doseCv',w=>w<560?0.95:2.3,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:15;
+  const cx=narrow?w*0.5:w*0.27,cy=narrow?h*0.39:h*0.54,R=narrow?Math.min(w*0.4,h*0.27):h*0.4;
+  disc(c,cx,cy,R,WHITE,2.5);
+  [6,3,2,1.5].forEach(d=>{const r=R*DE/d;pen(c,1,'#aab4bb');c.setLineDash([3,4]);c.beginPath();c.arc(cx,cy,r,0,7);c.stroke();c.setLineDash([]);txt(c,d+' Å',cx+r*0.707+3,cy-r*0.707-3,fs-2,'left',MUT);});
+  DSP.forEach(s=>{const d=DE/s.q,k=dKeep(d,dD),v=s.I*k;if(v<0.004)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.25+2.2*Math.sqrt(v))})`;c.beginPath();c.arc(cx+s.x*R,cy+s.y*R,(narrow?0.7:1)*(0.8+3*Math.sqrt(v)),0,7);c.fill();});
+  disc(c,cx,cy,narrow?3:4,'#8c979f',1);
+  // what is left at each resolution
+  const x0=narrow?w*0.12:w*0.58,x1=w*0.96,y0=narrow?h*0.74:h*0.2,y1=narrow?h*0.92:h*0.8,X=q=>x0+q*(x1-x0),Y=v=>y1-(y1-y0)*v;
+  rectF(c,x0,y0,x1-x0,y1-y0,WHITE,2.5);c.beginPath();c.moveTo(x0,y1);for(let i=1;i<=100;i++){const q=i/100;c.lineTo(X(q),Y(dKeep(DE/q,dD)));}c.lineTo(x1,y1);c.closePath();c.fillStyle=LTYEL;c.fill();pen(c,2);c.stroke();
+  line(c,x0,Y(0.5),x1,Y(0.5),1,'#7d8b96',[4,4]);txt(c,'half',x0-5,Y(0.5),fs-1,'right');txt(c,'all',x0-5,y0+4,fs-1,'right');
+  [6,3,2,1.5].forEach(d=>{line(c,X(DE/d),y1,X(DE/d),y1+5,1.6);txt(c,d+' Å',X(DE/d),y1+15,fs-1,d===1.5?'right':'center');});
+  pen(c,2.5);c.strokeRect(x0,y0,x1-x0,y1-y0);txt(c,narrow?'brightness left, by detail':'brightness left in the spots, by the detail they carry',x0,y0-12,fs-1,'left');
+  cap(c,'The pattern after '+dD.toFixed(0)+' MGy',12,18,'left',narrow?12:15);
+},false);
+function dsUpd(){dD=+$('dD').value;$('dDO').textContent=dD.toFixed(0)+' MGy';$('dH').textContent=dD<1?'none yet':'everything finer than '+(dD/10).toFixed(1)+' Å';
+  $('d2').textContent=(100*dKeep(2,dD)).toFixed(0)+'%';$('dL').textContent=dD<=30?Math.round(dD/30*100)+'% of it':'past it, by '+(dD/30).toFixed(1)+' times';doseFig.w&&doseFig.draw(doseFig);}
+$('dD').addEventListener('input',dsUpd);dsUpd();
+}
+
+// ---------- shared: read-out labels in capitals, and the button that opens every equation ----------
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+capK();
+const eqBtn=$('eqAll');let eqOpen=false;
+function setEq(o){eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}}
+eqBtn.addEventListener('click',()=>setEq(!eqOpen));
+try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}
+})();
+
+</script>
+
+<script data-goatcounter="https://frankvm04.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body></html>

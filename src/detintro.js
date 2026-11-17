@@ -3,28 +3,12 @@
 const PIX=0.075, FW=DETG.fw, FH=DETG.fh;   // pixel size and window of the EIGER2 XE 16M, in millimeters
 
 // ---------- opening figure: a data collection, image by image ----------
-// A made-up crystal (cell 40 x 45 x 52 Å, tilted) turns about an upright axis in a beam of 1 Å X-rays. Each image shows the lattice
-// points that lie close to the sphere of reflection at that angle, so the spots fall in curved bands, lunes, that move as it turns.
+// The images come from rotImage in introkit.js: a made-up crystal turning in the beam, so the spots fall in curved bands, lunes, that move.
 if($('pixHeroCv')){
-const RMAX=1/2.4,TX=Math.tan(2*Math.asin(0.5/2.5)),TY=TX*FH/FW,SG=0.0009,PTS=(()=>{
-  const ca=Math.cos(0.30),sa=Math.sin(0.30),cb=Math.cos(0.16),sb=Math.sin(0.16),cg=Math.cos(0.10),sg=Math.sin(0.10),P=[];
-  const hash=(h,k,l)=>{let q=(h*73856093)^(k*19349663)^(l*83492791);q=(q^(q>>>13))>>>0;q=Math.imul(q,1274126177)>>>0;return ((q^(q>>>16))>>>0)/4294967296;};
-  for(let h=-17;h<=17;h++)for(let k=-19;k<=19;k++)for(let l=-22;l<=22;l++){if(!h&&!k&&!l)continue;let x=h/40,y=k/45,z=l/52;const r=Math.hypot(x,y,z);if(r>RMAX)continue;
-    let t=x*ca-y*sa;y=x*sa+y*ca;x=t;t=y*cb-z*sb;z=y*sb+z*cb;y=t;t=x*cg+z*sg;z=-x*sg+z*cg;x=t;   // tilt the lattice
-    P.push(x,y,z,Math.pow(hash(h,k,l),1.6)*Math.exp(-2.2*(r/RMAX)*(r/RMAX)));}
-  return new Float32Array(P);})();
 let shown=-1,SPOTS=[];
-// the spots on image n: 0.3 degrees of turn for each image
-function image(n){const ph=n*0.3*Math.PI/180,cs=Math.cos(ph),sn=Math.sin(ph),S=[],px=FW/(DETG.mw+DETG.gx),py=FH/(DETG.mh+DETG.gy);
-  for(let i=0;i<PTS.length;i+=4){const x=PTS[i]*cs+PTS[i+2]*sn,y=PTS[i+1],kz=-PTS[i]*sn+PTS[i+2]*cs+1;if(kz<=0)continue;
-    const e=Math.sqrt(x*x+y*y+kz*kz)-1;if(e>3*SG||e<-3*SG)continue;const u=x/kz/TX,v=y/kz/TY;if(u<-1||u>1||v<-1||v>1||u*u+v*v<0.004)continue;
-    // nothing is counted in the gaps between the modules
-    const mx=((u+1)/2*FW)%(DETG.mw+DETG.gx),my=((v+1)/2*FH)%(DETG.mh+DETG.gy);if(mx>DETG.mw||my>DETG.mh)continue;
-    const a=PTS[i+3]*Math.exp(-e*e/(2*SG*SG));if(a>0.02)S.push({u,v,a});}
-  return S;}
 fig('pixHeroCv',w=>w<560?1.1:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15;
   const S=narrow?h*0.66:h*0.9,dc=narrow?[w*0.36,h*0.58]:[w*0.3,h*0.5],R=narrow?h*0.26:h*0.36,mc=narrow?[w*0.78,h*0.36]:[w*0.72,h*0.5];
-  const n=Math.floor(t*10);if(n!==shown){SPOTS=image(n);shown=n;}
+  const n=Math.floor(t*10);if(n!==shown){SPOTS=rotImage(n);shown=n;}
   const B=detFace(c,dc[0],dc[1],S/DETG.hh),k=B.w/230;
   SPOTS.forEach(s=>{c.fillStyle=`rgba(27,27,27,${Math.min(1,0.45+2.5*s.a).toFixed(2)})`;c.beginPath();c.arc(dc[0]+s.u*B.w/2,dc[1]+s.v*B.h/2,(0.6+2.3*Math.sqrt(s.a))*k,0,7);c.fill();});
   // a magnified patch: pixels, each with its count

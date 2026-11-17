@@ -20,7 +20,7 @@ FIG['v_fit']=_panel('sFitCv','Interactive: the map of one helix of myoglobin. On
  "The same helix as at the last stop: 113 atoms of carbon, nitrogen and oxygen. Hydrogen atoms are left out, as they usually are, because they scatter X-rays too weakly to show. Put the atoms in, then try the coarse map and the fine one. With fine detail each atom has its own peak. With coarse detail the atoms fit inside the shape, but so would other arrangements, and what is already known about proteins has to settle the matter. The last button turns the view and pulls back to the whole protein, with this piece in orange. Its chain of 153 amino acids is drawn as a tube: blue where it is wound into helices, grey in between. The positions are from entry 1MBN in the Protein Data Bank.")
 
 SEE=dict(key='see',title='How Do We See a Protein?',name='How do we see a protein?',kicker='NE-CAT guides · crystallography in five minutes',h1='How do we see a protein?',level='Introductory',deeper='mx',
-  lede="Proteins do most of the work in a living cell, and each one works because of its shape. They are far too small to see with any microscope that uses light. This guide explains, in four stops, how X-rays and a crystal are used to find where every atom in a protein is.",
+  lede="Proteins do most of the work in a living cell, and each one works because of its shape. They are far too small to see with any microscope that uses light. This guide explains, in four stops, how X-rays and a crystal are used to find where the atoms in a protein are.",
   hero='v_hero',table='none',bar='',
   sections=[
    dict(id='small',nav='Too small',h2='Too small for light',prose=[
@@ -47,7 +47,7 @@ SEE=dict(key='see',title='How Do We See a Protein?',name='How do we see a protei
    dict(id='model',nav='Atoms',h2='Atoms are fitted into the map',prose=[
      "The map is a shape, and a shape is not yet a list of atoms. A protein is a chain of building blocks called amino acids, and their order along the chain is known from the gene for the protein. The job is to thread that chain through the map, so that every atom lies inside the shape.",
      "Software does most of the threading, and a scientist checks it. The model is then adjusted until the spots it would give match the spots that were measured.",
-     "The finished structure is a list of every atom and where it is. It can be turned around on a screen, compared with other proteins, and used to design a medicine that fits into it.",
+     "The finished structure is a list of the atoms and where each one is. It can be turned around on a screen, compared with other proteins, and used to design a medicine that fits into it.",
      _here("Structures measured at NE-CAT are placed in the Protein Data Bank, a public archive that anyone can use. It holds more than 250,000 structures.")],
     items=[('fig','v_fit')]),
   ],
@@ -62,4 +62,4 @@ _k=[g['key'] for g in G]
 G.insert(_k.index('mx' if 'mx' in _k else 'scatter'),SEE)
 for _g in G:
     if _g['key']=='mx': _g['short']='see'
-UPDATED['see']='November 13, 2026'
+UPDATED['see']='November 17, 2026'

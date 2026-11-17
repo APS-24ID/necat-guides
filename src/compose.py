@@ -350,7 +350,7 @@ G=[
     items=[('fig','kb'),('eqs',['demag'])]),
    dict(id='endstation',nav='The sample',h2='At the sample',prose=[
      "The protein crystal is a fraction of a millimetre across. It sits in a small loop on the end of a pin, held at about 100 K in a stream of cold nitrogen gas. A goniometer holds the pin and rotates the crystal in the beam. 24-ID-C has an MD3-UP goniometer, which turns the crystal about a vertical axis. 24-ID-E has an MD2.",
-     "Most of the beam passes straight through the crystal and is caught by a small beamstop. A small part is diffracted by the ordered molecules in the crystal into thousands of separate rays. A large area detector behind the sample records where they land: an EIGER2 XE 16M on 24-ID-C and an EIGER 16M on 24-ID-E. As the crystal rotates, the detector collects the pattern of spots from which the structure is worked out.",
+     "Most of the beam passes straight through the crystal and is caught by a small beamstop. A small part is diffracted by the ordered molecules in the crystal into thousands of separate rays. A large area detector behind the sample records where they land: an EIGER2 XE 16M on 24-ID-C and an EIGER 16M on 24-ID-E. As the crystal rotates, the detector collects the pattern of spots from which the structure is worked out. The guide {guide:mx} explains how that is done.",
      "A second, much smaller detector sits beside the sample. It measures the energy of each X-ray it receives, and is used to find which elements are in the crystal and to scan across an absorption edge. The beam's polarization decides where that detector should go. The guide {guide:polarization} explains where the polarization comes from, and the guide {guide:scatter} explains how to use it."],
     items=[('fig','diff'),('eqs',['resol'])]),
   ],
@@ -453,8 +453,8 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.8.4','November 16, 2026')
-UPDATED={'aps':'November 13, 2026','overview':'November 13, 2026','polarization':'November 13, 2026','scatter':'November 13, 2026'}
+RELEASE=('1.9','November 17, 2026')
+UPDATED={'aps':'November 13, 2026','overview':'November 17, 2026','polarization':'November 13, 2026','scatter':'November 17, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
 # the line under every guide and the index: its date and release, and how to report a mistake (by email, or with the correction form on GitHub)
 MAILTO='necat@cornell.edu'
@@ -583,7 +583,7 @@ CARDS=[('syn','csCv','Five minutes','How a synchrotron makes X-rays, in five sto
        ('detintro','cpCv','Five minutes','How the detector records the spots, in four stops and five minutes, with no equations. Eighteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.',['Pixels','Counting','Speed','Distance']),
        ('det','cqCv','Go deeper','What happens between an X-ray entering the detector and a counter going up by one, and what it means for the data: how much of the beam is caught, charge sharing and the threshold, count rates, counting statistics, and the choice of detector distance.',['Silicon sensor','Charge sharing','Dead time','Counting statistics','Geometry']),
        ('hutch','chCv','Five minutes','Why the experiment sits in a closed steel room, how little steel it takes to stop these X-rays, and how the door and the beam shutter are locked together. Four stops, no equations.',['Stray X-rays','Steel walls','The interlock','Working from outside']),
-       ('see','ceCv','Five minutes','How X-rays and a crystal show where every atom in a protein is, in four stops and five minutes, with no equations. Why light cannot do it, what the crystal is for, how the spots become a map, and how atoms are fitted into it. The protein in the figures is myoglobin.',['Too small','A crystal','Spots to map','Atoms']),
+       ('see','ceCv','Five minutes','How X-rays and a crystal show where the atoms in a protein are, in four stops and five minutes, with no equations. Why light cannot do it, what the crystal is for, how the spots become a map, and how atoms are fitted into it. The protein in the figures is myoglobin.',['Too small','A crystal','Spots to map','Atoms']),
        ('mx','cmCv','Then the experiment','What macromolecular crystallography is, and how it gets from a crystal to a structure. Why a crystal is needed, what the spots are, the phase problem, the electron density map, and how a model is refined and judged.',['Why structures','Why a crystal','Spots as waves','The phase problem','Map and model']),
        ('cold','ccCv','Five minutes','What X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, and how a crystal that is half water is cooled without turning to ice. Four stops, no equations.',['Damage','Cold','No ice','How cold']),
        ('damage','cdCv','Go deeper','From the absorption of one photon to the fading of the pattern. Dose and how to estimate it, the 30 MGy limit, the groups that are damaged first, why 100 K, and how to spend the dose a crystal can take.',['Absorption','Dose','The 30 MGy limit','Specific damage','Why 100 K']),

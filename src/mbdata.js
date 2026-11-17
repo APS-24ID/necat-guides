@@ -39,17 +39,32 @@ const MCACHE=new Map();
 // The map at detail d, seen from the side. Each atom is spread into a round cloud whose width grows with d, the clouds are added up in
 // three dimensions, and each point of the picture takes the highest value along the line of sight. The outline drawn is where that
 // value passes a set share (lv, 40% unless given) of the map's highest peak, so it is the silhouette of the surface a crystallographer would draw around the map.
-function mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv){const sg=Math.hypot(0.28*d,0.25),cut=3*sg,dz=Math.max(0.35,0.6*sg),nz=Math.ceil(16/dz)+1,z0=-8,G=new Float32Array(nx*ny*nz),h=step/sc,gx0=(X0-cx)/sc,gy0=(Y0-cy)/sc,k=1/(2*sg*sg);
-  for(const a of MOL.at){const i0=Math.max(0,Math.ceil((a.x-cut-gx0)/h)),i1=Math.min(nx-1,Math.floor((a.x+cut-gx0)/h)),j0=Math.max(0,Math.ceil((a.y-cut-gy0)/h)),j1=Math.min(ny-1,Math.floor((a.y+cut-gy0)/h)),k0=Math.max(0,Math.ceil((a.w-cut-z0)/dz)),k1=Math.min(nz-1,Math.floor((a.w+cut-z0)/dz));
+function mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms=0,atoms=MOL.at,Labs=0){const sg=Math.hypot(0.28*d,0.25),cut=3*sg,dz=Math.max(0.35,0.6*sg),nz=Math.ceil(16/dz)+1,z0=-8,G=new Float32Array(nx*ny*nz),h=step/sc,gx0=(X0-cx)/sc,gy0=(Y0-cy)/sc,k=1/(2*sg*sg);
+  for(const a of atoms){const i0=Math.max(0,Math.ceil((a.x-cut-gx0)/h)),i1=Math.min(nx-1,Math.floor((a.x+cut-gx0)/h)),j0=Math.max(0,Math.ceil((a.y-cut-gy0)/h)),j1=Math.min(ny-1,Math.floor((a.y+cut-gy0)/h)),k0=Math.max(0,Math.ceil((a.w-cut-z0)/dz)),k1=Math.min(nz-1,Math.floor((a.w+cut-z0)/dz));
     const ex=[],ez=[];for(let i=i0;i<=i1;i++){const u=gx0+i*h-a.x;ex.push(Math.exp(-u*u*k));}for(let q=k0;q<=k1;q++){const u=z0+q*dz-a.w;ez.push(Math.exp(-u*u*k));}
     for(let j=j0;j<=j1;j++){const u=gy0+j*h-a.y,ey=a.z*Math.exp(-u*u*k);for(let i=i0;i<=i1;i++){const e=ey*ex[i-i0],o=(j*nx+i)*nz;for(let q=k0;q<=k1;q++)G[o+q]+=e*ez[q-k0];}}}
   const v=new Float32Array(nx*ny);let top=0;for(let p=0;p<nx*ny;p++){let m=0;for(let q=0;q<nz;q++){const g=G[p*nz+q];if(g>m)m=g;}v[p]=m;if(m>top)top=m;}
-  return {v,L:lv*top};}
-function drawMap(c,X0,Y0,W,H,d,step=4,lv=0.4){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc,nx=Math.ceil(W/step)+1,ny=Math.ceil(H/step)+1,key=[Math.round(W),Math.round(H),step,d.toFixed(2),lv.toFixed(2)].join();
+  const L=Labs||lv*top;if(!ms)return {v,L,top};
+  // the wire mesh: the surface at level L, cut by three sets of flat sheets a distance ms apart, as crystallographic programs draw a map.
+  // Sheets that face the viewer give closed loops. Sheets seen edge on give straight lines across the inside of the outline.
+  const S=[],seg=(a,b,c2,d2)=>S.push(X0+a*step,Y0+b*step,X0+c2*step,Y0+d2*step),kz=Math.max(1,Math.round(ms/dz)),kr=Math.max(2,Math.round(ms/h));
+  for(let q=(nz>>1)%kz;q<nz;q+=kz)for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=G[(j*nx+i)*nz+q],b=G[(j*nx+i+1)*nz+q],e=G[((j+1)*nx+i+1)*nz+q],f=G[((j+1)*nx+i)*nz+q];
+    if(a<=L&&b<=L&&e<=L&&f<=L)continue;const p=[];
+    if((a>L)!==(b>L))p.push([i+(L-a)/(b-a),j]);if((b>L)!==(e>L))p.push([i+1,j+(L-b)/(e-b)]);if((f>L)!==(e>L))p.push([i+(L-f)/(e-f),j+1]);if((a>L)!==(f>L))p.push([i,j+(L-a)/(f-a)]);
+    if(p.length===2)seg(p[0][0],p[0][1],p[1][0],p[1][1]);
+    else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>seg(p[u][0],p[u][1],p[w2][0],p[w2][1]));}}
+  for(let j=kr>>1;j<ny;j+=kr){let s0=-1;for(let i=0;i<nx;i++){const a=v[j*nx+i],on=a>L;if(on&&s0<0)s0=i?i-1+(L-v[j*nx+i-1])/(a-v[j*nx+i-1]):0;
+    if(s0>=0&&(!on||i===nx-1)){seg(s0,j,on?i:i-1+(L-v[j*nx+i-1])/(a-v[j*nx+i-1]),j);s0=-1;}}}
+  for(let i=kr>>1;i<nx;i+=kr){let s0=-1;for(let j=0;j<ny;j++){const a=v[j*nx+i],on=a>L;if(on&&s0<0)s0=j?j-1+(L-v[(j-1)*nx+i])/(a-v[(j-1)*nx+i]):0;
+    if(s0>=0&&(!on||j===ny-1)){seg(i,s0,i,on?j:j-1+(L-v[(j-1)*nx+i])/(a-v[(j-1)*nx+i]));s0=-1;}}}
+  return {v,L,top,segs:new Float32Array(S)};}
+// opt, if given, draws the mesh of another set of atoms: {atoms, key (a name for the cache), col, L (the level itself, not a share of the peak)}
+function drawMap(c,X0,Y0,W,H,d,step=4,lv=0.4,wire=false,opt=null){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc,nx=Math.ceil(W/step)+1,ny=Math.ceil(H/step)+1,ms=wire?Math.max(0.5,Math.min(1.6,d/3)):0,key=[Math.round(W),Math.round(H),step,d.toFixed(2),lv.toFixed(2),ms?'w':'',opt?opt.key:''].join();
   let m=MCACHE.get(key);
-  if(!m){m=mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv);if(MCACHE.size>80)MCACHE.clear();MCACHE.set(key,m);}
+  if(!m){m=opt?mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms,opt.atoms,opt.L):mapGrid(X0,Y0,cx,cy,sc,nx,ny,step,d,lv,ms);if(MCACHE.size>80)MCACHE.clear();MCACHE.set(key,m);}
   const v=m.v,L=m.L;
   c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  if(m.segs){const s=m.segs;pen(c,opt&&opt.lw||1.1,opt&&opt.col||BLUE);c.beginPath();for(let i=0;i<s.length;i+=4){c.moveTo(s[i],s[i+1]);c.lineTo(s[i+2],s[i+3]);}c.stroke();c.restore();return m;}
   c.fillStyle=LTBLUE;for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i];if((a+b+e+f)/4>L)c.fillRect(X0+i*step,Y0+j*step,step+0.5,step+0.5);}
   pen(c,1.7,BLUE);c.beginPath();
   for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){const a=v[j*nx+i],b=v[j*nx+i+1],e=v[(j+1)*nx+i+1],f=v[(j+1)*nx+i],x=X0+i*step,y=Y0+j*step,p=[];
@@ -57,8 +72,33 @@ function drawMap(c,X0,Y0,W,H,d,step=4,lv=0.4){const sc=mapScale(W,H),cx=X0+W/2-M
     if((f>L)!==(e>L))p.push([x+step*(L-f)/(e-f),y+step]);if((a>L)!==(f>L))p.push([x,y+step*(L-a)/(f-a)]);
     if(p.length===2){c.moveTo(p[0][0],p[0][1]);c.lineTo(p[1][0],p[1][1]);}
     else if(p.length===4){const hi=(a+b+e+f)/4>L,pr=(a>L)===hi?[[0,1],[2,3]]:[[0,3],[1,2]];pr.forEach(([u,w2])=>{c.moveTo(p[u][0],p[u][1]);c.lineTo(p[w2][0],p[w2][1]);});}}
-  c.stroke();c.restore();}
+  c.stroke();c.restore();return m;}
 const atomCol=z=>z===8?RED:z===7?BLUE:'#5d6a73';
 function drawMol(c,X0,Y0,W,H,alpha=1){const sc=mapScale(W,H),cx=X0+W/2-MAPC[0]*sc,cy=Y0+H/2+MAPC[1]*sc;c.save();c.globalAlpha=alpha;
   MOL.bonds.forEach(([i,j])=>{const a=MOL.at[i],b=MOL.at[j];line(c,cx+a.x*sc,cy+a.y*sc,cx+b.x*sc,cy+b.y*sc,Math.max(1.6,sc*0.09));});
   MOL.at.forEach(a=>disc(c,cx+a.x*sc,cy+a.y*sc,Math.max(2.2,sc*0.17),atomCol(a.z),1.2));c.restore();}
+
+// ---------- from the atoms in the map to the whole protein (used by How do we see a protein? and How MX works) ----------
+// draws something at less than full strength: whole on a spare canvas first, so that overlapping pieces do not show through one another
+let OFF=null;
+function faded(f,c,a,go){if(a<=0)return;if(a>=1)return go(c);const o=OFF||(OFF=document.createElement('canvas'));if(o.width!==f.cv.width||o.height!==f.cv.height){o.width=f.cv.width;o.height=f.cv.height;}const k=o.getContext('2d'),r=f.cv.width/f.w;k.setTransform(1,0,0,1,0,0);k.clearRect(0,0,o.width,o.height);k.setTransform(r,0,0,r,0,0);go(k);c.save();c.globalAlpha=a;c.drawImage(o,0,0,f.w,f.h);c.restore();}
+// turning from the side view of the helix (the view of the maps) to the view of the whole protein: a rotation about one axis, taken a part at a time
+const TURN=(()=>{const R=MB.rot,th=Math.acos(Math.max(-1,Math.min(1,(R[0][0]+R[1][1]+R[2][2]-1)/2))),k=2*Math.sin(th)||1;
+  // axis and angle of the turn that takes the protein's view back to the helix's (the inverse of MB.rot)
+  return {th,ax:[(R[1][2]-R[2][1])/k,(R[2][0]-R[0][2])/k,(R[0][1]-R[1][0])/k]};})();
+function turned(p,ang){const [x,y,z]=[p[0]-MB.off[0],p[1]-MB.off[1],p[2]-MB.off[2]],[a,b,d]=TURN.ax,cs=Math.cos(ang),sn=Math.sin(ang),dot=(a*x+b*y+d*z)*(1-cs);
+  return [x*cs+(b*z-d*y)*sn+a*dot,y*cs+(d*x-a*z)*sn+b*dot,z*cs+(a*y-b*x)*sn+d*dot];}
+
+// The move from the atoms of the piece, as they sit in the map, to the whole protein: the view turns and pulls back. q0 runs from 0 to 1.
+// Returns where the protein ends up: its center and its scale in pixels to the ångström
+const HPH=MB.helP.map((p,i)=>({p,e:MB.hel[i][3]}));
+function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,H),s1=Math.min(W/56,H/52),s=s0*Math.pow(s1/s0,q),k=(s0-s)/(s0-s1),ang=TURN.th*(1-q),pcx=X0+W/2,pcy=Y0+H/2-1.9*s1+(narrow?0:6);
+  // where the middle of the piece is drawn: from its place in the map to its place in the protein
+  const ax0=X0+W/2-MAPC[0]*s0,ay0=Y0+H/2+MAPC[1]*s0,ax1=pcx+MB.off[0]*s1,ay1=pcy-MB.off[1]*s1,ax=ax0+(ax1-ax0)*k,ay=ay0+(ay1-ay0)*k;
+  const tf=p=>{const v=turned(p,ang);return [ax+v[0]*s,ay-v[1]*s,v[2]];};
+  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
+  faded(f,c,Math.max(0,Math.min(1,(q-0.12)/0.4)),k2=>{k2.save();k2.beginPath();k2.rect(X0,Y0,W,H);k2.clip();drawMb(k2,0,0,s,MB.piece,tf);k2.restore();});
+  const al=Math.max(0,Math.min(1,(0.9-q)/0.35));
+  if(al>0){c.globalAlpha=al;const A=HPH.map(a=>({q:tf(a.p),e:a.e}));MB.helBonds.forEach(([i,j])=>line(c,A[i].q[0],A[i].q[1],A[j].q[0],A[j].q[1],Math.max(1,s*0.09)));
+    A.slice().sort((m,n)=>m.q[2]-n.q[2]).forEach(a=>disc(c,a.q[0],a.q[1],Math.max(1.2,s*0.17),atomCol(a.e),Math.min(1.2,Math.max(0.5,s*0.06))));}
+  c.restore();return {cx:pcx,cy:pcy,s:s1};}

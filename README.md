@@ -17,6 +17,7 @@ The guides are grouped in series. Each is marked with its level. Introductory gu
 | `detector-intro.html` | 2. The beamline | How does an X-ray detector work? Pixels that count X-rays one at a time, in four stops and five minutes | Introductory |
 | `shielded-room.html` | 2. The beamline | Why is the experiment in a shielded room? Stray X-rays, steel walls and the interlock, in four stops and five minutes | Introductory |
 | `how-mx-works-intro.html` | 3. The experiment | How do we see a protein? How X-rays and a crystal show where the atoms are, in four stops and five minutes | Introductory |
+| `how-mx-works.html` | 3. The experiment | How MX works: from a crystal to a structure that can be trusted | In-depth |
 | `radiation-damage-intro.html` | 3. The experiment | Why are we freezing our crystals? What X-rays do to a crystal and why cold makes it last, in four stops and five minutes | Introductory |
 | `fluorescence.html` | 3. The experiment | X-ray fluorescence at NE-CAT: what it is, what it is used for, and where the detector goes | In-depth |
 

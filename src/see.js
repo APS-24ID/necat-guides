@@ -13,30 +13,6 @@ function pair(c,w,h,r,t,narrow,top=0){let S,px,py,bx,by,bw,bh;
   drawSpots(c,px,py,S,r,t);rectF(c,bx,by,bw,bh,WHITE,2.4);drawMap(c,bx+2,by+2,bw-4,bh-4,DEDGE/r,4);
   return {bx,by,bw,bh,px,py,S};}
 
-// draws something at less than full strength: whole on a spare canvas first, so that overlapping pieces do not show through one another
-let OFF=null;
-function faded(f,c,a,go){if(a<=0)return;if(a>=1)return go(c);const o=OFF||(OFF=document.createElement('canvas'));if(o.width!==f.cv.width||o.height!==f.cv.height){o.width=f.cv.width;o.height=f.cv.height;}const k=o.getContext('2d'),r=f.cv.width/f.w;k.setTransform(1,0,0,1,0,0);k.clearRect(0,0,o.width,o.height);k.setTransform(r,0,0,r,0,0);go(k);c.save();c.globalAlpha=a;c.drawImage(o,0,0,f.w,f.h);c.restore();}
-// turning from the side view of the helix (the view of the maps) to the view of the whole protein: a rotation about one axis, taken a part at a time
-const TURN=(()=>{const R=MB.rot,th=Math.acos(Math.max(-1,Math.min(1,(R[0][0]+R[1][1]+R[2][2]-1)/2))),k=2*Math.sin(th)||1;
-  // axis and angle of the turn that takes the protein's view back to the helix's (the inverse of MB.rot)
-  return {th,ax:[(R[1][2]-R[2][1])/k,(R[2][0]-R[0][2])/k,(R[0][1]-R[1][0])/k]};})();
-function turned(p,ang){const [x,y,z]=[p[0]-MB.off[0],p[1]-MB.off[1],p[2]-MB.off[2]],[a,b,d]=TURN.ax,cs=Math.cos(ang),sn=Math.sin(ang),dot=(a*x+b*y+d*z)*(1-cs);
-  return [x*cs+(b*z-d*y)*sn+a*dot,y*cs+(d*x-a*z)*sn+b*dot,z*cs+(a*y-b*x)*sn+d*dot];}
-
-// The move from the atoms of the piece, as they sit in the map, to the whole protein: the view turns and pulls back. q0 runs from 0 to 1.
-// Returns where the protein ends up: its center and its scale in pixels to the ångström
-const HPH=MB.helP.map((p,i)=>({p,e:MB.hel[i][3]}));
-function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,H),s1=Math.min(W/56,H/52),s=s0*Math.pow(s1/s0,q),k=(s0-s)/(s0-s1),ang=TURN.th*(1-q),pcx=X0+W/2,pcy=Y0+H/2-1.9*s1+(narrow?0:6);
-  // where the middle of the piece is drawn: from its place in the map to its place in the protein
-  const ax0=X0+W/2-MAPC[0]*s0,ay0=Y0+H/2+MAPC[1]*s0,ax1=pcx+MB.off[0]*s1,ay1=pcy-MB.off[1]*s1,ax=ax0+(ax1-ax0)*k,ay=ay0+(ay1-ay0)*k;
-  const tf=p=>{const v=turned(p,ang);return [ax+v[0]*s,ay-v[1]*s,v[2]];};
-  c.save();c.beginPath();c.rect(X0,Y0,W,H);c.clip();
-  faded(f,c,Math.max(0,Math.min(1,(q-0.12)/0.4)),k2=>{k2.save();k2.beginPath();k2.rect(X0,Y0,W,H);k2.clip();drawMb(k2,0,0,s,MB.piece,tf);k2.restore();});
-  const al=Math.max(0,Math.min(1,(0.9-q)/0.35));
-  if(al>0){c.globalAlpha=al;const A=HPH.map(a=>({q:tf(a.p),e:a.e}));MB.helBonds.forEach(([i,j])=>line(c,A[i].q[0],A[i].q[1],A[j].q[0],A[j].q[1],Math.max(1,s*0.09)));
-    A.slice().sort((m,n)=>m.q[2]-n.q[2]).forEach(a=>disc(c,a.q[0],a.q[1],Math.max(1.2,s*0.17),atomCol(a.e),Math.min(1.2,Math.max(0.5,s*0.06))));}
-  c.restore();return {cx:pcx,cy:pcy,s:s1};}
-
 // ---------- opening figure ----------
 if($('seeHeroCv')){
 fig('seeHeroCv',w=>w<560?0.95:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,u=t%19;
@@ -143,7 +119,7 @@ const F=fig('sFitCv',w=>w<560?1.05:2.2,f=>{const {ctx:c,w,h,t}=f;if(last!==null&
   if(aA>0.5&&q===0){const yl=h-(narrow?13:18);[['carbon','#5d6a73'],['nitrogen',BLUE],['oxygen',RED]].forEach(([n,col],i)=>{const x=narrow?12+i*(w-20)/3:w-330+i*108;disc(c,x,yl,6,col,1.5);txt(c,n,x+11,yl+1,fs,'left');});}
 });
 const show=()=>{if(!playing){snap();F.w&&F.draw(F);}};
-choice('sM',v=>{M=+v;setT('sAt',M===0?'none yet':M===3?'about 1,200 in the whole protein':'all 113 in this piece');show();});
+choice('sM',v=>{M=+v;setT('sAt',M===0?'none yet':M===3?'about 1,260 in the whole protein':'all 113 in this piece');show();});
 choice('sQ',v=>{if(+v!==D){D0=D;D=+v;dx=0;}setT('sEase',D>3?'poorly: the atoms could sit in many ways':D>1.5?'well: each side chain has its own shape':'closely: every atom has its own peak');show();});
 snap();
 }

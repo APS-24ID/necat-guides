@@ -24,7 +24,7 @@ const FONTS=FD?face('Bricolage Grotesque','bricolage-grotesque/files/bricolage-g
     card.append(kk,hh,box);document.body.appendChild(card);},[cvId,title||null]);
   await p.evaluate(()=>document.fonts.ready);await p.waitForTimeout(500);
   await p.evaluate(cvId=>{const cv=document.getElementById(cvId),box=document.getElementById('ogbox'),top=box.getBoundingClientRect().top,asp=cv.clientWidth/cv.clientHeight;box.style.width=Math.min(1104,Math.floor((630-top-34)*asp))+'px';},cvId);
-  await p.waitForTimeout(key==='mx'?2600:3200);
+  await p.waitForTimeout(key==='mx'?12300:3200);
   await p.screenshot({path:D+'og/'+key+'.png',clip:{x:0,y:0,width:1200,height:630}});await p.close();console.log('og/'+key+'.png');}
  // the icons, from favicon.svg
  const svg=fs.readFileSync(path.join(__dirname,'favicon.svg'),'utf8');
