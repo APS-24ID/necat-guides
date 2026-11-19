@@ -23,11 +23,11 @@ DETI=dict(key='detintro',title='How Does an X-ray Detector Work?',name='How does
   lede="The detector is the camera of the experiment. It records where each X-ray from the crystal lands, and how many arrive at each place. This guide explains how it does that, in four stops.",
   hero='p_hero',table='none',bar='',
   sections=[
-   dict(id='pixels',nav='Pixels',h2='A camera with 18 million pixels',prose=[
+   dict(id='pixels',nav='Pixels',h2='A camera with 16 million pixels',prose=[
      "The X-rays that leave the crystal land on a flat panel of silicon about 31 centimeters wide and 33 high.",
      "The panel is divided into pixels, like the sensor in a phone camera. Each pixel is 75 microns across, about the width of a hair, which is far larger than a phone's. A phone records how bright the light is at each pixel. This detector does something more exact, as the next stop shows.",
      "A spot from the crystal covers only a few pixels. The picture the scientists get is a table of numbers, one for every pixel.",
-     _here("The detector on 24-ID-C is an EIGER2 XE 16M, made by the Swiss company DECTRIS. It has 4,148 by 4,362 pixels, about 18 million in all.")],
+     _here("The detector on 24-ID-C is an EIGER2 XE 16M, made by the Swiss company DECTRIS. It has more than 16 million pixels.")],
     items=[('fig','p_zoom')]),
    dict(id='count',nav='Counting',h2='Every X-ray is counted',prose=[
      "When an X-ray stops in the silicon it shakes loose a few thousand electrons. A voltage across the silicon sweeps the charge down to the pixel underneath, where it arrives as a short electrical pulse.",
@@ -47,7 +47,7 @@ DETI=dict(key='detintro',title='How Does an X-ray Detector Work?',name='How does
      _here("The detector on 24-ID-C can be set anywhere from 15 centimeters to 1.2 meters from the crystal.")],
     items=[('fig','p_dist')]),
   ],
-  remember="The detector is a panel of 18 million pixels. Each pixel counts the X-rays that land on it one by one, with no noise of its own and no pause between images.",
+  remember="The detector is a panel of 16 million pixels. Each pixel counts the X-rays that land on it one by one, with no noise of its own and no pause between images.",
   classroom=["A phone camera measures brightness. This detector counts X-rays one at a time. What does counting gain when a spot is very faint?",
              "Why is the threshold set at half the height of a full pulse, and not just above the noise?",
              "A structure needs both fine detail and well-separated spots. Why can one detector distance not always give both?",
@@ -56,4 +56,4 @@ DETI=dict(key='detintro',title='How Does an X-ray Detector Work?',name='How does
 # after the polarization guide in its series: before whichever of these comes first in the set
 _k=[g['key'] for g in G]
 G.insert(_k.index(next(k for k in ('det','hutch','see','mx','scatter') if k in _k)),DETI)
-UPDATED['detintro']='November 13, 2026'
+UPDATED['detintro']='November 19, 2026'

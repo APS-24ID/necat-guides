@@ -1,13 +1,13 @@
 <!doctype html>
 <!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="How the detector records the spots, in four stops and five minutes, with no equations. Eighteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.">
+<meta name="description" content="How the detector records the spots, in four stops and five minutes, with no equations. Sixteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.">
 <meta name="author" content="NE-CAT, Cornell University">
 <link rel="canonical" href="https://aps-24id.github.io/necat-guides/detector-intro.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="NE-CAT beamline guides">
 <meta property="og:title" content="How does an X-ray detector work?">
-<meta property="og:description" content="How the detector records the spots, in four stops and five minutes, with no equations. Eighteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.">
+<meta property="og:description" content="How the detector records the spots, in four stops and five minutes, with no equations. Sixteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.">
 <meta property="og:url" content="https://aps-24id.github.io/necat-guides/detector-intro.html">
 <meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/detintro.png">
 <meta property="og:image:type" content="image/png">
@@ -150,11 +150,11 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   <section id="pixels">
     <div class="sec-head prose">
       <div class="stepno">1</div>
-      <h2>A camera with 18 million pixels</h2>
+      <h2>A camera with 16 million pixels</h2>
       <p>The X-rays that leave the crystal land on a flat panel of silicon about 31 centimeters wide and 33 high.</p>
       <p>The panel is divided into pixels, like the sensor in a phone camera. Each pixel is 75 microns across, about the width of a hair, which is far larger than a phone's. A phone records how bright the light is at each pixel. This detector does something more exact, as the next stop shows.</p>
       <p>A spot from the crystal covers only a few pixels. The picture the scientists get is a table of numbers, one for every pixel.</p>
-      <p><span class="here"><b>Here at NE-CAT.</b> The detector on 24-ID-C is an EIGER2 XE 16M, made by the Swiss company DECTRIS. It has 4,148 by 4,362 pixels, about 18 million in all.</span></p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The detector on 24-ID-C is an EIGER2 XE 16M, made by the Swiss company DECTRIS. It has more than 16 million pixels.</span></p>
     </div>
     <div class="panel">
       <canvas id="pZoomCv" aria-label="Interactive: the whole face of the detector with its pattern of spots. A slider zooms in on one spot until the separate pixels show, each with the number of X-rays it counted"></canvas>
@@ -237,12 +237,12 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   <section id="further">
     <div class="sec-head prose">
       <h2>One thing to remember</h2>
-      <p class="remember">The detector is a panel of 18 million pixels. Each pixel counts the X-rays that land on it one by one, with no noise of its own and no pause between images.</p>
+      <p class="remember">The detector is a panel of 16 million pixels. Each pixel counts the X-rays that land on it one by one, with no noise of its own and no pause between images.</p>
       <p>A longer guide to this subject, with the equations and the real numbers, is being written.</p>
       <details class="classroom"><summary>For a class</summary><ul><li>A phone camera measures brightness. This detector counts X-rays one at a time. What does counting gain when a spot is very faint?</li><li>Why is the threshold set at half the height of a full pulse, and not just above the noise?</li><li>A structure needs both fine detail and well-separated spots. Why can one detector distance not always give both?</li><li>Try it: at the last stop, how close must the detector be to catch detail of 1.5 Å?</li></ul></details>
     </div>
     <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="hutch" href="shielded-room.html">Next: Why is the experiment in a shielded room? →</a></nav>
-    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 13, 2026. Release 1.9.1. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20does%20an%20X-ray%20detector%20work%3F%20%28release%201.9.1%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 19, 2026. Release 1.9.2. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20does%20an%20X-ray%20detector%20work%3F%20%28release%201.9.2%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
   </section>
 </div>
 

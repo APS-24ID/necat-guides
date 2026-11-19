@@ -208,7 +208,7 @@ if($('diffCv')){
 let dE=E0,dD=300,dGeo=null,dDrag=false;const HW=155.6,HC=Math.hypot(155.6,163.9),BSR=0.15,BSL=25; // beamstop radius and distance in mm: illustrative values
 const lowRes=E=>12.398/E/(2*Math.sin(Math.atan(BSR/BSL)/2));
 const diffFig=fig('diffCv',w=>w<560?0.85:1.75,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:14;
-  const xs=w*(narrow?0.17:0.1), y0=h*(narrow?0.33:0.36), sc=(w*(narrow?0.76:0.8))/900, xd=xs+dD*sc, hh=HW*sc, top=narrow?50:54, bot=2*y0-top, xr=w*0.985;
+  const xs=w*(narrow?0.17:0.1), y0=h*(narrow?0.33:0.36), sc=(w*(narrow?0.76:0.8))/1200, xd=xs+dD*sc, hh=HW*sc, top=narrow?50:54, bot=2*y0-top, xr=w*0.985;
   const lam=12.398/dE, list=(narrow?[4,2.5,1.8,1.3,1.0]:[6,4,3,2.5,2,1.6,1.3,1.1,0.95]).filter(d=>lam/(2*d)<0.62);
   const ang=d=>2*Math.asin(lam/(2*d)), a50=ang(50);
   const end=(a,sg)=>{const x=Math.min(xr,xs+(sg>0?(y0-top):(bot-y0))/Math.tan(a));return [x,y0-sg*(x-xs)*Math.tan(a)];};
@@ -217,10 +217,10 @@ const diffFig=fig('diffCv',w=>w<560?0.85:1.75,f=>{const {ctx:c,w,h}=f;bg(c,w,h);
   c.beginPath();fan.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='#fff6d9';c.fill();
   const te=Math.atan(HW/dD), tc=Math.min(te,amax), yc=(xd-xs)*Math.tan(tc);
   poly(c,[[xs,y0],[xd,y0-yc],[xd,y0+yc]],LTYEL,1.2);
-  list.forEach(d=>{const a=ang(d), hit=(xd-xs)*Math.tan(a), rec=hit<=hh;[1,-1].forEach(sg=>{const e=end(a,sg);
+  let lx=1e9;list.forEach(d=>{const a=ang(d), hit=(xd-xs)*Math.tan(a), rec=hit<=hh;[1,-1].forEach(sg=>{const e=end(a,sg);
       line(c,xs,y0,e[0],e[1],1.2,'#e3948a',[4,5]);
       if(rec){line(c,xs,y0,xd,y0-sg*hit,2,RED);disc(c,xd,y0-sg*hit,2.6,RED,1);}
-      if(sg>0){if(e[0]<xr)txt(c,d+' Å',e[0],top-11,fs,'center',rec?RED:INK);else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?RED:INK);}});});
+      if(sg>0){if(e[0]<xr){if(lx-e[0]>=(narrow?38:44)){txt(c,d+' Å',e[0],top-11,fs,'center',rec?RED:INK);lx=e[0];}}else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?RED:INK);}});});
   [1,-1].forEach(sg=>line(c,xs,y0,xd,y0-sg*(xd-xs)*Math.tan(a50),1.8,GRN));
   const xb=xs+(narrow?20:32);
   line(c,w*0.015,y0,xb,y0,3,BLUE);rectF(c,xb,y0-3,5,6,INK,1);
@@ -258,7 +258,7 @@ function dUpd(){dE=+$('dE').value;dD=+$('dD').value;$('dEO').textContent=dE.toFi
 // drag the detector directly on the drawing
 {const cv=$('diffCv'), pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};
   const near=e=>{if(!dGeo)return false;const [x,y]=pos(e);return Math.abs(x-dGeo.xd-6)<26&&Math.abs(y-dGeo.y0)<dGeo.hh+14;};
-  const setD=e=>{const [x]=pos(e), v=Math.max(100,Math.min(900,Math.round((x-6-dGeo.xs)/dGeo.sc/5)*5));$('dD').value=v;dUpd();};
+  const setD=e=>{const [x]=pos(e), v=Math.max(150,Math.min(1200,Math.round((x-6-dGeo.xs)/dGeo.sc/5)*5));$('dD').value=v;dUpd();};
   cv.style.touchAction='pan-y';
   cv.addEventListener('pointerdown',e=>{if(near(e)){dDrag=true;cv.setPointerCapture(e.pointerId);setD(e);e.preventDefault();}});
   cv.addEventListener('pointermove',e=>{if(dDrag)setD(e);else cv.style.cursor=near(e)?'ew-resize':'default';});

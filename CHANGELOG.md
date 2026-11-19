@@ -2,6 +2,11 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.9.2 — 2026-11-19
+
+- Detector figures checked against the manufacturer's specification of the EIGER2 XE 16M. The guides now say 16 million pixels, the number that count X-rays, in place of 18 million, which included the gaps between the detector's modules: *How does an X-ray detector work?*, *A walk down the beamline* and the index.
+- *How NE-CAT works*: the detector in the diffraction figure now moves over the range of 24-ID-C, 150 to 1,200 mm (it was 100 to 900 mm), and its caption names the EIGER2 XE 16M.
+
 ## 1.9.1 — 2026-11-17
 
 - The picture on the index card for *How MX works* is redrawn to match the guide: a crystal turning in its loop, the images on the detector, and myoglobin.

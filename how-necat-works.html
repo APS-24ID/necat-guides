@@ -614,7 +614,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <canvas id="diffCv" aria-label="Interactive: diffraction geometry from the sample to the area detector, with resolution at the detector edge"></canvas>
       <div class="controls">
         <div class="ctl"><label for="dE">Photon energy <output id="dEO">12.662 keV</output></label><input id="dE" type="range" min="6" max="20" step="0.001" value="12.662"></div>
-        <div class="ctl"><label for="dD">Sample to detector distance <output id="dDO">300 mm</output></label><input id="dD" type="range" min="100" max="900" step="5" value="300"></div>
+        <div class="ctl"><label for="dD">Sample to detector distance <output id="dDO">300 mm</output></label><input id="dD" type="range" min="150" max="1200" step="5" value="300"></div>
       </div>
       <div class="readout">
         <div class="ro"><div class="k">Wavelength</div><div class="v" id="dLam">–</div></div>
@@ -622,7 +622,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
         <div class="ro"><div class="k">Resolution in the corner</div><div class="v" id="dCor">–</div></div>
         <div class="ro"><div class="k">Lowest resolution past the beamstop</div><div class="v" id="dLow">–</div></div>
       </div>
-      <div class="figcap">Side view of the endstation. The beam comes from the left and hits the crystal. Most of it carries straight on and is caught by a small beamstop just behind the sample. A small part is diffracted into rays that fan out from the crystal. The dashed lines mark a few of them, each labeled with the resolution it carries: the wider the angle, the finer the detail. This fan is set by the crystal and the X-ray energy. Moving the detector does not change it. The detector simply catches whatever part of the fan lands on it, shown by the darker wedge and the solid red rays. Drag the detector along the beam, or use the slider. Closer in, it takes in more of the fan. Raise the energy and the whole fan narrows, so more of it fits on the detector. The detector is drawn to scale as an EIGER 16M, 311 mm across. The coarsest detail leaves the crystal at very small angles, close to the direct beam, and the beamstop must be small enough to let it past. The green rays carry 50 Å detail. The strip at the bottom is a close-up of the first 60 mm behind the sample with the height stretched several times. The gray wedge is the shadow of the beamstop, and the 50 Å rays pass outside it. The beamstop is drawn 0.3 mm across and 25 mm behind the sample. Those two numbers are illustrative.</div>
+      <div class="figcap">Side view of the endstation. The beam comes from the left and hits the crystal. Most of it carries straight on and is caught by a small beamstop just behind the sample. A small part is diffracted into rays that fan out from the crystal. The dashed lines mark a few of them, each labeled with the resolution it carries: the wider the angle, the finer the detail. This fan is set by the crystal and the X-ray energy. Moving the detector does not change it. The detector simply catches whatever part of the fan lands on it, shown by the darker wedge and the solid red rays. Drag the detector along the beam, or use the slider. Closer in, it takes in more of the fan. Raise the energy and the whole fan narrows, so more of it fits on the detector. The detector is drawn to scale as the EIGER2 XE 16M of 24-ID-C, 311 mm across, and moves over that beamline's range of 150 to 1,200 mm. The coarsest detail leaves the crystal at very small angles, close to the direct beam, and the beamstop must be small enough to let it past. The green rays carry 50 Å detail. The strip at the bottom is a close-up of the first 60 mm behind the sample with the height stretched several times. The gray wedge is the shadow of the beamstop, and the 50 Å rays pass outside it. The beamstop is drawn 0.3 mm across and 25 mm behind the sample. Those two numbers are illustrative.</div>
     </div>
     <div class="eqgroup">
       <div class="eqlabel">The math, if you want it</div>
@@ -658,7 +658,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       </ul>
     </div>
     <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="polarization" href="polarization.html">Next: Why the beam is polarized →</a></nav>
-    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 17, 2026. Release 1.9.1. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20NE-CAT%20works%20%28release%201.9.1%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 19, 2026. Release 1.9.2. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20NE-CAT%20works%20%28release%201.9.2%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
   </section>
 </div>
 
@@ -1310,7 +1310,7 @@ if($('diffCv')){
 let dE=E0,dD=300,dGeo=null,dDrag=false;const HW=155.6,HC=Math.hypot(155.6,163.9),BSR=0.15,BSL=25; // beamstop radius and distance in mm: illustrative values
 const lowRes=E=>12.398/E/(2*Math.sin(Math.atan(BSR/BSL)/2));
 const diffFig=fig('diffCv',w=>w<560?0.85:1.75,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560, fs=narrow?12:14;
-  const xs=w*(narrow?0.17:0.1), y0=h*(narrow?0.33:0.36), sc=(w*(narrow?0.76:0.8))/900, xd=xs+dD*sc, hh=HW*sc, top=narrow?50:54, bot=2*y0-top, xr=w*0.985;
+  const xs=w*(narrow?0.17:0.1), y0=h*(narrow?0.33:0.36), sc=(w*(narrow?0.76:0.8))/1200, xd=xs+dD*sc, hh=HW*sc, top=narrow?50:54, bot=2*y0-top, xr=w*0.985;
   const lam=12.398/dE, list=(narrow?[4,2.5,1.8,1.3,1.0]:[6,4,3,2.5,2,1.6,1.3,1.1,0.95]).filter(d=>lam/(2*d)<0.62);
   const ang=d=>2*Math.asin(lam/(2*d)), a50=ang(50);
   const end=(a,sg)=>{const x=Math.min(xr,xs+(sg>0?(y0-top):(bot-y0))/Math.tan(a));return [x,y0-sg*(x-xs)*Math.tan(a)];};
@@ -1319,10 +1319,10 @@ const diffFig=fig('diffCv',w=>w<560?0.85:1.75,f=>{const {ctx:c,w,h}=f;bg(c,w,h);
   c.beginPath();fan.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='#fff6d9';c.fill();
   const te=Math.atan(HW/dD), tc=Math.min(te,amax), yc=(xd-xs)*Math.tan(tc);
   poly(c,[[xs,y0],[xd,y0-yc],[xd,y0+yc]],LTYEL,1.2);
-  list.forEach(d=>{const a=ang(d), hit=(xd-xs)*Math.tan(a), rec=hit<=hh;[1,-1].forEach(sg=>{const e=end(a,sg);
+  let lx=1e9;list.forEach(d=>{const a=ang(d), hit=(xd-xs)*Math.tan(a), rec=hit<=hh;[1,-1].forEach(sg=>{const e=end(a,sg);
       line(c,xs,y0,e[0],e[1],1.2,'#e3948a',[4,5]);
       if(rec){line(c,xs,y0,xd,y0-sg*hit,2,RED);disc(c,xd,y0-sg*hit,2.6,RED,1);}
-      if(sg>0){if(e[0]<xr)txt(c,d+' Å',e[0],top-11,fs,'center',rec?RED:INK);else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?RED:INK);}});});
+      if(sg>0){if(e[0]<xr){if(lx-e[0]>=(narrow?38:44)){txt(c,d+' Å',e[0],top-11,fs,'center',rec?RED:INK);lx=e[0];}}else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?RED:INK);}});});
   [1,-1].forEach(sg=>line(c,xs,y0,xd,y0-sg*(xd-xs)*Math.tan(a50),1.8,GRN));
   const xb=xs+(narrow?20:32);
   line(c,w*0.015,y0,xb,y0,3,BLUE);rectF(c,xb,y0-3,5,6,INK,1);
@@ -1360,7 +1360,7 @@ function dUpd(){dE=+$('dE').value;dD=+$('dD').value;$('dEO').textContent=dE.toFi
 // drag the detector directly on the drawing
 {const cv=$('diffCv'), pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};
   const near=e=>{if(!dGeo)return false;const [x,y]=pos(e);return Math.abs(x-dGeo.xd-6)<26&&Math.abs(y-dGeo.y0)<dGeo.hh+14;};
-  const setD=e=>{const [x]=pos(e), v=Math.max(100,Math.min(900,Math.round((x-6-dGeo.xs)/dGeo.sc/5)*5));$('dD').value=v;dUpd();};
+  const setD=e=>{const [x]=pos(e), v=Math.max(150,Math.min(1200,Math.round((x-6-dGeo.xs)/dGeo.sc/5)*5));$('dD').value=v;dUpd();};
   cv.style.touchAction='pan-y';
   cv.addEventListener('pointerdown',e=>{if(near(e)){dDrag=true;cv.setPointerCapture(e.pointerId);setD(e);e.preventDefault();}});
   cv.addEventListener('pointermove',e=>{if(dDrag)setD(e);else cv.style.cursor=near(e)?'ew-resize':'default';});
