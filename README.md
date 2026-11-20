@@ -18,14 +18,18 @@ The guides are grouped in series. Each is marked with its level. Introductory gu
 | `shielded-room.html` | 2. The beamline | Why is the experiment in a shielded room? Stray X-rays, steel walls and the interlock, in four stops and five minutes | Introductory |
 | `how-mx-works-intro.html` | 3. The experiment | How do we see a protein? How X-rays and a crystal show where the atoms are, in four stops and five minutes | Introductory |
 | `how-mx-works.html` | 3. The experiment | How MX works: from a crystal to a structure that can be trusted | In-depth |
+| `growing-crystals-intro.html` | 3. The experiment | How do you grow a protein crystal? From a drop of protein solution to a frozen crystal in a puck, in four stops and five minutes | Introductory |
 | `radiation-damage-intro.html` | 3. The experiment | Why are we freezing our crystals? What X-rays do to a crystal and why cold makes it last, in four stops and five minutes | Introductory |
 | `fluorescence.html` | 3. The experiment | X-ray fluorescence at NE-CAT: what it is, what it is used for, and where the detector goes | In-depth |
+| `what-is-a-protein.html` | 4. The science | What is a protein? A chain of amino acids, how it folds and what its shape is for, in four stops and five minutes | Introductory |
 
 Each page is a single self-contained HTML file. The pages link to each other by file name, so keep the names unchanged and keep them all in the same folder.
 
 The files whose names begin `NE-CAT_` are small redirect pages. They are the addresses the guides had before release 1.3, kept so that existing links still work.
 
 The protein drawn in "How do we see a protein?" is sperm whale myoglobin. Its atomic positions are from entry [1MBN](https://www.rcsb.org/structure/1MBN) in the Protein Data Bank. The detector on 24-ID-C, an EIGER2 XE 16M made by DECTRIS, is drawn from the dimensions in the manufacturer's specification and a picture of it.
+
+The other proteins drawn in "What is a protein?" are from Protein Data Bank entries [4INS](https://www.rcsb.org/structure/4INS) (insulin), [2LZT](https://www.rcsb.org/structure/2LZT) (lysozyme), [4HHB](https://www.rcsb.org/structure/4HHB) (hemoglobin) and [1IGT](https://www.rcsb.org/structure/1IGT) (an antibody).
 
 Values that are assumed or calculated, and not taken from a published source, are marked in the notes of each guide. Corrections are welcome: please [open an issue](https://github.com/APS-24ID/necat-guides/issues/new/choose). [CONTRIBUTING.md](.github/CONTRIBUTING.md) says how to report an error, suggest a topic or change a guide.
 

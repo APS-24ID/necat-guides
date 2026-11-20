@@ -102,3 +102,7 @@ function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,
   if(al>0){c.globalAlpha=al;const A=HPH.map(a=>({q:tf(a.p),e:a.e}));MB.helBonds.forEach(([i,j])=>line(c,A[i].q[0],A[i].q[1],A[j].q[0],A[j].q[1],Math.max(1,s*0.09)));
     A.slice().sort((m,n)=>m.q[2]-n.q[2]).forEach(a=>disc(c,a.q[0],a.q[1],Math.max(1.2,s*0.17),atomCol(a.e),Math.min(1.2,Math.max(0.5,s*0.06))));}
   c.restore();return {cx:pcx,cy:pcy,s:s1};}
+// The order of myoglobin's 153 amino acids, in one-letter codes (sperm whale myoglobin, UniProt P02185 without its first methionine),
+// and the four kinds they are colored by in the guide "What is a protein?"
+MB.seq='VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQSHATKHKIPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG';
+const AAKIND=a=>'AVLIMFWP'.includes(a)?'oily':'KR'.includes(a)?'plus':'DE'.includes(a)?'minus':'polar', AACOL={oily:'#f6c52e',polar:'#c6d9f0',plus:'#2f6db5',minus:'#d8412f'};

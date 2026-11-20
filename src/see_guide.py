@@ -24,7 +24,7 @@ SEE=dict(key='see',title='How Do We See a Protein?',name='How do we see a protei
   hero='v_hero',table='none',bar='',
   sections=[
    dict(id='small',nav='Too small',h2='Too small for light',prose=[
-     "A protein is a molecule made of thousands of atoms. Neighboring atoms in it are about one and a half ångströms apart. An ångström is a ten-millionth of a millimeter. To understand how a protein works, we need to know where each of its atoms is.",
+     "A protein is a molecule made of thousands of atoms. Neighboring atoms in it are about one and a half ångströms apart. An ångström is a ten-millionth of a millimeter. To understand how a protein works, we need to know where each of its atoms is. If proteins are new to you, the guide {guide:prot} is the place to start.",
      "A microscope cannot show anything much smaller than the waves of the light it uses. The waves of visible light are thousands of times longer than the gap between two atoms, so no microscope that uses light will ever show them.",
      "The protein in the figures of this guide is myoglobin, which stores oxygen in muscle. In the late 1950s it became the first protein to have its structure found, by the method described here.",
      "X-rays are light too, with waves about as long as that gap. But there is a catch. Nobody can make a lens that focuses X-rays well enough to form a picture of atoms. The picture has to be made in another way.",
@@ -33,7 +33,7 @@ SEE=dict(key='see',title='How Do We See a Protein?',name='How do we see a protei
    dict(id='crystal',nav='A crystal',h2='A crystal turns a whisper into a signal',prose=[
      "X-rays that meet a molecule are scattered by it in all directions. One protein molecule scatters far too few to measure, and a beam strong enough to help would destroy it first.",
      "So the protein is grown into a crystal. In a crystal the same molecule is repeated in neat rows, every copy facing the same way, billions of times over.",
-     "Growing the crystal is a craft of its own. A drop of very pure protein in water is mixed with salts or other chemicals that make the protein a little less willing to stay dissolved. The drop is then left to lose water slowly. As it shrinks, the molecules are crowded together, and with the right recipe they settle into a crystal instead of a shapeless clump. Finding the recipe can take hundreds of trials, and the crystal can take hours or months to grow.",
+     "Growing the crystal is a craft of its own. A drop of very pure protein solution is mixed with salts or other chemicals that make the protein a little less willing to stay dissolved. The drop is then left to lose water slowly. As it shrinks, the molecules are crowded together, and with the right recipe they settle into a crystal instead of a shapeless clump. Finding the recipe can take hundreds of trials, and the crystal can take hours or months to grow. The guide {guide:grow} follows it step by step.",
      "A protein crystal is not hard and dry like a grain of salt. About half of it is water, which fills the gaps between the molecules, so the protein in a crystal keeps the shape it has in the cell.",
      "Each copy scatters the same faint wave. In most directions the waves from the different copies cancel one another. In a few directions they line up and add, and in those directions the crystal sends out a thin, bright ray. Each ray makes one spot on the detector.",
      _here("A crystal a twentieth of a millimeter across holds about a hundred billion copies of a protein of ordinary size.")],
@@ -62,4 +62,4 @@ _k=[g['key'] for g in G]
 G.insert(_k.index('mx' if 'mx' in _k else 'scatter'),SEE)
 for _g in G:
     if _g['key']=='mx': _g['short']='see'
-UPDATED['see']='November 17, 2026'
+UPDATED['see']='November 20, 2026'

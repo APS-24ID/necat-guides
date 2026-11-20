@@ -302,6 +302,16 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       </div>
     </article>
     <article class="card lv-intro" data-level="intro"><div class="band">5 minutes</div>
+      <canvas id="cgCv" aria-hidden="true"></canvas>
+      <div class="cardbody">
+        
+        <h2><a href="growing-crystals-intro.html">How do you grow a protein crystal?</a></h2>
+        <p>How a protein is coaxed into a crystal, in four stops and five minutes, with no equations. What a crystal is, how a drop is left to shrink until crystals form, why hundreds of recipes are tried, and how a crystal travels to the beamline.</p>
+        <ul class="chips"><li>Order</li><li>A drop</li><li>Many tries</li><li>To the beam</li></ul>
+        <span class="go">Open the guide →</span>
+      </div>
+    </article>
+    <article class="card lv-intro" data-level="intro"><div class="band">5 minutes</div>
       <canvas id="ccCv" aria-hidden="true"></canvas>
       <div class="cardbody">
         
@@ -326,7 +336,20 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   </section>
   <section class="series" aria-label="Series 4: The science">
     <div class="serieshead"><div class="stepno">4</div><h2>The science</h2><p class="ask">Why do structures matter?</p></div>
-    <p class="soon">Guides for this series are being written. They will start with what a protein is and why its shape matters.</p>
+    <div class="cards one">
+    <article class="card lv-intro" data-level="intro"><div class="band">5 minutes</div>
+      <canvas id="cxCv" aria-hidden="true"></canvas>
+      <div class="cardbody">
+        
+        <h2><a href="what-is-a-protein.html">What is a protein?</a></h2>
+        <p>What a protein is, in four stops and five minutes, with no equations. A chain of amino acids, how it folds, what one protein does with its shape, and why the shape is worth seeing. The protein in the figures is myoglobin.</p>
+        <ul class="chips"><li>A chain</li><li>Folding</li><li>A job</li><li>Many kinds</li></ul>
+        <span class="go">Open the guide →</span>
+      </div>
+    </article>
+    </div>
+    <p class="soon nonehere" hidden>No guide of this kind in this series yet.</p>
+    <p class="soon">More guides for this series are being written.</p>
   </section>
 
   <section aria-label="How to use the guides" style="padding-top:26px">
@@ -341,7 +364,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   </section>
   </main>
 
-  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 19, 2026. Release 1.9.2. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20the%20index%20page%20%28release%201.9.2%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
+  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 20, 2026. Release 1.10. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20the%20index%20page%20%28release%201.10%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
 </div>
 
 <script>
@@ -623,6 +646,10 @@ function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,
   if(al>0){c.globalAlpha=al;const A=HPH.map(a=>({q:tf(a.p),e:a.e}));MB.helBonds.forEach(([i,j])=>line(c,A[i].q[0],A[i].q[1],A[j].q[0],A[j].q[1],Math.max(1,s*0.09)));
     A.slice().sort((m,n)=>m.q[2]-n.q[2]).forEach(a=>disc(c,a.q[0],a.q[1],Math.max(1.2,s*0.17),atomCol(a.e),Math.min(1.2,Math.max(0.5,s*0.06))));}
   c.restore();return {cx:pcx,cy:pcy,s:s1};}
+// The order of myoglobin's 153 amino acids, in one-letter codes (sperm whale myoglobin, UniProt P02185 without its first methionine),
+// and the four kinds they are colored by in the guide "What is a protein?"
+MB.seq='VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQSHATKHKIPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG';
+const AAKIND=a=>'AVLIMFWP'.includes(a)?'oily':'KR'.includes(a)?'plus':'DE'.includes(a)?'minus':'polar', AACOL={oily:'#f6c52e',polar:'#c6d9f0',plus:'#2f6db5',minus:'#d8412f'};
 // ---------- WELCOME BANNER: from the ring to your data ----------
 fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?11:14;
   const yb=h*0.5, Rr=h*1.15, rcx=w*0.15, rcy=yb+Rr;
@@ -738,6 +765,19 @@ if($('ceCv'))fig('ceCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.7,px
   c.lineJoin='round';c.lineCap='round';const lw=s*(0.95-0.5*Math.min(1,u*1.6));
   [[BLUE,lw+4],[LTBLUE,lw]].forEach(([col,wd])=>{c.strokeStyle=col;c.lineWidth=wd;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();T.forEach(([x,y])=>c.lineTo(x,y));c.stroke();});c.lineCap='butt';
   if(u>0.6){c.save();c.globalAlpha=Math.min(1,(u-0.6)*6);P.forEach((p,i)=>{const q=P[(i+1)%6];line(c,p[0],p[1],q[0],q[1],2);});line(c,P[0][0],P[0][1],T[1][0],T[1][1],2);line(c,T[1][0],T[1][1],T[2][0],T[2][1],2);P.concat(T.slice(1)).forEach(([x,y],i)=>disc(c,x,y,3.4,i===7?RED:'#5d6a73',1.3));c.restore();}
+});
+// How do you grow a protein crystal?: a drop seen through a microscope, in which crystals appear and grow
+if($('cgCv'))fig('cgCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w*0.5,cy=h*0.5,R=h*0.4,u=(t%9)/9,g=Math.max(0,u-0.15)/0.7;
+  disc(c,cx,cy,R+5,'#3b4046',2);disc(c,cx,cy,R,'#cfe0f0',2);c.save();c.beginPath();c.arc(cx,cy,R-1,0,7);c.clip();
+  [[-0.45,0.3,0.5,1],[0.2,-0.42,2.1,0.8],[0.5,0.4,1.2,0.65],[-0.2,-0.1,2.8,0.5],[0.05,0.55,0.2,0.45],[-0.6,-0.4,1.7,0.4]].forEach(([x,y,a,s],i)=>{const r=Math.min(1,Math.max(0,g*1.5-i*0.12))*s*R*0.3;if(r<0.6)return;
+    const P=[[-1,-0.31],[-0.55,-0.62],[0.7,-0.62],[1,-0.25],[0.6,0.62],[-0.7,0.62]].map(([p,q])=>[cx+x*R+(p*Math.cos(a)-q*Math.sin(a))*r,cy+y*R+(p*Math.sin(a)+q*Math.cos(a))*r]);poly(c,P,'#cfe6c9',1.4);});c.restore();
+});
+// What is a protein?: a chain of amino acids on the left, and the folded protein (myoglobin) it becomes
+if($('cxCv'))fig('cxCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cy=h*0.5,n=26,x0=w*0.05,x1=w*0.5,s=h*0.8/46,r=Math.min(6,(x1-x0)/n*0.48);
+  const P=[];for(let i=0;i<n;i++)P.push([x0+(x1-x0)*i/(n-1),cy+h*0.16*Math.sin(i*0.55+t*0.9)]);
+  pen(c,2.2,'rgba(27,27,27,.55)');c.beginPath();P.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.stroke();
+  P.forEach((p,i)=>disc(c,p[0],p[1],r,AACOL[AAKIND(MB.seq[i])],1.2));
+  arrow(c,x1+10,cy,w*0.62,cy,INK,2.2,7);drawMb(c,w*0.81,cy,s);
 });
 // How MX works: a crystal turning in the beam, the images on the detector, and the structure (myoglobin), as in the guide's opening figure
 if($('cmCv')){let cmN=-1,cmS=[];

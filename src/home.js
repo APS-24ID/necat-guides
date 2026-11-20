@@ -114,6 +114,19 @@ if($('ceCv'))fig('ceCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.7,px
   [[BLUE,lw+4],[LTBLUE,lw]].forEach(([col,wd])=>{c.strokeStyle=col;c.lineWidth=wd;c.beginPath();P.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();T.forEach(([x,y])=>c.lineTo(x,y));c.stroke();});c.lineCap='butt';
   if(u>0.6){c.save();c.globalAlpha=Math.min(1,(u-0.6)*6);P.forEach((p,i)=>{const q=P[(i+1)%6];line(c,p[0],p[1],q[0],q[1],2);});line(c,P[0][0],P[0][1],T[1][0],T[1][1],2);line(c,T[1][0],T[1][1],T[2][0],T[2][1],2);P.concat(T.slice(1)).forEach(([x,y],i)=>disc(c,x,y,3.4,i===7?RED:'#5d6a73',1.3));c.restore();}
 });
+// How do you grow a protein crystal?: a drop seen through a microscope, in which crystals appear and grow
+if($('cgCv'))fig('cgCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w*0.5,cy=h*0.5,R=h*0.4,u=(t%9)/9,g=Math.max(0,u-0.15)/0.7;
+  disc(c,cx,cy,R+5,'#3b4046',2);disc(c,cx,cy,R,'#cfe0f0',2);c.save();c.beginPath();c.arc(cx,cy,R-1,0,7);c.clip();
+  [[-0.45,0.3,0.5,1],[0.2,-0.42,2.1,0.8],[0.5,0.4,1.2,0.65],[-0.2,-0.1,2.8,0.5],[0.05,0.55,0.2,0.45],[-0.6,-0.4,1.7,0.4]].forEach(([x,y,a,s],i)=>{const r=Math.min(1,Math.max(0,g*1.5-i*0.12))*s*R*0.3;if(r<0.6)return;
+    const P=[[-1,-0.31],[-0.55,-0.62],[0.7,-0.62],[1,-0.25],[0.6,0.62],[-0.7,0.62]].map(([p,q])=>[cx+x*R+(p*Math.cos(a)-q*Math.sin(a))*r,cy+y*R+(p*Math.sin(a)+q*Math.cos(a))*r]);poly(c,P,'#cfe6c9',1.4);});c.restore();
+});
+// What is a protein?: a chain of amino acids on the left, and the folded protein (myoglobin) it becomes
+if($('cxCv'))fig('cxCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cy=h*0.5,n=26,x0=w*0.05,x1=w*0.5,s=h*0.8/46,r=Math.min(6,(x1-x0)/n*0.48);
+  const P=[];for(let i=0;i<n;i++)P.push([x0+(x1-x0)*i/(n-1),cy+h*0.16*Math.sin(i*0.55+t*0.9)]);
+  pen(c,2.2,'rgba(27,27,27,.55)');c.beginPath();P.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.stroke();
+  P.forEach((p,i)=>disc(c,p[0],p[1],r,AACOL[AAKIND(MB.seq[i])],1.2));
+  arrow(c,x1+10,cy,w*0.62,cy,INK,2.2,7);drawMb(c,w*0.81,cy,s);
+});
 // How MX works: a crystal turning in the beam, the images on the detector, and the structure (myoglobin), as in the guide's opening figure
 if($('cmCv')){let cmN=-1,cmS=[];
 fig('cmCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);

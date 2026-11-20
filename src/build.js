@@ -21,6 +21,8 @@ const OUT={aps:{art:'aps-how-it-works.html',file:'how-aps-works.html',js:'aps',o
   cold:{art:'necat-cold.html',file:'radiation-damage-intro.html',js:'cold'},
   damage:{art:'necat-damage.html',file:'radiation-damage.html',js:'damage'},
   see:{art:'necat-see.html',file:'how-mx-works-intro.html',js:'see'},
+  prot:{art:'necat-prot.html',file:'what-is-a-protein.html',js:'prot'},
+  grow:{art:'necat-grow.html',file:'growing-crystals-intro.html',js:'grow'},
   mx:{art:'necat-mx.html',file:'how-mx-works.html',js:'mx'},
   scatter:{art:'necat-scatter.html',file:'fluorescence.html',old:['NE-CAT_4_X-ray_Fluorescence.html','NE-CAT_4_Scatter_and_Fluorescence.html','NE-CAT_3_Scatter_and_Fluorescence.html']}};
 // a guide whose text is not in this folder (no <key>_guide.py and so no body-<key>.html) is left out
@@ -29,7 +31,7 @@ let urls={};try{urls=JSON.parse(fs.readFileSync('urls.json','utf8'));}catch(e){}
 const src=fs.readFileSync('src-script.v6.js','utf8'), kit=src.slice(0,src.indexOf('// ---- beamline settings'))+src.slice(src.indexOf('// ---- ligne claire palette'),src.indexOf('// ---------- HERO'));
 const IK=fs.readFileSync('introkit.js','utf8');   // helpers shared by the Introductory guides
 const SCRIPT={shared:fs.readFileSync('shared.js','utf8'),aps:kit+fs.readFileSync('aps.js','utf8'),mx:OUT.mx?kit+IK+fs.readFileSync('mbdata.js','utf8')+fs.readFileSync('mx.js','utf8'):'',};
-for(const k of ['walk','syn','cold','damage','hutch','detintro','det','see'])if(OUT[k])SCRIPT[k]=kit+IK+(k==='see'?fs.readFileSync('mbdata.js','utf8'):'')+fs.readFileSync(k+'.js','utf8');   // mbdata.js: myoglobin, for the guides that draw it
+for(const k of ['walk','syn','cold','damage','hutch','detintro','det','see','prot','grow'])if(OUT[k])SCRIPT[k]=kit+IK+(k==='see'||k==='prot'||k==='grow'?fs.readFileSync('mbdata.js','utf8'):'')+(k==='prot'?fs.readFileSync('protdata.js','utf8'):'')+fs.readFileSync(k+'.js','utf8');   // mbdata.js: myoglobin, for the guides that draw it
 const US=[['centimetre','centimeter'],['millimetre','millimeter'],['centre','center'],['Centre','Center'],['neighbouring','neighboring'],['travelling','traveling'],['Travelling','Traveling'],['The maths,','The math,'],['colours','colors'],['goes round','goes around'],['other way round','other way around']];
 const SP='<mspace width="0.17em"></mspace>';let n=0;
 const r=(tex,d)=>{n++;let m=katex.renderToString(tex.trim(),{output:'mathml',displayMode:d,throwOnError:true,strict:false});

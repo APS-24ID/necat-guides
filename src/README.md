@@ -54,6 +54,8 @@ The build has three steps, run in order by `build.sh`.
 | | `hutch_guide.py` | Why is the experiment in a shielded room?, Introductory. Read by `compose.py`. |
 | | `see_guide.py` | How do we see a protein?, Introductory. Read by `compose.py`. |
 | | `mx_guide.py` | How MX works, In-depth. Read by `compose.py`. Its figures are in `mx.js`. |
+| | `grow_guide.py` | How do you grow a protein crystal?, Introductory. Read by `compose.py`. Its figures are in `grow.js`. |
+| | `prot_guide.py` | What is a protein?, Introductory. Read by `compose.py`. Its figures are in `prot.js`. |
 | | `cold_guide.py` | Why are we freezing our crystals?, Introductory. Read by `compose.py`. |
 | | `xrf_guide.py` | X-ray fluorescence at NE-CAT. Read by `compose.py`. |
 | | `src-body.v6.html` | The original polarization guide. `compose.py` takes the style sheet and the first equation cards and figure panels from it. Do not edit it: change `compose.py` instead. |
@@ -70,6 +72,7 @@ The build has three steps, run in order by `build.sh`.
 | | `see.js` | The figures of How do we see a protein? |
 | | `cold.js` | The figures of Why are we freezing our crystals? |
 | | `mbdata.js` | Myoglobin, the protein drawn in How do we see a protein? and How MX works: the positions of its chain, its heme and the atoms of one helix, and the code that draws the chain as a tube and the maps of the helix. |
+| | `protdata.js` | The chains of insulin, lysozyme, hemoglobin and an antibody, for What is a protein?. Made by `mkprot.py` from the Protein Data Bank entries; only needed again to change the proteins. |
 | | `introkit.js` | Drawing helpers for the guides added from release 1.3 on, including the cartoon of the detector (`detFace`, `detSide`), the figure of the rays that reach it (`geoDraw`) and the simulated data collection (`rotImage`). |
 | | `home.js` | The figures of the landing page. |
 | | `ogimages.js` | Not part of the build. Makes the link-preview pictures and the icons from the built pages. |

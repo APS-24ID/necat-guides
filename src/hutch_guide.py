@@ -38,7 +38,7 @@ HUTCH=dict(key='hutch',title='Why Is the Experiment in a Shielded Room?',name='W
     items=[('fig','h_lock')]),
    dict(id='outside',nav='From outside',h2='Everything is run from outside',prose=[
      "Since nobody can be inside, the experiment is built to be run from outside. Cameras show the crystal. Motors line it up with the beam. A robot takes each sample from its store in liquid nitrogen and puts it in place.",
-     "Outside can mean the next room or the other side of the country. Many of the scientists who use NE-CAT send their crystals by courier and run the experiment over the internet.",
+     "Outside can mean the next room or the other side of the country. Many of the scientists who use NE-CAT send their crystals by courier and run the experiment over the internet. The guide {guide:grow} shows how the crystals are grown, frozen and packed for the journey.",
      _here("The sample robot on 24-ID-C holds thirty pucks of crystals at a time, so a long run of samples can be measured without anyone opening the door.")],
     items=[]),
   ],
@@ -51,4 +51,4 @@ HUTCH=dict(key='hutch',title='Why Is the Experiment in a Shielded Room?',name='W
 # last in the beamline series: before the first guide of the next series that is in the set
 _k=[g['key'] for g in G]
 G.insert(_k.index(next(k for k in ('mx','scatter') if k in _k)),HUTCH)
-UPDATED['hutch']='November 14, 2026'
+UPDATED['hutch']='November 20, 2026'

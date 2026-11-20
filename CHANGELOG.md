@@ -2,6 +2,13 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.10 — 2026-11-20
+
+- New guide: **What is a protein?**, the first guide in the series on why structures matter. A chain of amino acids, how it folds, what myoglobin does with its shape and its heme, and five proteins drawn to one scale from their measured structures. The links of the chain can be clicked to see each amino acid.
+- New guide: **How do you grow a protein crystal?** What a crystal is, how a drop is left to shrink until crystals form, why hundreds of recipes are tried, and how a crystal is frozen, packed and shipped to the beamline.
+- Both are five-minute guides with no equations.
+- *How do we see a protein?*, *How MX works*, *Why are we freezing our crystals?* and *Why is the experiment in a shielded room?* now link to the new guides. *How do we see a protein?* says "protein solution" where it said "protein in water".
+
 ## 1.9.2 — 2026-11-19
 
 - Detector figures checked against the manufacturer's specification of the EIGER2 XE 16M. The guides now say 16 million pixels, the number that count X-rays, in place of 18 million, which included the gaps between the detector's modules: *How does an X-ray detector work?*, *A walk down the beamline* and the index.
