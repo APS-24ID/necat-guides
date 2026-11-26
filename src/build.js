@@ -23,6 +23,20 @@ const OUT={aps:{art:'aps-how-it-works.html',file:'how-aps-works.html',js:'aps',o
   see:{art:'necat-see.html',file:'how-mx-works-intro.html',js:'see'},
   prot:{art:'necat-prot.html',file:'what-is-a-protein.html',js:'prot'},
   grow:{art:'necat-grow.html',file:'growing-crystals-intro.html',js:'grow'},
+  ride:{art:'necat-ride.html',file:'sample-to-beam.html',js:'ride'},
+  waves:{art:'necat-waves.html',file:'fourier-intro.html',js:'waves'},
+  res:{art:'necat-res.html',file:'resolution.html',js:'res'},
+  phase:{art:'necat-phase.html',file:'phase-problem.html',js:'phase'},
+  why:{art:'necat-why.html',file:'why-measure.html',js:'why'},
+  med:{art:'necat-med.html',file:'structure-to-medicine.html',js:'med'},
+  design:{art:'necat-design.html',file:'protein-design.html',js:'design'},
+  found:{art:'necat-found.html',file:'necat-structures.html',js:'found'},
+  xtal:{art:'necat-xtal.html',file:'crystallization.html',js:'xtal'},
+  proc:{art:'necat-proc.html',file:'data-processing.html',js:'proc'},
+  upg:{art:'necat-upg.html',file:'aps-upgrade.html',js:'upg'},
+  four:{art:'necat-four.html',file:'fourier-series.html',js:'four'},
+  recip:{art:'necat-recip.html',file:'reciprocal-space.html',js:'recip'},
+  sym:{art:'necat-sym.html',file:'symmetry.html',js:'sym'},
   mx:{art:'necat-mx.html',file:'how-mx-works.html',js:'mx'},
   scatter:{art:'necat-scatter.html',file:'fluorescence.html',old:['NE-CAT_4_X-ray_Fluorescence.html','NE-CAT_4_Scatter_and_Fluorescence.html','NE-CAT_3_Scatter_and_Fluorescence.html']}};
 // a guide whose text is not in this folder (no <key>_guide.py and so no body-<key>.html) is left out
@@ -31,7 +45,7 @@ let urls={};try{urls=JSON.parse(fs.readFileSync('urls.json','utf8'));}catch(e){}
 const src=fs.readFileSync('src-script.v6.js','utf8'), kit=src.slice(0,src.indexOf('// ---- beamline settings'))+src.slice(src.indexOf('// ---- ligne claire palette'),src.indexOf('// ---------- HERO'));
 const IK=fs.readFileSync('introkit.js','utf8');   // helpers shared by the Introductory guides
 const SCRIPT={shared:fs.readFileSync('shared.js','utf8'),aps:kit+fs.readFileSync('aps.js','utf8'),mx:OUT.mx?kit+IK+fs.readFileSync('mbdata.js','utf8')+fs.readFileSync('mx.js','utf8'):'',};
-for(const k of ['walk','syn','cold','damage','hutch','detintro','det','see','prot','grow'])if(OUT[k])SCRIPT[k]=kit+IK+(k==='see'||k==='prot'||k==='grow'?fs.readFileSync('mbdata.js','utf8'):'')+(k==='prot'?fs.readFileSync('protdata.js','utf8'):'')+fs.readFileSync(k+'.js','utf8');   // mbdata.js: myoglobin, for the guides that draw it
+for(const k of ['walk','syn','cold','damage','hutch','detintro','det','see','prot','grow','ride','waves','res','phase','why','med','design','found','xtal','proc','upg','four','recip','sym'])if(OUT[k])SCRIPT[k]=kit+IK+(['see','prot','grow','res','why','design'].includes(k)?fs.readFileSync('mbdata.js','utf8'):'')+(k==='prot'?fs.readFileSync('protdata.js','utf8'):'')+fs.readFileSync(k+'.js','utf8');   // mbdata.js: myoglobin, for the guides that draw it
 const US=[['centimetre','centimeter'],['millimetre','millimeter'],['centre','center'],['Centre','Center'],['neighbouring','neighboring'],['travelling','traveling'],['Travelling','Traveling'],['The maths,','The math,'],['colours','colors'],['goes round','goes around'],['other way round','other way around']];
 const SP='<mspace width="0.17em"></mspace>';let n=0;
 const r=(tex,d)=>{n++;let m=katex.renderToString(tex.trim(),{output:'mathml',displayMode:d,throwOnError:true,strict:false});
@@ -52,7 +66,18 @@ const social=(file,title,desc,img,type)=>{const url=SITE+(file==='index.html'?''
   '<meta property="og:image:alt" content="'+esc('Opening figure of '+(type==='website'?'the '+SITENAME:'the guide “'+title+'”'))+'">','<meta name="twitter:card" content="summary_large_image">',
   '<link rel="icon" type="image/svg+xml" href="favicon.svg">','<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">','<link rel="apple-touch-icon" href="apple-touch-icon.png">'].join('\n');};
 const INFO=JSON.parse(fs.readFileSync('guides.json','utf8'));
-const standalone=(file,st,head='')=>{const i=st.indexOf('</style>')+8;fs.writeFileSync(DIR+file,HEAD+head+(head?'\n':'')+st.slice(0,i)+'\n</head><body>\n'+st.slice(i)+'\n'+GC+'\n</body></html>\n');};
+// kiosk mode (kiosk.js) is on every page, ahead of the visitor counter, and does nothing unless it has been switched on
+// The kiosk's doors: each lists the five-minute guides behind it that are in the set. kiosk.js is given the same list, so that in kiosk mode
+// "Back" and "Next" at the foot of a guide lead around the door the visitor came through.
+// The kiosk is built only when kiosk.js is in this folder, as a guide is built only when its files are.
+const KIOSK=fs.existsSync('kiosk.js')&&fs.existsSync('kiosk.json'),KK=KIOSK?JSON.parse(fs.readFileSync('kiosk.json','utf8')):{},khas=k=>KK[k]&&OUT[k];
+const KDOORS=[{title:'I have five minutes',blurb:'The whole story, once through',pic:['see'],keys:['see']},
+  {file:'kiosk-machine.html',title:'Show me the machine',blurb:'A ring of electrons, a beam finer than a hair, a robot and a camera with 16 million pixels',pic:['ride','walk','syn'],keys:['syn','walk','ride','detintro','hutch']},
+  {file:'kiosk-why.html',title:'Why does it matter?',blurb:'What proteins are, and how knowing their shape leads to medicines',pic:['med','prot'],keys:['prot','med','design','found','why']}]
+  .map(d=>({...d,keys:d.keys.filter(khas),pic:d.pic.find(khas)})).filter(d=>d.keys.length&&d.pic).map(d=>({...d,file:d.keys.length>1?d.file:OUT[d.keys[0]].file}));
+const KD={doors:KDOORS.map(d=>({file:d.file,title:d.title,guides:d.keys.length>1?d.keys.map(k=>OUT[k].file):[]})),names:Object.fromEntries(Object.keys(KK).filter(khas).map(k=>[OUT[k].file,KK[k].name]))};
+const KS=KIOSK?'<script>\nvar NECAT_KIOSK='+JSON.stringify(KD)+';\n'+fs.readFileSync('kiosk.js','utf8')+'</script>':'';
+const standalone=(file,st,head='')=>{const i=st.indexOf('</style>')+8;fs.writeFileSync(DIR+file,HEAD+head+(head?'\n':'')+st.slice(0,i)+'\n</head><body>\n'+st.slice(i)+'\n'+(KS?KS+'\n':'')+GC+'\n</body></html>\n');};
 for(const k of Object.keys(OUT)){
   let body=fs.readFileSync('body-'+k+'.html','utf8');
   body=body.replace(/\\\[([\s\S]*?)\\\]/g,(_,t)=>r(t,true)).replace(/\\\(([\s\S]*?)\\\)/g,(_,t)=>r(t,false));
@@ -75,3 +100,18 @@ fs.copyFileSync('favicon.svg',DIR+'favicon.svg');
  if(ART)fs.writeFileSync(ART+'necat-guides-home.html',link('art'));
  standalone('index.html',link('file'),social('index.html',SITENAME,'Illustrated, interactive guides to the Advanced Photon Source, the NE-CAT beamlines, and macromolecular crystallography.','home','website'));
  console.log('home',page.length);}
+
+// ---- the kiosk: first screens for a touch panel, 1920 x 1080 and scaled to fit. "Three doors"; a door with several guides opens a screen of tiles ----
+if(KIOSK){const K=KK,DOORS=KDOORS,QR=fs.existsSync('kiosk-qr.svg')?fs.readFileSync('kiosk-qr.svg','utf8'):'';
+ const CSS=fs.readFileSync('kiosk.css','utf8'),FONTS='<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&display=swap">';
+ const foot=more=>'<div class="foot"><div class="who">NE-CAT<small>Beamlines 24-ID-C and 24-ID-E at the Advanced Photon Source, Argonne National Laboratory</small></div>'+more+'<div class="take"><b>Take the guides with you</b>aps-24id.github.io/necat-guides</div>'+QR+'</div>';
+ const FIT="<script>(function(){var s=document.getElementById('stage');function fit(){var k=Math.min(innerWidth/1920,innerHeight/1080);s.style.transform='translate('+((innerWidth-1920*k)/2)+'px,'+((innerHeight-1080*k)/2)+'px) scale('+k+')';}addEventListener('resize',fit);fit();})();</script>";
+ const JS=kit+IK+fs.readFileSync('mbdata.js','utf8')+fs.readFileSync('home.js','utf8');
+ const write=(file,title,body)=>{fs.writeFileSync(DIR+file,HEAD+'<title>'+title+'</title>\n<meta name="robots" content="noindex">\n<link rel="icon" type="image/svg+xml" href="favicon.svg">\n'+FONTS+'\n<style>\n'+CSS+'</style>\n</head><body>\n<div id="stage"><button id="motionBtn" hidden></button>'+body+'</div>\n'+FIT+'\n<script>\n'+JS+'\n</script>\n'+KS+'\n'+GC+'\n</body></html>\n');console.log(file,body.length);};
+ const all='<a class="btn" href="index.html?level=intro">All the five-minute guides ›</a>';
+ write('kiosk.html','NE-CAT guides',
+  '<div class="top"><div><h1>X-rays that show the shape of life</h1><p>NE-CAT runs two X-ray beamlines where scientists find the structures of proteins. Pick a door.</p></div><div class="touch">touch to explore</div></div><div class="doors n'+DOORS.length+'">'+
+  DOORS.map(d=>{const one=d.keys.length===1;return '<a class="door" href="'+d.file+'"><div class="pic"><canvas id="'+K[d.pic].cv+'"></canvas></div><h2>'+d.title+'</h2><p>'+d.blurb+'</p><ul>'+d.keys.map(k=>'<li>'+K[k].name+'</li>').join('')+'</ul><span class="btn dark">'+(one?'Start':'Open ('+d.keys.length+' guides)')+' ›</span></a>';}).join('')+'</div>'+foot(all));
+ for(const d of DOORS)if(d.keys.length>1)write(d.file,d.title,
+  '<div class="top"><div><h1>'+d.title+'</h1><p>'+d.blurb+'. Five minutes each.</p></div><a class="btn" href="kiosk.html">‹ Back</a></div><div class="tiles n'+d.keys.length+'">'+
+  d.keys.map(k=>'<a class="tile" href="'+OUT[k].file+'"><div class="pic"><canvas id="'+K[k].cv+'"></canvas></div><h3>'+K[k].name+'</h3></a>').join('')+'</div>'+foot(all));}

@@ -50,7 +50,7 @@ WALK=dict(key='walk',title='A Walk Down the Beamline',name='A walk down the beam
     items=[('fig','w_kb')]),
    dict(id='sample',nav='The crystal',h2='A frozen crystal on the end of a pin',prose=[
      "The sample is a crystal of protein, usually about a tenth of a millimeter across. It is scooped up in a tiny loop on the end of a metal pin.",
-     "The crystal is kept at about 173 degrees below zero Celsius in a stream of cold nitrogen gas. The cold slows the damage that the X-rays do to it. A robot takes each pin from storage in liquid nitrogen and sets it in place, so nobody needs to be in the room while the X-rays are on.",
+     "The crystal is kept at about 173 degrees below zero Celsius in a stream of cold nitrogen gas. The cold slows the damage that the X-rays do to it. A robot takes each pin from storage in liquid nitrogen and sets it in place, so nobody needs to be in the room while the X-rays are on. The guide {guide:ride} shows how.",
      "The beam is smaller than the crystal, so it can be aimed at the best part.",
      _here("A machine called a goniometer holds the pin and turns the crystal in the beam. The one on 24-ID-C turns the crystal about an upright axis.")],
     items=[('fig','w_zoom')]),
@@ -69,4 +69,4 @@ WALK=dict(key='walk',title='A Walk Down the Beamline',name='A walk down the beam
   further='')
 G.insert([g['key'] for g in G].index('overview'),WALK)
 GK_OVERVIEW=[g for g in G if g['key']=='overview'][0]; GK_OVERVIEW['short']='walk'
-UPDATED['walk']='November 19, 2026'
+UPDATED['walk']='November 26, 2026'

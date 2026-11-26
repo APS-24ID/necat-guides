@@ -2,6 +2,11 @@
 
 What changed in each release of the NE-CAT beamline guides, newest first. Every page shows its release number and the date it was last updated at its foot.
 
+## 1.11 — 2026-11-26
+
+- New guide: **How does a crystal get to the beam?** A five-minute guide to what happens between the shipping container and the X-ray beam: the thirty pucks in the robot's dewar, the robot arm that carries each pin to the goniometer inside a cold metal cylinder, how the crystal is centered by camera and by a scan with X-rays, and how the experiment is run from a distance over an encrypted connection that stays open.
+- *A walk down the beamline*, *Why is the experiment in a shielded room?*, *Why are we freezing our crystals?* and *How do you grow a protein crystal?* now link to it.
+
 ## 1.10 — 2026-11-20
 
 - New guide: **What is a protein?**, the first guide in the series on why structures matter. A chain of amino acids, how it folds, what myoglobin does with its shape and its heme, and five proteins drawn to one scale from their measured structures. The links of the chain can be clicked to see each amino acid.

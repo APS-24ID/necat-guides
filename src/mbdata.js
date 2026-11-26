@@ -23,7 +23,7 @@ const MBPC=(()=>{const P=MB.ca,n=P.length,Q=[P[0]],K=6,inH=i=>MB.helices.some(([
 function drawMb(c,cx,cy,s,hi,tf){c.save();c.lineCap='round';c.lineJoin='round';const P=tf||(p=>[cx+p[0]*s,cy-p[1]*s,p[2]]);
   const path=pts=>{c.beginPath();pts.forEach((p,i)=>{const q=P(p);i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});c.stroke();};
   const L=tf?MBPC.map(g=>({g,z:P(g.mid)[2]})).sort((u,v)=>u.z-v.z):MBPC.map(g=>({g,z:g.z}));
-  L.forEach(({g,z})=>{const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
+  L.forEach(({g,z})=>{if(g.heme&&drawMb.noHeme)return;const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
     // the ink edge of this piece, then its color, run a little way into neighbors of the same width so that the pieces join without a seam
     c.strokeStyle=INK;c.lineWidth=lw+2*ow;path(g.core);
     c.strokeStyle=g.heme?RED:on?ORG:g.h?mbMix('#7ea3d6','#c6d9f0',k):mbMix('#8d979e','#d5dbdf',k);c.lineWidth=lw;path(g.ext);});

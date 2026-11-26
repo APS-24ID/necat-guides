@@ -52,6 +52,7 @@ The build has three steps, run in order by `build.sh`.
 | | `walk_guide.py` | A walk down the beamline, Introductory. Read by `compose.py`. |
 | | `detintro_guide.py` | How does an X-ray detector work?, Introductory. Read by `compose.py`. |
 | | `hutch_guide.py` | Why is the experiment in a shielded room?, Introductory. Read by `compose.py`. |
+| | `ride_guide.py` | How does a crystal get to the beam?, Introductory. Read by `compose.py`. Its figures are in `ride.js`. |
 | | `see_guide.py` | How do we see a protein?, Introductory. Read by `compose.py`. |
 | | `mx_guide.py` | How MX works, In-depth. Read by `compose.py`. Its figures are in `mx.js`. |
 | | `grow_guide.py` | How do you grow a protein crystal?, Introductory. Read by `compose.py`. Its figures are in `grow.js`. |
@@ -69,11 +70,12 @@ The build has three steps, run in order by `build.sh`.
 | | `walk.js` | The figures of A walk down the beamline. |
 | | `detintro.js` | The figures of How does an X-ray detector work? |
 | | `hutch.js` | The figures of Why is the experiment in a shielded room? |
+| | `ride.js` | The figures of How does a crystal get to the beam? The robot itself is drawn by `introkit.js`. |
 | | `see.js` | The figures of How do we see a protein? |
 | | `cold.js` | The figures of Why are we freezing our crystals? |
 | | `mbdata.js` | Myoglobin, the protein drawn in How do we see a protein? and How MX works: the positions of its chain, its heme and the atoms of one helix, and the code that draws the chain as a tube and the maps of the helix. |
 | | `protdata.js` | The chains of insulin, lysozyme, hemoglobin and an antibody, for What is a protein?. Made by `mkprot.py` from the Protein Data Bank entries; only needed again to change the proteins. |
-| | `introkit.js` | Drawing helpers for the guides added from release 1.3 on, including the cartoon of the detector (`detFace`, `detSide`), the figure of the rays that reach it (`geoDraw`) and the simulated data collection (`rotImage`). |
+| | `introkit.js` | Drawing helpers for the guides added from release 1.3 on, including the cartoon of the detector (`detFace`, `detSide`), the figure of the rays that reach it (`geoDraw`) the simulated data collection (`rotImage`), and the sample robot of 24-ID-C with its dewar and goniometer (`rstate`, `rscene`), which the index page draws too. |
 | | `home.js` | The figures of the landing page. |
 | | `ogimages.js` | Not part of the build. Makes the link-preview pictures and the icons from the built pages. |
 | | `favicon.svg` | The site icon. Copied to the site by `build.js`. |

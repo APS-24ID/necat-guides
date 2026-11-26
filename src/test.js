@@ -3,7 +3,7 @@
 //   OUTDIR  where the pages are (default: the folder above this one)      SHOTS  if set, full-page screenshots go to shots/
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
 const D=path.resolve(process.env.OUTDIR||path.join(__dirname,'..'))+path.sep, SHOTS=process.env.SHOTS;
-const PAGES=['index','how-aps-works-intro','how-aps-works','how-necat-works-intro','how-necat-works','polarization','detector-intro','detector','shielded-room','how-mx-works-intro','how-mx-works','radiation-damage-intro','radiation-damage','fluorescence','what-is-a-protein','growing-crystals-intro'];
+const PAGES=['index','how-aps-works-intro','how-aps-works','how-necat-works-intro','how-necat-works','polarization','detector-intro','detector','shielded-room','how-mx-works-intro','how-mx-works','radiation-damage-intro','radiation-damage','fluorescence','what-is-a-protein','growing-crystals-intro','sample-to-beam','fourier-intro','resolution','phase-problem','why-measure','structure-to-medicine','protein-design','necat-structures','crystallization','data-processing','aps-upgrade','fourier-series','reciprocal-space','symmetry','kiosk','kiosk-machine','kiosk-why'];
 (async()=>{const b=await chromium.launch();let bad=0;const PG=PAGES.filter(f=>fs.existsSync(D+f+'.html'));if(SHOTS)fs.mkdirSync('shots',{recursive:true});
  for(const f of PG){const html=fs.readFileSync(D+f+'.html','utf8');
   for(const [name,W] of [['desk',1100],['phone',400]]){

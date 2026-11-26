@@ -224,7 +224,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <p>A crystal is fished out of its drop with a tiny loop of fiber or plastic on the end of a metal pin. The film of liquid in the loop holds it in place.</p>
       <p>Often it is first dipped for a moment in an antifreeze, such as glycerol. It is then plunged straight into liquid nitrogen. The cooling is so fast that the water in and around the crystal sets as a glass, not as ice. The guide <a class="guidelink" data-guide="cold" href="radiation-damage-intro.html">Why are we freezing our crystals?</a> explains why the crystal has to be cold, and why ice would ruin it.</p>
       <p>The frozen pins are loaded into pucks, round holders with places for 16 pins. The pucks are stacked seven at a time and shipped to the beamline in a container that keeps them cold on the way.</p>
-      <p><span class="here"><b>Here at NE-CAT.</b> The pucks go into the sample robot, which holds thirty of them on 24-ID-C. The robot places each pin in the beam in turn, and the scientists who grew the crystals usually run the experiment over the internet. The guide <a class="guidelink" data-guide="walk" href="how-necat-works-intro.html">A walk down the beamline</a> follows the X-rays to the crystal.</span></p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The pucks go into the sample robot, which holds thirty of them on 24-ID-C. The robot places each pin in the beam in turn, and the scientists who grew the crystals usually run the experiment over the internet. The guide <a class="guidelink" data-guide="ride" href="sample-to-beam.html">How does a crystal get to the beam?</a> shows the robot at work, and the guide <a class="guidelink" data-guide="walk" href="how-necat-works-intro.html">A walk down the beamline</a> follows the X-rays to the crystal.</span></p>
     </div>
     <div class="panel">
       <canvas id="gShipCv" aria-label="Interactive: three pictures chosen by buttons. First, a drop seen through a microscope, where a small loop on the end of a pin moves in and lifts out one crystal. Second, the pin and its crystal plunging into a vessel of liquid nitrogen. Third, a round puck seen from above with sixteen places for pins, beside the container it is shipped in"></canvas>
@@ -247,7 +247,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
       <details class="classroom"><summary>For a class</summary><ul><li>Salt crystals form when salt water dries in a dish. In what ways is growing a protein crystal like that, and in what ways is it harder?</li><li>Why does it matter that every molecule in the crystal faces the same way?</li><li>Why is the water drawn out of the drop slowly, and not all at once?</li><li>Try it: at the third stop, how many of the first 96 recipes gave crystals worth measuring? How many did after the recipe was adjusted?</li></ul></details>
     </div>
     <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="cold" href="radiation-damage-intro.html">Next: Why are we freezing our crystals? →</a></nav>
-    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 20, 2026. Release 1.10. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20do%20you%20grow%20a%20protein%20crystal%3F%20%28release%201.10%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 26, 2026. Release 1.11. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20do%20you%20grow%20a%20protein%20crystal%3F%20%28release%201.11%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
   </section>
 </div>
 
@@ -421,6 +421,60 @@ function detSide(c,xf,cy,z,lit){const G=DETG,hh=G.hh*z,hd=G.hd*z,r=Math.min(10,h
 // a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
 function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
   bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// ---------- the sample robot of 24-ID-C, used by "How does a crystal get to the beam?" and by its card on the index page ----------
+// The robot scene, from the side. Dimensions in millimeters. The arm is a Universal Robots UR5e: shoulder 163 above its mounting face, upper arm 425, forearm 392.
+// The end effector is a metal cylinder 6 inches long with a brass collet inside, which closes on the base of the pin. The cylinder surrounds the pin and keeps it cold.
+const UR={sh:163,L1:425,L2:392,wr:200,tube:76,joint:62},GRIP=152,GDIA=28,DEW={x:-470,w:380,top:280,pin:70,lev:165},GON={x:450,top:300};   // lev: the surface of the liquid nitrogen. Only the cylinder ever goes below it
+// where the tip of the end effector is, and what it is doing, at time u: 0 to 9 is the trip out, 9 to 12 the crystal is in the beam, 12 to 21 the trip back
+function rstate(u0){const u=((u0%31)+31)%31,hi=420,zd=DEW.pin,zg=GON.top,zp=118,rd=-DEW.x,rg=GON.x,rp=rd-115,e=(a,b)=>{const x=Math.max(0,Math.min(1,(u-a)/(b-a)));return x*x*x*(10-15*x+6*x*x);};
+  // One cycle is 31 s. It starts and ends with the end of the cylinder resting in the liquid nitrogen, to keep it cold. Fetch the pin (to 8.6), go back and wait
+  // in the nitrogen while the crystal is measured (to 16.8), take the pin back (to 28.3), and return to rest.
+  // The movements overlap, as they do on a real arm: it starts to swing before it has finished rising, and starts to come down before it has finished swinging.
+  const z=zp+(zd-zp)*e(1,2.2)+(hi-zd)*e(2.7,4.5)+(zg-hi)*(e(6.3,8)-e(8.6,10))+(zp-hi)*e(11.6,13.2)+(hi-zp)*e(16.8,18.4)+(zg-hi)*(e(20.2,21.9)-e(22.5,24.2))+(zd-hi)*e(26,27.7)+(zp-zd)*e(28.3,29.4);
+  const y1=e(3.6,7.1),y2=e(9.4,12.4),y3=e(17.7,21),y4=e(23.4,26.8),yaw=Math.PI*(1-y1+y2-y3+y4),r=rp+(rd-rp)*e(0.3,1.4)+(rg-rd)*y1+(rp-rg)*y2+(rg-rp)*y3+(rd-rg)*y4+(rp-rd)*e(28.9,30);
+  const jaw=e(2.1,2.7)-e(8,8.6)+e(21.9,22.5)-e(27.7,28.3),has=(u>=2.7&&u<8)||(u>=22.5&&u<27.7),onGon=u>=8&&u<22.5,hold=u>=10.8&&u<19.4,foc=e(9,10.4)-e(19,20.4);
+  const ph=u<0.3?'the cylinder waits in the liquid nitrogen, keeping cold':u<2.1?'over a pin, and down':u<2.7?'the collet closes on the pin':u<4?'up, with the crystal inside the cold cylinder':u<6.7?'across to the goniometer':u<8?'down onto the goniometer':u<8.6?'the collet lets go':u<11.4?'the arm goes back to the dewar':u<13.2?'and the cylinder goes back into the cold':u<16.8?'the crystal is in the beam':u<20.2?'the arm comes back for it':u<21.9?'down over the pin':u<22.5?'the collet closes on the pin':u<23.8?'up, off the goniometer':u<26.4?'back across to the dewar':u<27.7?'down into the liquid nitrogen':u<28.3?'the pin is back in its place':u<30?'and the cylinder rests in the cold again':'ready for the next one';
+  return {yaw,r,z,jaw,has,ph,foc,onGon,hold,inSlot:u<2.7||u>=27.7};}
+// the arm in its own plane: shoulder at (0, sh), elbow up, wrist straight above the tip of the tool
+function rik(r,zw){const dz=zw-UR.sh,d=Math.min(Math.hypot(r,dz),UR.L1+UR.L2-1),a=Math.atan2(dz,r),b=Math.acos((UR.L1*UR.L1+d*d-UR.L2*UR.L2)/(2*UR.L1*d));return {er:UR.L1*Math.cos(a+b),ez:UR.sh+UR.L1*Math.sin(a+b)};}
+function rtube(c,x0,y0,x1,y1,wd,fill){c.lineCap='round';pen(c,wd+4,INK);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();pen(c,wd,fill);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.lineCap='butt';}
+function rjoint(c,x,y,r){disc(c,x,y,r,'#aeb8c0',2);disc(c,x,y,r*0.62,'#5aa0d8',1.4);}
+// a sample pin standing upright: base at the bottom (bottom center at x, y), loop and crystal at the top. s: pixels per millimeter
+function pinUp(c,x,y,s){const bw=11*s,bh=7*s;rectF(c,x-bw/2,y-bh,bw,bh,'#b08d57',Math.max(1,s*0.5));line(c,x,y-bh,x,y-17*s,Math.max(1.2,1*s),'#6b7780');if(s>1.2){pen(c,Math.max(1,0.35*s),'#3b4046');c.beginPath();c.ellipse(x,y-18*s,0.9*s,1.3*s,0,0,7);c.stroke();disc(c,x,y-18*s,Math.max(1,0.5*s),'#cfe6c9',0.6);}}
+// the end effector, hanging straight down from the tool flange at (x, yf) with its open end at (x, yt). cut: draw the lower part cut open, to show the collet and the pin inside
+function effector(c,x,yf,yt,s,jaw,hasPin,cut){const L=yt-yf,bw=46*s,bh=L*0.2,cw=GDIA*s,top=yf+bh,wall=Math.max(1.5,3.5*s);
+  rectF(c,x-bw/2,yf,bw,bh,'#5d6870',2);
+  if(!cut){rectF(c,x-cw/2,top,cw,yt-top,'#d5dbe0',2);line(c,x-cw*0.22,top+3,x-cw*0.22,yt-3,Math.max(1,cw*0.12),'rgba(255,255,255,.7)');return;}
+  const cy0=Math.max(top+6,yt-62*s);   // the cut starts here
+  rectF(c,x-cw/2,top,cw,cy0-top,'#d5dbe0',2);line(c,x-cw*0.22,top+3,x-cw*0.22,cy0-3,Math.max(1,cw*0.12),'rgba(255,255,255,.7)');
+  c.fillStyle='rgba(198,225,247,.8)';c.fillRect(x-cw/2+wall,cy0,cw-2*wall,yt-cy0);
+  if(hasPin)pinUp(c,x,yt,s);
+  // the brass collet: two fingers that close on the base of the pin
+  const gap=(11.4+7*(1-jaw))*s,fh=13*s;[-1,1].forEach(sg=>{const xi=x+sg*gap/2,xo=x+sg*(cw/2-wall);c.beginPath();c.moveTo(xi,yt-1);c.lineTo(xi,yt-fh*0.7);c.lineTo(xi+sg*1.5*s,yt-fh);c.lineTo(xi+sg*1.5*s,cy0);c.lineTo(xi+sg*3.2*s,cy0);c.lineTo(xi+sg*3.2*s,yt-fh);c.lineTo(xo,yt-fh*0.5);c.lineTo(xo,yt-1);c.closePath();c.fillStyle='#d4aa2c';c.fill();pen(c,Math.max(1,0.45*s));c.lineJoin='round';c.stroke();
+    c.fillStyle='#d5dbe0';c.fillRect(x+sg*cw/2-(sg>0?wall:0),cy0,wall,yt-cy0);pen(c,2);c.strokeRect(x+sg*cw/2-(sg>0?wall:0),cy0,wall,yt-cy0);});
+  line(c,x-cw/2,cy0,x+cw/2,cy0,1.6,INK,[4,3]);}
+// the whole scene. V = {ox, oy, S}: where the robot's base sits on the canvas, and pixels per millimeter
+function rscene(c,V,st,t,o){const X=x=>V.ox+x*V.S,Y=z=>V.oy-z*V.S,S=V.S,fs=o.fs||14;
+  line(c,X(-1000),Y(0),X(1000),Y(0),2.4);c.fillStyle='rgba(27,27,27,.06)';c.fillRect(X(-1000),Y(0),2000*S,60*S);
+  // the dewar: an open vessel of liquid nitrogen with pins standing in their pucks
+  const dx0=DEW.x-DEW.w/2,dx1=DEW.x+DEW.w/2;c.fillStyle='#d6e9f7';c.fillRect(X(dx0)+4,Y(DEW.lev),DEW.w*S-8,DEW.lev*S-4);
+  pen(c,Math.max(4,14*S),'#9aa7b3');c.lineCap='round';c.lineJoin='round';c.beginPath();c.moveTo(X(dx0),Y(DEW.top));c.lineTo(X(dx0),Y(0)-3);c.lineTo(X(dx1),Y(0)-3);c.lineTo(X(dx1),Y(DEW.top));c.stroke();c.lineCap='butt';
+  pen(c,1.6,BLUE);c.beginPath();for(let i=0;i<=24;i++){const x=X(dx0)+6+(DEW.w*S-12)*i/24,y=Y(DEW.lev)+1.6*Math.sin(i*1.3+t*2.2);i?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();
+  rectF(c,X(dx0+40),Y(DEW.pin),(DEW.w-80)*S,(DEW.pin-22)*S,'#b9c2c9',1.4);
+  for(let i=-3;i<=3;i++){if(i===0&&!st.inSlot)continue;pinUp(c,X(DEW.x+i*46),Y(DEW.pin),S);}
+  // the goniometer: an upright axis with the pin standing on top of it, the cold stream and the beam
+  rectF(c,X(GON.x-110),Y(150),220*S,150*S,'#8d979e',2);rectF(c,X(GON.x-55),Y(260),110*S,110*S,'#b9c2c9',2);rectF(c,X(GON.x-9),Y(GON.top),18*S,(GON.top-260)*S,'#d5dbe0',1.4);
+  const cyy=Y(GON.top)-18*S,nx=X(GON.x+62),ny=Y(GON.top+18+62);
+  c.save();c.translate(nx,ny);c.rotate(Math.atan2(cyy-ny,X(GON.x)-nx));rectF(c,-170*S,-17*S,170*S,34*S,'#9aa7b3',1.6);rectF(c,-14*S,-12*S,14*S,24*S,'#5d6870',1.2);c.restore();
+  for(let i=0;i<6;i++){const u=(t*1.1+i/6)%1,x=nx+(X(GON.x)-nx)*u*1.7,y=ny+(cyy-ny)*u*1.7;c.beginPath();c.arc(x,y,(9+12*u)*S,0,7);c.fillStyle='rgba(47,109,181,'+(0.3*(1-u)).toFixed(2)+')';c.fill();}
+  if(st.onGon&&!st.has){pinUp(c,X(GON.x),Y(GON.top),S);if(st.hold){pen(c,2,RED);c.beginPath();c.arc(X(GON.x),cyy,Math.max(5,9*S),0,7);c.stroke();disc(c,X(GON.x),cyy,Math.max(1.6,2.2*S),RED,0);}}
+  // the robot: pedestal, and the arm turned by st.yaw about the upright axis through its base
+  const cy=Math.cos(st.yaw),zw=st.z+UR.wr+GRIP,K=rik(st.r,zw),ex=K.er*cy,wx=st.r*cy,tw=UR.tube*S,jr=UR.joint*S;
+  rectF(c,X(-120),Y(40),240*S,40*S,'#8d979e',2);rectF(c,X(-78),Y(62),156*S,22*S,'#5d6870',2);rectF(c,X(-64),Y(UR.sh+10),128*S,(UR.sh+10-62)*S,'#aeb8c0',2);line(c,X(-64),Y(98),X(64),Y(98),1.4);rjoint(c,X(0),Y(UR.sh),jr);rtube(c,X(0),Y(UR.sh),X(ex),Y(K.ez),tw,'#dfe4e8');rjoint(c,X(ex),Y(K.ez),jr*0.95);rtube(c,X(ex),Y(K.ez),X(wx),Y(zw),tw*0.82,'#dfe4e8');
+  rjoint(c,X(wx),Y(zw),jr*0.74);rectF(c,X(wx)-jr*0.5,Y(zw)+jr*0.5,jr,UR.wr*S-jr*0.5,'#aeb8c0',2);disc(c,X(wx),Y(zw-UR.wr*0.55),jr*0.36,'#5aa0d8',1.2);
+  effector(c,X(wx),Y(zw-UR.wr),Y(st.z),S,st.jaw,st.has,o.cut);
+  if(o.labels){txt(c,'dewar of liquid nitrogen',X(DEW.x),Y(0)+fs+2,fs-1,'center','#52606b');txt(c,'goniometer',X(GON.x),Y(0)+fs+2,fs-1,'center','#52606b');txt(c,'cold gas',X(GON.x+200),Y(GON.top+200)-fs,fs-1,'left',BLUE);if(st.hold)tag(c,'X-ray beam, toward you',X(GON.x)+16,cyy+fs+4,'left',fs-1,RED);}
+  return {tx:X(wx),ty:Y(st.z),gx:X(GON.x),gy:Y(GON.top)};}
 // the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
 function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
 function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
@@ -451,7 +505,7 @@ const MBPC=(()=>{const P=MB.ca,n=P.length,Q=[P[0]],K=6,inH=i=>MB.helices.some(([
 function drawMb(c,cx,cy,s,hi,tf){c.save();c.lineCap='round';c.lineJoin='round';const P=tf||(p=>[cx+p[0]*s,cy-p[1]*s,p[2]]);
   const path=pts=>{c.beginPath();pts.forEach((p,i)=>{const q=P(p);i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});c.stroke();};
   const L=tf?MBPC.map(g=>({g,z:P(g.mid)[2]})).sort((u,v)=>u.z-v.z):MBPC.map(g=>({g,z:g.z}));
-  L.forEach(({g,z})=>{const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
+  L.forEach(({g,z})=>{if(g.heme&&drawMb.noHeme)return;const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
     // the ink edge of this piece, then its color, run a little way into neighbors of the same width so that the pieces join without a seam
     c.strokeStyle=INK;c.lineWidth=lw+2*ow;path(g.core);
     c.strokeStyle=g.heme?RED:on?ORG:g.h?mbMix('#7ea3d6','#c6d9f0',k):mbMix('#8d979e','#d5dbdf',k);c.lineWidth=lw;path(g.ext);});

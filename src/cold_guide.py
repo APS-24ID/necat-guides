@@ -38,7 +38,7 @@ COLD=dict(key='cold',title='Why Are We Freezing Our Crystals?',name='Why are we 
      "A protein crystal is about half water. If that water freezes into ordinary ice, the ice crystals grow, push the protein molecules out of line and ruin the crystal. Ice also puts rings of its own on the detector, and they hide the spots underneath.",
      "The answer is to cool the crystal so fast that the water has no time to form ice crystals. It stays as disordered as a liquid, but solid. That is a glass. The crystal is plunged into liquid nitrogen, often after a soak in an antifreeze such as glycerol, which makes the glass easier to form.",
      "So freezing is not quite the right word. People in the field say the crystal is cryocooled, or vitrified, which means turned to glass.",
-     _here("Crystals arrive at NE-CAT already cooled, in liquid nitrogen at 196 degrees below zero. The guide {guide:grow} shows how they are grown and frozen. A robot moves each one from its store to the beam quickly enough that it stays cold all the way.")],
+     _here("Crystals arrive at NE-CAT already cooled, in liquid nitrogen at 196 degrees below zero. The guide {guide:grow} shows how they are grown and frozen. A robot moves each one from its store to the beam quickly enough that it stays cold all the way. The guide {guide:ride} shows the trip.")],
     items=[('fig','c_ice')]),
    dict(id='scale',nav='How cold',h2='How cold is that?',prose=[
      "173 degrees below zero is colder than the air has ever been anywhere on Earth. It is about 20 degrees warmer than liquid nitrogen, which is what does the cooling.",
@@ -53,4 +53,4 @@ COLD=dict(key='cold',title='Why Are We Freezing Our Crystals?',name='Why are we 
              "Try it: at the first stop, how much of the limit can the crystal absorb before detail finer than 2 Å is lost?"],
   further='')
 G.insert([g['key'] for g in G].index('scatter'),COLD)
-UPDATED['cold']='November 20, 2026'
+UPDATED['cold']='November 26, 2026'

@@ -1,0 +1,580 @@
+<!doctype html>
+<!-- Copyright (c) 2026 NE-CAT, Cornell University. Released under the MIT License: https://github.com/APS-24ID/necat-guides/blob/main/LICENSE -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="How a frozen crystal is carried to the beam and found there, in four stops and five minutes, with no equations. The robot and its dewar, the trip through the cold, centering by camera and by X-rays, and running it all from far away.">
+<meta name="author" content="NE-CAT, Cornell University">
+<link rel="canonical" href="https://aps-24id.github.io/necat-guides/sample-to-beam.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="NE-CAT beamline guides">
+<meta property="og:title" content="How does a crystal get to the beam?">
+<meta property="og:description" content="How a frozen crystal is carried to the beam and found there, in four stops and five minutes, with no equations. The robot and its dewar, the trip through the cold, centering by camera and by X-rays, and running it all from far away.">
+<meta property="og:url" content="https://aps-24id.github.io/necat-guides/sample-to-beam.html">
+<meta property="og:image" content="https://aps-24id.github.io/necat-guides/og/ride.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Opening figure of the guide “How does a crystal get to the beam?”">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>How Does a Crystal Get to the Beam?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Patrick+Hand&family=Noto+Sans+Math&display=swap">
+<style>
+/* Three linked guides share this sheet. Layout: a comic album page. One reading column (~66ch); figures are inked panels up to 980px wide with yellow narration boxes; equations sit on ruled cards with a symbol-by-symbol reading. Single light theme by design (ligne claire is a paper style). */
+:root{
+  --paper:#fffdf6; --ink:#1b1b1b; --muted:#55575c; --sky:#dcecf5; --cap:#ffe98a;
+  --red:#d8412f; --blue:#2f6db5; --orange:#ee8a2b; --green:#5aa469; --card:#ffffff; --rule:#1b1b1b;
+  --f-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive;
+  --f-math:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+.wrap{max-width:980px;margin:0 auto}
+.prose{max-width:66ch;margin:0 auto}
+.prose>*+*{margin-top:1em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(2.3rem,6.4vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.55rem,3.6vw,2.2rem);font-weight:750}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--blue)}
+math{font-family:var(--f-math);font-size:1.06em}
+mi[mathvariant="bold"],mi[mathvariant="bold-italic"]{font-weight:700}
+.hero{padding-block:44px 20px;display:grid;gap:20px}
+.kicker{font-family:var(--f-hand);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;display:inline-block;background:var(--cap);border:2.5px solid var(--ink);padding:2px 12px;justify-self:start}
+.lede{font-size:1.22rem;line-height:1.5;max-width:62ch}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.chain a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.chain a:hover,.chain a:focus-visible{background:var(--cap);outline:none}
+section{padding-block:52px 4px;display:grid;gap:22px}
+.sec-head{display:grid;gap:12px}
+.stepno{font-family:var(--f-display);font-weight:800;font-size:1.05rem;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:#fff;border:2.5px solid var(--ink);display:grid;place-items:center}
+.panel{display:grid;gap:12px}
+.panel canvas{width:100%;display:block;border:3px solid var(--ink);background:var(--sky)}
+.figcap{font-size:.93rem;color:var(--muted);line-height:1.45;max-width:78ch}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;align-items:end;background:var(--card);border:2.5px solid var(--ink);padding:12px 14px}
+.ctl{display:grid;gap:2px;min-width:0}
+.ctl label{font-family:var(--f-hand);font-size:1.05rem;display:flex;justify-content:space-between;gap:8px}
+.ctl label output{font-weight:700;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--red)}
+input[type=number],select{width:100%;font-family:var(--f-hand);font-size:1.1rem;padding:4px 8px;border:2.5px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button{font-family:var(--f-hand);font-size:1.02rem;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:0;padding:2px 10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--cap)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.ro{background:var(--cap);border:2.5px solid var(--ink);padding:6px 12px;min-width:0}
+.ro .k{font-family:var(--f-hand);font-size:.95rem;letter-spacing:.04em}
+.ro .v{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-hand);font-size:1rem}
+.key i{display:inline-block;width:16px;height:12px;border:2px solid var(--ink);vertical-align:-1px;margin-right:6px}
+/* equation cards */
+.eqcard{background:var(--card);border:2.5px solid var(--ink);max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqcard .tag{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;background:var(--ink);color:var(--paper);padding:2px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.eqcard .eqn{padding:14px 14px 10px;overflow-x:auto;font-size:1.12rem;border-bottom:2px dashed var(--ink)}
+.eqcard .body{padding:12px 14px 14px;display:grid;gap:10px;font-size:.96rem;line-height:1.5}
+.read{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.read dt{font-weight:600;white-space:nowrap}
+.read dd{margin:0;min-width:0}
+.says b,.num b{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;background:var(--cap);border:2px solid var(--ink);padding:0 6px;margin-right:6px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px;padding-top:10px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar label{font-family:var(--f-hand);font-size:1.02rem;background:var(--cap);border:2.5px solid var(--ink);padding:1px 8px;display:flex;align-items:center;gap:8px;max-width:100%}
+.bar select{width:auto;max-width:100%;border:0;background:transparent;padding:2px 4px;font-size:1.02rem}
+.using{font-family:var(--f-hand);font-size:1.02rem;line-height:1.35;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:4px 12px}
+.tblwrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--card)}
+table.settings{border-collapse:collapse;width:100%;min-width:720px;font-size:.93rem;line-height:1.35;font-variant-numeric:tabular-nums}
+table.settings th,table.settings td{border:1.5px solid var(--ink);padding:5px 10px;text-align:left;vertical-align:top}
+table.settings thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+table.settings tbody th{font-weight:600;background:var(--paper)}
+table.settings .on{background:var(--cap)}
+table.settings thead th.on{background:var(--red);color:#fff}
+.notes{font-size:.9rem;color:var(--muted);line-height:1.45;max-width:78ch;margin-inline:auto;width:100%}
+.notes p+p{margin-top:.5em}
+ul.refs{padding-left:1.2em;margin:0}
+ul.refs li+li{margin-top:.4em}
+@media (max-width:520px){body{font-size:17px}.read{grid-template-columns:1fr}.read dt{margin-top:4px}}
+
+.here{display:block;font-family:var(--f-hand);font-size:1.12rem;line-height:1.4;background:var(--card);border:2.5px solid var(--ink);border-left-width:10px;border-left-color:var(--red);padding:6px 14px}
+.remember{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.3}
+.classroom{border:2.5px solid var(--ink);background:var(--card);padding:8px 14px;margin-top:8px}
+.classroom summary{font-family:var(--f-hand);font-size:1.15rem;cursor:pointer}
+.classroom ul{margin:8px 0 4px;padding-left:1.2em;display:grid;gap:6px}
+.btns button[aria-pressed="true"]{background:var(--red);color:#fff}
+.level.lv-intro{background:var(--cap)}
+.level.lv-depth{background:var(--ink);color:var(--paper)}
+.level{font-family:var(--f-hand);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);padding:0 8px;background:var(--paper)}
+details.eqcard>summary{cursor:pointer;list-style:none}
+details.eqcard>summary::-webkit-details-marker{display:none}
+details.eqcard>summary .eqno{white-space:nowrap}
+details.eqcard>summary::after{content:"+ show";background:var(--cap);color:var(--ink);padding:0 8px;margin-left:auto;white-space:nowrap}
+details.eqcard[open]>summary::after{content:"\2212  hide"}
+details.eqcard>summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+details.eqcard:not([open]) .eqn{display:none}
+.eqgroup{display:grid;gap:8px;max-width:78ch;margin-inline:auto;width:100%;min-width:0}
+.eqlabel{font-family:var(--f-hand);font-size:1.05rem}
+.guides{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-hand);font-size:1.05rem}
+.guides span.lbl{text-transform:uppercase;letter-spacing:.06em}
+.guides a{color:var(--ink);text-decoration:none;background:var(--card);border:2.5px solid var(--ink);padding:2px 12px}
+.guides a[aria-current="page"]{background:var(--red);color:#fff}
+.guides a:hover,.guides a:focus-visible{background:var(--cap);color:var(--ink)}
+table.rules{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.rules th,table.rules td{border:1.5px solid var(--ink);padding:5px 10px;text-align:right}
+table.rules th:first-child,table.rules td:first-child{text-align:left}
+table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem;background:var(--ink);color:var(--paper)}
+</style>
+</head><body>
+
+<div class="wrap">
+  <div class="bar"><button id="motionBtn" aria-pressed="false">Pause motion</button></div>
+  <header class="hero">
+    <div class="kicker">NE-CAT guides · robots and remote work in five minutes</div>
+    <h1>How does a crystal get to the beam?</h1>
+    <p class="lede">A frozen crystal, smaller than a grain of salt, has to be set in the path of an X-ray beam no wider than a hair, in a room that nobody may enter, and it must never warm up on the way. A robot does it. This guide follows a crystal from the shipping container to the beam, shows how it is found once it is there, and explains how the whole experiment is run by someone who may be a thousand miles away.</p>
+    <p class="lede" style="font-size:1.05rem">Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.</p>
+    <div class="panel">
+      <canvas id="rideHeroCv" aria-label="Animation: a jointed robot arm on a pedestal lowers a metal cylinder into a vessel of liquid nitrogen, over a sample pin, lifts the pin out inside the cylinder, swings across and sets it on the goniometer, where it sits in the X-ray beam with the nozzle of a stream of cold gas close beside it. The arm goes back and lowers the cylinder into the liquid nitrogen while the crystal is measured, and then takes the pin back. A magnifier shows the end of the cylinder cut open, with a brass collet holding the pin"></canvas>
+      <div class="figcap">A robot arm lifts a frozen crystal out of liquid nitrogen, sets it in the X-ray beam under a stream of cold gas, and later takes it back. Before each trip, and while the crystal is measured, the end of the cylinder rests in the liquid nitrogen. The arm carries a metal cylinder that slides over the pin and surrounds it, so the crystal stays cold on the way. The circle shows the end of the cylinder cut open and five times larger: a brass collet inside closes on the base of the pin. The arm, the cylinder and the pin are to scale. The dewar and the goniometer are simple shapes.</div>
+    </div>
+    <nav class="guides" aria-label="Back to the list of guides"><a class="homelink" href="index.html">← Home</a><span class="lbl">Series 2 · The beamline</span><span class="level lv-intro">5 minutes</span></nav>
+    <nav class="chain" aria-label="Sections"><a href="#load">1 Loading</a><a href="#arm">2 The robot</a><a href="#find">3 Centering</a><a href="#far">4 From afar</a></nav>
+  </header>
+
+  <section id="load">
+    <div class="sec-head prose">
+      <div class="stepno">1</div>
+      <h2>The crystals arrive cold and stay cold</h2>
+      <p>Crystals come to the beamline already frozen, each on the end of a small pin, packed sixteen to a puck. The guide <a class="guidelink" data-guide="grow" href="growing-crystals-intro.html">How do you grow a protein crystal?</a> shows how they got that way.</p>
+      <p>The pucks are lifted out of their shipping container and lowered into the robot's dewar, a wide vessel of liquid nitrogen beside the beamline. From then on no person touches them.</p>
+      <p>Each puck and each place in it has a number, and the scientists send a list that says which crystal is where. Keeping that list straight matters as much as keeping the crystals cold.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The robot's dewar on 24-ID-C holds thirty pucks, which is 480 crystals. The one on 24-ID-E holds fourteen.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="rLoadCv" aria-label="Interactive: the robot's dewar seen from above, with thirty places for pucks in three rings, and one puck enlarged to show its sixteen places for pins. A slider sets how many pucks are loaded"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label for="rN">Pucks loaded <output id="rNO">12 pucks</output></label><input id="rN" type="range" min="0" max="30" step="1" value="12"></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Crystals waiting</div><div class="v" id="rNc">–</div></div>
+        <div class="ro"><div class="k">The dewar is</div><div class="v" id="rNs">–</div></div>
+      </div>
+      <div class="figcap">The robot's dewar from above. Each grey disc is a puck, and each puck holds 16 pins. Full, the dewar holds 480 crystals under liquid nitrogen. The arrangement of the thirty places is drawn for the picture; the count is the real one for 24-ID-C.</div>
+    </div>
+  </section>
+
+  <section id="arm">
+    <div class="sec-head prose">
+      <div class="stepno">2</div>
+      <h2>A robot carries each one to the beam</h2>
+      <p>When a crystal's turn comes, the robot arm reaches into the liquid nitrogen, takes hold of its pin and carries it to the goniometer, the instrument that holds the crystal in the beam and turns it.</p>
+      <p>The arm does not pinch the pin between fingers. It carries a metal cylinder about 6 inches long. Between trips the arm rests with the end of the cylinder dipped in the liquid nitrogen, also while the crystal is being measured, so it is always as cold as the crystal. The cylinder slides down over the pin, and a brass collet inside it closes on the pin's base. The crystal travels inside cold metal.</p>
+      <p>The trip takes a few seconds. On the goniometer a stream of nitrogen gas at 173 degrees below zero blows over it for as long as it is being measured. If it warmed, ice would form and the crystal would be ruined. The guide <a class="guidelink" data-guide="cold" href="radiation-damage-intro.html">Why are we freezing our crystals?</a> explains why.</p>
+      <p>When the measurement is over, the arm takes the pin back to its place in the puck and fetches the next one.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> The experiment room is locked while the beam is on, as the guide <a class="guidelink" data-guide="hutch" href="shielded-room.html">Why is the experiment in a shielded room?</a> explains, so everything in it has to work without a person: the robot, the goniometer, the cameras and the detector.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="rArmCv" aria-label="Interactive: the robot scene from the side, with a magnifier on the end of the arm. Two buttons send the sample pin to the dewar of liquid nitrogen or to the goniometer, where it stands in the X-ray beam with cold gas blowing over it. The arm carries it between the two inside a metal cylinder"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label id="rAL">The crystal is</label><div class="btns" id="rA" role="group" aria-labelledby="rAL"><button type="button" data-v="0" aria-pressed="true">In the dewar</button><button type="button" data-v="1" aria-pressed="false">In the beam</button></div></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">Where it is</div><div class="v" id="rAw">–</div></div>
+        <div class="ro"><div class="k">How cold</div><div class="v" id="rAt">–</div></div>
+      </div>
+      <div class="figcap">The trip from the dewar to the beam. The crystal starts under liquid nitrogen. The arm lifts its pin out, carries it across and sets it on the goniometer, where a stream of cold nitrogen gas takes over. On 24-ID-C the goniometer's axis is upright, so the pin stands on end with the crystal at the top. Inside the cold metal cylinder, the crystal does not warm on the way. The dewar and the goniometer are drawn as simple shapes.</div>
+    </div>
+  </section>
+
+  <section id="find">
+    <div class="sec-head prose">
+      <div class="stepno">3</div>
+      <h2>Then the crystal has to be found</h2>
+      <p>The beam is about a hundredth of a millimeter across, and the crystal is not much larger. The robot sets the pin down to within a fraction of a millimeter, which is not nearly close enough. The crystal has to be moved into the beam, and it has to stay there as it turns.</p>
+      <p>A camera looks at the loop through a microscope. The loop can be moved onto the mark that shows where the beam passes, either by software that recognizes it or by a click on the picture. The pin is then turned a quarter of a turn and the step is repeated, so that the crystal sits on the axis and does not swing out of the beam.</p>
+      <p>Often the crystal cannot be seen. It is small and clear, and it sits in a bead of frozen liquid. Then the X-rays do the looking. The loop is stepped through the beam in a grid, with a brief exposure at each step, and the place that gives the strongest pattern of spots is where the crystal is.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> Both ways are used at NE-CAT: centering from the camera picture, and a scan with X-rays when the crystal is hard to see.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="rFindCv" aria-label="Interactive: the view from the beamline camera, with a loop on a pin and a red cross marking where the X-ray beam passes. Three buttons: as mounted, the loop is off to one side; centered by camera, the loop is on the cross; scanned with X-rays, a grid of squares over the loop glows where crystal was found and the brightest square sits on the cross"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label id="rFL">The crystal has been</label><div class="btns" id="rF" role="group" aria-labelledby="rFL"><button type="button" data-v="0" aria-pressed="true">Mounted</button><button type="button" data-v="1" aria-pressed="false">Centered by camera</button><button type="button" data-v="2" aria-pressed="false">Scanned with X-rays</button></div></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">The loop is</div><div class="v" id="rFl">–</div></div>
+        <div class="ro"><div class="k">Is the crystal in the beam?</div><div class="v" id="rFx">–</div></div>
+      </div>
+      <div class="figcap">What the camera sees. The red cross marks where the beam passes. First the loop is moved onto the cross, by software or by a click on the picture. That is enough when the crystal can be seen. When it cannot, the loop is stepped through the beam square by square, with a brief flash of X-rays at each, and the square that gives the strongest spots is moved onto the cross. The crystal here is drawn faintly on purpose: in frozen liquid a real one can be almost invisible. The grid and its brightness are made up to show the idea.</div>
+    </div>
+  </section>
+
+  <section id="far">
+    <div class="sec-head prose">
+      <div class="stepno">4</div>
+      <h2>The scientist may be a thousand miles away</h2>
+      <p>None of this needs the scientist in the building. The crystals travel by courier. The scientist connects over the internet, sees the same camera pictures and controls that someone at the beamline would see, and runs the experiment from an office or a kitchen table.</p>
+      <p>The connection from outside is made with https, the same encrypted link that protects a bank's web site, so nobody along the way can read it or tamper with it. And it is not a matter of asking for a page and waiting for the answer. The scientist's browser opens one connection, called a WebSocket, and keeps it open. Either end can send to the other at any moment. A command reaches the beamline at once, and a new camera picture or a fresh result appears on the scientist's screen the moment it exists, without the screen having to ask.</p>
+      <p>For each crystal the steps are the same: mount, center, take a test image, decide, collect, unmount. With a detector that records hundreds of images a second, the measurement itself can take less than a minute. The guide <a class="guidelink" data-guide="detintro" href="detector-intro.html">How does an X-ray detector work?</a> shows how.</p>
+      <p>Software at the beamline starts to analyze the images while the crystal is still in the beam, so a poor crystal can be set aside quickly and a good one measured with care.</p>
+      <p><span class="here"><b>Here at NE-CAT.</b> Most of the scientists who use NE-CAT run their experiments remotely. The staff load the pucks, keep the beamline working and help when something goes wrong.</span></p>
+    </div>
+    <div class="panel">
+      <canvas id="rFarCv" aria-label="Interactive: three boxes in a row: the scientist, the computers at NE-CAT, and the beamline with its robot and detector. The scientist and NE-CAT are joined by a green tube with a padlock on it, labeled encrypted, https, one connection kept open, both ways at once, a WebSocket. Dots travel along it in two lanes. Three buttons show the traffic both ways at once, going out only, or coming back only"></canvas>
+      <div class="controls">
+        <div class="ctl" style="grid-column:1/-1"><label id="rRL">Show what is</label><div class="btns" id="rR" role="group" aria-labelledby="rRL"><button type="button" data-v="2" aria-pressed="true">Both at once</button><button type="button" data-v="0" aria-pressed="false">Going out</button><button type="button" data-v="1" aria-pressed="false">Coming back</button></div></div>
+      </div>
+      <div class="readout">
+        <div class="ro"><div class="k">What travels</div><div class="v" id="rRw">–</div></div>
+        <div class="ro"><div class="k">The connection from outside</div><div class="v" id="rRc">–</div></div>
+      </div>
+      <div class="figcap">An experiment run from a distance. The scientist chooses a crystal, centers it and starts the measurement from wherever they are. The camera pictures, the images from the detector and the first analysis come back the other way. Everything from outside travels along one encrypted connection that is opened once and then stays open, with traffic both ways at the same time.</div>
+    </div>
+  </section>
+
+  <section id="further">
+    <div class="sec-head prose">
+      <h2>One thing to remember</h2>
+      <p class="remember">A robot carries each frozen crystal from liquid nitrogen to the beam and back, a camera and the X-rays themselves find it, and the scientist runs it all from a distance.</p>
+      <p>To follow the X-rays to the same spot from the other direction, see the guide <a class="guidelink" data-guide="walk" href="how-necat-works-intro.html">A walk down the beamline</a>.</p>
+      <details class="classroom"><summary>For a class</summary><ul><li>Why must the crystal never be allowed to warm up, even for a few seconds?</li><li>The beam is a hundredth of a millimeter across. Why is it not enough for the robot to put the pin in roughly the right place?</li><li>Why is the pin turned and centered a second time?</li><li>Try it: at the first stop, how many crystals does the robot hold when its dewar is half full?</li></ul></details>
+    </div>
+    <nav class="guides" aria-label="Where to go next" style="justify-content:center;margin-top:28px"><a class="homelink" href="index.html">← Home</a><a class="guidelink" data-guide="see" href="how-mx-works-intro.html">Next: How do we see a protein? →</a></nav>
+    <div class="notes" style="text-align:center;margin-top:18px"><p>Last updated November 26, 2026. Release 1.11. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20How%20does%20a%20crystal%20get%20to%20the%20beam%3F%20%28release%201.11%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</p></div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Motion plays unless the reader's system asks for reduced motion. Once the reader has used the button, that choice is kept in the
+// browser (nothing is sent anywhere) and applies on every guide and on later visits.
+let playing = !reduce;
+try{const m=localStorage.getItem('necat-guide-motion');if(m==='1')playing=true;else if(m==='0')playing=false;}catch(e){}
+const mBtn = document.getElementById('motionBtn');
+const setMotionLabel=()=>{mBtn.textContent = playing?'Pause motion':'Play motion'; mBtn.setAttribute('aria-pressed', String(!playing));};
+setMotionLabel();
+mBtn.addEventListener('click',()=>{playing=!playing;setMotionLabel();try{localStorage.setItem('necat-guide-motion',playing?'1':'0');}catch(e){}});
+const $=id=>document.getElementById(id);
+
+// ---- ligne claire palette: flat colors, one ink line ----
+const INK='#1b1b1b', SKY='#dcecf5', WHITE='#ffffff', RED='#d8412f', BLUE='#2f6db5', YEL='#f6c52e', CAP='#ffe98a',
+      GRN='#5aa469', ORG='#ee8a2b', GREY='#b9c2c9', PUR='#8a63c2', LTGRN='#cfe6c9', LTYEL='#ffe9a3', LTRED='#f4c9c2',
+      LTBLUE='#c6d9f0', STEEL='#9fb6cc', FLOOR='#efe3c4', LTORG='#ffd98a', MINT='#bfe0c4';
+const HAND='"Patrick Hand","Chalkboard SE","Comic Sans MS",cursive';
+
+const figs=[];
+function fig(id,aspect,draw,animated=true){
+  const cv=$(id), ctx=cv.getContext('2d');
+  const f={cv,ctx,draw,animated,visible:true,w:0,h:0,t:0};
+  function size(){const dpr=Math.min(window.devicePixelRatio||1,2);const w=cv.clientWidth;if(!w)return;const asp=typeof aspect==='function'?aspect(w):aspect;const h=Math.round(w/asp);
+    cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);f.w=w;f.h=h;f.draw(f);}
+  new ResizeObserver(size).observe(cv);
+  new IntersectionObserver(es=>{es.forEach(e=>f.visible=e.isIntersecting)}).observe(cv);
+  figs.push(f); return f;
+}
+const redrawAll=()=>figs.forEach(f=>f.w&&f.draw(f));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(redrawAll);
+let last=performance.now();
+function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
+  figs.forEach(f=>{if(f.animated&&f.visible&&playing&&f.w){f.t+=dt;f.draw(f);}});requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+// ---- drawing kit ----
+function pen(c,w=2,col=INK){c.strokeStyle=col;c.lineWidth=w;c.lineJoin='round';c.lineCap='round';c.setLineDash([]);}
+function bg(c,w,h,col=SKY){c.fillStyle=col;c.fillRect(0,0,w,h);}
+function rectF(c,x,y,w,h,fill,lw=2){c.fillStyle=fill;c.fillRect(x,y,w,h);pen(c,lw);c.strokeRect(x,y,w,h);}
+function disc(c,x,y,r,fill,lw=2){c.beginPath();c.arc(x,y,r,0,7);if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function poly(c,pts,fill,lw=2){c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.fillStyle=fill;c.fill();}pen(c,lw);c.stroke();}
+function line(c,x0,y0,x1,y1,lw=2,col=INK,dash){pen(c,lw,col);if(dash)c.setLineDash(dash);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.setLineDash([]);}
+function arrow(c,x0,y0,x1,y1,col=INK,lw=2.2,head=8){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);pen(c,lw,col);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();if(L<3)return;
+  const ux=dx/L,uy=dy/L,h=Math.min(head,L*0.7);c.fillStyle=col;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1-ux*h-uy*h*0.5,y1-uy*h+ux*h*0.5);c.lineTo(x1-ux*h+uy*h*0.5,y1-uy*h-ux*h*0.5);c.closePath();c.fill();c.stroke();}
+function fatArrow(c,x0,y0,x1,y1,fill,wd=7){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);if(L<4)return;const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;const hd=Math.min(wd*2.2,L*0.65),hw=wd*1.35;const bx=x1-ux*hd,by=y1-uy*hd;
+  poly(c,[[x0+nx*wd/2,y0+ny*wd/2],[bx+nx*wd/2,by+ny*wd/2],[bx+nx*hw,by+ny*hw],[x1,y1],[bx-nx*hw,by-ny*hw],[bx-nx*wd/2,by-ny*wd/2],[x0-nx*wd/2,y0-ny*wd/2]],fill);}
+function txt(c,s,x,y,size=16,align='left',col=INK){c.fillStyle=col;c.font=`${size}px ${HAND}`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);}
+function cap(c,s,x,y,align='left',size=15){s=s.replace(/[a-z]/g,ch=>ch.toUpperCase());c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+16,ph=size+10;
+  const x0=align==='center'?x-pw/2:align==='right'?x-pw:x;rectF(c,x0,y-ph/2,pw,ph,CAP,2);c.fillStyle=INK;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+8,y+1);}
+function electron(c,x,y,r=8){disc(c,x,y,r,YEL);line(c,x-r*0.45,y,x+r*0.45,y,2);}
+function eye(c,x,y,ang){c.save();c.translate(x,y);c.rotate(ang);c.beginPath();c.ellipse(0,0,15,9,0,0,7);c.fillStyle=WHITE;c.fill();pen(c,2);c.stroke();disc(c,-5,0,4.5,INK);c.restore();}
+function sampleLoop(c,x,y,s=1){line(c,x,y+7*s,x,y+34*s,3);disc(c,x,y,9*s,WHITE);poly(c,[[x-5*s,y],[x,y-5*s],[x+5*s,y],[x,y+5*s]],GRN,1.6);}
+function bind(id,fmt,cb){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fmt(+el.value);cb&&cb();};el.addEventListener('input',up);up();return el;}
+
+// ---------- helpers shared by the Introductory guides. The script of each is the drawing kit, this file, and the guide's own file ----------
+const GDK='#2f7a45';
+function tag(c,s,x,y,align='left',size=15,col=INK){c.font=`${size}px ${HAND}`;const tw=c.measureText(s).width,pw=tw+10,ph=size+6,x0=align==='center'?x-pw/2:align==='right'?x-pw:x;
+  c.fillStyle=WHITE;c.fillRect(x0,y-ph/2,pw,ph);pen(c,1.6);c.strokeRect(x0,y-ph/2,pw,ph);c.fillStyle=col;c.textAlign='left';c.textBaseline='middle';c.fillText(s,x0+5,y+1);}
+// seeded random numbers, so that figures do not flicker
+function rng(seed){let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+const setT=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+// a color to stand for an X-ray energy between 6 and 20 keV: red for low, violet for high
+const hueE=E=>`hsl(${Math.round(Math.max(0,Math.min(1,(E-6)/14))*270)},78%,50%)`;
+function stopNo(c,n,x,y,r=13){disc(c,x,y,r,RED,2);txt(c,String(n),x,y+1,Math.round(r*1.25),'center','#fff');}
+function wave(c,x0,x1,y,amp,lam,ph,col,lw=2){if(x1<=x0)return;pen(c,lw,col);c.beginPath();for(let x=x0;x<=x1;x+=2){const yy=y+amp*Math.sin((x-x0)/lam*6.2832-ph);x===x0?c.moveTo(x,yy):c.lineTo(x,yy);}c.stroke();}
+function magnets(c,x0,x1,y,hh,n,flip){const bw=(x1-x0)/n;for(let i=0;i<n;i++)rectF(c,x0+i*bw,y,bw,hh,((i%2)^flip)?RED:BLUE,2);}
+
+const fmtE=le=>{const e=Math.pow(10,le);return e<1e6?(e/1e3).toFixed(e<1e4?1:0)+' keV':e<1e9?(e/1e6).toFixed(e<1e7?1:0)+' MeV':(e/1e9).toFixed(1)+' GeV';};
+// the ring's pipe, seen from above
+function pipe(c,cx,cy,R,pw){pen(c,pw*2,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+pw,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-pw,0,7);c.stroke();}
+// a made-up diffraction pattern: spots on a lattice. Each spot stands for detail of d ångströms, with dEdge at the edge of the picture
+function mkSpots(seed,dEdge){const r=rng(seed),S=[];for(let i=-10;i<=10;i++)for(let j=-10;j<=10;j++){const x=(i+0.3*j)/10.5,y=j*0.95/10.5,rad=Math.hypot(x,y);if(rad>0.97||rad<0.09||Math.abs(x)>0.97||r()<0.4)continue;S.push({x,y,rad,d:dEdge/rad,s:(0.45+r())*(1-0.5*rad)});}return S;}
+const ICE=[3.90,3.67,3.44,2.67,2.25,2.07,1.95,1.92,1.88];   // spacings of the rings from ordinary (hexagonal) ice, in ångströms
+// draws the pattern in a square of side S. Spots fade with dose by the rule of 10 MGy for each ångström. ice from 0 to 1 adds ice rings
+function drawPattern(c,cx,cy,S,spots,dose,dEdge,ice){rectF(c,cx-S/2,cy-S/2,S,S,WHITE,3);
+  if(ice>0.01)ICE.forEach((d,i)=>{const R=dEdge/d*S/2*0.95;if(R<S/2-2){pen(c,(i<3?3.2:2)*(0.4+0.6*ice),`rgba(70,80,92,${(0.6*ice).toFixed(3)})`);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();}});
+  spots.forEach(s=>{const k=Math.pow(2,-dose/(10*s.d))*(1-0.55*(ice||0));if(k<0.04)return;c.fillStyle=`rgba(27,27,27,${Math.min(1,0.3+k).toFixed(3)})`;c.beginPath();c.arc(cx+s.x*S/2*0.95,cy+s.y*S/2*0.95,(0.8+1.9*s.s)*Math.sqrt(k),0,7);c.fill();});
+  disc(c,cx,cy,Math.max(4,S*0.025),GREY,1.6);}
+// a crystal seen side on, as a six-sided shape of half-size s
+function xtal(c,x,y,s,fill=GRN,lw=2){poly(c,[[x-s,y-s*0.45],[x-s*0.35,y-s],[x+s*0.8,y-s*0.8],[x+s,y+s*0.3],[x+s*0.3,y+s],[x-s*0.85,y+s*0.7]],fill,lw);}
+const mix=(a,b,u)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),A=p(a),B=p(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*u)).join(',')+')';};
+// numbers in plain words
+const big=n=>n<1e3?String(Math.round(n)):n<1e6?(Math.round(n/Math.pow(10,Math.floor(Math.log10(n))-1))*Math.pow(10,Math.floor(Math.log10(n))-1)).toLocaleString('en-US'):n<1e9?(n/1e6).toFixed(n<1e7?1:0)+' million':n<1e12?(n/1e9).toFixed(n<1e10?1:0)+' billion':(n/1e12).toFixed(n<1e13?1:0)+' trillion';
+// the crystal, the cone of rays that the detector catches, and the detector, seen from the side. D is the distance in mm (150 to 1200)
+const DET_HALF=155.55, LAMBDA=0.9792;   // half the width of the detector face in mm (EIGER2 X 16M), and the wavelength at 12.662 keV in ångströms
+const resAt=D=>LAMBDA/(2*Math.sin(0.5*Math.atan(DET_HALF/D)));
+// Adapted from the diffraction figure of How NE-CAT works: the rays that leave the crystal fan out, each carrying detail of one size
+// (the wider the angle, the finer the detail). The fan is fixed. The detector catches the part of it that lands on its window:
+// the darker wedge and the solid rays. Returns where things are, so that the detector can be dragged (see geoDrag)
+function geoDraw(c,w,h,D,fs,narrow,drag){const sc=(w*(narrow?0.62:0.6))/1200,x0=w*(narrow?0.1:0.08),y=h*(narrow?0.44:0.47),xd=x0+D*sc,hb=DET_HALF*sc,top=narrow?30:34,bot=2*y-top,xr=w-4;
+  const list=narrow?[8,5,3,2,1.5,1.2]:[12,8,6,4,3,2.5,2,1.6,1.3,1.1],ang=d=>2*Math.asin(LAMBDA/(2*d)),amax=ang(list[list.length-1]);
+  const end=(a,sg)=>{const x=Math.min(xr,x0+(y-top)/Math.tan(a));return [x,y-sg*(x-x0)*Math.tan(a)];};
+  // the whole fan, pale, and the part the detector catches, darker
+  const eu=end(amax,1),ed=end(amax,-1),fan=[[x0,y],eu];if(eu[0]<xr){fan.push([xr,top]);fan.push([xr,bot]);}fan.push(ed);
+  c.beginPath();fan.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='#fff6d9';c.fill();
+  const tc=Math.min(Math.atan(DET_HALF/D),amax),yc=(xd-x0)*Math.tan(tc);
+  c.beginPath();c.moveTo(x0,y);c.lineTo(xd,y-yc);c.lineTo(xd,y+yc);c.closePath();c.fillStyle=LTORG;c.fill();
+  list.forEach(d=>{const a=ang(d),hit=(xd-x0)*Math.tan(a),rec=hit<=hb;[1,-1].forEach(sg=>{const e=end(a,sg);
+    line(c,x0,y,e[0],e[1],1.2,'rgba(238,138,43,.75)',[4,5]);if(rec)line(c,x0,y,xd,y-sg*hit,2,ORG);
+    if(sg>0){if(e[0]<xr)txt(c,d+' Å',e[0],top-11,fs,'center',rec?'#b85f10':'#52606b');else txt(c,d+' Å',xr-2,e[1]-10,fs,'right',rec?'#b85f10':'#52606b');}});});
+  arrow(c,0,y,x0-12,y,ORG,3,9);line(c,x0,y,xd,y,1.4,'rgba(238,138,43,.7)');
+  detSide(c,xd,y,sc,drag);
+  list.forEach(d=>{const hit=(xd-x0)*Math.tan(ang(d));if(hit<=hb)[1,-1].forEach(sg=>disc(c,xd,y-sg*hit,2.6,ORG,1));});
+  disc(c,x0,y,narrow?5:7,GRN,2);
+  const yt=h-(narrow?24:28);[150,400,800,1200].forEach(d=>{const x=x0+d*sc;line(c,x,yt-3,x,yt+3,2);txt(c,d===1200?'1.2 m':d+' mm',x,yt+(narrow?12:14),fs,'center','#52606b');});
+  line(c,x0,yt,x0+1200*sc,yt,1.6,'#52606b');
+  cap(c,'crystal',x0,y+(narrow?22:28),'center',fs);
+  tag(c,narrow?'detector: drag it':'detector: drag it left or right',Math.min(w-6,xd+DETG.hd*sc),Math.min(yt-(narrow?14:16),y+DETG.hh*sc/2+(narrow?26:30)),'right',fs);
+  if(!narrow)txt(c,'numbers: the detail each ray carries',xr-2,yt+14,fs,'right','#52606b');
+  return {x0,sc,xd,y,hh:DETG.hh*sc/2,hd:DETG.hd*sc};}
+// lets the detector in a geoDraw figure be dragged along the beam. geo() gives the figure's last geometry, and id is the distance slider
+function geoDrag(cvId,id,geo,setDrag){const cv=$(cvId),sl=$(id),pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};let on=false;
+  const near=e=>{const g=geo();if(!g)return false;const [x,y]=pos(e);return x>g.xd-18&&x<g.xd+g.hd+10&&Math.abs(y-g.y)<g.hh+12;};
+  const set=e=>{const g=geo(),[x]=pos(e),st=+sl.step||5;sl.value=Math.max(+sl.min,Math.min(+sl.max,Math.round((x-g.grab-g.x0)/g.sc/st)*st));sl.dispatchEvent(new Event('input'));};
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{if(!near(e))return;const g=geo();g.grab=pos(e)[0]-g.xd;on=true;setDrag(true);cv.setPointerCapture(e.pointerId);e.preventDefault();});
+  cv.addEventListener('pointermove',e=>{if(on){const g=geo();const gr=g.grab;set(e);geo().grab=gr;}else cv.style.cursor=near(e)?'ew-resize':'';});
+  const stop=()=>{if(on){on=false;setDrag(false);}};cv.addEventListener('pointerup',stop);cv.addEventListener('pointercancel',stop);}
+// ---------- a data collection, image by image ----------
+// A made-up crystal (cell 40 x 45 x 52 Å, tilted) turns about an upright axis in a beam of 1 Å X-rays. Each image shows the lattice
+// points that lie close to the sphere of reflection at that angle, so the spots fall in curved bands, lunes, that move as it turns.
+// rotImage(n) gives the spots on image n (0.3 degrees of turn for each image) as places u, v from -1 to 1 across the detector's window, with a strength a
+let ROT=null;
+function rotImage(n){if(!ROT){const RMAX=1/2.4,TX=Math.tan(2*Math.asin(0.5/2.5)),TY=TX*DETG.fh/DETG.fw,SG=0.0009,PTS=(()=>{
+  const ca=Math.cos(0.30),sa=Math.sin(0.30),cb=Math.cos(0.16),sb=Math.sin(0.16),cg=Math.cos(0.10),sg=Math.sin(0.10),P=[];
+  const hash=(h,k,l)=>{let q=(h*73856093)^(k*19349663)^(l*83492791);q=(q^(q>>>13))>>>0;q=Math.imul(q,1274126177)>>>0;return ((q^(q>>>16))>>>0)/4294967296;};
+  for(let h=-17;h<=17;h++)for(let k=-19;k<=19;k++)for(let l=-22;l<=22;l++){if(!h&&!k&&!l)continue;let x=h/40,y=k/45,z=l/52;const r=Math.hypot(x,y,z);if(r>RMAX)continue;
+    let t=x*ca-y*sa;y=x*sa+y*ca;x=t;t=y*cb-z*sb;z=y*sb+z*cb;y=t;t=x*cg+z*sg;z=-x*sg+z*cg;x=t;   // tilt the lattice
+    P.push(x,y,z,Math.pow(hash(h,k,l),1.6)*Math.exp(-2.2*(r/RMAX)*(r/RMAX)));}
+  return new Float32Array(P);})();ROT={RMAX,TX,TY,SG,PTS};}
+  const {TX,TY,SG,PTS}=ROT,FW=DETG.fw,FH=DETG.fh;const ph=n*0.3*Math.PI/180,cs=Math.cos(ph),sn=Math.sin(ph),S=[],px=FW/(DETG.mw+DETG.gx),py=FH/(DETG.mh+DETG.gy);
+  for(let i=0;i<PTS.length;i+=4){const x=PTS[i]*cs+PTS[i+2]*sn,y=PTS[i+1],kz=-PTS[i]*sn+PTS[i+2]*cs+1;if(kz<=0)continue;
+    const e=Math.sqrt(x*x+y*y+kz*kz)-1;if(e>3*SG||e<-3*SG)continue;const u=x/kz/TX,v=y/kz/TY;if(u<-1||u>1||v<-1||v>1||u*u+v*v<0.004)continue;
+    // nothing is counted in the gaps between the modules
+    const mx=((u+1)/2*FW)%(DETG.mw+DETG.gx),my=((v+1)/2*FH)%(DETG.mh+DETG.gy);if(mx>DETG.mw||my>DETG.mh)continue;
+    const a=PTS[i+3]*Math.exp(-e*e/(2*SG*SG));if(a>0.02)S.push({u,v,a});}
+  return S;}
+// ---------- the detector on 24-ID-C, an EIGER2 XE 16M, as a cartoon (sizes in millimeters, from the manufacturer's specification) ----------
+// Its sensitive area holds 32 sensor modules, 4 across and 8 down. The gaps between them (12 pixels between columns, 38 between rows)
+// count nothing. The housing is 400 wide, 430 high and 500 deep: black, with a blue frame around a white window that fills most of the
+// front, as in the manufacturer's picture of it. The width of the frame is judged from that picture.
+const DETG={fw:311.1,fh:327.2,hw:400,hh:430,hd:500,mw:77.1,mh:38.4,gx:0.9,gy:2.85,body:'#2c2f35',frame:'#3f63ad',gap:'#c3ccd4',rim:0.04};
+// face on, with its middle at (cx, cy) and z pixels to the millimeter. Returns the box of the sensitive area, for the spots
+function detFace(c,cx,cy,z,housing=true){const G=DETG,W=G.fw*z,H=G.fh*z,x=cx-W/2,y=cy-H/2;
+  if(housing){const hw=G.hw*z,hh=G.hh*z,r=Math.min(16,hw*0.05),m=hw*G.rim;
+    c.beginPath();c.roundRect(cx-hw/2,cy-hh/2,hw,hh,r);c.fillStyle=G.frame;c.fill();pen(c,Math.min(3,Math.max(1.6,z*3)));c.stroke();
+    c.beginPath();c.roundRect(cx-hw/2+m,cy-hh/2+m,hw-2*m,hh-2*m,Math.max(1,r-m));c.fillStyle=WHITE;c.fill();pen(c,1.2);c.stroke();}
+  else rectF(c,x,y,W,H,WHITE,2);
+  // the sensitive area, and the gaps between its modules
+  c.fillStyle=G.gap;for(let i=1;i<4;i++)c.fillRect(x+(i*G.mw+(i-1)*G.gx)*z,y,Math.max(1,G.gx*z),H);
+  for(let j=1;j<8;j++)c.fillRect(x,y+(j*G.mh+(j-1)*G.gy)*z,W,Math.max(1.2,G.gy*z));
+  pen(c,1.2,'#9aa7b3');c.strokeRect(x,y,W,H);
+  return {x,y,w:W,h:H};}
+// from the side, with the middle of its window at (xf, cy): the window faces left and the black housing runs back to the right
+function detSide(c,xf,cy,z,lit){const G=DETG,hh=G.hh*z,hd=G.hd*z,r=Math.min(10,hh*0.06),fb=Math.max(4,hd*0.06);
+  rectF(c,xf+hd*0.12,cy+hh/2,hd*0.76,Math.max(5,hh*0.07),'#5d6a73',2);                       // the base it stands on
+  pen(c,Math.max(2.5,hh*0.035),'#3f6ea8');c.beginPath();c.moveTo(xf+hd,cy-hh*0.2);c.bezierCurveTo(xf+hd*1.18,cy-hh*0.2,xf+hd*1.16,cy+hh*0.5,xf+hd*1.3,cy+hh*0.62);c.stroke();   // a cooling hose at the back
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.fillStyle=lit?'#3d424b':G.body;c.fill();pen(c,2.4);c.stroke();
+  c.save();c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);c.clip();c.fillStyle=G.frame;c.fillRect(xf,cy-hh/2,fb,hh);c.restore();     // the blue frame at the front
+  line(c,xf+fb+3,cy-hh/2+Math.max(3,hh*0.04),xf+hd-r,cy-hh/2+Math.max(3,hh*0.04),1.4,'rgba(255,255,255,.28)');
+  c.beginPath();c.roundRect(xf,cy-hh/2,hd,hh,r);pen(c,2.4);c.stroke();
+  // the maker's name and the model, where they are on the real housing, in plain lettering (not the maker's own lettering)
+  if(hh>70){const fz=hh*0.085,tx=xf+hd*0.12,ty=cy+hh*0.12;c.fillStyle='rgba(255,255,255,.5)';c.textAlign='left';c.textBaseline='middle';
+    c.font=`600 ${fz.toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('DECTRIS',tx,ty);c.fillText('EIGER2 XE',tx,ty+fz*1.15);
+    c.font=`700 ${(fz*1.7).toFixed(1)}px system-ui,-apple-system,"Segoe UI",Arial,sans-serif`;c.fillText('16M',tx,ty+fz*2.75);}
+  rectF(c,xf-Math.max(2,hd*0.012),cy-hh*(0.5-G.rim),Math.max(4,hd*0.024),hh*(1-2*G.rim),WHITE,1.6);}                    // the window, edge on
+// a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
+function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// ---------- the sample robot of 24-ID-C, used by "How does a crystal get to the beam?" and by its card on the index page ----------
+// The robot scene, from the side. Dimensions in millimeters. The arm is a Universal Robots UR5e: shoulder 163 above its mounting face, upper arm 425, forearm 392.
+// The end effector is a metal cylinder 6 inches long with a brass collet inside, which closes on the base of the pin. The cylinder surrounds the pin and keeps it cold.
+const UR={sh:163,L1:425,L2:392,wr:200,tube:76,joint:62},GRIP=152,GDIA=28,DEW={x:-470,w:380,top:280,pin:70,lev:165},GON={x:450,top:300};   // lev: the surface of the liquid nitrogen. Only the cylinder ever goes below it
+// where the tip of the end effector is, and what it is doing, at time u: 0 to 9 is the trip out, 9 to 12 the crystal is in the beam, 12 to 21 the trip back
+function rstate(u0){const u=((u0%31)+31)%31,hi=420,zd=DEW.pin,zg=GON.top,zp=118,rd=-DEW.x,rg=GON.x,rp=rd-115,e=(a,b)=>{const x=Math.max(0,Math.min(1,(u-a)/(b-a)));return x*x*x*(10-15*x+6*x*x);};
+  // One cycle is 31 s. It starts and ends with the end of the cylinder resting in the liquid nitrogen, to keep it cold. Fetch the pin (to 8.6), go back and wait
+  // in the nitrogen while the crystal is measured (to 16.8), take the pin back (to 28.3), and return to rest.
+  // The movements overlap, as they do on a real arm: it starts to swing before it has finished rising, and starts to come down before it has finished swinging.
+  const z=zp+(zd-zp)*e(1,2.2)+(hi-zd)*e(2.7,4.5)+(zg-hi)*(e(6.3,8)-e(8.6,10))+(zp-hi)*e(11.6,13.2)+(hi-zp)*e(16.8,18.4)+(zg-hi)*(e(20.2,21.9)-e(22.5,24.2))+(zd-hi)*e(26,27.7)+(zp-zd)*e(28.3,29.4);
+  const y1=e(3.6,7.1),y2=e(9.4,12.4),y3=e(17.7,21),y4=e(23.4,26.8),yaw=Math.PI*(1-y1+y2-y3+y4),r=rp+(rd-rp)*e(0.3,1.4)+(rg-rd)*y1+(rp-rg)*y2+(rg-rp)*y3+(rd-rg)*y4+(rp-rd)*e(28.9,30);
+  const jaw=e(2.1,2.7)-e(8,8.6)+e(21.9,22.5)-e(27.7,28.3),has=(u>=2.7&&u<8)||(u>=22.5&&u<27.7),onGon=u>=8&&u<22.5,hold=u>=10.8&&u<19.4,foc=e(9,10.4)-e(19,20.4);
+  const ph=u<0.3?'the cylinder waits in the liquid nitrogen, keeping cold':u<2.1?'over a pin, and down':u<2.7?'the collet closes on the pin':u<4?'up, with the crystal inside the cold cylinder':u<6.7?'across to the goniometer':u<8?'down onto the goniometer':u<8.6?'the collet lets go':u<11.4?'the arm goes back to the dewar':u<13.2?'and the cylinder goes back into the cold':u<16.8?'the crystal is in the beam':u<20.2?'the arm comes back for it':u<21.9?'down over the pin':u<22.5?'the collet closes on the pin':u<23.8?'up, off the goniometer':u<26.4?'back across to the dewar':u<27.7?'down into the liquid nitrogen':u<28.3?'the pin is back in its place':u<30?'and the cylinder rests in the cold again':'ready for the next one';
+  return {yaw,r,z,jaw,has,ph,foc,onGon,hold,inSlot:u<2.7||u>=27.7};}
+// the arm in its own plane: shoulder at (0, sh), elbow up, wrist straight above the tip of the tool
+function rik(r,zw){const dz=zw-UR.sh,d=Math.min(Math.hypot(r,dz),UR.L1+UR.L2-1),a=Math.atan2(dz,r),b=Math.acos((UR.L1*UR.L1+d*d-UR.L2*UR.L2)/(2*UR.L1*d));return {er:UR.L1*Math.cos(a+b),ez:UR.sh+UR.L1*Math.sin(a+b)};}
+function rtube(c,x0,y0,x1,y1,wd,fill){c.lineCap='round';pen(c,wd+4,INK);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();pen(c,wd,fill);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.lineCap='butt';}
+function rjoint(c,x,y,r){disc(c,x,y,r,'#aeb8c0',2);disc(c,x,y,r*0.62,'#5aa0d8',1.4);}
+// a sample pin standing upright: base at the bottom (bottom center at x, y), loop and crystal at the top. s: pixels per millimeter
+function pinUp(c,x,y,s){const bw=11*s,bh=7*s;rectF(c,x-bw/2,y-bh,bw,bh,'#b08d57',Math.max(1,s*0.5));line(c,x,y-bh,x,y-17*s,Math.max(1.2,1*s),'#6b7780');if(s>1.2){pen(c,Math.max(1,0.35*s),'#3b4046');c.beginPath();c.ellipse(x,y-18*s,0.9*s,1.3*s,0,0,7);c.stroke();disc(c,x,y-18*s,Math.max(1,0.5*s),'#cfe6c9',0.6);}}
+// the end effector, hanging straight down from the tool flange at (x, yf) with its open end at (x, yt). cut: draw the lower part cut open, to show the collet and the pin inside
+function effector(c,x,yf,yt,s,jaw,hasPin,cut){const L=yt-yf,bw=46*s,bh=L*0.2,cw=GDIA*s,top=yf+bh,wall=Math.max(1.5,3.5*s);
+  rectF(c,x-bw/2,yf,bw,bh,'#5d6870',2);
+  if(!cut){rectF(c,x-cw/2,top,cw,yt-top,'#d5dbe0',2);line(c,x-cw*0.22,top+3,x-cw*0.22,yt-3,Math.max(1,cw*0.12),'rgba(255,255,255,.7)');return;}
+  const cy0=Math.max(top+6,yt-62*s);   // the cut starts here
+  rectF(c,x-cw/2,top,cw,cy0-top,'#d5dbe0',2);line(c,x-cw*0.22,top+3,x-cw*0.22,cy0-3,Math.max(1,cw*0.12),'rgba(255,255,255,.7)');
+  c.fillStyle='rgba(198,225,247,.8)';c.fillRect(x-cw/2+wall,cy0,cw-2*wall,yt-cy0);
+  if(hasPin)pinUp(c,x,yt,s);
+  // the brass collet: two fingers that close on the base of the pin
+  const gap=(11.4+7*(1-jaw))*s,fh=13*s;[-1,1].forEach(sg=>{const xi=x+sg*gap/2,xo=x+sg*(cw/2-wall);c.beginPath();c.moveTo(xi,yt-1);c.lineTo(xi,yt-fh*0.7);c.lineTo(xi+sg*1.5*s,yt-fh);c.lineTo(xi+sg*1.5*s,cy0);c.lineTo(xi+sg*3.2*s,cy0);c.lineTo(xi+sg*3.2*s,yt-fh);c.lineTo(xo,yt-fh*0.5);c.lineTo(xo,yt-1);c.closePath();c.fillStyle='#d4aa2c';c.fill();pen(c,Math.max(1,0.45*s));c.lineJoin='round';c.stroke();
+    c.fillStyle='#d5dbe0';c.fillRect(x+sg*cw/2-(sg>0?wall:0),cy0,wall,yt-cy0);pen(c,2);c.strokeRect(x+sg*cw/2-(sg>0?wall:0),cy0,wall,yt-cy0);});
+  line(c,x-cw/2,cy0,x+cw/2,cy0,1.6,INK,[4,3]);}
+// the whole scene. V = {ox, oy, S}: where the robot's base sits on the canvas, and pixels per millimeter
+function rscene(c,V,st,t,o){const X=x=>V.ox+x*V.S,Y=z=>V.oy-z*V.S,S=V.S,fs=o.fs||14;
+  line(c,X(-1000),Y(0),X(1000),Y(0),2.4);c.fillStyle='rgba(27,27,27,.06)';c.fillRect(X(-1000),Y(0),2000*S,60*S);
+  // the dewar: an open vessel of liquid nitrogen with pins standing in their pucks
+  const dx0=DEW.x-DEW.w/2,dx1=DEW.x+DEW.w/2;c.fillStyle='#d6e9f7';c.fillRect(X(dx0)+4,Y(DEW.lev),DEW.w*S-8,DEW.lev*S-4);
+  pen(c,Math.max(4,14*S),'#9aa7b3');c.lineCap='round';c.lineJoin='round';c.beginPath();c.moveTo(X(dx0),Y(DEW.top));c.lineTo(X(dx0),Y(0)-3);c.lineTo(X(dx1),Y(0)-3);c.lineTo(X(dx1),Y(DEW.top));c.stroke();c.lineCap='butt';
+  pen(c,1.6,BLUE);c.beginPath();for(let i=0;i<=24;i++){const x=X(dx0)+6+(DEW.w*S-12)*i/24,y=Y(DEW.lev)+1.6*Math.sin(i*1.3+t*2.2);i?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();
+  rectF(c,X(dx0+40),Y(DEW.pin),(DEW.w-80)*S,(DEW.pin-22)*S,'#b9c2c9',1.4);
+  for(let i=-3;i<=3;i++){if(i===0&&!st.inSlot)continue;pinUp(c,X(DEW.x+i*46),Y(DEW.pin),S);}
+  // the goniometer: an upright axis with the pin standing on top of it, the cold stream and the beam
+  rectF(c,X(GON.x-110),Y(150),220*S,150*S,'#8d979e',2);rectF(c,X(GON.x-55),Y(260),110*S,110*S,'#b9c2c9',2);rectF(c,X(GON.x-9),Y(GON.top),18*S,(GON.top-260)*S,'#d5dbe0',1.4);
+  const cyy=Y(GON.top)-18*S,nx=X(GON.x+62),ny=Y(GON.top+18+62);
+  c.save();c.translate(nx,ny);c.rotate(Math.atan2(cyy-ny,X(GON.x)-nx));rectF(c,-170*S,-17*S,170*S,34*S,'#9aa7b3',1.6);rectF(c,-14*S,-12*S,14*S,24*S,'#5d6870',1.2);c.restore();
+  for(let i=0;i<6;i++){const u=(t*1.1+i/6)%1,x=nx+(X(GON.x)-nx)*u*1.7,y=ny+(cyy-ny)*u*1.7;c.beginPath();c.arc(x,y,(9+12*u)*S,0,7);c.fillStyle='rgba(47,109,181,'+(0.3*(1-u)).toFixed(2)+')';c.fill();}
+  if(st.onGon&&!st.has){pinUp(c,X(GON.x),Y(GON.top),S);if(st.hold){pen(c,2,RED);c.beginPath();c.arc(X(GON.x),cyy,Math.max(5,9*S),0,7);c.stroke();disc(c,X(GON.x),cyy,Math.max(1.6,2.2*S),RED,0);}}
+  // the robot: pedestal, and the arm turned by st.yaw about the upright axis through its base
+  const cy=Math.cos(st.yaw),zw=st.z+UR.wr+GRIP,K=rik(st.r,zw),ex=K.er*cy,wx=st.r*cy,tw=UR.tube*S,jr=UR.joint*S;
+  rectF(c,X(-120),Y(40),240*S,40*S,'#8d979e',2);rectF(c,X(-78),Y(62),156*S,22*S,'#5d6870',2);rectF(c,X(-64),Y(UR.sh+10),128*S,(UR.sh+10-62)*S,'#aeb8c0',2);line(c,X(-64),Y(98),X(64),Y(98),1.4);rjoint(c,X(0),Y(UR.sh),jr);rtube(c,X(0),Y(UR.sh),X(ex),Y(K.ez),tw,'#dfe4e8');rjoint(c,X(ex),Y(K.ez),jr*0.95);rtube(c,X(ex),Y(K.ez),X(wx),Y(zw),tw*0.82,'#dfe4e8');
+  rjoint(c,X(wx),Y(zw),jr*0.74);rectF(c,X(wx)-jr*0.5,Y(zw)+jr*0.5,jr,UR.wr*S-jr*0.5,'#aeb8c0',2);disc(c,X(wx),Y(zw-UR.wr*0.55),jr*0.36,'#5aa0d8',1.2);
+  effector(c,X(wx),Y(zw-UR.wr),Y(st.z),S,st.jaw,st.has,o.cut);
+  if(o.labels){txt(c,'dewar of liquid nitrogen',X(DEW.x),Y(0)+fs+2,fs-1,'center','#52606b');txt(c,'goniometer',X(GON.x),Y(0)+fs+2,fs-1,'center','#52606b');txt(c,'cold gas',X(GON.x+200),Y(GON.top+200)-fs,fs-1,'left',BLUE);if(st.hold)tag(c,'X-ray beam, toward you',X(GON.x)+16,cyy+fs+4,'left',fs-1,RED);}
+  return {tx:X(wx),ty:Y(st.z),gx:X(GON.x),gy:Y(GON.top)};}
+// the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
+function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
+function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
+  const setEq=o=>{eqOpen=o;document.querySelectorAll('details.eqcard').forEach(d=>d.open=o);eqBtn.textContent=o?'Close all equations':'Open all equations';eqBtn.setAttribute('aria-pressed',String(o));try{localStorage.setItem('necat-guide-eq',o?'1':'0');}catch(e){}};
+  eqBtn.addEventListener('click',()=>setEq(!eqOpen));try{if(localStorage.getItem('necat-guide-eq')==='1')setEq(true);}catch(e){}}
+// ---------- the guide "How does a crystal get to the beam?" (Introductory level) ----------
+// Four stops, one figure and one control at each. The script is the drawing kit, introkit.js and this file.
+const RMUT='#52606b',RXT='#cfe6c9',rsm=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+// a sample pin seen from the side: base, pin and loop, with the loop at (x, y) and the pin running away at angle a
+function rpin(c,x,y,L,a,cold=true){const ux=Math.cos(a),uy=Math.sin(a),lr=Math.max(4,L*0.09);line(c,x+ux*lr,y+uy*lr,x+ux*L,y+uy*L,Math.max(2,L*0.035),'#6b7780');
+  c.save();c.translate(x+ux*L,y+uy*L);c.rotate(a);rectF(c,0,-L*0.11,L*0.3,L*0.22,'#b08d57',1.6);c.restore();pen(c,Math.max(1.6,lr*0.3),'#3b4046');c.beginPath();c.ellipse(x,y,lr,lr*0.7,a,0,7);c.stroke();
+  c.beginPath();c.arc(x,y,lr*0.42,0,7);c.fillStyle=RXT;c.fill();pen(c,1);c.stroke();}
+// the places for 30 pucks in the robot's dewar, in three rings
+const PK=(()=>{const P=[];[[0.3,5,0.3],[0.6,10,0],[0.9,15,0.1]].forEach(([r,n,o])=>{for(let i=0;i<n;i++){const a=o+i*2*Math.PI/n;P.push([r*Math.cos(a),r*Math.sin(a)]);}});return P;})();
+function puck(c,x,y,r,full,hot){disc(c,x,y,r,full?'#b9c2c9':'#e9eef2',hot?2.6:1.4);if(!full||r<7)return;for(let i=0;i<5;i++){const a=i*1.2566-1.57;disc(c,x+0.42*r*Math.cos(a),y+0.42*r*Math.sin(a),r*0.09,'#3b4046',0);}for(let i=0;i<11;i++){const a=i*0.5712-1.57;disc(c,x+0.78*r*Math.cos(a),y+0.78*r*Math.sin(a),r*0.09,'#3b4046',0);}}
+// The robot, its dewar and the goniometer (rstate, rscene and what they need) are in introkit.js, because the index page draws them too.
+// the scene with a magnifier that follows the open end of the cylinder, cut open, and moves to the crystal once it is in the beam
+function robot(c,w,h,st,narrow,fs,t){const S=Math.min(w*0.94/1500,h*0.84/930),V={ox:narrow?w*0.5:w*0.59,oy:h*0.88,S},R=rscene(c,V,st,t,{labels:!narrow,fs});
+  const mr=h*(narrow?0.17:0.23),mx=narrow?w-mr-8:mr+16,my=narrow?mr+8:h*0.42,Z=5,qx=R.tx+(R.gx-R.tx)*st.foc,qy=R.ty+(R.gy-R.ty)*st.foc;
+  c.save();c.beginPath();c.arc(mx,my,mr,0,7);c.clip();c.fillStyle=SKY;c.fillRect(mx-mr,my-mr,2*mr,2*mr);rscene(c,{ox:mx-(qx-V.ox)*Z,oy:my+mr*0.45-(qy-V.oy)*Z,S:S*Z},st,t,{labels:false,cut:true});c.restore();
+  pen(c,3);c.beginPath();c.arc(mx,my,mr,0,7);c.stroke();const dd=Math.hypot(qx-mx,qy-my);if(dd>mr)line(c,qx,qy,mx+(qx-mx)/dd*mr,my+(qy-my)/dd*mr,1.4,INK,[4,4]);}
+
+// ---------- opening figure: the robot fetches a crystal, holds it in the beam and takes it back ----------
+if($('rideHeroCv')){
+fig('rideHeroCv',w=>w<560?1.1:2.0,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,st=rstate(t);
+  robot(c,w,h,st,narrow,fs,t);cap(c,st.ph,narrow?8:12,narrow?15:19,'left',fs);
+});}
+
+// ---------- stop 1: pucks into the robot's dewar ----------
+if($('rLoadCv')){
+let NP=12;
+const F=fig('rLoadCv',w=>w<560?1.0:2.4,f=>{const {ctx:c,w,h}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,R=Math.min(w*(narrow?0.4:0.2),h*0.4),cx=narrow?w/2:w*0.3,cy=narrow?h*0.42:h*0.52;
+  disc(c,cx,cy,R*1.12,'#9aa7b3',2.4);disc(c,cx,cy,R*1.04,'#d6e9f7',1.4);PK.forEach((p,i)=>puck(c,cx+p[0]*R,cy+p[1]*R,R*(i<5?0.105:0.09),i<NP,false));
+  txt(c,narrow?'the robot\'s dewar, from above':'the robot\'s dewar, from above: 30 places for pucks',cx,cy+R*1.12+(narrow?13:16),fs-1,'center',RMUT);
+  // one puck, enlarged
+  if(!narrow){const bx=w*0.74,by=h*0.5,br=h*0.3;puck(c,bx,by,br,true,false);txt(c,'one puck: 16 crystals',bx,by+br+16,fs-1,'center',RMUT);}
+  cap(c,NP+(NP===1?' puck: ':' pucks: ')+(NP*16)+' crystals',narrow?8:12,narrow?15:19,'left',fs);
+},false);
+bind('rN',v=>v.toFixed(0)+(v===1?' puck':' pucks'),()=>{NP=+$('rN').value;setT('rNc',(NP*16)+' crystals');setT('rNs',NP===30?'full':NP===0?'empty':(30-NP)+' places free');F.w&&F.draw(F);});
+}
+
+// ---------- stop 2: from the dewar to the beam and back ----------
+if($('rArmCv')){
+let TO=0,T0=-99,TN=0;
+// In the beam: the cycle runs from 0 to 14 s (the pin on the goniometer, the cylinder back in the liquid nitrogen). In the dewar: it runs from 16.8 s to the end.
+const F=fig('rArmCv',w=>w<560?1.1:2.0,f=>{const {ctx:c,w,h,t}=f;TN=t;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,el=(t-T0)*1.3,u=!playing||T0<-50?(TO?14:0):TO?Math.min(14,el):Math.min(30.99,16.8+el),st=rstate(u);
+  robot(c,w,h,st,narrow,fs,t);cap(c,u<0.01||u>30.9?'in the dewar, under liquid nitrogen':st.ph,narrow?8:12,narrow?15:19,'left',fs);});
+choice('rA',x=>{if(+x!==TO){TO=+x;T0=TN;}setT('rAw',TO?'on the goniometer, in the stream of cold gas':'in its puck, under liquid nitrogen');setT('rAt',TO?'173 degrees below zero':'196 degrees below zero');F.w&&F.draw(F);});
+}
+
+// ---------- stop 3: finding the crystal ----------
+if($('rFindCv')){
+let MODE=0,FROM=[0.27,-0.16],CUR=[0.27,-0.16],T0=-9,TN=0;
+// where the crystal is in the loop, and the grid of the X-ray scan: how strongly each square diffracts
+const XO=[-0.06375,0.10625],NX=10,NY=14,GS=0.0425,HOT=(i,j)=>{const x=(i-(NX-1)/2)*GS,y=(j-(NY-1)/2)*GS;return Math.exp(-((x-XO[0])**2+(y-XO[1])**2)/(2*0.075*0.075));};
+const TGT=[[0.27,-0.16],[0,0],[-XO[0],-XO[1]]];
+const F=fig('rFindCv',w=>w<560?1.0:2.4,f=>{const {ctx:c,w,h,t}=f;TN=t;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,S=Math.min(w*(narrow?0.84:0.42),h*0.78),cx=narrow?w/2:w*0.34,cy=h*(narrow?0.5:0.54),e=playing?rsm((t-T0)/1.6):1;
+  CUR=[FROM[0]+(TGT[MODE][0]-FROM[0])*e,FROM[1]+(TGT[MODE][1]-FROM[1])*e];
+  rectF(c,cx-S/2,cy-S/2,S,S,'#10161c',2.4);c.save();c.beginPath();c.rect(cx-S/2,cy-S/2,S,S);c.clip();
+  const lx=cx+CUR[0]*S,ly=cy+CUR[1]*S,lr=S*0.26;
+  // the pin comes up from below, as on 24-ID-C, with the loop at its top
+  line(c,lx,ly+lr,lx,cy+S,S*0.03,'#8d979e');c.beginPath();c.ellipse(lx,ly,lr*0.68,lr,0,0,7);c.fillStyle='rgba(120,160,190,.28)';c.fill();pen(c,S*0.022,'#c9d3da');c.stroke();
+  // the crystal: faint, because a small clear crystal in frozen liquid is hard to see
+  c.save();c.globalAlpha=0.45;xtalR(c,lx+XO[0]*S,ly+XO[1]*S,S*0.06,0.5);c.restore();
+  if(MODE===2){const a=playing?rsm((t-T0)/1.2):1;for(let i=0;i<NX;i++)for(let j=0;j<NY;j++){const x=lx+(i-(NX-1)/2)*GS*S,y=ly+(j-(NY-1)/2)*GS*S,v=HOT(i,j);c.fillStyle='rgba(246,197,46,'+(0.85*v*a).toFixed(2)+')';c.fillRect(x-GS*S/2,y-GS*S/2,GS*S,GS*S);pen(c,0.6,'rgba(255,255,255,'+(0.3*a).toFixed(2)+')');c.strokeRect(x-GS*S/2,y-GS*S/2,GS*S,GS*S);}}
+  c.restore();
+  // the cross that marks where the X-ray beam passes
+  line(c,cx-S*0.09,cy,cx+S*0.09,cy,1.6,RED);line(c,cx,cy-S*0.09,cx,cy+S*0.09,1.6,RED);pen(c,1.6,RED);c.beginPath();c.arc(cx,cy,S*0.03,0,7);c.stroke();
+  txt(c,narrow?'the camera view':'the view from the beamline camera',cx,cy-S/2-(narrow?11:13),fs-1,'center',RMUT);
+  if(!narrow){const x=w*0.62;[['red cross','where the X-ray beam passes'],['pale ring','the loop, on its pin'],['yellow squares','places where X-rays found crystal']].forEach(([a,b],i)=>{txt(c,a+':',x,h*0.3+i*(2*fs+16),fs,'left');txt(c,b,x,h*0.3+i*(2*fs+16)+fs+3,fs-1,'left',RMUT);});}
+});
+function xtalR(c,x,y,r,a){const P=[[-1,-0.31],[-0.55,-0.62],[0.7,-0.62],[1,-0.25],[0.6,0.62],[-0.7,0.62]].map(([u,v])=>[x+(u*Math.cos(a)-v*Math.sin(a))*r,y+(u*Math.sin(a)+v*Math.cos(a))*r]);poly(c,P,RXT,1.2);}
+const SAY=[['off to one side','not yet'],['centered on the cross','only if it sits in the middle of the loop'],['scanned: 63 squares, each tested with a flash of X-rays','yes: the brightest square is moved onto the cross']];
+choice('rF',x=>{FROM=CUR.slice();MODE=+x;T0=TN;setT('rFl',SAY[MODE][0]);setT('rFx',SAY[MODE][1]);F.w&&F.draw(F);});
+}
+
+// ---------- stop 4: run from anywhere ----------
+if($('rFarCv')){
+let DIR=2;
+const F=fig('rFarCv',w=>w<560?1.0:2.6,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560,fs=narrow?12:15,y=h*0.5,N=[[w*0.12,'the scientist','anywhere with a connection'],[w*0.54,'NE-CAT\'s computers','at the beamline'],[w*0.88,'the beamline','robot, goniometer, detector']],s=narrow?w*0.11:h*0.17,lane=narrow?7:9;
+  // from outside: one encrypted connection, opened once and kept open, with messages passing both ways along it. Inside the beamline: its own network
+  const x0=N[0][0]+s,x1=N[1][0]-s,pw=lane*4;c.beginPath();c.roundRect(x0-4,y-pw/2,x1-x0+8,pw,pw/2);c.fillStyle='#eef5e6';c.fill();pen(c,2.2,GDK);c.stroke();line(c,x0,y,x1,y,1,'rgba(47,122,69,.35)',[4,4]);
+  line(c,N[1][0]+s,y,N[2][0]-s,y,3,'#9aa7b3');
+  const out=DIR!==1,back=DIR!==0;
+  for(let i=0;i<5;i++){const u=(t*0.3+i/5)%1;if(out){const x=N[0][0]+(N[2][0]-N[0][0])*u;disc(c,x,y-(x<x1+s?lane:0)*(DIR===2||x<x1+s?1:1),narrow?4.5:6,ORG,1.4);}if(back){const x=N[2][0]+(N[0][0]-N[2][0])*((u+0.1)%1);disc(c,x,y+(x<x1+s?lane:0),narrow?4.5:6,YEL,1.4);}}
+  // a padlock on the connection
+  const lx=(x0+x1)/2,ly=y-pw/2-(narrow?13:16),lw=narrow?14:18;pen(c,2.4,GDK);c.beginPath();c.arc(lx,ly-lw*0.25,lw*0.3,Math.PI,0);c.stroke();rectF(c,lx-lw/2,ly-lw*0.25,lw,lw*0.72,'#cfe6c9',2);
+  if(!narrow){txt(c,'encrypted: https',lx,ly-lw-6,fs-1,'center',GDK);txt(c,'one connection, kept open,',lx,y+pw/2+fs+2,fs-1,'center',GDK);txt(c,'both ways at once: a WebSocket',lx,y+pw/2+2*fs+6,fs-1,'center',GDK);}else txt(c,'https, kept open',lx,y+pw/2+fs,fs-1,'center',GDK);
+  N.forEach(([x,a,b],i)=>{c.beginPath();c.roundRect(x-s,y-s*0.75,2*s,s*1.5,8);c.fillStyle=i===1?'#dfe7ee':WHITE;c.fill();pen(c,2.2);c.stroke();
+    if(i===0){rectF(c,x-s*0.5,y-s*0.42,s,s*0.62,'#cfe0f0',1.6);line(c,x-s*0.7,y+s*0.34,x+s*0.7,y+s*0.34,3);}
+    if(i===1){[-0.3,0,0.3].forEach(k=>rectF(c,x-s*0.55,y+k*s-s*0.1,s*1.1,s*0.2,'#b9c2c9',1.2));}
+    if(i===2){disc(c,x-s*0.35,y,s*0.3,'#aeb8c0',1.6);disc(c,x-s*0.35,y,s*0.17,'#5aa0d8',1.2);rectF(c,x+s*0.1,y-s*0.4,s*0.5,s*0.8,'#2c2f35',1.4);}
+    txt(c,a,x,y+s*0.75+(narrow?26:34),fs,'center');if(!narrow)txt(c,b,x,y+s*0.75+34+fs+3,fs-1,'center',RMUT);});
+  cap(c,DIR===2?(narrow?'both ways, all the time':'both ways at once, for as long as the experiment lasts'):DIR?(narrow?'pictures and data come back':'coming back: camera pictures, images from the detector, results'):(narrow?'commands go out':'going out: mount this crystal, center it, collect'),narrow?8:12,narrow?15:19,'left',fs);
+});
+choice('rR',x=>{DIR=+x;setT('rRw',DIR===2?'commands one way, pictures and results the other, at the same moment':DIR?'camera pictures, detector images, the first results':'commands: which crystal, where to center, how to collect');setT('rRc','encrypted (https), opened once and kept open (a WebSocket)');F.w&&F.draw(F);});
+}
+capK();
+})();
+
+</script>
+
+<script data-goatcounter="https://frankvm04.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body></html>

@@ -1,5 +1,5 @@
 // ---------- WELCOME BANNER: from the ring to your data ----------
-fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?11:14;
+if($('homeCv'))fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?11:14;
   const yb=h*0.5, Rr=h*1.15, rcx=w*0.15, rcy=yb+Rr;
   // the storage ring: only an arc of it fits, because the real one is 1.1 km around
   pen(c,narrow?9:13,WHITE);c.beginPath();c.arc(rcx,rcy,Rr,Math.PI*1.2,Math.PI*1.83);c.stroke();
@@ -29,7 +29,7 @@ fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=
 });
 
 // ---------- three small pictures, one for each guide ----------
-fig('c0Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c0Cv'))fig('c0Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const cx=w*0.64,cy=h*0.52,R=h*0.36,bx=w*0.3,by=h*0.6,br=h*0.17;
   pen(c,9,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+4.5,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-4.5,0,7);c.stroke();
   pen(c,6,WHITE);c.beginPath();c.arc(bx,by,br,0,7);c.stroke();pen(c,1.8);c.beginPath();c.arc(bx,by,br+3,0,7);c.stroke();c.beginPath();c.arc(bx,by,br-3,0,7);c.stroke();
@@ -39,7 +39,7 @@ fig('c0Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const a=t*2.4;disc(c,bx+br*Math.cos(a),by+br*Math.sin(a),3.6,YEL,1.2);
   const u=(t*0.5)%1;disc(c,lx0+u*(lx1-lx0),ly,2.6,YEL,1.1);
 });
-fig('c1Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c1Cv'))fig('c1Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const x0=w*0.06,x1=w*0.94,n=8,pw=(x1-x0)/n,yc=h*0.5,gp=h*0.2,mh=h*0.16,k=2*Math.PI/(2*pw),A=h*0.12;
   for(let i=0;i<n;i++){rectF(c,x0+i*pw,yc-gp-mh,pw,mh,i%2?BLUE:RED,1.8);rectF(c,x0+i*pw,yc+gp,pw,mh,i%2?RED:BLUE,1.8);}
   pen(c,2.4);c.beginPath();for(let x=x0;x<=x1;x+=2){const y=yc+A*Math.sin(k*(x-x0));x===x0?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();
@@ -47,14 +47,14 @@ fig('c1Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   pen(c,2.4,ORG);c.beginPath();for(let x=xe+10;x<=Math.min(x1,xe+70);x+=1.5){const y=yc+A*Math.sin(k*(xe-x0))+5*Math.sin((x-xe)*0.9);x===xe+10?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();
   electron(c,xe,yc+A*Math.sin(k*(xe-x0)),7);
 });
-fig('c2Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c2Cv'))fig('c2Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const x0=w*0.08,x1=w*0.88,yc=h*0.55,A=h*0.3,k=2*Math.PI/(w*0.26);
   line(c,x0,yc,x1,yc,2.4,BLUE);arrow(c,x1-4,yc,x1+12,yc,BLUE,2.4,9);
   pen(c,1.6,ORG);c.beginPath();for(let x=x0;x<=x1;x+=2){const y=yc-A*Math.sin(k*(x-x0)-t*3);x===x0?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();
   for(let x=x0+6;x<x1;x+=w*0.036){const v=A*Math.sin(k*(x-x0)-t*3);if(Math.abs(v)>5)arrow(c,x,yc,x,yc-v,ORG,2.2,6);}
   txt(c,'E',x0+2,yc-A-6,18,'left',ORG);
 });
-fig('c3Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c3Cv'))fig('c3Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const cx=w*0.5,cy=h*0.6,R=h*0.36;
   c.beginPath();for(let i=0;i<=180;i++){const b=i/180*2*Math.PI,r=R*1.25*(0.98*Math.cos(b)*Math.cos(b)+0.02);const X=cx+r*Math.cos(b),Y=cy-r*Math.sin(b);i?c.lineTo(X,Y):c.moveTo(X,Y);}
   c.closePath();c.fillStyle=LTYEL;c.fill();pen(c,2);c.stroke();
@@ -120,6 +120,57 @@ if($('cgCv'))fig('cgCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w*0.5,c
   [[-0.45,0.3,0.5,1],[0.2,-0.42,2.1,0.8],[0.5,0.4,1.2,0.65],[-0.2,-0.1,2.8,0.5],[0.05,0.55,0.2,0.45],[-0.6,-0.4,1.7,0.4]].forEach(([x,y,a,s],i)=>{const r=Math.min(1,Math.max(0,g*1.5-i*0.12))*s*R*0.3;if(r<0.6)return;
     const P=[[-1,-0.31],[-0.55,-0.62],[0.7,-0.62],[1,-0.25],[0.6,0.62],[-0.7,0.62]].map(([p,q])=>[cx+x*R+(p*Math.cos(a)-q*Math.sin(a))*r,cy+y*R+(p*Math.sin(a)+q*Math.cos(a))*r]);poly(c,P,'#cfe6c9',1.4);});c.restore();
 });
+// How does a crystal get to the beam?: the robot arm carries a pin from the liquid nitrogen to the goniometer and back (the scene of the guide, without its magnifier)
+if($('crCv'))fig('crCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=Math.min(w*0.94/1380,h*0.86/830);rscene(c,{ox:w*0.5,oy:h*0.92,S},rstate(t*1.4),t,{labels:false});});
+// How do waves add up to a picture?: two waves, and their sum
+if($('cwvCv'))fig('cwvCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x0=w*0.06,bw=w*0.88,W=(y,amp,fn,col,lw)=>{pen(c,lw,col);c.beginPath();for(let i=0;i<=120;i++){const u=i/120,X=x0+bw*u,Y=y-amp*fn(u);i?c.lineTo(X,Y):c.moveTo(X,Y);}c.stroke();},p=t*0.5;
+  const a=u=>Math.cos(2*Math.PI*(2*u)-p),b=u=>0.6*Math.cos(2*Math.PI*(5*u)+p*0.7);W(h*0.2,h*0.09,a,ORG,2.2);W(h*0.43,h*0.09,b,GRN,2.2);txt(c,'+',x0-2,h*0.31,15,'center');line(c,x0,h*0.58,x0+bw,h*0.58,1.4);W(h*0.78,h*0.1,u=>a(u)+b(u),BLUE,3);
+});
+// What does resolution mean?: two atoms that merge into one blob and part again
+if($('crsCv'))fig('crsCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w/2,cy=h/2,s=h*(0.12+0.16*(0.5+0.5*Math.sin(t*0.8))),d=h*0.24;rectF(c,w*0.14,h*0.14,w*0.72,h*0.72,WHITE,2.2);
+  for(let x=w*0.15;x<w*0.85;x+=2){const v=Math.exp(-((x-cx-d)**2)/(2*s*s))+Math.exp(-((x-cx+d)**2)/(2*s*s));c.fillStyle='rgba(47,109,181,'+Math.min(0.9,0.75*v).toFixed(2)+')';const hh=h*0.26*Math.sqrt(Math.min(1,v));c.fillRect(x,cy-hh,2,2*hh);}
+  disc(c,cx-d,cy,3.4,INK,0);disc(c,cx+d,cy,3.4,INK,0);
+});
+// The phase problem: a wave whose height is known and whose position is not
+if($('cphCv'))fig('cphCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x0=w*0.08,bw=w*0.84,my=h*0.52,k=h*0.24,ph=t*0.9;rectF(c,x0,h*0.16,bw,h*0.72,WHITE,2.2);
+  [0.25,0.5,0.75].forEach((q,i)=>{pen(c,1.6,'rgba(47,109,181,.3)');c.beginPath();for(let j=0;j<=100;j++){const u=j/100,X=x0+bw*u,Y=my-k*Math.cos(2*Math.PI*3*u-ph-q*6.283);j?c.lineTo(X,Y):c.moveTo(X,Y);}c.stroke();});
+  pen(c,3,BLUE);c.beginPath();for(let j=0;j<=100;j++){const u=j/100,X=x0+bw*u,Y=my-k*Math.cos(2*Math.PI*3*u-ph);j?c.lineTo(X,Y):c.moveTo(X,Y);}c.stroke();txt(c,'?',x0+bw-18,h*0.3,22,'center',RED);
+});
+// Why do we still measure?: a pattern of spots and a string of letters, each leading to the same protein
+if($('cyCv'))fig('cyCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.34,x=w*0.16,y1=h*0.28,y2=h*0.72;rectF(c,x-S/2,y1-S/2,S,S,WHITE,2);for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){if((i*7+j*3+40)%3===0||Math.hypot(i,j)>3.4||(!i&&!j))continue;c.beginPath();c.arc(x+i*S/8,y1+j*S/8,1.6,0,7);c.fillStyle=INK;c.fill();}
+  rectF(c,x-S/2,y2-S/2,S,S,WHITE,2);for(let i=0;i<9;i++)txt(c,MB.seq[i],x-S/2+(i%3+0.5)*S/3,y2-S/2+(Math.floor(i/3)+0.5)*S/3,S*0.24,'center');
+  arrow(c,x+S/2+8,y1,w*0.58,h*0.44,INK,2.2,7);arrow(c,x+S/2+8,y2,w*0.58,h*0.56,INK,2.2,7);drawMb(c,w*0.8,h*0.5,h*0.78/46);
+});
+// How does a structure become a medicine?: a small molecule settles into a pocket of a protein
+if($('cmdCv'))fig('cmdCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w*0.5,cy=h*0.56,R=h*0.36,u=(t%6)/6,k=Math.min(1,u*1.8),e=k*k*(3-2*k);
+  c.beginPath();c.arc(cx,cy,R,-Math.PI/2+0.42,Math.PI*1.5-0.42);c.arc(cx,cy-R*0.62,R*0.36,Math.PI-0.5,0.5,true);c.closePath();c.fillStyle='#9fc0e8';c.fill();pen(c,2.4);c.stroke();
+  disc(c,cx+(1-e)*w*0.3,cy-R*0.62-(1-e)*h*0.2,R*0.27,'#f0913a',2);if(e>0.98)txt(c,'fits',cx+R+14,cy-R*0.62,15,'left');});
+// What is protein design?: from a wanted shape to the letters that fold into it
+if($('cdsCv'))fig('cdsCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.22,cy=h*0.5,R=h*0.26;for(let i=0;i<6;i++){const a=i*Math.PI/3+t*0.25;disc(c,x+R*Math.cos(a),cy+R*Math.sin(a),h*0.11,i%2?'#9fc0e8':'#f6c52e',2);}
+  arrow(c,w*0.42,cy,w*0.56,cy,INK,2.4,8);const L='MKEELLRKAIELAKEG',n=Math.floor((t*4)%(L.length+6));for(let i=0;i<Math.min(n,L.length);i++)txt(c,L[i],w*0.62+(i%8)*h*0.15,cy+((i/8|0)-0.5)*h*0.24,h*0.17,'left');});
+// What has been found at NE-CAT?: a pattern of spots, and the structures that came from it
+if($('cfdCv'))fig('cfdCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.6,x=w*0.18,cy=h*0.5;rectF(c,x-S/2,cy-S/2,S,S,WHITE,2);for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){if((i*5+j*3+40)%3===0||Math.hypot(i,j)>3.4||(!i&&!j))continue;disc(c,x+i*S/8,cy+j*S/8,1.6,INK,0);}
+  arrow(c,x+S/2+8,cy,w*0.44,cy,INK,2.4,8);const n=Math.floor((t/1.5)%4);[['#9fc0e8',0.54],['#f6c52e',0.7],['#bfe0b4',0.86]].forEach(([col,q],i)=>{const r=h*0.17;c.globalAlpha=i<=n-0?1:0.25;if(n===3||i<=n){c.globalAlpha=1;}disc(c,w*q,cy-r*0.25,r,col,2);disc(c,w*q+r*0.5,cy+r*0.55,r*0.7,col,2);c.globalAlpha=1;});});
+// Crystallization: a drop climbs through the phase diagram and falls back to the solubility curve
+if($('cxtCv'))fig('cxtCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.14,y=h*0.1,bw=w*0.72,bh=h*0.76,so=p=>0.9*Math.exp(-3.4*p)+0.03,X=p=>x+p*bw,Y=v=>y+bh-Math.min(1.05,v)*bh;rectF(c,x,y,bw,bh,WHITE,2);
+  c.save();c.beginPath();c.rect(x,y,bw,bh);c.clip();[[1,[]],[2.2,[6,5]]].forEach(([m,d])=>{pen(c,2);c.setLineDash(d);c.beginPath();for(let i=0;i<=40;i++){const p=i/40;i?c.lineTo(X(p),Y(m*so(p)+(m>1?0.04:0))):c.moveTo(X(p),Y(m*so(p)+(m>1?0.04:0)));}c.stroke();c.setLineDash([]);});c.restore();
+  const u=(t%8)/8,k=Math.min(1,u/0.6),p=0.22*(1+k),v=0.2*(1+k),dd=u<0.6?0:(u-0.6)/0.4,v2=v-(v-so(p))*dd;line(c,X(0.22),Y(0.2),X(p),Y(v),2.2,RED);if(dd>0)line(c,X(p),Y(v),X(p),Y(v2),2.2,RED,[5,4]);disc(c,X(p),Y(v2),6,RED,1.6);});
+// From images to a structure: a lattice is found through the spots, and each spot is boxed and measured
+if($('cprCv'))fig('cprCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.8,cx=w*0.5,cy=h*0.5,st=Math.floor((t/1.6)%3),a=0.3,U=S/9;rectF(c,cx-S*0.9,cy-S/2,S*1.8,S,WHITE,2);c.save();c.beginPath();c.rect(cx-S*0.9,cy-S/2,S*1.8,S);c.clip();
+  if(st>=1)for(let i=-12;i<=12;i++){const dx=Math.cos(a)*U,dy=Math.sin(a)*U;line(c,cx+i*dx-dy*20,cy+i*dy+dx*20,cx+i*dx+dy*20,cy+i*dy-dx*20,1,'rgba(47,109,181,.5)');line(c,cx-i*dy-dx*20,cy+i*dx-dy*20,cx-i*dy+dx*20,cy+i*dx+dy*20,1,'rgba(47,109,181,.5)');}
+  for(let i=-9;i<=9;i++)for(let j=-5;j<=5;j++){if((i*7+j*5+90)%3===0||(!i&&!j))continue;const X=cx+(i*Math.cos(a)-j*Math.sin(a))*U,Y=cy+(i*Math.sin(a)+j*Math.cos(a))*U;disc(c,X,Y,2,INK,0);if(st===2){pen(c,1.2,RED);c.strokeRect(X-5,Y-5,10,10);}}c.restore();});
+// What the APS upgrade changed: the electron beam before and after, to one scale
+if($('cupCv'))fig('cupCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const u=(t%8)/8,k0=u<0.25?0:u<0.5?(u-0.25)*4:u<0.75?1:1-(u-0.75)*4,k=k0*k0*(3-2*k0),S=w*0.8/600,sx=275+(14.5-275)*k,sy=10+(3.1-10)*k,cx=w*0.5,cy=h*0.5;
+  c.fillStyle='rgba(120,90,60,.22)';c.fillRect(w*0.05,cy-35*S,w*0.9,70*S);c.beginPath();c.ellipse(cx,cy,2*sx*S,Math.max(1,2*sy*S),0,0,7);c.fillStyle='rgba(47,109,181,.35)';c.fill();c.beginPath();c.ellipse(cx,cy,sx*S,Math.max(1,sy*S),0,0,7);c.fillStyle=BLUE;c.fill();txt(c,k<0.5?'before':'after',w*0.07,h*0.14,15,'left');});
+// Fourier series: a few waves and their sum
+if($('cfoCv'))fig('cfoCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.08,bw=w*0.84,n=1+Math.floor((t/1.2)%6),A=[1,0.7,0.9,0.5,0.6,0.4],P=[0.3,1.9,4.1,2.5,5.3,0.8];
+  for(let k=1;k<=n;k++){pen(c,1.4,'rgba(47,109,181,.4)');c.beginPath();for(let i=0;i<=120;i++){const u=i/120,Y=h*0.3-h*0.09*A[k-1]*Math.cos(2*Math.PI*k*u-P[k-1]);i?c.lineTo(x+bw*u,Y):c.moveTo(x+bw*u,Y);}c.stroke();}
+  pen(c,3,BLUE);c.beginPath();for(let i=0;i<=160;i++){const u=i/160;let s=0;for(let k=1;k<=n;k++)s+=A[k-1]*Math.cos(2*Math.PI*k*u-P[k-1]);const Y=h*0.72-h*0.07*s;i?c.lineTo(x+bw*u,Y):c.moveTo(x+bw*u,Y);}c.stroke();});
+// Reciprocal space: a lattice of points turning through the Ewald circle
+if($('crcCv'))fig('crcCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.3,ox=w*0.56,oy=h*0.5,R=1.25,ccx=ox-R*S,a=t*0.15,ca=Math.cos(a),sa=Math.sin(a);line(c,w*0.04,oy,w*0.96,oy,2,ORG);pen(c,2.2,BLUE);c.beginPath();c.arc(ccx,oy,R*S,0,7);c.stroke();
+  for(let i=-7;i<=7;i++)for(let j=-7;j<=7;j++){if(!i&&!j)continue;const X=(i*ca-j*sa)*0.3,Y=(i*sa+j*ca)*0.3;if(Math.hypot(X,Y)>1.7)continue;const on=Math.abs(Math.hypot(X+R,Y)-R)<0.02;if(on)line(c,ccx,oy,ccx+(X+R)*S*3,oy-Y*S*3,1.4,'rgba(216,65,47,.7)');disc(c,ox+X*S,oy-Y*S,on?4:2,on?RED:'#8c98a4',on?1:0);}disc(c,ccx,oy,3.5,BLUE,1);});
+// Symmetry in crystals: one shape and its copies about an axis
+if($('csyCv'))fig('csyCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const NS=[2,3,4,6],n=NS[Math.floor((t/2.5)%4)],cx=w*0.5,cy=h*0.52,s=h*0.2;for(let i=0;i<n;i++){c.save();c.translate(cx,cy);c.rotate(i*2*Math.PI/n);c.translate(h*0.04,-s*1.3);c.scale(s,s);c.beginPath();c.moveTo(0.25,0.1);c.lineTo(0.25,1);c.lineTo(0.95,1);c.lineTo(0.95,0.76);c.lineTo(0.52,0.76);c.lineTo(0.52,0.62);c.lineTo(0.8,0.62);c.lineTo(0.8,0.4);c.lineTo(0.52,0.4);c.lineTo(0.52,0.1);c.closePath();c.fillStyle=i?LTBLUE:YEL;c.fill();c.lineWidth=2/s;c.strokeStyle=INK;c.stroke();c.restore();}disc(c,cx,cy,5,INK,0);});
 // What is a protein?: a chain of amino acids on the left, and the folded protein (myoglobin) it becomes
 if($('cxCv'))fig('cxCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cy=h*0.5,n=26,x0=w*0.05,x1=w*0.5,s=h*0.8/46,r=Math.min(6,(x1-x0)/n*0.48);
   const P=[];for(let i=0;i<n;i++)P.push([x0+(x1-x0)*i/(n-1),cy+h*0.16*Math.sin(i*0.55+t*0.9)]);

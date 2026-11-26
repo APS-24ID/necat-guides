@@ -275,6 +275,16 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
         <span class="go">Open the guide →</span>
       </div>
     </article>
+    <article class="card lv-intro" data-level="intro"><div class="band">5 minutes</div>
+      <canvas id="crCv" aria-hidden="true"></canvas>
+      <div class="cardbody">
+        
+        <h2><a href="sample-to-beam.html">How does a crystal get to the beam?</a></h2>
+        <p>How a frozen crystal is carried to the beam and found there, in four stops and five minutes, with no equations. The robot and its dewar, the trip through the cold, centering by camera and by X-rays, and running it all from far away.</p>
+        <ul class="chips"><li>Loading</li><li>The robot</li><li>Centering</li><li>From afar</li></ul>
+        <span class="go">Open the guide →</span>
+      </div>
+    </article>
     </div>
     <p class="soon nonehere" hidden>No guide of this kind in this series yet.</p>
   </section>
@@ -364,7 +374,7 @@ table.rules thead th{font-family:var(--f-hand);font-weight:400;font-size:1.05rem
   </section>
   </main>
 
-  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 20, 2026. Release 1.10. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20the%20index%20page%20%28release%201.10%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
+  <footer class="foot">NE-CAT, the Northeastern Collaborative Access Team, operates beamlines 24-ID-C and 24-ID-E for macromolecular crystallography at the Advanced Photon Source, Argonne National Laboratory. These guides were written for its users and staff. They work on a phone, but the figures are easier to explore on a larger screen.<br>Last updated November 26, 2026. Release 1.11. <a href="https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What changed</a>.<br>Found a mistake? Write to <a href="mailto:necat@cornell.edu?subject=NE-CAT%20guides%3A%20a%20correction%20to%20the%20index%20page%20%28release%201.11%29">necat@cornell.edu</a>, or <a href="https://github.com/APS-24ID/necat-guides/issues/new?template=correction.yml" target="_blank" rel="noopener">report it on GitHub</a>.<br>The NE-CAT beamlines are funded by the National Institute of General Medical Sciences from the National Institutes of Health (P30 GM124165).<br>The text, figures and code of these guides were written with Claude, an AI model made by Anthropic, under the direction of NE-CAT, which reviews them.<br>© 2026 NE-CAT, Cornell University. Released under the <a href="https://github.com/APS-24ID/necat-guides/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.</footer>
 </div>
 
 <script>
@@ -537,6 +547,60 @@ function detSide(c,xf,cy,z,lit){const G=DETG,hh=G.hh*z,hd=G.hd*z,r=Math.min(10,h
 // a row of buttons that choose between a few states (made by _choice in walk_guide.py). cb gets the chosen value, at once and on each click
 function choice(id,cb){const bs=[...$(id).querySelectorAll('button')];const set=v=>{bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));cb(v);};
   bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));set((bs.find(b=>b.getAttribute('aria-pressed')==='true')||bs[0]).dataset.v);}
+// ---------- the sample robot of 24-ID-C, used by "How does a crystal get to the beam?" and by its card on the index page ----------
+// The robot scene, from the side. Dimensions in millimeters. The arm is a Universal Robots UR5e: shoulder 163 above its mounting face, upper arm 425, forearm 392.
+// The end effector is a metal cylinder 6 inches long with a brass collet inside, which closes on the base of the pin. The cylinder surrounds the pin and keeps it cold.
+const UR={sh:163,L1:425,L2:392,wr:200,tube:76,joint:62},GRIP=152,GDIA=28,DEW={x:-470,w:380,top:280,pin:70,lev:165},GON={x:450,top:300};   // lev: the surface of the liquid nitrogen. Only the cylinder ever goes below it
+// where the tip of the end effector is, and what it is doing, at time u: 0 to 9 is the trip out, 9 to 12 the crystal is in the beam, 12 to 21 the trip back
+function rstate(u0){const u=((u0%31)+31)%31,hi=420,zd=DEW.pin,zg=GON.top,zp=118,rd=-DEW.x,rg=GON.x,rp=rd-115,e=(a,b)=>{const x=Math.max(0,Math.min(1,(u-a)/(b-a)));return x*x*x*(10-15*x+6*x*x);};
+  // One cycle is 31 s. It starts and ends with the end of the cylinder resting in the liquid nitrogen, to keep it cold. Fetch the pin (to 8.6), go back and wait
+  // in the nitrogen while the crystal is measured (to 16.8), take the pin back (to 28.3), and return to rest.
+  // The movements overlap, as they do on a real arm: it starts to swing before it has finished rising, and starts to come down before it has finished swinging.
+  const z=zp+(zd-zp)*e(1,2.2)+(hi-zd)*e(2.7,4.5)+(zg-hi)*(e(6.3,8)-e(8.6,10))+(zp-hi)*e(11.6,13.2)+(hi-zp)*e(16.8,18.4)+(zg-hi)*(e(20.2,21.9)-e(22.5,24.2))+(zd-hi)*e(26,27.7)+(zp-zd)*e(28.3,29.4);
+  const y1=e(3.6,7.1),y2=e(9.4,12.4),y3=e(17.7,21),y4=e(23.4,26.8),yaw=Math.PI*(1-y1+y2-y3+y4),r=rp+(rd-rp)*e(0.3,1.4)+(rg-rd)*y1+(rp-rg)*y2+(rg-rp)*y3+(rd-rg)*y4+(rp-rd)*e(28.9,30);
+  const jaw=e(2.1,2.7)-e(8,8.6)+e(21.9,22.5)-e(27.7,28.3),has=(u>=2.7&&u<8)||(u>=22.5&&u<27.7),onGon=u>=8&&u<22.5,hold=u>=10.8&&u<19.4,foc=e(9,10.4)-e(19,20.4);
+  const ph=u<0.3?'the cylinder waits in the liquid nitrogen, keeping cold':u<2.1?'over a pin, and down':u<2.7?'the collet closes on the pin':u<4?'up, with the crystal inside the cold cylinder':u<6.7?'across to the goniometer':u<8?'down onto the goniometer':u<8.6?'the collet lets go':u<11.4?'the arm goes back to the dewar':u<13.2?'and the cylinder goes back into the cold':u<16.8?'the crystal is in the beam':u<20.2?'the arm comes back for it':u<21.9?'down over the pin':u<22.5?'the collet closes on the pin':u<23.8?'up, off the goniometer':u<26.4?'back across to the dewar':u<27.7?'down into the liquid nitrogen':u<28.3?'the pin is back in its place':u<30?'and the cylinder rests in the cold again':'ready for the next one';
+  return {yaw,r,z,jaw,has,ph,foc,onGon,hold,inSlot:u<2.7||u>=27.7};}
+// the arm in its own plane: shoulder at (0, sh), elbow up, wrist straight above the tip of the tool
+function rik(r,zw){const dz=zw-UR.sh,d=Math.min(Math.hypot(r,dz),UR.L1+UR.L2-1),a=Math.atan2(dz,r),b=Math.acos((UR.L1*UR.L1+d*d-UR.L2*UR.L2)/(2*UR.L1*d));return {er:UR.L1*Math.cos(a+b),ez:UR.sh+UR.L1*Math.sin(a+b)};}
+function rtube(c,x0,y0,x1,y1,wd,fill){c.lineCap='round';pen(c,wd+4,INK);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();pen(c,wd,fill);c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke();c.lineCap='butt';}
+function rjoint(c,x,y,r){disc(c,x,y,r,'#aeb8c0',2);disc(c,x,y,r*0.62,'#5aa0d8',1.4);}
+// a sample pin standing upright: base at the bottom (bottom center at x, y), loop and crystal at the top. s: pixels per millimeter
+function pinUp(c,x,y,s){const bw=11*s,bh=7*s;rectF(c,x-bw/2,y-bh,bw,bh,'#b08d57',Math.max(1,s*0.5));line(c,x,y-bh,x,y-17*s,Math.max(1.2,1*s),'#6b7780');if(s>1.2){pen(c,Math.max(1,0.35*s),'#3b4046');c.beginPath();c.ellipse(x,y-18*s,0.9*s,1.3*s,0,0,7);c.stroke();disc(c,x,y-18*s,Math.max(1,0.5*s),'#cfe6c9',0.6);}}
+// the end effector, hanging straight down from the tool flange at (x, yf) with its open end at (x, yt). cut: draw the lower part cut open, to show the collet and the pin inside
+function effector(c,x,yf,yt,s,jaw,hasPin,cut){const L=yt-yf,bw=46*s,bh=L*0.2,cw=GDIA*s,top=yf+bh,wall=Math.max(1.5,3.5*s);
+  rectF(c,x-bw/2,yf,bw,bh,'#5d6870',2);
+  if(!cut){rectF(c,x-cw/2,top,cw,yt-top,'#d5dbe0',2);line(c,x-cw*0.22,top+3,x-cw*0.22,yt-3,Math.max(1,cw*0.12),'rgba(255,255,255,.7)');return;}
+  const cy0=Math.max(top+6,yt-62*s);   // the cut starts here
+  rectF(c,x-cw/2,top,cw,cy0-top,'#d5dbe0',2);line(c,x-cw*0.22,top+3,x-cw*0.22,cy0-3,Math.max(1,cw*0.12),'rgba(255,255,255,.7)');
+  c.fillStyle='rgba(198,225,247,.8)';c.fillRect(x-cw/2+wall,cy0,cw-2*wall,yt-cy0);
+  if(hasPin)pinUp(c,x,yt,s);
+  // the brass collet: two fingers that close on the base of the pin
+  const gap=(11.4+7*(1-jaw))*s,fh=13*s;[-1,1].forEach(sg=>{const xi=x+sg*gap/2,xo=x+sg*(cw/2-wall);c.beginPath();c.moveTo(xi,yt-1);c.lineTo(xi,yt-fh*0.7);c.lineTo(xi+sg*1.5*s,yt-fh);c.lineTo(xi+sg*1.5*s,cy0);c.lineTo(xi+sg*3.2*s,cy0);c.lineTo(xi+sg*3.2*s,yt-fh);c.lineTo(xo,yt-fh*0.5);c.lineTo(xo,yt-1);c.closePath();c.fillStyle='#d4aa2c';c.fill();pen(c,Math.max(1,0.45*s));c.lineJoin='round';c.stroke();
+    c.fillStyle='#d5dbe0';c.fillRect(x+sg*cw/2-(sg>0?wall:0),cy0,wall,yt-cy0);pen(c,2);c.strokeRect(x+sg*cw/2-(sg>0?wall:0),cy0,wall,yt-cy0);});
+  line(c,x-cw/2,cy0,x+cw/2,cy0,1.6,INK,[4,3]);}
+// the whole scene. V = {ox, oy, S}: where the robot's base sits on the canvas, and pixels per millimeter
+function rscene(c,V,st,t,o){const X=x=>V.ox+x*V.S,Y=z=>V.oy-z*V.S,S=V.S,fs=o.fs||14;
+  line(c,X(-1000),Y(0),X(1000),Y(0),2.4);c.fillStyle='rgba(27,27,27,.06)';c.fillRect(X(-1000),Y(0),2000*S,60*S);
+  // the dewar: an open vessel of liquid nitrogen with pins standing in their pucks
+  const dx0=DEW.x-DEW.w/2,dx1=DEW.x+DEW.w/2;c.fillStyle='#d6e9f7';c.fillRect(X(dx0)+4,Y(DEW.lev),DEW.w*S-8,DEW.lev*S-4);
+  pen(c,Math.max(4,14*S),'#9aa7b3');c.lineCap='round';c.lineJoin='round';c.beginPath();c.moveTo(X(dx0),Y(DEW.top));c.lineTo(X(dx0),Y(0)-3);c.lineTo(X(dx1),Y(0)-3);c.lineTo(X(dx1),Y(DEW.top));c.stroke();c.lineCap='butt';
+  pen(c,1.6,BLUE);c.beginPath();for(let i=0;i<=24;i++){const x=X(dx0)+6+(DEW.w*S-12)*i/24,y=Y(DEW.lev)+1.6*Math.sin(i*1.3+t*2.2);i?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();
+  rectF(c,X(dx0+40),Y(DEW.pin),(DEW.w-80)*S,(DEW.pin-22)*S,'#b9c2c9',1.4);
+  for(let i=-3;i<=3;i++){if(i===0&&!st.inSlot)continue;pinUp(c,X(DEW.x+i*46),Y(DEW.pin),S);}
+  // the goniometer: an upright axis with the pin standing on top of it, the cold stream and the beam
+  rectF(c,X(GON.x-110),Y(150),220*S,150*S,'#8d979e',2);rectF(c,X(GON.x-55),Y(260),110*S,110*S,'#b9c2c9',2);rectF(c,X(GON.x-9),Y(GON.top),18*S,(GON.top-260)*S,'#d5dbe0',1.4);
+  const cyy=Y(GON.top)-18*S,nx=X(GON.x+62),ny=Y(GON.top+18+62);
+  c.save();c.translate(nx,ny);c.rotate(Math.atan2(cyy-ny,X(GON.x)-nx));rectF(c,-170*S,-17*S,170*S,34*S,'#9aa7b3',1.6);rectF(c,-14*S,-12*S,14*S,24*S,'#5d6870',1.2);c.restore();
+  for(let i=0;i<6;i++){const u=(t*1.1+i/6)%1,x=nx+(X(GON.x)-nx)*u*1.7,y=ny+(cyy-ny)*u*1.7;c.beginPath();c.arc(x,y,(9+12*u)*S,0,7);c.fillStyle='rgba(47,109,181,'+(0.3*(1-u)).toFixed(2)+')';c.fill();}
+  if(st.onGon&&!st.has){pinUp(c,X(GON.x),Y(GON.top),S);if(st.hold){pen(c,2,RED);c.beginPath();c.arc(X(GON.x),cyy,Math.max(5,9*S),0,7);c.stroke();disc(c,X(GON.x),cyy,Math.max(1.6,2.2*S),RED,0);}}
+  // the robot: pedestal, and the arm turned by st.yaw about the upright axis through its base
+  const cy=Math.cos(st.yaw),zw=st.z+UR.wr+GRIP,K=rik(st.r,zw),ex=K.er*cy,wx=st.r*cy,tw=UR.tube*S,jr=UR.joint*S;
+  rectF(c,X(-120),Y(40),240*S,40*S,'#8d979e',2);rectF(c,X(-78),Y(62),156*S,22*S,'#5d6870',2);rectF(c,X(-64),Y(UR.sh+10),128*S,(UR.sh+10-62)*S,'#aeb8c0',2);line(c,X(-64),Y(98),X(64),Y(98),1.4);rjoint(c,X(0),Y(UR.sh),jr);rtube(c,X(0),Y(UR.sh),X(ex),Y(K.ez),tw,'#dfe4e8');rjoint(c,X(ex),Y(K.ez),jr*0.95);rtube(c,X(ex),Y(K.ez),X(wx),Y(zw),tw*0.82,'#dfe4e8');
+  rjoint(c,X(wx),Y(zw),jr*0.74);rectF(c,X(wx)-jr*0.5,Y(zw)+jr*0.5,jr,UR.wr*S-jr*0.5,'#aeb8c0',2);disc(c,X(wx),Y(zw-UR.wr*0.55),jr*0.36,'#5aa0d8',1.2);
+  effector(c,X(wx),Y(zw-UR.wr),Y(st.z),S,st.jaw,st.has,o.cut);
+  if(o.labels){txt(c,'dewar of liquid nitrogen',X(DEW.x),Y(0)+fs+2,fs-1,'center','#52606b');txt(c,'goniometer',X(GON.x),Y(0)+fs+2,fs-1,'center','#52606b');txt(c,'cold gas',X(GON.x+200),Y(GON.top+200)-fs,fs-1,'left',BLUE);if(st.hold)tag(c,'X-ray beam, toward you',X(GON.x)+16,cyy+fs+4,'left',fs-1,RED);}
+  return {tx:X(wx),ty:Y(st.z),gx:X(GON.x),gy:Y(GON.top)};}
 // the end of every guide's script that has equation cards: read-out labels in capitals, and the button that opens every equation
 function capK(){document.querySelectorAll('.ro .k').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))n.nodeValue=n.nodeValue.replace(/[a-z]/g,ch=>ch.toUpperCase());});}
 function eqButton(){const eqBtn=$('eqAll');if(!eqBtn)return;let eqOpen=false;
@@ -567,7 +631,7 @@ const MBPC=(()=>{const P=MB.ca,n=P.length,Q=[P[0]],K=6,inH=i=>MB.helices.some(([
 function drawMb(c,cx,cy,s,hi,tf){c.save();c.lineCap='round';c.lineJoin='round';const P=tf||(p=>[cx+p[0]*s,cy-p[1]*s,p[2]]);
   const path=pts=>{c.beginPath();pts.forEach((p,i)=>{const q=P(p);i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});c.stroke();};
   const L=tf?MBPC.map(g=>({g,z:P(g.mid)[2]})).sort((u,v)=>u.z-v.z):MBPC.map(g=>({g,z:g.z}));
-  L.forEach(({g,z})=>{const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
+  L.forEach(({g,z})=>{if(g.heme&&drawMb.noHeme)return;const on=hi&&!g.heme&&g.res>=hi[0]&&g.res<=hi[1],lw=Math.max(1.2,(g.heme?0.5:g.h?2.3:1.1)*s),k=Math.max(0,Math.min(1,0.5+0.5*(z+11)/22)),ow=Math.max(0.4,Math.min(2.2,s*0.4));
     // the ink edge of this piece, then its color, run a little way into neighbors of the same width so that the pieces join without a seam
     c.strokeStyle=INK;c.lineWidth=lw+2*ow;path(g.core);
     c.strokeStyle=g.heme?RED:on?ORG:g.h?mbMix('#7ea3d6','#c6d9f0',k):mbMix('#8d979e','#d5dbdf',k);c.lineWidth=lw;path(g.ext);});
@@ -651,7 +715,7 @@ function pullBack(f,c,X0,Y0,W,H,q0,narrow){const q=q0*q0*(3-2*q0),s0=mapScale(W,
 MB.seq='VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQSHATKHKIPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG';
 const AAKIND=a=>'AVLIMFWP'.includes(a)?'oily':'KR'.includes(a)?'plus':'DE'.includes(a)?'minus':'polar', AACOL={oily:'#f6c52e',polar:'#c6d9f0',plus:'#2f6db5',minus:'#d8412f'};
 // ---------- WELCOME BANNER: from the ring to your data ----------
-fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?11:14;
+if($('homeCv'))fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=w<560, fs=narrow?11:14;
   const yb=h*0.5, Rr=h*1.15, rcx=w*0.15, rcy=yb+Rr;
   // the storage ring: only an arc of it fits, because the real one is 1.1 km around
   pen(c,narrow?9:13,WHITE);c.beginPath();c.arc(rcx,rcy,Rr,Math.PI*1.2,Math.PI*1.83);c.stroke();
@@ -681,7 +745,7 @@ fig('homeCv',w=>w<560?1.25:2.9,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const narrow=
 });
 
 // ---------- three small pictures, one for each guide ----------
-fig('c0Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c0Cv'))fig('c0Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const cx=w*0.64,cy=h*0.52,R=h*0.36,bx=w*0.3,by=h*0.6,br=h*0.17;
   pen(c,9,WHITE);c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();pen(c,2);c.beginPath();c.arc(cx,cy,R+4.5,0,7);c.stroke();c.beginPath();c.arc(cx,cy,R-4.5,0,7);c.stroke();
   pen(c,6,WHITE);c.beginPath();c.arc(bx,by,br,0,7);c.stroke();pen(c,1.8);c.beginPath();c.arc(bx,by,br+3,0,7);c.stroke();c.beginPath();c.arc(bx,by,br-3,0,7);c.stroke();
@@ -691,7 +755,7 @@ fig('c0Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const a=t*2.4;disc(c,bx+br*Math.cos(a),by+br*Math.sin(a),3.6,YEL,1.2);
   const u=(t*0.5)%1;disc(c,lx0+u*(lx1-lx0),ly,2.6,YEL,1.1);
 });
-fig('c1Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c1Cv'))fig('c1Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const x0=w*0.06,x1=w*0.94,n=8,pw=(x1-x0)/n,yc=h*0.5,gp=h*0.2,mh=h*0.16,k=2*Math.PI/(2*pw),A=h*0.12;
   for(let i=0;i<n;i++){rectF(c,x0+i*pw,yc-gp-mh,pw,mh,i%2?BLUE:RED,1.8);rectF(c,x0+i*pw,yc+gp,pw,mh,i%2?RED:BLUE,1.8);}
   pen(c,2.4);c.beginPath();for(let x=x0;x<=x1;x+=2){const y=yc+A*Math.sin(k*(x-x0));x===x0?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();
@@ -699,14 +763,14 @@ fig('c1Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   pen(c,2.4,ORG);c.beginPath();for(let x=xe+10;x<=Math.min(x1,xe+70);x+=1.5){const y=yc+A*Math.sin(k*(xe-x0))+5*Math.sin((x-xe)*0.9);x===xe+10?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();
   electron(c,xe,yc+A*Math.sin(k*(xe-x0)),7);
 });
-fig('c2Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c2Cv'))fig('c2Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const x0=w*0.08,x1=w*0.88,yc=h*0.55,A=h*0.3,k=2*Math.PI/(w*0.26);
   line(c,x0,yc,x1,yc,2.4,BLUE);arrow(c,x1-4,yc,x1+12,yc,BLUE,2.4,9);
   pen(c,1.6,ORG);c.beginPath();for(let x=x0;x<=x1;x+=2){const y=yc-A*Math.sin(k*(x-x0)-t*3);x===x0?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();
   for(let x=x0+6;x<x1;x+=w*0.036){const v=A*Math.sin(k*(x-x0)-t*3);if(Math.abs(v)>5)arrow(c,x,yc,x,yc-v,ORG,2.2,6);}
   txt(c,'E',x0+2,yc-A-6,18,'left',ORG);
 });
-fig('c3Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
+if($('c3Cv'))fig('c3Cv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);
   const cx=w*0.5,cy=h*0.6,R=h*0.36;
   c.beginPath();for(let i=0;i<=180;i++){const b=i/180*2*Math.PI,r=R*1.25*(0.98*Math.cos(b)*Math.cos(b)+0.02);const X=cx+r*Math.cos(b),Y=cy-r*Math.sin(b);i?c.lineTo(X,Y):c.moveTo(X,Y);}
   c.closePath();c.fillStyle=LTYEL;c.fill();pen(c,2);c.stroke();
@@ -772,6 +836,57 @@ if($('cgCv'))fig('cgCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w*0.5,c
   [[-0.45,0.3,0.5,1],[0.2,-0.42,2.1,0.8],[0.5,0.4,1.2,0.65],[-0.2,-0.1,2.8,0.5],[0.05,0.55,0.2,0.45],[-0.6,-0.4,1.7,0.4]].forEach(([x,y,a,s],i)=>{const r=Math.min(1,Math.max(0,g*1.5-i*0.12))*s*R*0.3;if(r<0.6)return;
     const P=[[-1,-0.31],[-0.55,-0.62],[0.7,-0.62],[1,-0.25],[0.6,0.62],[-0.7,0.62]].map(([p,q])=>[cx+x*R+(p*Math.cos(a)-q*Math.sin(a))*r,cy+y*R+(p*Math.sin(a)+q*Math.cos(a))*r]);poly(c,P,'#cfe6c9',1.4);});c.restore();
 });
+// How does a crystal get to the beam?: the robot arm carries a pin from the liquid nitrogen to the goniometer and back (the scene of the guide, without its magnifier)
+if($('crCv'))fig('crCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=Math.min(w*0.94/1380,h*0.86/830);rscene(c,{ox:w*0.5,oy:h*0.92,S},rstate(t*1.4),t,{labels:false});});
+// How do waves add up to a picture?: two waves, and their sum
+if($('cwvCv'))fig('cwvCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x0=w*0.06,bw=w*0.88,W=(y,amp,fn,col,lw)=>{pen(c,lw,col);c.beginPath();for(let i=0;i<=120;i++){const u=i/120,X=x0+bw*u,Y=y-amp*fn(u);i?c.lineTo(X,Y):c.moveTo(X,Y);}c.stroke();},p=t*0.5;
+  const a=u=>Math.cos(2*Math.PI*(2*u)-p),b=u=>0.6*Math.cos(2*Math.PI*(5*u)+p*0.7);W(h*0.2,h*0.09,a,ORG,2.2);W(h*0.43,h*0.09,b,GRN,2.2);txt(c,'+',x0-2,h*0.31,15,'center');line(c,x0,h*0.58,x0+bw,h*0.58,1.4);W(h*0.78,h*0.1,u=>a(u)+b(u),BLUE,3);
+});
+// What does resolution mean?: two atoms that merge into one blob and part again
+if($('crsCv'))fig('crsCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w/2,cy=h/2,s=h*(0.12+0.16*(0.5+0.5*Math.sin(t*0.8))),d=h*0.24;rectF(c,w*0.14,h*0.14,w*0.72,h*0.72,WHITE,2.2);
+  for(let x=w*0.15;x<w*0.85;x+=2){const v=Math.exp(-((x-cx-d)**2)/(2*s*s))+Math.exp(-((x-cx+d)**2)/(2*s*s));c.fillStyle='rgba(47,109,181,'+Math.min(0.9,0.75*v).toFixed(2)+')';const hh=h*0.26*Math.sqrt(Math.min(1,v));c.fillRect(x,cy-hh,2,2*hh);}
+  disc(c,cx-d,cy,3.4,INK,0);disc(c,cx+d,cy,3.4,INK,0);
+});
+// The phase problem: a wave whose height is known and whose position is not
+if($('cphCv'))fig('cphCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x0=w*0.08,bw=w*0.84,my=h*0.52,k=h*0.24,ph=t*0.9;rectF(c,x0,h*0.16,bw,h*0.72,WHITE,2.2);
+  [0.25,0.5,0.75].forEach((q,i)=>{pen(c,1.6,'rgba(47,109,181,.3)');c.beginPath();for(let j=0;j<=100;j++){const u=j/100,X=x0+bw*u,Y=my-k*Math.cos(2*Math.PI*3*u-ph-q*6.283);j?c.lineTo(X,Y):c.moveTo(X,Y);}c.stroke();});
+  pen(c,3,BLUE);c.beginPath();for(let j=0;j<=100;j++){const u=j/100,X=x0+bw*u,Y=my-k*Math.cos(2*Math.PI*3*u-ph);j?c.lineTo(X,Y):c.moveTo(X,Y);}c.stroke();txt(c,'?',x0+bw-18,h*0.3,22,'center',RED);
+});
+// Why do we still measure?: a pattern of spots and a string of letters, each leading to the same protein
+if($('cyCv'))fig('cyCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.34,x=w*0.16,y1=h*0.28,y2=h*0.72;rectF(c,x-S/2,y1-S/2,S,S,WHITE,2);for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){if((i*7+j*3+40)%3===0||Math.hypot(i,j)>3.4||(!i&&!j))continue;c.beginPath();c.arc(x+i*S/8,y1+j*S/8,1.6,0,7);c.fillStyle=INK;c.fill();}
+  rectF(c,x-S/2,y2-S/2,S,S,WHITE,2);for(let i=0;i<9;i++)txt(c,MB.seq[i],x-S/2+(i%3+0.5)*S/3,y2-S/2+(Math.floor(i/3)+0.5)*S/3,S*0.24,'center');
+  arrow(c,x+S/2+8,y1,w*0.58,h*0.44,INK,2.2,7);arrow(c,x+S/2+8,y2,w*0.58,h*0.56,INK,2.2,7);drawMb(c,w*0.8,h*0.5,h*0.78/46);
+});
+// How does a structure become a medicine?: a small molecule settles into a pocket of a protein
+if($('cmdCv'))fig('cmdCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cx=w*0.5,cy=h*0.56,R=h*0.36,u=(t%6)/6,k=Math.min(1,u*1.8),e=k*k*(3-2*k);
+  c.beginPath();c.arc(cx,cy,R,-Math.PI/2+0.42,Math.PI*1.5-0.42);c.arc(cx,cy-R*0.62,R*0.36,Math.PI-0.5,0.5,true);c.closePath();c.fillStyle='#9fc0e8';c.fill();pen(c,2.4);c.stroke();
+  disc(c,cx+(1-e)*w*0.3,cy-R*0.62-(1-e)*h*0.2,R*0.27,'#f0913a',2);if(e>0.98)txt(c,'fits',cx+R+14,cy-R*0.62,15,'left');});
+// What is protein design?: from a wanted shape to the letters that fold into it
+if($('cdsCv'))fig('cdsCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.22,cy=h*0.5,R=h*0.26;for(let i=0;i<6;i++){const a=i*Math.PI/3+t*0.25;disc(c,x+R*Math.cos(a),cy+R*Math.sin(a),h*0.11,i%2?'#9fc0e8':'#f6c52e',2);}
+  arrow(c,w*0.42,cy,w*0.56,cy,INK,2.4,8);const L='MKEELLRKAIELAKEG',n=Math.floor((t*4)%(L.length+6));for(let i=0;i<Math.min(n,L.length);i++)txt(c,L[i],w*0.62+(i%8)*h*0.15,cy+((i/8|0)-0.5)*h*0.24,h*0.17,'left');});
+// What has been found at NE-CAT?: a pattern of spots, and the structures that came from it
+if($('cfdCv'))fig('cfdCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.6,x=w*0.18,cy=h*0.5;rectF(c,x-S/2,cy-S/2,S,S,WHITE,2);for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){if((i*5+j*3+40)%3===0||Math.hypot(i,j)>3.4||(!i&&!j))continue;disc(c,x+i*S/8,cy+j*S/8,1.6,INK,0);}
+  arrow(c,x+S/2+8,cy,w*0.44,cy,INK,2.4,8);const n=Math.floor((t/1.5)%4);[['#9fc0e8',0.54],['#f6c52e',0.7],['#bfe0b4',0.86]].forEach(([col,q],i)=>{const r=h*0.17;c.globalAlpha=i<=n-0?1:0.25;if(n===3||i<=n){c.globalAlpha=1;}disc(c,w*q,cy-r*0.25,r,col,2);disc(c,w*q+r*0.5,cy+r*0.55,r*0.7,col,2);c.globalAlpha=1;});});
+// Crystallization: a drop climbs through the phase diagram and falls back to the solubility curve
+if($('cxtCv'))fig('cxtCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.14,y=h*0.1,bw=w*0.72,bh=h*0.76,so=p=>0.9*Math.exp(-3.4*p)+0.03,X=p=>x+p*bw,Y=v=>y+bh-Math.min(1.05,v)*bh;rectF(c,x,y,bw,bh,WHITE,2);
+  c.save();c.beginPath();c.rect(x,y,bw,bh);c.clip();[[1,[]],[2.2,[6,5]]].forEach(([m,d])=>{pen(c,2);c.setLineDash(d);c.beginPath();for(let i=0;i<=40;i++){const p=i/40;i?c.lineTo(X(p),Y(m*so(p)+(m>1?0.04:0))):c.moveTo(X(p),Y(m*so(p)+(m>1?0.04:0)));}c.stroke();c.setLineDash([]);});c.restore();
+  const u=(t%8)/8,k=Math.min(1,u/0.6),p=0.22*(1+k),v=0.2*(1+k),dd=u<0.6?0:(u-0.6)/0.4,v2=v-(v-so(p))*dd;line(c,X(0.22),Y(0.2),X(p),Y(v),2.2,RED);if(dd>0)line(c,X(p),Y(v),X(p),Y(v2),2.2,RED,[5,4]);disc(c,X(p),Y(v2),6,RED,1.6);});
+// From images to a structure: a lattice is found through the spots, and each spot is boxed and measured
+if($('cprCv'))fig('cprCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.8,cx=w*0.5,cy=h*0.5,st=Math.floor((t/1.6)%3),a=0.3,U=S/9;rectF(c,cx-S*0.9,cy-S/2,S*1.8,S,WHITE,2);c.save();c.beginPath();c.rect(cx-S*0.9,cy-S/2,S*1.8,S);c.clip();
+  if(st>=1)for(let i=-12;i<=12;i++){const dx=Math.cos(a)*U,dy=Math.sin(a)*U;line(c,cx+i*dx-dy*20,cy+i*dy+dx*20,cx+i*dx+dy*20,cy+i*dy-dx*20,1,'rgba(47,109,181,.5)');line(c,cx-i*dy-dx*20,cy+i*dx-dy*20,cx-i*dy+dx*20,cy+i*dx+dy*20,1,'rgba(47,109,181,.5)');}
+  for(let i=-9;i<=9;i++)for(let j=-5;j<=5;j++){if((i*7+j*5+90)%3===0||(!i&&!j))continue;const X=cx+(i*Math.cos(a)-j*Math.sin(a))*U,Y=cy+(i*Math.sin(a)+j*Math.cos(a))*U;disc(c,X,Y,2,INK,0);if(st===2){pen(c,1.2,RED);c.strokeRect(X-5,Y-5,10,10);}}c.restore();});
+// What the APS upgrade changed: the electron beam before and after, to one scale
+if($('cupCv'))fig('cupCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const u=(t%8)/8,k0=u<0.25?0:u<0.5?(u-0.25)*4:u<0.75?1:1-(u-0.75)*4,k=k0*k0*(3-2*k0),S=w*0.8/600,sx=275+(14.5-275)*k,sy=10+(3.1-10)*k,cx=w*0.5,cy=h*0.5;
+  c.fillStyle='rgba(120,90,60,.22)';c.fillRect(w*0.05,cy-35*S,w*0.9,70*S);c.beginPath();c.ellipse(cx,cy,2*sx*S,Math.max(1,2*sy*S),0,0,7);c.fillStyle='rgba(47,109,181,.35)';c.fill();c.beginPath();c.ellipse(cx,cy,sx*S,Math.max(1,sy*S),0,0,7);c.fillStyle=BLUE;c.fill();txt(c,k<0.5?'before':'after',w*0.07,h*0.14,15,'left');});
+// Fourier series: a few waves and their sum
+if($('cfoCv'))fig('cfoCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const x=w*0.08,bw=w*0.84,n=1+Math.floor((t/1.2)%6),A=[1,0.7,0.9,0.5,0.6,0.4],P=[0.3,1.9,4.1,2.5,5.3,0.8];
+  for(let k=1;k<=n;k++){pen(c,1.4,'rgba(47,109,181,.4)');c.beginPath();for(let i=0;i<=120;i++){const u=i/120,Y=h*0.3-h*0.09*A[k-1]*Math.cos(2*Math.PI*k*u-P[k-1]);i?c.lineTo(x+bw*u,Y):c.moveTo(x+bw*u,Y);}c.stroke();}
+  pen(c,3,BLUE);c.beginPath();for(let i=0;i<=160;i++){const u=i/160;let s=0;for(let k=1;k<=n;k++)s+=A[k-1]*Math.cos(2*Math.PI*k*u-P[k-1]);const Y=h*0.72-h*0.07*s;i?c.lineTo(x+bw*u,Y):c.moveTo(x+bw*u,Y);}c.stroke();});
+// Reciprocal space: a lattice of points turning through the Ewald circle
+if($('crcCv'))fig('crcCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const S=h*0.3,ox=w*0.56,oy=h*0.5,R=1.25,ccx=ox-R*S,a=t*0.15,ca=Math.cos(a),sa=Math.sin(a);line(c,w*0.04,oy,w*0.96,oy,2,ORG);pen(c,2.2,BLUE);c.beginPath();c.arc(ccx,oy,R*S,0,7);c.stroke();
+  for(let i=-7;i<=7;i++)for(let j=-7;j<=7;j++){if(!i&&!j)continue;const X=(i*ca-j*sa)*0.3,Y=(i*sa+j*ca)*0.3;if(Math.hypot(X,Y)>1.7)continue;const on=Math.abs(Math.hypot(X+R,Y)-R)<0.02;if(on)line(c,ccx,oy,ccx+(X+R)*S*3,oy-Y*S*3,1.4,'rgba(216,65,47,.7)');disc(c,ox+X*S,oy-Y*S,on?4:2,on?RED:'#8c98a4',on?1:0);}disc(c,ccx,oy,3.5,BLUE,1);});
+// Symmetry in crystals: one shape and its copies about an axis
+if($('csyCv'))fig('csyCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const NS=[2,3,4,6],n=NS[Math.floor((t/2.5)%4)],cx=w*0.5,cy=h*0.52,s=h*0.2;for(let i=0;i<n;i++){c.save();c.translate(cx,cy);c.rotate(i*2*Math.PI/n);c.translate(h*0.04,-s*1.3);c.scale(s,s);c.beginPath();c.moveTo(0.25,0.1);c.lineTo(0.25,1);c.lineTo(0.95,1);c.lineTo(0.95,0.76);c.lineTo(0.52,0.76);c.lineTo(0.52,0.62);c.lineTo(0.8,0.62);c.lineTo(0.8,0.4);c.lineTo(0.52,0.4);c.lineTo(0.52,0.1);c.closePath();c.fillStyle=i?LTBLUE:YEL;c.fill();c.lineWidth=2/s;c.strokeStyle=INK;c.stroke();c.restore();}disc(c,cx,cy,5,INK,0);});
 // What is a protein?: a chain of amino acids on the left, and the folded protein (myoglobin) it becomes
 if($('cxCv'))fig('cxCv',2.3,f=>{const {ctx:c,w,h,t}=f;bg(c,w,h);const cy=h*0.5,n=26,x0=w*0.05,x1=w*0.5,s=h*0.8/46,r=Math.min(6,(x1-x0)/n*0.48);
   const P=[];for(let i=0;i<n;i++)P.push([x0+(x1-x0)*i/(n-1),cy+h*0.16*Math.sin(i*0.55+t*0.9)]);

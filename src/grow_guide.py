@@ -48,7 +48,7 @@ GROW=dict(key='grow',title='How Do You Grow a Protein Crystal?',name='How do you
      "A crystal is fished out of its drop with a tiny loop of fiber or plastic on the end of a metal pin. The film of liquid in the loop holds it in place.",
      "Often it is first dipped for a moment in an antifreeze, such as glycerol. It is then plunged straight into liquid nitrogen. The cooling is so fast that the water in and around the crystal sets as a glass, not as ice. The guide {guide:cold} explains why the crystal has to be cold, and why ice would ruin it.",
      "The frozen pins are loaded into pucks, round holders with places for 16 pins. The pucks are stacked seven at a time and shipped to the beamline in a container that keeps them cold on the way.",
-     _here("The pucks go into the sample robot, which holds thirty of them on 24-ID-C. The robot places each pin in the beam in turn, and the scientists who grew the crystals usually run the experiment over the internet. The guide {guide:walk} follows the X-rays to the crystal.")],
+     _here("The pucks go into the sample robot, which holds thirty of them on 24-ID-C. The robot places each pin in the beam in turn, and the scientists who grew the crystals usually run the experiment over the internet. The guide {guide:ride} shows the robot at work, and the guide {guide:walk} follows the X-rays to the crystal.")],
     items=[('fig','gr_ship')]),
   ],
   remember="A protein crystal is grown by letting a drop of protein solution lose water slowly, until the molecules settle into order. Nobody can predict the recipe, so hundreds are tried, and the best crystals are frozen and sent to the beamline.",
@@ -60,4 +60,4 @@ GROW=dict(key='grow',title='How Do You Grow a Protein Crystal?',name='How do you
 # in series 3, after How MX works and before the guides about cold and damage
 _k=[g['key'] for g in G]
 G.insert(_k.index(next(k for k in ('cold','damage','scatter') if k in _k)),GROW)
-UPDATED['grow']='November 20, 2026'
+UPDATED['grow']='November 26, 2026'

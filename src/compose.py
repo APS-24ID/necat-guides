@@ -453,7 +453,7 @@ exec(open('aps_guide.py').read())
 G.insert(0,APS)
 exec(open('xrf_guide.py').read())
 # ---------- releases: update RELEASE and the date of every page that changed, and add an entry to CHANGELOG.md ----------
-RELEASE=('1.10','November 20, 2026')
+RELEASE=('1.11','November 26, 2026')
 UPDATED={'aps':'November 13, 2026','overview':'November 19, 2026','polarization':'November 13, 2026','scatter':'November 17, 2026'}
 CHLOG='https://github.com/APS-24ID/necat-guides/blob/main/CHANGELOG.md'
 # the line under every guide and the index: its date and release, and how to report a mistake (by email, or with the correction form on GitHub)
@@ -471,7 +471,7 @@ def _choice(i,label,pairs,sel): return '<div class="ctl" style="grid-column:1/-1
 # The later guides each have a file of their own. A guide whose file is not in this folder is simply left out, so the
 # same scripts build the published set and a larger working set that includes guides still in draft.
 import os
-for _f in ['walk','syn','mx','hutch','see','detintro','det','cold','damage','prot','grow']:
+for _f in ['walk','syn','mx','hutch','see','detintro','det','cold','damage','prot','grow','ride','waves','res','phase','why','med','design','found','xtal','proc','upg','four','recip','sym']:
     if os.path.exists(_f+'_guide.py'):
         _had=dict(FIG); exec(open(_f+'_guide.py').read())
         # a guide must not reuse the name of another guide's figure: the later one would silently replace the earlier
@@ -534,10 +534,10 @@ def resolve(html,g):
     return html
 
 # The series a guide belongs to, in reading order, and the level it is written at. A series with no guides yet is listed with a note.
-SERIES=[(1,'The machine','Where do the X-rays come from?',['syn','aps'],None),
-        (2,'The beamline','What does NE-CAT do with them?',['walk','overview','polarization','detintro','det','hutch'],None),
-        (3,'The experiment','How does a crystal become a structure?',['see','mx','grow','cold','damage','scatter'],None),
-        (4,'The science','Why do structures matter?',['prot'],'Guides for this series are being written. They will start with what a protein is and why its shape matters.')]
+SERIES=[(1,'The machine','Where do the X-rays come from?',['syn','aps','upg'],None),
+        (2,'The beamline','What does NE-CAT do with them?',['walk','overview','polarization','detintro','det','hutch','ride'],None),
+        (3,'The experiment','How does a crystal become a structure?',['see','mx','waves','four','res','recip','sym','proc','phase','grow','xtal','cold','damage','scatter'],None),
+        (4,'The science','Why do structures matter?',['prot','why','med','design','found'],'Guides for this series are being written. They will start with what a protein is and why its shape matters.')]
 DEPTH_NOTE='Each section has a plain explanation and a figure you can adjust. The equations are folded away under the figures. Open any of them, or all of them with the button at the top, if you want the detail.'
 INTRO_NOTE='Each stop has one idea and one figure to try. It takes about five minutes, and there are no equations.'
 SOF={k:(num,sname) for num,sname,ask,keys,note in SERIES for k in keys}
@@ -579,17 +579,31 @@ CARDS=[('syn','csCv','Five minutes','How a synchrotron makes X-rays, in five sto
        ('aps','c0Cv','Go deeper','Where the electrons come from and how the ring holds on to them. The gun and the linac, the accumulator ring and the booster, the magnets that keep the beam small, the RF that pays back its energy, and swap-out injection.',['Gun and linac','Booster','Seven-bend lattice','RF and bunches','Swap-out']),
        ('walk','cwCv','Five minutes','The whole beamline in five stops and five minutes, with no equations. Where the X-rays come from, how one energy is picked out, how the beam is squeezed, what the sample is, and what the detector sees.',['Magnets','One energy','Mirrors','The crystal','The detector']),
        ('overview','c1Cv','Then the beamline','From the storage ring to the detector. How the electrons make X-rays, how the undulator gap and its harmonics set the energy, and what the monochromator, the mirrors and the sample station each do.',['The storage ring','Undulator and harmonics','Monochromator','KB mirrors','Diffraction']),
+       ('upg','cupCv','Go deeper','What the 2023 to 2024 rebuild of the storage ring changed, and why. Seven bends in place of two, a beam twenty times narrower, where the factor of 500 in brightness comes from, and what it cost: narrow chambers, swap-out and shorter-lived bunches.',['Why','The lattice','The beam','Brightness','The price','The year']),
        ('polarization','c2Cv','Go deeper',"The beam's electric field swings from side to side, and almost never up and down. This guide follows that one property from the wiggling electron to the sample, and shows why it is not quite 100%.",['A shaken charge','Relativity','Off-axis light','Mono and mirrors','Measuring it']),
        ('detintro','cpCv','Five minutes','How the detector records the spots, in four stops and five minutes, with no equations. Sixteen million pixels, each counting X-rays one at a time, with no pause between images, at a distance chosen for each crystal.',['Pixels','Counting','Speed','Distance']),
        ('det','cqCv','Go deeper','What happens between an X-ray entering the detector and a counter going up by one, and what it means for the data: how much of the beam is caught, charge sharing and the threshold, count rates, counting statistics, and the choice of detector distance.',['Silicon sensor','Charge sharing','Dead time','Counting statistics','Geometry']),
        ('hutch','chCv','Five minutes','Why the experiment sits in a closed steel room, how little steel it takes to stop these X-rays, and how the door and the beam shutter are locked together. Four stops, no equations.',['Stray X-rays','Steel walls','The interlock','Working from outside']),
+       ('ride','crCv','Five minutes','How a frozen crystal is carried to the beam and found there, in four stops and five minutes, with no equations. The robot and its dewar, the trip through the cold, centering by camera and by X-rays, and running it all from far away.',['Loading','The robot','Centering','From afar']),
        ('see','ceCv','Five minutes','How X-rays and a crystal show where the atoms in a protein are, in four stops and five minutes, with no equations. Why light cannot do it, what the crystal is for, how the spots become a map, and how atoms are fitted into it. The protein in the figures is myoglobin.',['Too small','A crystal','Spots to map','Atoms']),
        ('mx','cmCv','Then the experiment','What macromolecular crystallography is, and how it gets from a crystal to a structure. Why a crystal is needed, what the spots are, the phase problem, the electron density map, and how a model is refined and judged.',['Why structures','Why a crystal','Spots as waves','The phase problem','Map and model']),
+       ('waves','cwvCv','Five minutes','How a pattern of spots becomes a picture, in four stops and five minutes, with no equations. What a wave is, how waves add up to any shape, what each spot contributes, and the half of the recipe that the detector loses.',['One wave','Adding','Spots','The catch']),
+       ('res','crsCv','Five minutes','What the resolution of a structure means, in three stops and five minutes, with no equations. When two atoms can be told apart, what shows at each resolution, and where on the detector the number comes from.',['Two atoms','What shows','The spots']),
+       ('phase','cphCv','Go deeper','Why the phases of the spots matter more than their brightness, what can be learned without them, and how they are recovered: molecular replacement, anomalous scattering and SAD, with what each NE-CAT beamline offers.',['What is lost','Without phases','Molecular replacement','Anomalous scattering','To every phase']),
+       ('four','cfoCv','Go deeper','Every spot is one term of a Fourier series. The series in one dimension, the structure factor as a sum of arrows, what moving a molecule does to amplitudes and phases, why a crystal gives spots, and why a disordered one gives few.',['The series','The structure factor','Moving it','A crystal','Blur']),
+       ('recip','crcCv','Go deeper',"Which spots appear, where and when. Bragg's law, the reciprocal lattice, the Ewald sphere, what a full turn of the crystal can reach, the blind region, and the detector as a window on reciprocal space.",["Bragg's law",'The lattice','The sphere','A full turn','The detector']),
+       ('sym','csyCv','Go deeper','The rule by which a crystal is built from one unit. Rotation and screw axes, why proteins allow only 65 space groups, how to read a symbol such as P2₁2₁2₁, equal and missing reflections, and what it changes at the beamline.',['Operations','Screw axes','The cell','Space groups','In the pattern']),
+       ('proc','cprCv','Go deeper','From a few thousand images to one number for each reflection. Finding and indexing the spots, deciding the symmetry, how far to turn the crystal, integration, scaling and merging, where the data end, and what the automated processing at NE-CAT hands back.',['The images','Indexing','Symmetry','Strategy','Scaling','Resolution']),
        ('grow','cgCv','Five minutes','How a protein is coaxed into a crystal, in four stops and five minutes, with no equations. What a crystal is, how a drop is left to shrink until crystals form, why hundreds of recipes are tried, and how a crystal travels to the beamline.',['Order','A drop','Many tries','To the beam']),
+       ('xtal','cxtCv','Go deeper','Why a protein comes out of solution as a crystal. The phase diagram and the paths the methods take across it, the barrier to nucleation, what salts, polymers and pH do, how recipes are searched for and improved, and what makes a crystal good.',['The phase diagram','Nucleation','The recipe','Search','Quality']),
        ('cold','ccCv','Five minutes','What X-rays do to a crystal, why keeping it at 173 degrees below zero makes it last, and how a crystal that is half water is cooled without turning to ice. Four stops, no equations.',['Damage','Cold','No ice','How cold']),
        ('damage','cdCv','Go deeper','From the absorption of one photon to the fading of the pattern. Dose and how to estimate it, the 30 MGy limit, the groups that are damaged first, why 100 K, and how to spend the dose a crystal can take.',['Absorption','Dose','The 30 MGy limit','Specific damage','Why 100 K']),
        ('scatter','c3Cv','Put it to work','What X-ray fluorescence is, which atoms in a protein crystal give it, and what it is used for: edge scans for phasing, and finding out which metal is there. Then where the fluorescence detector has to sit to see it clearly.',['How an atom fluoresces','Which atoms','Edges and lines','The edge scan','Where the detector goes']),
-       ('prot','cxCv','Five minutes','What a protein is, in four stops and five minutes, with no equations. A chain of amino acids, how it folds, what one protein does with its shape, and why the shape is worth seeing. The protein in the figures is myoglobin.',['A chain','Folding','A job','Many kinds'])]
+       ('prot','cxCv','Five minutes','What a protein is, in four stops and five minutes, with no equations. A chain of amino acids, how it folds, what one protein does with its shape, and why the shape is worth seeing. The protein in the figures is myoglobin.',['A chain','Folding','A job','Many kinds']),
+       ('why','cyCv','Five minutes','Why crystals still go to X-ray beams when computers can predict structures, in four stops and five minutes, with no equations. X-rays, electron microscopes and prediction: what each does best, and how they work together.',['Three ways','Prediction','What suits what','Together']),
+       ('med','cmdCv','Five minutes','How the shape of a protein leads to a medicine, in four stops and five minutes, with no equations. A drug as a small molecule that fits a pocket, with three examples measured at NE-CAT.',['A fit','An antibiotic','A hidden pocket','A long road']),
+       ('design','cdsCv','Five minutes','What it means to design a protein that nature never made, in four stops and five minutes, with no equations. From a shape to a sequence, why most designs fail, and why each one is checked against a measured structure.',['Backward','Try it','Check it','Uses']),
+       ('found','cfdCv','Five minutes','Four things learned from crystals measured at NE-CAT, in five minutes, with no equations. An alarm for stray DNA, a brake on a cancer protein, an enzyme inside a membrane, and a data set in fourteen seconds.',['An alarm','A brake','In a membrane','Fourteen seconds'])]
 CARDS=[c for c in CARDS if c[0] in GK]
 SERIES=[(n,sn,ask,[k for k in keys if k in GK],note) for n,sn,ask,keys,note in SERIES]
 CK={c[0]:c for c in CARDS}
@@ -726,4 +740,6 @@ GK={g['key']:g for g in G}
 open('body-home.html','w').write(home())
 # what build.js needs to know about each page for its link-preview tags
 json.dump({key:dict(title=GK[key]['title'],name=GK[key]['name'],h1=GK[key]['h1'],desc=desc) for key,cv,tag,desc,chips in CARDS},open('guides.json','w'))
+# for the kiosk's first screens (build.js): each five-minute guide in the set, with the canvas of its card picture
+if os.path.exists('kiosk.js'): json.dump({key:dict(cv=cv,name=GK[key]['name']) for key,cv,tag,desc,chips in CARDS if GK[key]['level']=='Introductory'},open('kiosk.json','w'))
 print('home ok')
